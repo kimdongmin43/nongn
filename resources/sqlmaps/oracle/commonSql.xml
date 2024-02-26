@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommonSql">
+
+	<sql id="pageingTop">
+<!-- 		SELECT * FROM ( -->
+<!-- 	     SELECT A.*, -->
+<!-- 	                 ROW_NUMBER() OVER(ORDER BY REPLACE(#{sidx} #{sord}, '''', '')) AS RNUM, -->
+<!-- 	                 COUNT(*) OVER() AS total_cnt FROM ( -->
+		SELECT * FROM (
+	     SELECT A.*,
+	                 ROW_NUMBER() OVER(ORDER BY ${sidx} ${sord}) AS RNUM,
+	                 COUNT(*) OVER() AS total_cnt FROM (
+	</sql>
+
+	<sql id="pageingBottom">	    
+	  <![CDATA[
+		    ) A
+		]]>
+	   <![CDATA[
+		)B WHERE RNUM > #{miv_start_index} AND RNUM <= #{miv_end_index}
+		]]>
+	</sql>
+
+	<sql id="gridPagingTop">
+		<![CDATA[
+		SELECT	ROWNUM				AS		rnum
+				,	COUNT(*) OVER()	AS		totalCnt
+				,	A.*
+		FROM	(
+			SELECT	A.*
+			FROM	(
+		]]>
+	</sql>
+
+	<sql id="gridPagingBottom">
+			<![CDATA[
+			) A
+			]]>
+		<if test=" ( sord != null and sord != '' ) and ( sidx != null and sidx != '' ) ">
+			ORDER BY ${sidx} ${sord}
+		</if>
+		<![CDATA[
+		) A
+		]]>
+	</sql>
+
+	<sql id="getGuid">
+		SELECT	GET_GUID()
+		FROM	DUAL
+	</sql>
+
+</mapper>

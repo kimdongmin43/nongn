@@ -1,0 +1,299 @@
+@charset "utf-8";
+
+
+/* 화면 해상도 width 1025px 이상 Design --------------------------------------*/
+@media screen and (min-width: 1025px){
+	.main_area {
+		background-image: url("/engimages/main/main_bg.jpg"); background-repeat: no-repeat; background-position: center center; background-size: cover;
+	}
+
+	.main_contents_area01 { width: 1200px; margin: auto; }
+		.main_contents_area01 > li { float: left; position: relative; height: 707px; }
+			.main_text_img { margin-top: 50px; }
+			.main_child_img { position: absolute; bottom: 0px; left: 57px; }
+
+
+			.main_banner_area01 { margin-top: 11px; }
+			.main_banner_area01 > li { float: left; text-align: center;  }
+			.main_banner_area01 > li:first-child { width: 250px; background: #fff; padding: 18px 15px 18px 15px; }
+
+				.main_banner_area01 > li:first-child > p.title_img { margin-top: 21px; }
+				.main_banner_area01 > li:first-child > p.title_txt { margin-top: 21px; font-weight:700; font-size: 18px; color: #333333; letter-spacing:-0.1px }/*수정2018.01.23*/
+
+				.banner_01_contents01 { border: 1px solid #cecece; padding: 14px 8px 38px 8px; margin-top: 35px; }
+					.banner_01_contents01 > ul {}
+						.banner_01_contents01 > ul > li { 
+							text-align: left; margin-top: 18px; 
+							background-image: url("/engimages/main/contents_dot.png"); background-repeat: no-repeat; background-position: left center;
+						}
+						.banner_01_contents01 > ul > li > a { margin-left: 10px; font-size: 14px; font-weight: 500; color: #333333; letter-spacing: -0.2px; } /*수정2018.01.23*/
+						.banner_01_contents01 > ul > li:last-child > a { font-size: 14px; }/*수정2018.01.23*/
+
+			.main_banner_area01 > li:last-child { float: right; width: 410px; }
+				.main_banner_area01 > li:last-child > ul { }
+
+					.main_banner_area01 > li:last-child > ul > li { float: left; width: 200px; background: #bdf2f3; height: 200px; }
+					.main_banner_area01 > li:last-child > ul > li:nth-child(2) { float: right; background: #e2ded0; }
+					.main_banner_area01 > li:last-child > ul > li:last-child { 
+						width: 100%; height: 267px; margin-top: 10px; float: left; background: #fff; padding: 18px 21px 18px 21px;
+						background-image: url("/engimages/main/faff_icon4.png"); background-repeat: no-repeat; background-position: right top;
+					}
+						.main_banner_area01 > li:last-child > ul > li > p.title_img { margin-top: 39px; }
+						.main_banner_area01 > li:last-child > ul > li > p.title_txt { margin-top: 15px; font-weight:700; font-size: 17px; line-height: 21px; letter-spacing:-0.1px }/*수정2018.01.23*/
+							.main_banner_area01 > li:last-child > ul > li > p.title_txt > a { color: #333333; }
+
+							.main_banner_area01 > li:last-child > ul > li:last-child > p.title_txt { 
+								margin-top: 20px; font-weight:700; font-size: 18px; color: #333333; text-align: left;
+							}
+
+							.banner_01_contents02 { 
+								border-left: 1px solid #cecece; border-top: 1px solid #cecece; margin-top: 21px; 
+							}
+								.banner_01_contents02 > ul {}
+									.banner_01_contents02 > ul > li { 
+										text-align: left; border-right: 1px solid #cecece; border-bottom: 1px solid #cecece;
+										background-image: url("/engimages/main/contents_dot.png"); background-repeat: no-repeat; 
+										background-position: right 8px center; line-height: 26px; padding: 0px 0px 1px 0px;
+									}
+									.banner_01_contents02 > ul > li > a { margin-left: 10px; font-size: 14px; font-weight: 400; color: #333333; }
+
+
+
+
+
+
+
+			.main_banner_area02 { margin-top: 11px; }
+			.main_banner_area02 > li { float: left; text-align: center; }
+			.main_banner_area02 > li:first-child { width: 250px; background: #d8f0aa; padding: 18px 15px 18px 15px; height: 200px; }
+
+				.main_banner_area02 > li:first-child > p.title_img { margin-top: 21px; }
+				.main_banner_area02 > li:first-child > p.title_txt { margin-top: 21px; font-weight:700; font-size: 17px; letter-spacing:-0.1px }/*수정2018.01.23*/
+				.main_banner_area02 > li:first-child > p.title_txt > a { color: #333333 !important; }
+
+			.main_banner_area02 > li:last-child { float: right; width: 410px; }
+				.main_banner_area02 > li:last-child > ul { }
+
+					.main_banner_area02 > li:last-child > ul > li { float: left; width: 200px; background: #ffffff; height: 200px; }
+					.main_banner_area02 > li:last-child > ul > li:last-child { float: right; background: #befabe;  }
+
+						.main_banner_area02 > li:last-child > ul > li > p.title_img { margin-top: 39px; }
+						.main_banner_area02 > li:last-child > ul > li > p.title_txt { 
+							margin-top: 15px; font-weight:700; font-size: 17px; line-height: 21px; text-align: center !important; letter-spacing:-0.1px
+						} /*수정2018.01.23*/
+							.main_banner_area02 > li:last-child > ul > li > p.title_txt > a { color: #333333; }
+
+							.main_banner_area02 > li:last-child > ul > li:last-child > p.title_txt { 
+								margin-top: 20px; font-weight:700; font-size: 18px; line-height: 18px; color: #333333; text-align: left; letter-spacing:-0.1px
+							}/*수정2018.01.23*/
+
+		
+			.main_banner_area01:after{display:block;visibility:hidden;clear:both;content:""}	
+			.main_banner_area02:after{display:block;visibility:hidden;clear:both;content:""}	
+		.main_contents_area01 > li:last-child { float: right; width: 671px; }
+	.main_contents_area01:after{display:block;visibility:hidden;clear:both;content:""}	
+}
+
+
+
+/* 화면 해상도 width 640px 이상 960px 이하 Design --------------------------------------*/
+@media screen and (max-width: 1024px) and (min-width: 641px) {
+	
+	.main_area {
+		background-image: url("/engimages/main/main_bg.jpg"); background-repeat: no-repeat; background-position: center center; background-size: cover;
+	}
+
+	.main_contents_area01 { width: 100%; margin: auto; }
+		.main_contents_area01 > li:first-child { display: none; }
+
+			.main_banner_area01 { margin-top: 11px; }
+			.main_banner_area01 > li { float: left; text-align: center;  }
+			.main_banner_area01 > li:first-child { width: 250px; background: #fff; padding: 18px 15px 18px 15px; }
+
+				.main_banner_area01 > li:first-child > p.title_img { margin-top: 21px; }
+				.main_banner_area01 > li:first-child > p.title_txt { margin-top: 21px; font-weight:700; font-size: 18px; color: #333333; }
+
+				.banner_01_contents01 { border: 1px solid #cecece; padding: 14px 8px 38px 8px; margin-top: 74px; }
+					.banner_01_contents01 > ul {}
+						.banner_01_contents01 > ul > li { 
+							text-align: left; margin-top: 18px; 
+							background-image: url("/engimages/main/contents_dot.png"); background-repeat: no-repeat; background-position: left center;
+						}
+						.banner_01_contents01 > ul > li > a { margin-left: 10px; font-size: 14px; font-weight: 500; color: #333333; letter-spacing: -0.2px; }/*수정2018.01.23*/
+						.banner_01_contents01 > ul > li:last-child > a { font-size: 14px; }/*수정2018.01.23*/
+
+			.main_banner_area01 > li:last-child { float: right; width: calc(100% - 270px); margin-right: 10px; }
+				.main_banner_area01 > li:last-child > ul { }
+
+					.main_banner_area01 > li:last-child > ul > li { float: left; width: calc(50% - 5px); background: #bdf2f3; height: 200px; }
+					.main_banner_area01 > li:last-child > ul > li:nth-child(2) { float: right; background: #e2ded0; }
+					.main_banner_area01 > li:last-child > ul > li:last-child { 
+						width: 100%; height: 267px; margin-top: 10px; float: left; background: #fff; padding: 18px 21px 18px 21px;
+						background-image: url("/engimages/main/faff_icon4.png"); background-repeat: no-repeat; background-position: right top;
+					}
+						.main_banner_area01 > li:last-child > ul > li > p.title_img { margin-top: 39px; }
+						.main_banner_area01 > li:last-child > ul > li > p.title_txt { margin-top: 15px; font-weight:700; font-size: 17px; line-height: 21px; }
+							.main_banner_area01 > li:last-child > ul > li > p.title_txt > a { color: #333333; }
+
+							.main_banner_area01 > li:last-child > ul > li:last-child > p.title_txt { 
+								margin-top: 20px; font-weight:700; font-size: 18px; color: #333333; text-align: left;
+							}
+
+							.banner_01_contents02 { 
+								border-left: 1px solid #cecece; border-top: 1px solid #cecece; margin-top: 21px; 
+							}
+								.banner_01_contents02 > ul {}
+									.banner_01_contents02 > ul > li { 
+										text-align: left; border-right: 1px solid #cecece; border-bottom: 1px solid #cecece;
+										background-image: url("/engimages/main/contents_dot.png"); background-repeat: no-repeat; 
+										background-position: right 8px center; line-height: 26px; padding: 0px 0px 1px 0px;
+									}
+									.banner_01_contents02 > ul > li > a { margin-left: 10px; font-size: 14px; font-weight: 400; color: #333333; }
+
+
+
+
+
+
+
+			.main_banner_area02 { margin-top: 11px; }
+			.main_banner_area02 > li { float: left; text-align: center; }
+			.main_banner_area02 > li:first-child { width: 250px; background: #d8f0aa; padding: 18px 15px 18px 15px; height: 200px; }
+
+				.main_banner_area02 > li:first-child > p.title_img { margin-top: 21px; }
+				.main_banner_area02 > li:first-child > p.title_txt { margin-top: 21px; font-weight:700; font-size: 17px; }
+				.main_banner_area02 > li:first-child > p.title_txt > a { color: #333333 !important; }
+
+			.main_banner_area02 > li:last-child { float: right; width: calc(100% - 270px); margin-right: 10px; }
+				.main_banner_area02 > li:last-child > ul { }
+
+					.main_banner_area02 > li:last-child > ul > li { float: left; width: calc(50% - 5px); background: #ffffff; height: 200px; }
+					.main_banner_area02 > li:last-child > ul > li:last-child { float: right; background: #befabe;  }
+
+						.main_banner_area02 > li:last-child > ul > li > p.title_img { margin-top: 39px; }
+						.main_banner_area02 > li:last-child > ul > li > p.title_txt { 
+							margin-top: 15px; font-weight:700; font-size: 17px; line-height: 21px; text-align: center !important;
+						}
+							.main_banner_area02 > li:last-child > ul > li > p.title_txt > a { color: #333333; }
+
+							.main_banner_area02 > li:last-child > ul > li:last-child > p.title_txt { 
+								margin-top: 20px; font-weight:700; font-size: 18px; line-height: 18px; color: #333333; text-align: left;
+							}
+
+		
+			.main_banner_area01:after{display:block;visibility:hidden;clear:both;content:""}	
+			.main_banner_area02:after{display:block;visibility:hidden;clear:both;content:""}	
+		.main_contents_area01 > li:last-child { float: right; width: calc(100% - 10px); margin: auto;  padding-bottom: 11px; }
+	.main_contents_area01:after{display:block;visibility:hidden;clear:both;content:""}		
+	
+}
+
+
+
+/* 화면 해상도 width 640px 이하 Design --------------------------------------*/
+@media screen and (max-width: 640px){
+	
+	.main_area {
+		background-image: url("/engimages/main/main_bg.jpg"); background-repeat: no-repeat; background-position: center center; background-size: cover;
+	}
+
+	.main_contents_area01 { width: 100%; margin: auto; }
+		.main_contents_area01 > li:first-child { display: none; }
+
+			.main_banner_area01 { margin-top: 11px; }
+			.main_banner_area01 > li { float: left; text-align: center;  }
+			.main_banner_area01 > li:first-child { width: calc(100% - 10px); background: #fff; padding: 18px 15px 18px 15px; }
+
+				.main_banner_area01 > li:first-child > p.title_img { margin-top: 21px; }
+				.main_banner_area01 > li:first-child > p.title_txt { margin-top: 21px; font-weight:700; font-size: 18px; color: #333333; }
+
+				.banner_01_contents01 { border: 1px solid #cecece; padding: 14px 8px 38px 8px; margin-top: 74px; }
+					.banner_01_contents01 > ul {}
+						.banner_01_contents01 > ul > li { 
+							text-align: left; margin-top: 18px; 
+							background-image: url("/engimages/main/contents_dot.png"); background-repeat: no-repeat; background-position: left center;
+						}
+						.banner_01_contents01 > ul > li > a { margin-left: 10px; font-size: 14px; font-weight: 500; color: #333333; letter-spacing: -0.2px; }/*수정2018.01.23*/
+						.banner_01_contents01 > ul > li:last-child > a { font-size: 14px; }/*수정2018.01.23*/
+
+			.main_banner_area01 > li:last-child { float: right; width: calc(100% - 10px); margin-right: 10px; margin-top: 10px; }
+				.main_banner_area01 > li:last-child > ul { }
+
+					.main_banner_area01 > li:last-child > ul > li { float: left; width: calc(50% - 5px); background: #bdf2f3; min-height: 200px; }
+					.main_banner_area01 > li:last-child > ul > li:nth-child(2) { float: right; background: #e2ded0; }
+					.main_banner_area01 > li:last-child > ul > li:last-child { 
+						width: 100%; min-height: 267px; margin-top: 10px; float: left; background: #fff; padding: 18px 21px 18px 21px;
+						background-image: url("/engimages/main/faff_icon4.png"); background-repeat: no-repeat; background-position: right top;
+					}
+						.main_banner_area01 > li:last-child > ul > li > p.title_img { margin-top: 39px; }
+						.main_banner_area01 > li:last-child > ul > li > p.title_txt { margin-top: 15px; font-weight:700; font-size: 17px; line-height: 21px; }
+							.main_banner_area01 > li:last-child > ul > li > p.title_txt > a { color: #333333; }
+
+							.main_banner_area01 > li:last-child > ul > li:last-child > p.title_txt { 
+								margin-top: 20px; font-weight:700; font-size: 18px; color: #333333; text-align: left;
+							}
+
+							.banner_01_contents02 { 
+								border-left: 1px solid #cecece; border-top: 1px solid #cecece; margin-top: 21px; 
+							}
+								.banner_01_contents02 > ul {}
+									.banner_01_contents02 > ul > li { 
+										text-align: left; border-right: 1px solid #cecece; border-bottom: 1px solid #cecece;
+										background-image: url("/engimages/main/contents_dot.png"); background-repeat: no-repeat; 
+										background-position: right 8px center; line-height: 26px; padding: 0px 0px 1px 0px;
+									}
+									.banner_01_contents02 > ul > li > a { margin-left: 10px; font-size: 14px; font-weight: 400; color: #333333; }
+
+
+
+
+
+
+
+			.main_banner_area02 { margin-top: 11px; }
+			.main_banner_area02 > li { float: left; text-align: center; }
+			.main_banner_area02 > li:first-child { width: calc(100% - 10px); background: #d8f0aa; padding: 18px 15px 18px 15px; min-height: 200px; }
+
+				.main_banner_area02 > li:first-child > p.title_img { margin-top: 21px; }
+				.main_banner_area02 > li:first-child > p.title_txt { margin-top: 21px; font-weight:700; font-size: 17px; }
+				.main_banner_area02 > li:first-child > p.title_txt > a { color: #333333 !important; }
+
+			.main_banner_area02 > li:last-child { float: right; width: calc(100% - 10px); margin-right: 10px; margin-top: 10px; }
+				.main_banner_area02 > li:last-child > ul { }
+
+					.main_banner_area02 > li:last-child > ul > li { float: left; width: calc(50% - 5px); background: #ffffff; min-height: 200px; }
+					.main_banner_area02 > li:last-child > ul > li:last-child { float: right; background: #befabe;  }
+
+						.main_banner_area02 > li:last-child > ul > li > p.title_img { margin-top: 39px; }
+						.main_banner_area02 > li:last-child > ul > li > p.title_txt { 
+							margin-top: 15px; font-weight:700; font-size: 17px; line-height: 21px; text-align: center !important;
+						}
+							.main_banner_area02 > li:last-child > ul > li > p.title_txt > a { color: #333333; }
+
+							.main_banner_area02 > li:last-child > ul > li:last-child > p.title_txt { 
+								margin-top: 20px; font-weight:700; font-size: 18px; line-height: 18px; color: #333333; text-align: left;
+							}
+
+		
+			.main_banner_area01:after{display:block;visibility:hidden;clear:both;content:""}	
+			.main_banner_area02:after{display:block;visibility:hidden;clear:both;content:""}	
+		.main_contents_area01 > li:last-child { float: right; width: calc(100% - 10px); margin: auto;  padding-bottom: 11px; }
+	.main_contents_area01:after{display:block;visibility:hidden;clear:both;content:""}			
+	
+}
+
+
+/* 화면 해상도 width 460px 이하 Design --------------------------------------*/
+@media screen and (max-width: 460px){
+	
+	
+	
+}
+
+
+
+
+
+
+
+

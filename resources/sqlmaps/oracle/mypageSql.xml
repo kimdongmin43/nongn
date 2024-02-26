@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MypageDao">
+
+	<select id="selectExist" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.mypage.dao.MypageDao.selectExist */
+	
+	SELECT 
+	COUNT(1) AS cnt
+	,(MAX([손해평가사자격증번호])) as pKey
+	FROM 
+	LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSMAS
+	WHERE
+	1=1
+	AND [손해평가사성명] = #{sName}
+	AND [손해평가사생년월일] = SUBSTRING(#{sBirthDate},1,4)+'-'+SUBSTRING(#{sBirthDate},5,2)+'-'+SUBSTRING(#{sBirthDate},7,2)
+
+	</select>
+	
+	<select id="mypageInfo" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.mypage.dao.MypageDao.mypageInfo */
+	
+	SELECT   
+			     A.손해평가사자격증번호 as   licenseKey
+			   , A.손해평가사자격증번호 as 자격증번호   
+			   , A.손해평가사시험연도  as year
+			   , A.손해평가사성명   as name
+			   , A.손해평가사생년월일 as birth   
+			   , RTRIM(A.손해평가사휴대전화번호) as hp
+			   , RTRIM(A.손해평가사일반전화번호) as tel    
+			   , A.손해평가사우편번호   as postNum
+			   , A.손해평가사기본주소   as addr
+			   , A.손해평가사상세주소	  as addrDetail
+			   , A.손해평가사지번기본주소   
+			   , A.손해평가사지번상세주소   
+			   , A.손해평가사차량소유여부 as carYn
+			   , A.손해평가사SMS발송동의여부  as smsYn     
+			   , A.손해평가사자격증합격일자 as submitDt   
+			   , A.손해평가사자격증취소일자 as cancelDt
+			   , A.손해평가사자격증취소사유 as cancelReason 
+			   , B.손해평가사자격증발행번호  as finalNum 
+			   , B.자격증발급일자 as issuedDt
+			   , A.손해평가사수험번호 AS suNum 
+			   , ISNULL( A.손해평가사소속구분코드 , 4)  as sosokCd
+			FROM  LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSMAS A   
+			LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSLICENSEHIS B   
+			ON    A.손해평가사자격증번호 = B.손해평가사자격증번호   
+			AND   B.자격증발급일련번호   = ( SELECT MAX(자격증발급일련번호) FROM LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSLICENSEHIS WHERE 손해평가사자격증번호 = A.손해평가사자격증번호 )   
+			WHERE 1=1
+			AND RTRIM(A.손해평가사자격증번호) = #{pKey}
+
+	</select>
+	
+	
+	<select id="selectSosokCd" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.mypage.dao.MypageDao.selectExist */
+	SELECT 
+	CD AS code
+	,CD_NM AS value 
+	FROM LINKD_INSU99.INSU_LINK.dbo.FITComCd
+	where cd_tp = '80460'	
+	</select>
+	
+	<select id="selectMonths" parameterType="Map" resultType="camelMap">
+	SELECT
+			   활동가능1월여부 as jan
+				,활동가능2월여부 as feb
+				,활동가능3월여부 as mar
+				,활동가능4월여부 as apr
+				,활동가능5월여부 as may
+				,활동가능6월여부 as jun
+				,활동가능7월여부 as jul
+				,활동가능8월여부 as aug
+				,활동가능9월여부 as sep
+				,활동가능10월여부 as oct
+				,활동가능11월여부 as nov
+				,활동가능12월여부 as dec
+		  FROM LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSACTMONTHLST
+		  WHERE [손해평가사자격증번호] = REPLACE(#{pKey}, '_', '')
+		  AND 활동가능시작일자 = ( SELECT MAX( 활동가능시작일자 ) FROM LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSACTMONTHLST WHERE [손해평가사자격증번호] = REPLACE(#{pKey}, '_', '') )
+		</select>
+		
+		<select id="selectProductCd" parameterType="Map" resultType="camelMap">
+		SELECT  
+			      CD AS code               
+			      , Cd_Nm as name                  
+			FROM    LINKD_INSU99.INSU_LINK.dbo.FITCOMCD    
+			WHERE   CD_TP = '80440'   
+		</select>
+		
+		<select id="selectMyProduct" parameterType="Map" resultType="camelMap">
+		SELECT 
+		손해평가사활동품목코드 as productCd
+		FROM LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSACTITEMLST 
+		WHERE 손해평가사자격증번호 = REPLACE(#{pKey}, '_', '')
+		</select>
+		
+		
+		<select id="selectMyEduHistory" parameterType="Map" resultType="camelMap">
+		SELECT
+			  EDU.[손해평가사교육구분코드], 
+			  CMM2.Cd_Nm as gubun,
+			  EDU.[손해평가사교육명] as title, 
+			  EDU.[손해평가사교육시작일자] as sDay, 
+			  EDU.[손해평가사교육연도] as year, 
+			  EDU.[손해평가사교육종료일자] as eDay, 
+			  EDU.[손해평가사교육회차] as num,
+			  DET.[손해평가사교육이수상태코드], 
+			  CMM1.Cd_Nm as isu, 
+			  DET.[손해평가사교육이수일자] as eduFinDay 
+			FROM 
+			  LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSEDULISTMAS EDU
+			  LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSEDUDTL DET
+			    ON EDU.[손해평가사교육목록관리번호] = DET.[손해평가사교육목록관리번호]
+			  LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.FITComCd AS CMM1 
+			    ON DET.[손해평가사교육이수상태코드] = CMM1.cd 
+			    AND CMM1.cd_tp = 80100 
+			  LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.FITComCd AS CMM2 
+			    ON EDU.[손해평가사교육구분코드] = CMM2.cd 
+			    AND CMM2.cd_tp = 80150
+			WHERE
+			 DET.[손해평가사자격증번호] = #{pKey}
+			AND  GETDATE() > CONVERT(DATE, EDU.[손해평가사교육종료일자])
+		</select>
+		
+		<select id="selectMyEduFuture" parameterType="Map" resultType="camelMap">
+		SELECT
+			  EDU.[손해평가사교육구분코드], 
+			  CMM2.Cd_Nm AS  gubun,
+			  EDU.[손해평가사교육명] as title , 
+			  EDU.[손해평가사교육시작일자] as sDay, 
+			  EDU.[손해평가사교육연도] as year, 
+			  EDU.[손해평가사교육종료일자] as eDay, 
+			  EDU.[손해평가사교육회차] as num,
+			  DET.[손해평가사교육참석여부코드],        	   
+        	  CMM1.Cd_Nm AS AttendYn,
+        	  DET.[손해평가사교육목록관리번호], 
+		      DET.[손해평가사교육이수일련번호], 
+		      DET.[손해평가사자격증번호]
+			FROM 
+			 LINKD_INSU99. INSU_LINK.dbo.INTASMENTLOSSEDULISTMAS EDU
+			  LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSEDUDTL DET
+			    ON EDU.[손해평가사교육목록관리번호] = DET.[손해평가사교육목록관리번호]
+			  LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.FITComCd AS CMM1 
+			    ON DET.[손해평가사교육참석여부코드] = CMM1.cd 
+			    AND CMM1.cd_tp = 80450 
+			  LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.FITComCd AS CMM2 
+			    ON EDU.[손해평가사교육구분코드] = CMM2.cd 
+			    AND CMM2.cd_tp = 80150
+		WHERE DET.[손해평가사자격증번호] = #{pKey}
+		AND CONVERT(DATE, EDU.[손해평가사교육시작일자]) > GETDATE()
+		</select>
+		
+		<update id="updateMypageInfo" parameterType="Map">		
+		UPDATE LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSMAS
+		SET 
+		손해평가사휴대전화번호 = #{hp}
+		,손해평가사일반전화번호 = #{tel}
+		,손해평가사SMS발송동의여부 = #{smsYn} 
+		,손해평가사차량소유여부 = #{carYn}
+		,손해평가사우편번호 = #{postNum}
+		,손해평가사기본주소 = #{addr}
+		,손해평가사상세주소 = #{addrDetail}
+		WHERE 손해평가사자격증번호 = #{licenseKey}
+		</update>
+		
+		<update id="updateActiveMonth" parameterType="Map">		
+		UPDATE LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSACTMONTHLST
+		SET 
+		  		활동가능1월여부 = #{jan}
+				,활동가능2월여부 = #{feb}
+				,활동가능3월여부 = #{mar}
+				,활동가능4월여부 = #{apr}
+				,활동가능5월여부 = #{may}
+				,활동가능6월여부 = #{jun}
+				,활동가능7월여부 = #{jul}
+				,활동가능8월여부 = #{aug}
+				,활동가능9월여부 = #{sep}
+				,활동가능10월여부 = #{oct}
+				,활동가능11월여부 = #{nov}
+				,활동가능12월여부 = #{dec}
+		WHERE 손해평가사자격증번호 =#{licenseKey}
+		</update>
+		
+		<delete id = "deleteProduct" parameterType="String">
+		DELETE LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSACTITEMLST 
+		WHERE 손해평가사자격증번호 = #{key}
+		</delete>
+		
+		<insert id = "insertProduct" parameterType="Map">
+		INSERT INTO LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSACTITEMLST
+		(
+		손해평가사자격증번호
+		,손해평가사활동품목코드
+		,등록자직원번호
+		,등록일시
+		,수정자직원번호
+		,수정일시
+		)
+		VALUES
+		(
+			#{licenseKey}
+			,#{productCd}
+			,'WebPage'
+			,convert(varchar, getdate(),120)
+			,'WebPage'
+			,convert(varchar, getdate(),120)
+		)
+		
+		</insert>
+		
+		<select id = "selectAreas" resultType="camelMap">
+			SELECT DISTINCT 시군구코드 as code , 시군구명 as name
+			 FROM LINKD_INSU99.DOROZIP.DBO.도로명코드
+			 WHERE 시군구명 IS NOT NULL
+			 ORDER BY 시군구명 ASC 
+			 
+		</select>
+		
+		<select id = "selectMyAreas" parameterType="Map" resultType="camelMap">
+			SELECT
+			손해평가사활동가능지역코드 as areaCd
+			FROM LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSACTZONELST
+			WHERE
+			손해평가사자격증번호 = #{pKey}
+		</select>
+		
+		
+		
+		<delete id = "deleteAreas" parameterType="String">
+		DELETE LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSACTZONELST 
+		WHERE 손해평가사자격증번호 = #{key}
+		</delete>
+		
+		<insert id = "insertAreas" parameterType="Map">
+		INSERT INTO LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSACTZONELST
+		(
+		손해평가사자격증번호
+		,손해평가사활동가능지역코드
+		,등록자직원번호
+		,등록일시
+		,수정자직원번호
+		,수정일시
+		)
+		VALUES
+		(
+			#{licenseKey}
+			,#{areaCd}
+			,'WebPage'
+			,convert(varchar, getdate(),120)
+			,'WebPage'
+			,convert(varchar, getdate(),120)
+		)
+		
+		</insert>
+</mapper>

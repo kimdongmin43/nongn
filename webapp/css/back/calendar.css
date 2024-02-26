@@ -1,0 +1,51 @@
+@charset "utf-8";
+
+
+/* tabe calendar */
+table.calendar {width:100%; margin: 0 auto; table-layout: fixed;}
+table.calendar td:hover {background-color: #f3fcff;}
+table.calendar td.non_bg:hover {background-color: #ffffff;}
+table.calendar {width:100%;}
+table.calendar thead th {height: 35px; border: solid 1px #dfdfdf; border-top: solid 1px #cacaca; border-bottom: 0; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; font-size: 105%; font-weight: bold; color: #4d4d4d; background: url('/images/back/calendar/bg_calendar_th.gif') repeat-x 0 0 #f7f7f7;}
+table.calendar thead th:first-child {color: #eb5514;}
+table.calendar thead th:last-child {color: #00427f;}
+table.calendar tbody td {min-height: 90px; padding: 0px; border: solid 1px #dfdfdf; font-size: 90%; text-align: left; color: #4d4d4d; vertical-align: top;}
+table.calendar td.done {background: #f3f3f3;}
+table.calendar td.done:hover {cursor: default;}
+table.calendar td.none {background: #ffffff;}
+table.calendar td.none:hover {cursor: default;}
+
+.day_area {overflow: hidden;}
+    .day_info {overflow: hidden; min-height: 115px; padding-top: 5px; line-height: 15px;}
+    .day_info.dayoff {color: #eb5514;} /* 공휴일 및 일요일 지정 색 */
+    .day_info.sat {color: #00427f;} /* 토요일 지정 색 */  
+    .day_info strong.day {float: left; width: 100%; margin-bottom: 2px; margin-left: 5px; font-size: 13px; font-weight: bold;}
+    .day_info div.day_memo {display: block; overflow: hidden; width: 100%; min-height: 100px; color: #4d4d4d;}
+    .day_info div.day_memo ul.day_list {padding: 5px;}
+    .day_info div.day_memo ul.day_list li {vertical-align: middle;}
+    .day_info div.day_memo ul.day_list li img {display: inline-block; margin-top: -2px; margin-right: 3px; vertical-align: middle;}
+    .day_info div.day_memo div {display: block; width:100%;}
+    .day_info div.day_memo_point {display: block; width: 100%; min-height: 83px; padding-bottom: 5px; font-weight: bold; color: #f80000; text-decoration: underline;}
+    .day_info div.day_memo ul.day_list li a.link {text-decoration: underline;}
+    .day_info div.day_memo ul.day_list li a.linkc {color: #1670bf; text-decoration: underline;}
+    
+    .calendar_choice {position: relative; width: 215px; margin: 10px auto 15px; text-align: center;}
+    .calendar_choice:after {content:""; clear:both; display:block;}
+    .month_choice {float: left;}
+    .month_choice a {float: left; margin-left: 4px; color: #4d4d4d;}
+    .month_choice a:first-child {margin-left: 0;}
+    .calendar_day {float: left; width: 93px; margin: 0 14px; padding-top: 1px;}
+    .calendar_day img {float: left;}
+    .day_choice {float: right; display: inline-block; width: 7px; height: 12px; padding-top: 5px; padding-left: 5px; vertical-align: middle;}
+    
+    .choice_layear {position: absolute; overflow: hidden; top: 20px; left: 0; width: 216px; padding: 1px; border: 1px solid #a3a3a3; text-align: left; background-color: #ffffff;}
+    .choice_titlearea {overflow: hidden; height: 24px; border-bottom: 1px solid #ffffff; background-color: #f5f5f5;}
+    .choice_titlearea strong {float: left; height: 24px; margin-left: 5px; line-height: 24px;}
+    .choice_titlearea a {float: right; margin: 7px 5px 0 0;}
+    .choice_layear ul {float: left; overflow-y: scroll; width: 50%; height: 100px;}
+    .choice_layear ul li {overflow: hidden; height: 20px; line-height: 20px;}
+    .choice_layear ul li a {display: block; padding-left: 5px; font-size: 96%; letter-spacing: -0.04em; color: #4d4d4d;}
+    .choice_layear ul li a:hover {display: block; text-decoration: none; background-color: #ececec;}
+    .choice_layear ul li a.on {background-color: #d1f3fd;}
+    .choice_layear ul li a.on:hover {background-color: #d1f3fd;}
+        

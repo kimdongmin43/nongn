@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="VisionpageDao">
+
+
+
+	<select id = "selectVisionpage" parameterType = "Map" resultType = "camelMap">
+		SELECT
+		cont_id
+		,site_id
+		,contents
+		FROM
+		TS_MENUcontents
+		WHERE
+		1=1
+		AND site_id = #{*siteId}
+		AND menu_cls_cd = '11'
+	</select>
+
+	<select id = "selectVisionpage2" parameterType = "Map" resultType = "camelMap">
+		SELECT
+			cont_id
+			,site_id
+			,contents
+		FROM TS_MENUcontents
+		WHERE	1=1
+			AND site_id = #{*siteId}
+			AND menu_cls_cd = '11'
+
+
+	</select>
+
+	<select id="selectVisionpageExist" parameterType="Map" resultType="integer">
+	 /* kr.apfs.local.contents.dao.impl.VisionpageDao.selectVisionpageExist */
+		SELECT
+				  count(*)
+			FROM TS_MENUcontents
+			WHERE 	site_id = #{*siteId}
+			AND
+				menu_cls_cd = '11'
+
+	</select>
+
+
+	<insert id = "insertVisionpage" parameterType = "Map">
+	/* kr.apfs.local.contents.dao.impl.VisionpageDao.insertVisionpage */
+		INSERT INTO TS_MENUcontents
+		(
+		menu_cls_cd
+		,site_id
+		,contents
+		,reg_user_id
+		,reg_dt
+		)
+		VALUES
+		(
+		'11'
+		,#{*siteId}
+		,#{contents}
+		,#{*userId}
+		,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		)
+	</insert>
+
+	<update id="updateVisionpage" parameterType = "Map">
+
+		UPDATE TS_MENUcontents
+		SET
+		contents = #{contents}
+		,upd_user_id = #{*userId}
+		,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE
+		1=1
+		AND	site_id =#{*siteId}
+		AND	menu_cls_cd = '11'
+
+	</update>
+</mapper>

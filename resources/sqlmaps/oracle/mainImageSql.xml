@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MainImage">
+
+	<select id="selectMainImageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectMainImageList */
+
+		<if test='miv_start_index != null and !miv_start_index.equals("")' >
+		<include refid="CommonSql.pageingTop"/>
+		</if>
+		SELECT
+				ROW_NUMBER() OVER (ORDER BY IMG.REG_DT DESC)  AS R_NUM,
+	     		IMG.IMG_ID ,
+	     		IMG.SITE_ID + '-' + IMG.MAIN_ID + '-' + IMG.IMG_ID AS IMG_CODE,
+				IMG.MAIN_ID ,
+				IMG.SITE_ID ,
+				IMG.TITLE ,
+				IMG_DESC ,
+				IMG.ATTACH_ID ,
+				URL,
+				IMG.REG_USER_ID ,
+				(SELECT USER_NM FROM TC_USER WHERE USER_ID = IMG.REG_USER_ID) AS REG_USER_NM,
+				IMG.REG_DT AS REG_DT ,
+				UPD_USER_ID ,
+				dbo.UF_USER_NM(IMG.UPD_USER_ID) AS UPD_USER_NM,
+				IMG.UPD_DT ,
+				USE_YN ,
+				dbo.UF_CODE_NM('USE_YN',USE_YN) USE_YN_NM,
+				DEL_YN,
+				dbo.UF_CODE_NM('DEL_YN',DEL_YN) DEL_YN_NM,
+				SORT,
+				ATT.FILE_ID,
+				ATT.FILE_NM,
+				ATT.FILE_TYPE,
+				ATT.FILE_SIZE,
+				ATT.ORIGIN_FILE_NM,
+				ATT.FILE_PATH
+		FROM TS_MAINIMAGE IMG
+
+		LEFT OUTER JOIN (
+			SELECT
+					ATTACH_ID,
+					MAX(FILE_ID) FILE_ID
+			FROM
+					TC_ATTACHFILE
+			GROUP BY
+					ATTACH_ID
+		) MAX
+		ON IMG.ATTACH_ID  = MAX.ATTACH_ID
+
+		LEFT OUTER JOIN TC_ATTACHFILE ATT
+		ON IMG.ATTACH_ID  = MAX.ATTACH_ID
+		AND MAX.FILE_ID = ATT.FILE_ID
+
+		WHERE 1=1
+		AND SITE_ID = #{*siteId}
+		AND MAIN_ID = '1'
+		AND DEL_YN = 'N'
+
+		<!-- 단일건 요청 -->
+		<if test='imgId != null and !imgId.equals("")' >
+		AND IMG_ID = #{imgId}
+		</if>
+		<!-- 목록 요청 -->
+		<if test='imgId == null or imgId.equals("")' >
+		ORDER BY IMG.USE_YN DESC
+		</if>
+		<if test='miv_start_index != null and !miv_start_index.equals("")' >
+		<include refid="CommonSql.pageingBottom"/>
+		</if>
+	</select>
+
+	<update id="copyMainImageList" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.copyMainImageList */
+
+		INSERT INTO
+		TS_MAINIMAGE (
+				IMG_ID,
+				MAIN_ID,
+				SITE_ID,
+				TITLE,
+				IMG_DESC,
+				ATTACH_ID,
+				REG_USER_ID,
+				URL,
+				REG_DT,
+				USE_YN,
+				DEL_YN
+		)
+		SELECT
+	     		IMG_ID,
+	     		#{mainId},
+				SITE_ID,
+				TITLE,
+				IMG_DESC,
+				ATTACH_ID,
+				#{*userId},
+				#{url},
+				left(convert(varchar, getdate(), 112)+'000000',14),
+				USE_YN,
+				DEL_YN
+		FROM 	TS_MAINIMAGE
+		WHERE 	1=1
+		AND		MAIN_ID = #{originMainId}
+	</update>
+
+	<insert id="insertMainImage" parameterType="Map"  useGeneratedKeys="false">
+	    /* kr.apfs.local.main.dao.MainDao.insertMainImage */
+<!-- 	    <if test='useYn != null and useYn.equals("Y")' >
+	    BEGIN
+	    UPDATE
+	 			TS_MAINIMAGE
+		SET
+				USE_YN = 'N'
+
+		WHERE	1=1
+		AND	MAIN_ID = #{mainId};
+	    </if> -->
+		INSERT INTO
+		TS_MAINIMAGE (
+				IMG_ID,
+				MAIN_ID,
+				SITE_ID,
+				TITLE,
+				IMG_DESC,
+				URL,
+				ATTACH_ID,
+				REG_USER_ID,
+				REG_DT,
+				USE_YN,
+				DEL_YN
+		)
+		VALUES(
+	     		(SELECT ISNULL(MAX(img_id),0)+1 FROM TS_MAINIMAGE),
+	     		'1',
+				#{*siteId},
+				#{title},
+				#{imgDesc},
+				#{url},
+				#{attachId},
+				#{*userId},
+				left(convert(varchar, getdate(), 112)+'000000',14),
+				#{useYn},
+				'N'
+				)
+<!--  		FROM 	TS_MAINIMAGE
+		WHERE 	1=1
+		AND		MAIN_ID = #{mainId}
+		<if test='useYn != null and useYn.equals("Y")' >
+	   	;END;
+	    	</if>
+		<selectKey keyProperty="imgId" resultType="Integer" order="AFTER">
+			SELECT MAX(IMG_ID) FROM TS_MAINIMAGE
+		</selectKey> -->
+	</insert>
+
+	<update id="updateMainImage" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.updateMainImage */
+
+
+	     UPDATE
+	 			TS_MAINIMAGE
+		SET
+				TITLE = #{title},
+				IMG_DESC = #{imgDesc},
+				attach_id = #{attachId},
+				URL = #{url},
+				USE_YN = #{useYn},
+				UPD_USER_ID = #{*userId},
+				UPD_DT = left(convert(varchar, getdate(), 112)+'000000',14)
+
+		WHERE	1=1
+		AND		IMG_ID  = #{imgId}
+
+	</update>
+
+	<update id="saveMainImageSort" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.saveMainImageSort */
+	    <foreach collection="imgList" item="item" index="index">
+	    UPDATE
+	 			TS_MAINIMAGE
+		SET
+				SORT = #{item.sort}
+
+		WHERE	SITE_ID	= #{*siteId}
+		AND		MAIN_ID = #{mainId}
+		AND		IMG_ID  = #{item.imgId};
+		</foreach>
+
+	</update>
+
+	<update id="deleteMainImage" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.deleteMainImage */
+	    UPDATE
+	 			TS_MAINIMAGE
+		SET
+				DEL_YN = 'Y'
+
+		WHERE	1=1
+		AND		IMG_ID  = #{imgId}
+	</update>
+</mapper>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ClassifyDao">
+
+<select id="selectClassifyPageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.classify.dao.impl.ClassifyDao.selectClassifyPageList */
+	<include refid="CommonSql.pageingTop"/>
+	SELECT
+	    		classify_id
+				,up_classify_id
+				,classify_nm
+				,sort
+				,reg_user_id
+				,reg_dt
+				,upd_user_id
+				,upd_dt
+	  FROM t_classify
+	 WHERE gubun = #{gubun}
+			<if test='upClassifyId != null and !upClassifyId.equals("")' >
+			   AND up_classify_id = #{upClassifyId}
+			</if>
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selectClassifyList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.classify.dao.impl.ClassifyDao.selectClassifyList */
+	SELECT
+	     		classify_id
+				,up_classify_id
+				,classify_nm
+				,sort
+				,reg_user_id
+				,reg_dt
+				,upd_user_id
+				,upd_dt
+	FROM t_classify
+	WHERE gubun = #{gubun}
+	  			<if test='classify_id != null and !classify_id.equals("")' >
+			   AND classify_id = #{classifyId}
+			</if>
+			 order by up_classify_id asc, sort asc
+</select>
+
+<select id="selectClassify" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.classify.dao.impl.ClassifyDao.selectClassify */
+	SELECT
+	   			classify_id
+				,up_classify_id
+				,NVL((select classify_nm from t_classify where gubun = a.gubun and classify_id = a.up_classify_id),(select code_nm from tc_code where gubun = 'CLASSIFY_TYPE' and code = #{gubun})) as up_classify_nm
+				,classify_nm
+				,sort
+				,reg_user_id
+				,reg_dt
+	FROM t_classify a
+	WHERE gubun = #{gubun}	 and classify_id = #{classifyId}
+</select>
+
+<select id="selectClassifyCodeList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.classify.dao.impl.ClassifyDao.selectClassifyCodeList */
+	SELECT classify_id as code, classify_nm as codenm
+	FROM t_classify
+	WHERE  gubun = #{gubun} and up_classify_id = #{upClassifyId}
+	ORDER BY sort
+</select>
+
+<select id="selectClassifyTreeList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.classify.dao.impl.ClassifyDao.selectClassifyTreeList */
+     SELECT 0 as id, '#' as parent, (select code_nm from tc_code where gubun = 'CLASSIFY_TYPE' and code = #{gubun}) as text, 0 as up_classify_id, 0 as sort from dual
+      UNION
+      SELECT classify_id as id, up_classify_id+'' as parent, classify_nm as text, up_classify_id, sort
+      FROM t_classify
+      WHERE  gubun = #{gubun}
+      ORDER BY up_classify_id, sort
+</select>
+
+<update id="insertClassify" parameterType="Map" >
+    /* kr.apfs.local.classify.dao.impl.ClassifyDao.insertClassify */
+	INSERT INTO
+	t_classify (
+	         gubun
+			,classify_id
+			,up_classify_id
+			,sort
+			,classify_nm
+			,reg_user_id
+			,reg_dt
+			,upd_user_id
+			,upd_dt
+	) VALUES (
+	         #{gubun}
+			,(SELECT NVL(max(classify_id),0)+1 as classify_id FROM t_classify where  gubun = #{gubun})
+			,#{upClassifyId}
+			,(SELECT NVL(max(sort),0)+1 as sort FROM t_classify WHERE  gubun = #{gubun} and up_classify_id = #{up_classifyId})
+			,#{classifyNm}
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</update>
+
+<update id="updateClassify" parameterType="Map" >
+    /* kr.apfs.local.classify.dao.impl.ClassifyDao.updateClassify */
+    UPDATE
+ 		t_classify
+	SET
+		     classify_nm = #{classifyNm}
+			,upd_user_id = #{*userId}
+			,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE   gubun = #{gubun}	and classify_id = #{classifyId}
+</update>
+
+<select id="selectClassifyChildList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.classify.dao.impl.ClassifyDao.selectClassifyChildList */
+      SELECT
+        classify_id
+      FROM T_classify
+      WHERE gubun = #{gubun} AND CLASSIFY_ID !=  #{classifyId}
+      START   WITH CLASSIFY_ID = #{classifyId}
+      CONNECT BY PRIOR CLASSIFY_ID = UP_CLASSIFY_ID
+</select>
+
+<delete id="deleteClassify" parameterType="String" >
+    /* kr.apfs.local.classify.dao.impl.ClassifyDao.deleteClassify */
+ 	DELETE FROM
+		t_classify
+	WHERE  gubun = #{gubun} and classify_id = #{classifyId}
+</delete>
+
+<update id="updateClassifyReorderSeq" parameterType="Map" >
+    /* kr.apfs.local.classify.dao.impl.ClassifyDao.updateClassifyReorderSeq */
+   UPDATE t_classify
+    SET
+    	<if test='direction != null and direction.equals("A")' >
+             sort = sort + 1
+		</if>
+    	<if test='direction != null and !direction.equals("A")' >
+	         sort = sort - 1
+		</if>
+    WHERE  gubun = #{gubun} and up_classify_id = #{upClassifyId} AND sort >= #{sort}
+</update>
+
+<update id="updateClassifyReorder" parameterType="Map" >
+    /* kr.apfs.local.classify.dao.impl.ClassifyDao.updateClassifyReorder */
+    UPDATE t_classify
+    SET up_classify_id = #{upClassifyId}
+        ,sort = #{sort}
+    WHERE  gubun = #{gubun} and classify_id = #{classifyId}
+</update>
+
+<update id="deleteClassifyReorder" parameterType="Map" >
+    /* kr.apfs.local.classify.dao.impl.ClassifyDao.deleteClassifyReorder */
+   UPDATE t_classify
+    SET
+	         sort = sort - 1
+    WHERE gubun = #{gubun}	 and up_classify_id = #{upClassifyId} AND sort > (SELECT sort FROM t_classify WHERE gubun = #{gubun}  and classify_id = #{classifyId})
+</update>
+
+</mapper>

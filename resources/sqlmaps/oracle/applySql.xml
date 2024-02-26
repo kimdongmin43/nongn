@@ -1,0 +1,1484 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ApplyDao">
+
+<select id="selectApplyPageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectApplyPageList */
+	<include refid="CommonSql.pageingTop"/>
+	SELECT
+			 a.aply_id              aplyId
+			,a.announc_id           announcId
+			,a.user_id              userId
+			,b.user_id              userId
+			,b.user_nm              userNm
+			,a.email                email
+			,a.birthday             birthday
+			,a.mobile               mobile
+			,a.hometel              hometel
+			,a.postno               postno
+			,a.basic_addr           basicAddr
+			,a.detail_addr          detailAddr
+			,a.administ_cd			administCd
+			,a.seoul_live_priod     seoulLivePriod
+			,a.health_no            healthNo
+			,a.health_gb			healthGb
+			,a.health_fee           healthFee
+			,a.unemploy_priod       unemployPriod
+			,a.dependent_cnt        dependentCnt
+			,a.id_file_id			idFileId
+			,a.health_file_id		healthFileId
+			,a.unemplyinsur_file_id	unemplyinsurFileId
+			,a.deploma_file_id		deplomaFileId
+			,a.aply_motiv           aplyMotiv
+			,a.activ_plan           activPlan
+			,a.health_class         healthClass
+			,a.health_point         healthPoint
+			,a.notwork_class        notworkClass
+			,a.notwork_point        notworkPoint
+			,a.family_point         familyPoint
+			,a.first_fail_reason    firstFailReason
+			,a.paper_fail_reason    paperFailReason
+			,a.paper_user_id        paperUserId
+			,a.first_user_id        firstUserId
+			,a.second_fail_reason   secondFailReason
+			,a.second_user_id       secondUserId
+			,a.last_ability         lastAbility
+			,a.grad_dt              gradDt
+			,a.retire_dt            retireDt
+			,a.reserver_yn          reserverYn
+			,a.tot_point            totPoint
+			,a.indinfo_agree        indinfoAgree
+			,a.thirdparty_agree     thirdpartyAgree
+			,a.familyrel_agree      familyrelAgree
+			,a.reg_user_id          regUserId
+			,a.reg_dt               regDt
+			,(select code_nm from tc_code where gubun = 'HEALTHINSUR_GUBUN' and code = a.health_gb ) 			as healthGbNm
+			,(select code_nm from tc_code where gubun = 'ADMINISTRATOR_CD' and code = a.administ_cd ) 			as administNm
+			, to_char(to_date(a.seoul_live_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 								as seoulLiveDt
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.id_file_id) 							as idFileNm
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.health_file_id) 						as healthFileNm
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.unemplyinsur_file_id) 					as unemplyinsurFileNm
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.deploma_file_id) 						as deplomaFileNm
+			,(case when a.paper_result = 'P' then 'Pass' when a.paper_result = 'F' then 'Fail' else NULL end) 	as paperResult
+			,(case when a.first_result = 'P' then 'Pass' when a.first_result = 'F' then 'Fail' else NULL end) 	as firstResult
+			,(select code_nm from tc_code where gubun = 'FIRST_FAIL_REASON' and code = a.first_fail_reason ) 	as firstFailReasonNm
+			,(select code_nm from tc_code where gubun = 'EVAL_FAIL_REASON' and code = a.paper_fail_reason ) 		as paperFailReasonNm
+			,(case when a.second_result = 'P' then 'Pass' when a.second_result = 'F' then 'Fail' else NULL end) as secondResult
+			,(select code_nm from tc_code where gubun = 'YES_NO' and code = a.reserver_yn ) 						as reserverNm
+
+	  FROM  t_announce c inner join  t_apply a on c.announc_id = a.announc_id
+	               inner join t_user b on a.user_id = b.user_id
+	               left outer join t_applygrp d on a.announc_id = d.announc_id and a.aply_id = d.aply_id
+	 WHERE a.aply_compl_dt is not null
+	         and c.year = #{year} and c.seq = #{seq}
+	         and (select case when x.range = '2' then x.orgn else a.administ_cd end from t_auth x inner join T_MANAGERAUTH y on x.user_cd = y.user_cd inner join t_user z on y.user_id = z.user_id where y.user_cd = #{userCd} and y.user_id = #{*userId}) = a.administ_cd
+	         <if test='resultGb != null and !resultGb.equals("") and resultGb.equals("F")' >
+			   AND a.paper_result = 'P'
+			</if>
+			<if test='administCd != null and !administCd.equals("")' >
+			   AND a.administ_cd LIKE #{administCd}+'%'
+			</if>
+			<if test='seoulLiveSta != null and !seoulLveSta.equals("")' >
+			  <if test='seoulLiveEnd == null or seoulLiveEnd.equals("")' >
+			   <![CDATA[ AND a.seoul_live_priod >= #{seoulLiveSta}  ]]>
+			   </if>
+			  <if test='seoul_liveEnd != null and !seoul_liveEnd.equals("")' >
+			   AND a.seoul_live_priod between #{seoulLiveSta} and #{seoulLiveEnd}
+			   </if>
+			</if>
+			<if test='seoulLiveSta == null or seoulLiveSta.equals("")' >
+				<if test='seoulLiveEnd != null and !seoulLiveEnd.equals("")' >
+			     <![CDATA[  AND a.seoul_live_priod <= #{seoulLiveEnd}  ]]>
+			    </if>
+			</if>
+			<if test='healthClassSta != null and !healthClassSta.equals("")' >
+			  <if test='healthClassEnd == null or health_classEnd.equals("")' >
+			  <![CDATA[  AND a.health_class >= #{healthClassSta}  ]]>
+			   </if>
+			  <if test='healthClassEnd != null and !healthClassEnd.equals("")' >
+			   AND a.health_class between #{healthClassSta} and #{healthClassEnd}
+			   </if>
+			</if>
+			<if test='health_classSta == null or health_class_sta.equals("")' >
+				<if test='healthClassEnd != null and !healthClassEnd.equals("")' >
+			     <![CDATA[  AND a.health_class <= #{healthClassEnd}  ]]>
+			    </if>
+			</if>
+			<if test='notworkClassSta != null and !notworkClassSta.equals("")' >
+			  <if test='notworkClassEnd == null or notworkClassEnd.equals("")' >
+			  <![CDATA[  AND a.notwork_class >= #{notworkClassSta}  ]]>
+			   </if>
+			  <if test='notworkClassEnd != null and !notworkClassEnd.equals("")' >
+			   AND a.notwork_class between #{notworkClassSta} and #{notworkClassEnd}
+			   </if>
+			</if>
+			<if test='notworkClassSta == null or notworkClassSta.equals("")' >
+				<if test='notwork_classEnd != null and !notworkClassEnd.equals("")' >
+			      <![CDATA[ AND a.notwork_class <= #{notworkClassEnd}  ]]>
+			    </if>
+			</if>
+			<if test='dependentCnt != null and !dependentCnt.equals("")' >
+				<if test='!dependentCnt.equals("4")' >
+				   AND dependent_cnt = #{dependentCnt}
+			     </if>
+				<if test='dependentCnt.equals("4")' >
+				 <![CDATA[   AND dependent_cnt >= 4  ]]>
+			     </if>
+			</if>
+			<if test='tot_point_sta != null and !totPoint_sta.equals("")' >
+			  <if test='tot_point_end == null or tot_pointEnd.equals("")' >
+			  <![CDATA[  AND a.tot_point >= #{totPointSta}  ]]>
+			   </if>
+			  <if test='totPointEnd != null and !totPointEnd.equals("")' >
+			   AND a.tot_point between #{totPointSta} and #{totPointEnd}
+			   </if>
+			</if>
+			<if test='totPointSta == null or totPointSta.equals("")' >
+				<if test='totPointEnd != null and !totPointEnd.equals("")' >
+			     <![CDATA[  AND a.tot_point <= #{totPointEnd}  ]]>
+			    </if>
+			</if>
+			<if test='reserverYn != null and !reserverYn.equals("")' >
+			   AND reserver_yn = #{reserverYn}
+			</if>
+			<if test='paperResult != null and !paperResult.equals("")' >
+			   AND paper_result = #{paperResult}
+			</if>
+			<if test='firstResult != null and !firstResult.equals("")' >
+			   AND first_result = #{firstResult}
+			</if>
+    		<if test='searchTxt != null and !searchTxt.equals("")' >
+	    		<if test='searchKey != null and searchKey.equals("userNm")' >
+			   		AND upper(user_nm) LIKE '%'+upper(#{searchTxt})+'%'
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("loginId")' >
+			   		AND upper(login_id) LIKE '%'+upper(#{searchTxt})+'%'
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("mobile")' >
+			   		AND mobile = #{searchTxt}
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("email")' >
+			   		AND email = #{searchTxt}
+			   	</if>
+		    </if>
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selectApplyList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ApplyDao.selectApplyList */
+	SELECT
+		     to_char(rownum) as rnum
+			,a.aply_id
+			,a.announc_id
+			,a.user_id
+			,b.user_id
+			,b.user_nm
+			,(select code_nm from tc_code where gubun = 'USER_GENDER' and code = b.gender ) as gender_nm
+			,a.email
+			,a.birthday
+			,a.mobile
+			,a.hometel
+			,a.postno
+			,a.basic_addr
+			,a.detail_addr
+			,a.administ_cd
+			,(select code_nm from tc_code where gubun = 'ADMINISTRATOR_CD' and code = a.administ_cd ) as administ_nm
+			,to_char(to_date(a.seoul_live_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as seoul_live_dt
+			,a.seoul_live_priod
+			,a.health_no
+			,a.health_gb
+			,(select code_nm from tc_code where gubun = 'HEALTHINSUR_GUBUN' and code = a.health_gb ) as  health_gb_nm
+			,a.health_fee+'' as health_fee
+			,a.unemploy_priod
+			,a.dependent_cnt
+			,a.id_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.id_file_id) as id_file_nm
+			,a.health_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.health_file_id) as health_file_nm
+			,a.unemplyinsur_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.unemplyinsur_file_id) as unemplyinsur_file_nm
+			,a.deploma_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.deploma_file_id) as deploma_file_nm
+			,a.aply_motiv
+			,a.activ_plan
+			,a.health_class
+			,a.health_point
+			,a.notwork_class
+			,a.notwork_point
+			,a.family_point
+			,a.first_result
+			,(select code_nm from tc_code where gubun = 'FIRST_FAIL_REASON' and code = a.first_fail_reason) as first_fail_reason
+			,a.paper_result
+			,(select code_nm from tc_code where gubun = 'EVAL_FAIL_REASON' and code = a.paper_fail_reason) as paper_fail_reason
+			,a.paper_user_id
+			,a.first_user_id
+			,a.second_result
+			,(select code_nm from tc_code where gubun = 'SECOND_FAIL_REASON' and code = a.second_fail_reason) as second_fail_reason
+			,a.second_user_id
+			,a.last_ability
+			,(select code_nm from tc_code where gubun = 'LAST_ABILITY' and code = a.last_ability) as last_ability_nm
+			,GET_DATEFORMAT(a.grad_dt) as grad_dt
+			,GET_DATEFORMAT(a.retire_dt) as retire_dt
+			,a.reserver_yn
+			,(select code_nm from tc_code where gubun = 'YES_NO' and code = a.reserver_yn ) as reserver_nm
+			,a.tot_point
+			,a.indinfo_agree
+			,(select code_nm from tc_code where gubun = 'AGREE_YN' and code = a.indinfo_agree ) as indinfo_agree_nm
+			,a.thirdparty_agree
+			,(select code_nm from tc_code where gubun = 'AGREE_YN' and code = a.thirdparty_agree ) as thirdparty_agree_nm
+			,a.familyrel_agree
+			,(select code_nm from tc_code where gubun = 'AGREE_YN' and code = a.familyrel_agree ) as familyrel_agree_nm
+			,a.reg_user_id
+			,(select rtrim(xmlagg(xmlelement(e,y.classify_nm,',') order by x.seq).extract('//text()'),',') from t_actplan x inner join t_classify y on x.activ_target = y.classify_id where y.gubun = 'ACTIVE_TARGET' and x.aply_id = a.aply_id) as actplan
+			,(select rtrim(xmlagg(xmlelement(e,y.code_nm,',') order by x.seq).extract('//text()'),',') from t_wishprog x inner join tc_code y on x.wish_prog = y.code where y.gubun = 'APPLY_PROGRAM' and x.aply_id = a.aply_id) as wishprog
+			,GET_DATEFORMAT(a.reg_dt) as regDt
+	  FROM  t_announce c inner join  t_apply a on c.announc_id = a.announc_id
+	               inner join t_user b on a.user_id = b.user_id
+	 WHERE aply_compl_dt is not null
+	         and c.year = #{p_year} and c.seq = #{p_seq}
+	         <if test='resultGb != null and !resultGb.equals("") and resultGb.equals("F")' >
+			   AND a.paper_result = 'P'
+			</if>
+			<if test='p_administCd != null and !p_administCd.equals("")' >
+			   AND a.administ_cd LIKE #{p_administCd}+'%'
+			</if>
+			<if test='p_seoulLive_sta != null and !p_seoulLiveSta.equals("")' >
+			  <if test='p_seoulLive_end == null or p_seoulLiveEnd.equals("")' >
+			   <![CDATA[ AND a.seoul_live_priod >= #{p_seoulLiveSta}  ]]>
+			   </if>
+			  <if test='p_seoulLiveEnd != null and !p_seoulLiveEnd.equals("")' >
+			   AND a.seoul_live_priod between #{p_seoulLiveSta} and #{p_seoulLiveEnd}
+			   </if>
+			</if>
+			<if test='p_seoulLiveSta == null or p_seoulLiveSta.equals("")' >
+				<if test='p_seoulLiveEnd != null and !p_seoulLiveEnd.equals("")' >
+			     <![CDATA[  AND a.seoul_live_priod <= #{p_seoulLiveEnd}  ]]>
+			    </if>
+			</if>
+			<if test='p_healthClass_sta != null and !p_healthClass_sta.equals("")' >
+			  <if test='p_healthClass_end == null or pHealthClassEnd.equals("")' >
+			  <![CDATA[  AND a.health_class >= #{p_healthClassSta}  ]]>
+			   </if>
+			  <if test='p_healthClassEnd != null and !p_healthClassEnd.equals("")' >
+			   AND a.health_class between #{p_healthClassSta} and #{p_healthClassEnd}
+			   </if>
+			</if>
+			<if test='p_healthClassSta == null or p_healthClassSta.equals("")' >
+				<if test='p_healthClassEnd != null and !p_healthClassEnd.equals("")' >
+			     <![CDATA[  AND a.health_class <= #{p_healthClassEnd}  ]]>
+			    </if>
+			</if>
+			<if test='p_notworkClass_sta != null and !p_notworkClassSta.equals("")' >
+			  <if test='p_notworkClass_end == null or p_notworkClassEnd.equals("")' >
+			  <![CDATA[  AND a.notwork_class >= #{p_notworkClassSta}  ]]>
+			   </if>
+			  <if test='p_notworkClassEnd != null and !p_notworkClassEnd.equals("")' >
+			   AND a.notwork_class between #{p_notworkClassSta} and #{p_notworkClassEnd}
+			   </if>
+			</if>
+			<if test='p_notworkClassSta == null or p_notworkClassSta.equals("")' >
+				<if test='p_notworkClassEnd != null and !p_notworkClassEnd.equals("")' >
+			      <![CDATA[ AND a.notwork_class <= #{p_notworkClassEnd}  ]]>
+			    </if>
+			</if>
+			<if test='p_dependentCnt != null and !p_dependentCnt.equals("")' >
+				<if test='!p_dependentCnt.equals("4")' >
+				   AND dependent_cnt = #{p_dependentCnt}
+			     </if>
+				<if test='p_dependentCnt.equals("4")' >
+				 <![CDATA[   AND dependent_cnt >= 4  ]]>
+			     </if>
+			</if>
+			<if test='p_reserverYn != null and !p_reserverYn.equals("")' >
+			   AND reserver_yn = #{p_reserverYn}
+			</if>
+			<if test='p_paperResult != null and !p_paperResult.equals("")' >
+			   AND paper_result = #{p_paperResult}
+			</if>
+			<if test='p_searchTxt != null and !p_searchTxt.equals("")' >
+	    		<if test='p_searchKey != null and p_searchKey.equals("userNm")' >
+			   		AND upper(user_nm) LIKE '%'+upper(#{p_searchTxt})+'%'
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("loginId")' >
+			   		AND upper(login_id) LIKE '%'+upper(#{p_searchTxt})+'%'
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("mobile")' >
+			   		AND mobile = #{p_searchTxt}
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("email")' >
+			   		AND email = #{p_searchTxt}
+			   	</if>
+		    </if>
+</select>
+
+<select id="selectApply" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ApplyDao.selectApply */
+	SELECT
+			a.aply_id
+			,a.announc_id
+			,a.user_id
+			,b.user_id
+			,b.user_nm
+			,(select code_nm from tc_code where gubun = 'USER_GENDER' and code = b.gender ) as gender_nm
+			,a.email
+			,a.birthday
+			,a.mobile
+			,a.hometel
+			,a.postno
+			,a.basic_addr
+			,a.detail_addr
+			,a.administ_cd
+			,to_char(to_date(a.seoul_live_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as seoul_live_dt
+			,a.seoul_live_priod
+			,a.health_gb
+			,a.health_fee
+			,a.unemploy_priod
+			,a.dependent_cnt
+			,a.id_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.id_file_id) as id_file_nm
+			,a.health_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.health_file_id) as health_file_nm
+			,a.unemplyinsur_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.unemplyinsur_file_id) as unemplyinsur_file_nm
+			,a.deploma_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.deploma_file_id) as deploma_file_nm
+			,a.aply_motiv
+			,a.activ_plan
+			,a.health_no
+			,a.health_class
+			,a.health_point
+			,a.notwork_class
+			,a.notwork_point
+			,a.family_point
+			,a.first_result
+			,a.first_fail_reason
+			,a.paper_result
+			,a.paper_fail_reason
+			,a.paper_user_id
+			,a.first_user_id
+			,a.second_result
+			,a.second_fail_reason
+			,a.second_user_id
+			,a.last_ability
+			,to_char(to_date(a.grad_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as grad_dt
+			,to_char(to_date(a.retire_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as retire_dt
+			,a.reserver_yn
+			,a.tot_point
+			,a.indinfo_agree
+			,a.thirdparty_agree
+			,a.familyrel_agree
+			,a.reg_user_id
+			,to_char(to_date(a.reg_dt,'YYYYMMDDHH24MISS'),'YYYY"년"MM"월"DD"일"') as regDt
+			,to_char(to_date(c.rel_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as rel_dt
+			<![CDATA[
+			,(case when c.aply_stadt <= to_char(sysdate, 'YYYYMMDDHH24MISS') and c.aply_enddt >= to_char(sysdate, 'YYYYMMDDHH24MISS') then 'A'
+		            else 'E'
+		       end) as state
+		     ]]>
+	FROM t_announce c inner join  t_apply a on c.announc_id = a.announc_id
+	               inner join t_user b on a.user_id = b.user_id
+	WHERE a.aply_id = #{aplyId}
+</select>
+
+
+<select id="selectApplyAgree" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ApplyDao.selectApplyAgree */
+	SELECT
+			a.aply_id
+			,a.announc_id
+			,a.user_id
+			,b.user_id
+			,b.user_nm
+			,(select code_nm from tc_code where gubun = 'USER_GENDER' and code = b.gender ) as gender_nm
+			,a.email
+			,a.birthday
+			,a.mobile
+			,a.hometel
+			,a.postno
+			,a.basic_addr
+			,a.detail_addr
+			,a.administ_cd
+			,to_char(to_date(a.seoul_live_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as seoul_live_dt
+			,a.seoul_live_priod
+			,a.health_gb
+			,a.health_fee
+			,a.unemploy_priod
+			,a.dependent_cnt
+			,a.id_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.id_file_id) as id_file_nm
+			,a.health_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.health_file_id) as health_file_nm
+			,a.unemplyinsur_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.unemplyinsur_file_id) as unemplyinsur_file_nm
+			,a.deploma_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.deploma_file_id) as deploma_file_nm
+			,a.aply_motiv
+			,a.activ_plan
+			,a.health_no
+			,a.health_class
+			,a.health_point
+			,a.notwork_class
+			,a.notwork_point
+			,a.family_point
+			,a.first_result
+			,a.first_fail_reason
+			,a.paper_result
+			,a.paper_fail_reason
+			,a.paper_user_id
+			,a.first_user_id
+			,a.second_result
+			,a.second_fail_reason
+			,a.second_user_id
+			,a.last_ability
+			,to_char(to_date(a.grad_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as grad_dt
+			,to_char(to_date(a.retire_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as retire_dt
+			,a.reserver_yn
+			,a.tot_point
+			,a.indinfo_agree
+			,a.thirdparty_agree
+			,a.familyrel_agree
+			,a.reg_user_id
+			,to_char(to_date(a.reg_dt,'YYYYMMDDHH24MISS'),'YYYY"년"MM"월"DD"일"') as regDt
+			,to_char(to_date(c.rel_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as rel_dt
+			<![CDATA[
+			,(case when c.aply_stadt <= to_char(sysdate, 'YYYYMMDDHH24MISS') and c.aply_enddt >= to_char(sysdate, 'YYYYMMDDHH24MISS') then 'A'
+		            else 'E'
+		       end) as state
+		     ]]>
+	FROM t_announce c inner join  t_apply a on c.announc_id = a.announc_id
+	               inner join t_user b on a.user_id = b.user_id
+	WHERE a.announc_id = #{announcId} AND a.user_id = #{userId}
+</select>
+
+<select id="selectApplyExist" parameterType="Map" resultType="integer">
+	SELECT /* kr.apfs.local.announce.dao.impl.ApplyDao.selectApplyExist */
+			  count(*)
+		FROM t_apply
+		WHERE
+		1=1
+				AND	aply_id = #{aplyId}
+
+</select>
+
+<update id="insertApply" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.insertApply */
+	INSERT INTO
+	t_apply (
+			aply_id
+			,announc_id
+			,user_id
+			,email
+			,birthday
+			,mobile
+			,hometel
+			,postno
+			,basic_addr
+			,detail_addr
+			,administ_cd
+			,seoul_live_dt
+			,seoul_live_priod
+			,health_no
+			,health_gb
+			,health_fee
+			,unemploy_priod
+			,dependent_cnt
+			,id_file_id
+			,health_file_id
+			,unemplyinsur_file_id
+			,aply_motiv
+			,activ_plan
+			,deploma_file_id
+			,health_class
+			,health_point
+			,notwork_class
+			,notwork_point
+			,family_point
+			,first_result
+			,first_fail_reason
+			,paper_result
+			,paper_fail_reason
+			,paper_user_id
+			,first_user_id
+			,second_result
+			,second_fail_reason
+			,second_user_id
+			,last_ability
+			,grad_dt
+			,retire_dt
+			,reserver_yn
+			,tot_point
+			,indinfo_agree
+	  	    ,thirdparty_agree
+		    ,familyrel_agree
+			,reg_user_id
+			,reg_dt
+			,upd_user_id
+			,upd_dt
+	) VALUES (
+			 #{aplyId}
+			,#{announcId}
+			,#{userId}
+			,#{email}
+			,#{birthday}
+			,#{mobile}
+			,#{hometel}
+			,#{postno}
+			,#{basicAddr}
+			,#{detailAddr}
+			,#{administCd}
+			,REPLACE(#{seoulLiveDt},'-','')
+			,#{seoulLivePriod}
+			,#{healthNo}
+			,#{healthGb}
+			,#{healthFee}
+			,#{unemployPriod}
+			,#{dependentCnt}
+			,#{idFileId}
+			,#{healthFileId}
+			,#{unemplyinsurFileId}
+			,#{aplyMotiv}
+			,#{activPlan}
+			,#{deplomaFileId}
+			,#{healthClass}
+			,#{healthPoint}
+			,#{notworkClass}
+			,#{notworkPoint}
+			,#{familyPoint}
+			,#{firstResult}
+			,#{firstFailReason}
+			,#{paperResult}
+			,#{paperFailReason}
+			,#{paperUserId}
+			,#{firstUserId}
+			,#{secondResult}
+			,#{secondFailReason}
+			,#{secondUserId}
+			,#{lastAbility}
+			,REPLACE(#{gradDt},'-','')
+			,REPLACE(#{retireDt},'-','')
+			,#{reserverYn}
+			,#{totPoint}
+			,#{indinfoAgree}
+	  	    ,#{thirdpartyAgree}
+		    ,#{familyrelAgree}
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</update>
+
+<update id="updateApply" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateApply */
+    UPDATE
+ 		t_apply
+	SET
+			email = #{email}
+			,mobile = #{mobile}
+			,hometel = #{hometel}
+			,postno = #{postno}
+			,basic_addr = #{basicAddr}
+			,detail_addr = #{detailAddr}
+			,administ_cd = #{administCd}
+			,seoul_live_dt = REPLACE(#{seoulLiveDt},'-','')
+			,seoul_live_priod = #{seoulLivePriod}
+			,health_no = #{healthNo}
+			,health_gb = #{healthGb}
+			,health_fee = #{healthFee}
+			,unemploy_priod = #{unemployPriod}
+			,dependent_cnt = #{dependentCnt}
+			,id_file_id = #{idFileId}
+			,health_file_id = #{healthFileId}
+			,unemplyinsur_file_id = #{unemplyinsurFileId}
+			,aply_motiv = #{aplyMotiv}
+			,activ_plan = #{activPlan}
+			,deploma_file_id = #{deplomaFileId}
+			,last_ability = #{lastAbility}
+			,grad_dt = REPLACE(#{gradDt},'-','')
+			,retire_dt = REPLACE(#{retireDt},'-','')
+			,reserver_yn = #{reserverYn}
+			,upd_user_id = #{*userId}
+			,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE	aply_id = #{aplyId}
+</update>
+
+<update id="updateApplyInfo" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateApplyInfo */
+    UPDATE
+ 		t_apply
+	SET
+	         birthday = #{birthday}
+			,email = #{email}
+			,mobile = #{mobile}
+			,hometel = #{hometel}
+			,postno = #{postno}
+			,basic_addr = #{basicAddr}
+			,detail_addr = #{detailAddr}
+			,administ_cd = #{administCd}
+			,seoul_live_dt = REPLACE(#{seoulLiveDt},'-','')
+			,seoul_live_priod = #{seoulLivePriod}
+			,health_no = #{healthNo}
+			,health_gb = #{healthGb}
+			,health_fee = #{healthFee}
+			,unemploy_priod = #{unemployPriod}
+			,dependent_cnt = #{dependentCnt}
+			,last_ability = #{lastAbility}
+			,grad_dt = REPLACE(#{gradDt},'-','')
+			,retire_dt = REPLACE(#{retireDt},'-','')
+			,reserver_yn = #{reserverYn}
+			,indinfo_agree = #{indinfoAgree}
+	  	    ,thirdparty_agree = #{thirdpartyAgree}
+		    ,familyrel_agree = #{familyrelAgree}
+			,upd_user_id = #{*userId}
+			,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE aply_id = #{aplyId}
+</update>
+
+<update id="updateApplyDoc" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateApplyDoc */
+    UPDATE
+ 		t_apply
+	SET
+			id_file_id = #{idFileId}
+			,health_file_id = #{healthFileId}
+			,unemplyinsur_file_id = #{unemplyinsurFileId}
+			,deploma_file_id = #{deplomaFileId}
+			,upd_user_id = #{*userId}
+			,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE 	aply_id = #{aplyId}
+</update>
+
+<update id="updateApplyActplan" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateApplyActplan */
+    UPDATE
+ 		t_apply
+	SET
+			aply_motiv = #{aplyMotiv}
+			,activ_plan = #{activPlan}
+			,aply_compl_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			,upd_user_id = #{*userId}
+			,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE aply_id = #{aplyId}
+</update>
+
+<update id="updateApplyRecalc" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateApplyRecalc */
+	MERGE INTO t_apply x
+	USING
+	(
+	<![CDATA[
+	   select
+	             aply_id aplyId
+	             ,nvl(health_lvl,0) as healthLvl
+	             ,nvl(health_point,0) as healthPoint
+	             ,nvl(unemploy_lvl,0) as unemployLvl
+	             ,nvl(unemploy_point,0) as unemployPoint
+	             ,nvl(dependent_point,0) as dependentPoint
+	             ,nvl(health_point,0)+nvl(unemploy_point,0) as totPoint
+	    from (
+		  select b.aply_id,
+		      ( select lvl
+		        from T_EVALSTD
+		        where std_gb = 'INSURANCE_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.health_gb = '1' then
+		                case when b.health_fee > eval_from and b.health_fee <= eval_to then 1 else 0 end
+		            else
+		                case when b.health_fee > eval2_from and b.health_fee <= eval2_to then 1 else 0 end
+		            end)
+		      ) as health_lvl,
+		      ( select point
+		        from T_EVALSTD
+		        where std_gb = 'INSURANCE_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.health_gb = '1' then
+		                case when b.health_fee > eval_from and b.health_fee <= eval_to then 1 else 0 end
+		            else
+		                case when b.health_fee > eval2_from and b.health_fee <= eval2_to then 1 else 0 end
+		            end)
+		      ) as health_point,
+		      ( select lvl
+		        from T_EVALSTD
+		        where std_gb = 'INSURANCE_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.unemploy_priod > eval_from and b.unemploy_priod <= eval_to then 1 else 0 end)
+		      ) as unemploy_lvl,
+		      ( select point
+		        from T_EVALSTD
+		        where std_gb = 'NOTWORK_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.unemploy_priod > eval_from and b.unemploy_priod <= eval_to then 1 else 0 end)
+		      ) as unemploy_point,
+		      ( select point
+		        from T_EVALSTD
+		        where std_gb = 'FAMILY_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.dependent_cnt >= eval_from and b.dependent_cnt <= eval_to then 1 else 0 end)
+		      ) as dependent_point
+		     ]]>
+		  from t_announce a inner join t_apply b on a.announc_id = b.announc_id
+		  where b.aply_compl_dt is not null and a.year = #{year} and a.seq = #{seq}
+		 ) z
+	) y
+	ON(x.aply_id = y.aply_id)
+	WHEN MATCHED THEN UPDATE SET
+	x.health_class = y.health_lvl,
+	x.health_point = y.health_point,
+	x.notwork_class = y.unemploy_lvl,
+	x.notwork_point = y.unemploy_point,
+	x.family_point = y.dependent_point,
+	x.tot_point = y.tot_point
+</update>
+
+<update id="updateUserApplyRecalc" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateUserApplyRecalc */
+	MERGE INTO t_apply x
+	USING
+	(
+	<![CDATA[
+       select
+	             aply_id
+	             ,nvl(health_lvl,0) as health_lvl
+	             ,nvl(health_point,0) as health_point
+	             ,nvl(unemploy_lvl,0) as unemploy_lvl
+	             ,nvl(unemploy_point,0) as unemploy_point
+	             ,nvl(dependent_point,0) as dependent_point
+	             ,nvl(health_point,0)+nvl(unemploy_point,0) as tot_point
+	    from (
+		  select b.aply_id,
+		      ( select lvl
+		        from T_EVALSTD
+		        where std_gb = 'INSURANCE_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.health_gb = '1' then
+		                case when b.health_fee > eval_from and b.health_fee <= eval_to then 1 else 0 end
+		            else
+		                case when b.health_fee > eval2_from and b.health_fee <= eval2_to then 1 else 0 end
+		            end)
+		      ) as health_lvl,
+		      ( select point
+		        from T_EVALSTD
+		        where std_gb = 'INSURANCE_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.health_gb = '1' then
+		                case when b.health_fee > eval_from and b.health_fee <= eval_to then 1 else 0 end
+		            else
+		                case when b.health_fee > eval2_from and b.health_fee <= eval2_to then 1 else 0 end
+		            end)
+		      ) as health_point,
+		      ( select lvl
+		        from T_EVALSTD
+		        where std_gb = 'INSURANCE_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.unemploy_priod > eval_from and b.unemploy_priod <= eval_to then 1 else 0 end)
+		      ) as unemploy_lvl,
+		      ( select point
+		        from T_EVALSTD
+		        where std_gb = 'NOTWORK_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.unemploy_priod > eval_from and b.unemploy_priod <= eval_to then 1 else 0 end)
+		      ) as unemploy_point,
+		      ( select point
+		        from T_EVALSTD
+		        where std_gb = 'FAMILY_STD' and announc_id = a.announc_id
+		        and 1 = (case when b.dependent_cnt >= eval_from and b.dependent_cnt <= eval_to then 1 else 0 end)
+		      ) as dependent_point
+		     ]]>
+		  from t_announce a inner join t_apply b on a.announc_id = b.announc_id
+		  where b.aply_id = #{aplyId}
+		) z
+	) y
+	ON(x.aply_id = y.aply_id)
+	WHEN MATCHED THEN UPDATE SET
+	x.health_class = y.health_lvl,
+	x.health_point = y.health_point,
+	x.notwork_class = y.unemploy_lvl,
+	x.notwork_point = y.unemploy_point,
+	x.family_point = y.dependent_point,
+	x.tot_point = y.tot_point
+</update>
+
+<update id="updateApplyHealth" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateApplyHealth */
+    UPDATE
+ 		t_apply
+	SET
+			health_no = #{healthNo}
+			,health_gb = #{healthGb}
+			,health_fee = #{healthFee}
+			,upd_user_id = #{*userId}
+			,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE aply_id = #{aplyId}
+</update>
+
+<update id="updateApplyPaperResult" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateApplyPaperResult */
+    UPDATE
+ 		t_apply
+	SET
+			paper_result = #{result}
+			,paper_fail_reason = #{failReason}
+			,paper_user_id = #{*userId}
+	WHERE aply_id = #{aplyId}
+</update>
+
+<update id="updateApplyFirstResult" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateApplyFirstResult */
+    UPDATE
+ 		t_apply
+	SET
+			first_result = #{result}
+			,first_fail_reason = #{failReason}
+			,first_user_id = #{*userId}
+	WHERE aply_id = #{aplyId}
+</update>
+
+<update id="updateApplySecondResult" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateApplySecondResult */
+    UPDATE
+ 		t_apply
+	SET
+			second_result = #{result}
+			,second_fail_reason = #{failReason}
+			,second_user_id = #{*userId}
+	WHERE aply_id = #{aplyId}
+</update>
+
+<delete id="deleteApply" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.deleteApply */
+ 	DELETE FROM
+		t_apply
+	WHERE aply_id = #{aplyId}
+</delete>
+
+<select id="selectAdministList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ApplyDao.selectAdministList */
+	SELECT
+	     code+'' as code , code_nm AS codenm
+	FROM tc_code a
+	WHERE gubun = 'ADMINISTRATOR_CD'
+	and a.code = (case when (select orgn from t_auth where user_cd = #{userCd}) is null then a.code else (select orgn from t_auth where user_cd = #{userCd}) end)
+</select>
+
+<select id="selectGroupCodeList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ApplyDao.selectGroupCodeList */
+	select
+	     group_no+'' as code, group_no+'' as codenm
+	from t_announce a inner join t_evalgrp b on a.announc_id = b.announc_id
+	where a.year = #{year} and a.seq = #{seq}
+</select>
+
+<select id="selelctEvalSecondPageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selelctEvalSecondPageList */
+	<include refid="CommonSql.pageingTop"/>
+	SELECT
+			a.aply_id
+			,a.announc_id
+			,a.user_id
+			,b.user_id
+			,b.user_nm
+			,a.email
+			,a.birthday
+			,a.mobile
+			,a.hometel
+			,a.postno
+			,a.basic_addr
+			,a.detail_addr
+			,a.administ_cd
+			,(select code_nm from tc_code where gubun = 'ADMINISTRATOR_CD' and code = a.administ_cd ) as administ_nm
+			,to_char(to_date(a.seoul_live_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as seoul_live_dt
+			,a.seoul_live_priod
+			,a.health_no
+			,a.health_gb
+			,(select code_nm from tc_code where gubun = 'HEALTHINSUR_GUBUN' and code = a.health_gb ) as  health_gb_nm
+			,a.health_fee
+			,a.unemploy_priod
+			,a.dependent_cnt
+			,a.id_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.id_file_id) as id_file_nm
+			,a.health_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.health_file_id) as health_file_nm
+			,a.unemplyinsur_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.unemplyinsur_file_id) as unemplyinsur_file_nm
+			,a.deploma_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.deploma_file_id) as deploma_file_nm
+			,a.aply_motiv
+			,a.activ_plan
+			,a.health_class
+			,a.health_point
+			,a.notwork_class
+			,a.notwork_point
+			,a.family_point
+			,(case when a.first_result = 'P' then 'Pass' when a.first_result = 'F' then 'Fail' else NULL end) as first_result
+			,a.first_fail_reason
+			,(case when a.paper_result = 'P' then 'Pass' when a.paper_result = 'F' then 'Fail' else NULL end) as paper_result
+			,a.paper_fail_reason
+			,a.paper_user_id
+			,a.first_user_id
+			,(case when a.second_result = 'P' then 'Pass' when a.second_result = 'F' then 'Fail' else NULL end) as second_result
+			,a.second_fail_reason
+			,(select code_nm from tc_code where gubun = 'SECOND_FAIL_REASON' and code = a.second_fail_reason ) as second_fail_reason_nm
+			,a.second_user_id
+			,a.last_ability
+			,a.grad_dt
+			,a.retire_dt
+			,a.reserver_yn
+			,(select code_nm from tc_code where gubun = 'YES_NO' and code = a.reserver_yn ) as reserver_nm
+			,d.group_no+'차' as group_nm
+			,(select rtrim(xmlagg(xmlelement(e,x.judge_nm,',') order by x.judge_nm).extract('//text()'),',') from t_evaljudge x where x.announc_id = a.announc_id and x.group_no = d.group_no) as judge_nm
+			,a.tot_point
+			,a.indinfo_agree
+			,(select code_nm from tc_code where gubun = 'AGREE_YN' and code = a.indinfo_agree ) as indinfo_agree_nm
+			,a.thirdparty_agree
+			,(select code_nm from tc_code where gubun = 'AGREE_YN' and code = a.thirdparty_agree ) as thirdparty_agree_nm
+			,a.familyrel_agree
+			,(select code_nm from tc_code where gubun = 'AGREE_YN' and code = a.familyrel_agree ) as familyrel_agree_nm
+			,a.reg_user_id
+			,a.reg_dt
+	  FROM  t_announce c inner join  t_apply a on c.announc_id = a.announc_id
+	               inner join t_user b on a.user_id = b.user_id
+	               left outer join t_applygrp d on a.announc_id = d.announc_id and a.aply_id = d.aply_id
+	 WHERE a.aply_compl_dt is not null
+	         and c.year = #{year} and c.seq = #{seq} and a.first_result = 'P'
+			<if test='group_no != null and !group_no.equals("")' >
+			   AND d.group_no = #{groupNo}
+			</if>
+			<if test='secondResult != null and !secondResult.equals("")' >
+			   AND second_result = #{secondResult}
+			</if>
+		     <if test='searchTxt != null and !searchTxt.equals("")' >
+	    		<if test='searchKey != null and searchKey.equals("userNm")' >
+			   		AND upper(user_nm) LIKE '%'+upper(#{searchTxt})+'%'
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("loginId")' >
+			   		AND upper(login_id) LIKE '%'+upper(#{searchTxt})+'%'
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("mobile")' >
+			   		AND mobile = #{searchTxt}
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("email")' >
+			   		AND email = #{searchTxt}
+			   	</if>
+		    </if>
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selelctEvalSecondExcelList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selelctEvalSecondExcelList */
+	SELECT
+	         rownum as rnum
+			,a.aply_id
+			,a.announc_id
+			,a.user_id
+			,b.user_id
+			,b.user_nm
+			,(select code_nm from tc_code where gubun = 'USER_GENDER' and code = b.gender ) as gender_nm
+			,a.email
+			,a.birthday
+			,a.mobile
+			,a.hometel
+			,a.postno
+			,a.basic_addr
+			,a.detail_addr
+			,a.administ_cd
+			,(select code_nm from tc_code where gubun = 'ADMINISTRATOR_CD' and code = a.administ_cd ) as administ_nm
+			,to_char(to_date(a.seoul_live_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as seoul_live_dt
+			,a.seoul_live_priod
+			,a.health_no
+			,a.health_gb
+			,(select code_nm from tc_code where gubun = 'HEALTHINSUR_GUBUN' and code = a.health_gb ) as  health_gb_nm
+			,a.health_fee
+			,a.unemploy_priod
+			,a.dependent_cnt
+			,a.id_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.id_file_id) as id_file_nm
+			,a.health_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.health_file_id) as health_file_nm
+			,a.unemplyinsur_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.unemplyinsur_file_id) as unemplyinsur_file_nm
+			,a.deploma_file_id
+			,(SELECT origin_file_nm FROM t_commonfile WHERE file_id = a.deploma_file_id) as deploma_file_nm
+			,a.aply_motiv
+			,a.activ_plan
+			,a.health_class
+			,a.health_point
+			,a.notwork_class
+			,a.notwork_point
+			,a.family_point
+			,a.first_result
+			,(select code_nm from tc_code where gubun = 'FIRST_FAIL_REASON' and code = a.first_fail_reason) as first_fail_reason
+			,a.paper_result
+			,(select code_nm from tc_code where gubun = 'EVAL_FAIL_REASON' and code = a.paper_fail_reason) as paper_fail_reason
+			,a.paper_user_id
+			,a.first_user_id
+			,a.second_result
+			,(select code_nm from tc_code where gubun = 'SECOND_FAIL_REASON' and code = a.second_fail_reason) as second_fail_reason
+			,a.second_user_id
+			,a.last_ability
+			,a.grad_dt
+			,a.retire_dt
+			,a.reserver_yn
+			,(select code_nm from tc_code where gubun = 'YES_NO' and code = a.reserver_yn ) as reserver_nm
+			,d.group_no+'차' as group_nm
+			,(select rtrim(xmlagg(xmlelement(e,x.judge_nm,',') order by x.judge_nm).extract('//text()'),',') from t_evaljudge x where x.announc_id = a.announc_id and x.group_no = d.group_no) as judge_nm
+			,a.tot_point
+			,a.indinfo_agree
+			,(select code_nm from tc_code where gubun = 'AGREE_YN' and code = a.indinfo_agree ) as indinfo_agree_nm
+			,a.thirdparty_agree
+			,(select code_nm from tc_code where gubun = 'AGREE_YN' and code = a.thirdparty_agree ) as thirdparty_agree_nm
+			,a.familyrel_agree
+			,(select code_nm from tc_code where gubun = 'AGREE_YN' and code = a.familyrel_agree ) as familyrel_agree_nm
+			,a.reg_user_id
+			,a.reg_dt
+	  FROM  t_announce c inner join  t_apply a on c.announc_id = a.announc_id
+	               inner join t_user b on a.user_id = b.user_id
+	               left outer join t_applygrp d on a.announc_id = d.announc_id and a.aply_id = d.aply_id
+	 WHERE  a.aply_compl_dt is not null
+	         and c.year = #{p_year} and c.seq = #{p_seq} and a.first_result = 'P'
+			<if test='p_group_no != null and !p_group_no.equals("")' >
+			   AND d.group_no = #{p_groupNo}
+			</if>
+			<if test='p_secondResult != null and !p_secondResult.equals("")' >
+			   AND second_result = #{p_secondResult}
+			</if>
+			<if test='p_searchTxt != null and !p_searchTxt.equals("")' >
+	    		<if test='p_searchKey != null and p_searchKey.equals("userNm")' >
+			   		AND upper(user_nm) LIKE '%'+upper(#{p_searchTxt})+'%'
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("loginId")' >
+			   		AND upper(login_id) LIKE '%'+upper(#{p_searchTxt})+'%'
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("mobile")' >
+			   		AND mobile = #{p_searchTxt}
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("email")' >
+			   		AND email = #{p_searchTxt}
+			   	</if>
+		    </if>
+</select>
+
+<select id="selectEvalGrpPageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectEvalGrpPageList */
+	<include refid="CommonSql.pageingTop"/>
+      SELECT
+           announc_id
+           ,year
+           ,seq
+           ,NVL((SELECT COUNT(user_id) FROM t_apply where announc_id = a.announc_id and first_result = 'P'),0) as first_pass_cnt
+           ,NVL((SELECT COUNT(judge_seq) FROM t_evaljudge where announc_id = a.announc_id ),0) as judge_cnt
+           ,NVL((SELECT COUNT(group_no) FROM t_evalgrp where announc_id = a.announc_id ),0) as  group_cnt
+           ,case when a.rel_dt > to_char(sysdate, 'YYYYMMDDHH24MISS') THEN 'Y' ELSE 'N' END as group_mod_yn
+      FROM  t_announce a
+      WHERE a.year = #{year}
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selectFirstPassList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ApplyDao.selectFirstPassList */
+	select aply_id
+	from t_apply
+	where aply_compl_dt is not null and announc_id = #{announcId} and first_result = 'P'
+</select>
+
+<update id="insertEvalgrp" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.insertEvalgrp */
+	INSERT INTO
+	t_evalgrp (
+			announc_id
+			,group_no
+	) VALUES (
+			#{announcId}
+			,#{groupNo}
+	)
+</update>
+
+<delete id="deleteEvalgrp" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.deleteEvalgrp */
+ 	DELETE FROM
+		t_evalgrp
+	WHERE announc_id = #{announcId}
+</delete>
+
+<update id="insertApplygrp" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.insertApplygrp */
+	INSERT INTO
+	t_applygrp (
+			announc_id
+			,group_no
+			,aply_id
+			,reg_user_id
+			,reg_dt
+	) VALUES (
+			#{announcId}
+			,#{groupNo}
+			,#{aplyId}
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</update>
+
+<delete id="deleteApplygrp" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.deleteApplygrp */
+ 	DELETE FROM
+		t_applygrp
+	WHERE announc_id = #{announcId}
+</delete>
+
+<select id="selectEvalgrpExist" parameterType="Map" resultType="integer">
+	SELECT /* kr.apfs.local.announce.dao.impl.ApplyDao.selectEvalgrpExist */
+			  count(*)
+		FROM t_evalgrp
+		WHERE announc_id = #{announcId} and group_no = #{groupNo}
+</select>
+
+<select id="selectEvalJudgeExist" parameterType="Map" resultType="integer">
+	SELECT /* kr.apfs.local.announce.dao.impl.ApplyDao.selectEvalJudgeExist */
+			  count(*)
+		FROM t_evaljudge
+		WHERE announc_id = #{announcId} and group_no != #{groupNo}
+		and judge_nm = #{judgeNm}  and email = #{email}  and mobile = #{mobile}
+</select>
+
+<update id="insertEvalJudge" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.insertEvalJudge */
+	INSERT INTO
+	t_evaljudge (
+			announc_id
+			,group_no
+			,judge_seq
+			,judge_nm
+			,email
+			,mobile
+			,reg_user_id
+			,reg_dt
+	) VALUES (
+			#{announcId}
+			,#{groupNo}
+			,#{judgeSeq}
+			,#{judgeNm}
+			,#{email}
+			,#{mobile}
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</update>
+
+<delete id="deleteEvalJudge" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.deleteEvalJudge */
+ 	DELETE FROM
+		t_evaljudge
+	WHERE announc_id = #{announcId} and group_no = #{groupNo}
+</delete>
+
+<select id="selectOrientation" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectOrientation */
+      SELECT
+            a.aply_id
+           ,a.agree_yn
+           ,GET_DATEFORMAT(a.agree_dt) as agree_dt
+           ,(select rtrim(xmlagg(xmlelement(e,x.field_cd,',') order by x.field_cd).extract('//text()'),',') from t_interstfield x where x.aply_id = a.aply_id ) as interstfield
+       FROM  t_orientation a
+      WHERE  a.aply_id = #{aplyId}
+</select>
+
+<select id="selectOrientationPageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectOrientationPageList */
+	<include refid="CommonSql.pageingTop"/>
+      SELECT
+           a.announc_id
+           ,b.aply_id
+           ,a.year
+           ,a.seq
+           ,b.user_id
+           ,d.user_id
+           ,d.user_nm
+           ,b.mobile
+           ,c.agree_yn
+           ,(select code_nm from tc_code where gubun = 'ORIENTATION_AGREE_YN' and code = c.agree_yn ) as agree_nm
+           ,(select code_nm from tc_code where gubun = 'YES_NO' and code = c.pre_snd_yn ) as pre_snd_yn_nm
+           ,(select code_nm from tc_code where gubun = 'CANCEL_REASON' and code = c.cancel_reason ) as cancel_reason_nm
+           ,GET_DATEFORMAT(c.agree_dt) as agree_dt
+           ,(select  rtrim(xmlagg(xmlelement(e,y.code_nm,',') order by y.sort).extract('//text()'),',') from t_interstfield x inner join tc_code y on x.field_cd = y.code and y.gubun = 'CONCERN_FIELD' where x.aply_id = b.aply_id ) as interstfield
+       FROM  t_announce a inner join t_apply b on a.announc_id = b.announc_id
+                   left outer  join t_orientation c on b.aply_id = c.aply_id
+                   inner join t_user d on b.user_id = d.user_id
+      WHERE b.aply_compl_dt is not null and b.second_result = 'P' and a.year = #{year} and a.seq = #{seq}
+      		<if test='agreeYn != null and !agreeYn.equals("")' >
+			   AND c.agree_yn = #{agreeYn}
+			</if>
+      		<if test='preSndYn != null and !preSndYn.equals("")' >
+			   AND c.pre_snd_yn = #{preSndYn}
+			</if>
+            <if test='searchTxt != null and !searchTxt.equals("")' >
+	    		<if test='searchKey != null and searchKey.equals("userNm")' >
+			   		AND upper(user_nm) LIKE '%'+upper(#{searchTxt})+'%'
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("loginId")' >
+			   		AND upper(login_id) LIKE '%'+upper(#{searchTxt})+'%'
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("mobile")' >
+			   		AND mobile = #{searchTxt}
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("email")' >
+			   		AND email = #{searchTxt}
+			   	</if>
+		    </if>
+			<if test='fieldList != null' >
+			   AND b.aply_id IN	( select z.aply_id from  t_announce x inner join t_apply y on X.ANNOUNC_ID = y.announc_id
+						inner join t_interstfield z on y.aply_id = z.aply_id
+						where x.year = #{year} and x.seq = #{seq} and z.field_cd in
+				            <foreach collection="fieldList" item="item" index="index" open="(" close=")" separator="," >#{item}</foreach>
+				 )
+			</if>
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selectOrientationExcelList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectOrientationExcelList */
+      SELECT
+            rownum 			as rnum
+           ,a.announc_id     announcId
+           ,b.aply_id        aplyId
+           ,a.year           year
+           ,a.seq            seq
+           ,b.user_id        userId
+           ,d.user_id        userId
+           ,d.user_nm        userNm
+           ,b.mobile         mobile
+           ,b.email          email
+		   ,b.administ_cd    administCd
+		   ,b.postno         postno
+		   ,b.basic_addr     basicAddr
+		   ,b.detail_addr	 detailAddr
+           ,c.agree_yn       agreeYn
+           ,GET_DATEFORMAT(c.agree_dt) as agreeDt
+           ,(select code_nm from tc_code where gubun = 'USER_GENDER' and code = d.gender ) as gender_nm
+           ,(select code_nm from tc_code where gubun = 'ADMINISTRATOR_CD' and code = b.administ_cd ) as administ_nm
+           ,(select code_nm from tc_code where gubun = 'ORIENTATION_AGREE_YN' and code = c.agree_yn ) as agree_nm
+           ,(select code_nm from tc_code where gubun = 'YES_NO' and code = c.pre_snd_yn ) as pre_snd_yn_nm
+
+           ,(select rtrim(xmlagg(xmlelement(e,y.code_nm,',') order by y.sort).extract('//text()'),',')  from t_interstfield x inner join tc_code y on x.field_cd = y.code and y.gubun = 'CONCERN_FIELD' where x.aply_id = b.aply_id ) as interstfield
+       FROM  t_announce a inner join t_apply b on a.announc_id = b.announc_id
+                   inner join t_orientation c on b.aply_id = c.aply_id
+                   inner join t_user d on b.user_id = d.user_id
+      WHERE  b.aply_compl_dt is not null and a.year = #{p_year} and a.seq = #{p_seq}
+      		<if test='p_agreeYn != null and !p_agreeYn.equals("")' >
+			   AND c.agree_yn = #{p_aggreeYn}
+			</if>
+			<if test='p_searchTxt != null and !p_searchTxt.equals("")' >
+	    		<if test='p_searchKey != null and p_searchKey.equals("userNm")' >
+			   		AND upper(user_nm) LIKE '%'+upper(#{p_searchTxt})+'%'
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("loginId")' >
+			   		AND upper(login_id) LIKE '%'+upper(#{p_searchTxt})+'%'
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("mobile")' >
+			   		AND mobile = #{p_searchTxt}
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("email")' >
+			   		AND email = #{p_searchTxt}
+			   	</if>
+		    </if>
+			<if test='fieldList != null' >
+			   AND b.aply_id IN	( select z.aply_id from  t_announce x inner join t_apply y on X.ANNOUNC_ID = y.announc_id
+						inner join t_interstfield z on y.aply_id = z.aply_id
+						where x.year = #{p_year} and x.seq = #{p_seq} and z.field_cd in
+				            <foreach collection="fieldList" item="item" index="index" open="(" close=")" separator="," >#{item}</foreach>
+				 )
+			</if>
+</select>
+
+<update id="insertOrientation" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.insertOrientation */
+	INSERT INTO
+	t_orientation (
+            aply_id
+           ,agree_yn
+            ,agree_dt
+            ,pre_snd_yn
+			,reg_user_id
+			,reg_dt
+	) VALUES (
+			#{aplyId}
+			,#{agreeYn}
+			,(case when #{agreeYn} = 'Y' then TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS') end)
+			,#{preSndYn}
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</update>
+
+<update id="updateOrientation" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateOrientation */
+	UPDATE
+		t_orientation
+	SET
+            agree_yn = #{agreeYn}
+            ,agree_dt = (case when #{agreeYn} = 'Y' then TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS' end)
+			,reg_user_id = #{*userId}
+			,reg_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE aply_id = #{aplyId}
+</update>
+
+<update id="updateOrientationAgreeCancel" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.updateOrientationAgreeCancel */
+	UPDATE
+		t_orientation
+	SET
+            agree_yn = 'C'
+            ,cancel_reason = #{cancelReason}
+	WHERE aply_id = #{aplyId}
+</update>
+
+<update id="insertInterstfield" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.insertInterstfield */
+	INSERT INTO
+	t_interstfield (
+            aply_id
+           ,field_cd
+	) VALUES (
+			#{aplyId}
+			,#{fieldCd}
+	)
+</update>
+
+<delete id="deleteInterstfield" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ApplyDao.deleteInterstfield */
+ 	DELETE FROM
+		t_interstfield
+	WHERE aply_id = #{aplyId}
+</delete>
+
+<select id="selectApplyUserExist" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectApplyUserExist */
+        SELECT
+          a.announc_id, b.aply_id
+        FROM t_announce a inner join t_apply b on a.announc_id = b.announc_id
+                 inner join t_user c on b.user_id = c.user_id
+        WHERE b.aply_compl_dt IS NOT NULL and a.year = #{year} and a.seq = #{seq} and c.user_id = #{userId}
+</select>
+
+<select id="selectApplyUserResult" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectApplyUserResult */
+		select     a.aply_id        aplyId
+				  ,a.announc_id     announcId
+			      ,c.year           year
+			      ,c.seq            seq
+				  ,a.user_id        userId
+				  ,b.user_id        userId
+				  ,b.user_nm        userNm
+		          ,GET_DATEFORMAT(a.reg_dt) as regDt
+		          ,(select GET_DATEFORMAT(agree_dt) from t_orientation where aply_id = a.aply_id) as agreeDt
+		        ,NVL((select agree_yn from t_orientation where aply_id = a.aply_id),'N') as agree_yn
+		        ,a.second_result
+		        <![CDATA[
+				    ,(case when c.rel_dt <= to_char(sysdate, 'YYYYMMDDHH24MISS') then 'Y'
+			            else 'N'
+			       end) as rel_yn
+		        ,case when (select agree_yn from T_ORIENTATION where aply_id  = a.aply_id) = 'C' then 'F'
+		                  when a.second_result = 'F' then  'F'
+		                  when a.first_result = 'F' then  'F'
+		                  when a.paper_result = 'F' then 'F'
+		                  else 'P' end as state
+		        ,case when (select agree_yn from T_ORIENTATION where aply_id  = a.aply_id) = 'C' then (select code_nm from tc_code where gubun = 'CANCEL_REASON' and code = (select CANCEL_REASON from T_ORIENTATION where aply_id  = a.aply_id))
+		                  when a.second_result = 'F' then (select code_nm from tc_code where gubun = 'SECOND_FAIL_REASON' and code = a.second_fail_reason )
+		                  when a.first_result = 'F' then  (select code_nm from tc_code where gubun = 'FIRST_FAIL_REASON' and code = a.first_fail_reason )
+		                  when a.paper_result = 'F' then (select code_nm from tc_code where gubun = 'EVAL_FAIL_REASON' and code = a.paper_fail_reason )
+		                  else '' end as fail_reason_nm
+		         ,a.give_yn
+		         ,nvl((select case when submit_stadt <= to_char(sysdate, 'YYYYMMDDHH24MISS') then 'Y' else 'N' end  from T_ACTSUBMIT where announc_id = c.announc_id and act_seq = 1),'N') as submit_yn
+			     ]]>
+		FROM  t_announce c inner join  t_apply a on c.announc_id = a.announc_id
+		             inner join t_user b on a.user_id = b.user_id
+		WHERE a.aply_compl_dt is not null and a.user_id = #{*userId}
+		ORDER BY year desc, seq desc
+</select>
+
+<select id="selectApplyUserActsubmit" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectApplyUserActsubmit */
+		SELECT
+		     a.announc_id announcId
+		    ,a.act_seq actSeq
+		    ,#{aplyId} as aplyId
+		    ,to_char(to_date(a.submit_stadt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 		as submitStadt
+		    ,to_number(to_char(to_date(a.submit_stadt,'YYYYMMDDHH24MISS'),'MM')) 	as submitMm
+		    ,to_char(to_date(a.submit_stadt,'YYYYMMDDHH24MISS'),'HH24') 			as submitStaDtHour
+		    ,to_char(to_date(a.submit_stadt,'YYYYMMDDHH24MISS'),'MI') 				as submitStaDtMin
+		    ,to_char(to_date(a.submit_enddt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 		as submitEndDt
+		    ,to_char(to_date(a.submit_enddt,'YYYYMMDDHH24MISS'),'HH24') 			as submitEndDtHour
+		    ,to_char(to_date(a.submit_enddt,'YYYYMMDDHH24MISS'),'MI') 				as submitEndDtMin
+		    ,GET_DATEFORMAT(b.reg_dt) as regDt
+		    <![CDATA[
+		    ,(case when a.submit_stadt > to_char(sysdate, 'YYYYMMDDHH24MISS') then 'B'
+		        when a.submit_stadt <= to_char(sysdate, 'YYYYMMDDHH24MISS') and a.submit_enddt >= to_char(sysdate, 'YYYYMMDDHH24MISS') then 'A'
+		        when a.submit_enddt < to_char(sysdate, 'YYYYMMDDHH24MISS') then 'E'
+		       end) as state
+		    ,case when nvl((select REG_USERNO from t_actreport where announc_id = a.announc_id and act_seq = (a.act_seq-1) and aply_id = #{aplyId}),NULL) IS NOT NULL OR A.ACT_SEQ = 1 then 'Y'
+              else 'N' end as preSubmitYn
+		    ]]>
+	  FROM t_actsubmit a left outer join t_actreport b on a.announc_id = b.announc_id and a.act_seq = b.act_seq and b.aply_id = #{aplyId}
+	  WHERE	a.announc_id = #{announcId}
+</select>
+
+<select id="selectAnnounceApplyPageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectAnnounceApplyPageList */
+	<include refid="CommonSql.pageingTop"/>
+	  select
+		     a.year+'년' as year, a.seq+'차' as seq
+		     ,nvl(count(user_id),0) as userCnt
+		     ,nvl(sum(case when b.paper_result = 'P' then 1 else 0 end),0) as paperCnt
+		     ,nvl(sum(case when b.first_result = 'P' then 1 else 0 end),0) as firstCnt
+		     ,nvl(sum(case when b.second_result = 'P' then 1 else 0 end),0) as secondCnt
+		     ,nvl(round(avg(case when b.second_result = 'P' then b.health_point else 0 end)),0) as healthFee
+		     ,nvl(round(avg(case when b.second_result = 'P' then b.notwork_point else 0 end)),0) as unemployPriod
+		     ,nvl(round(avg(case when b.second_result = 'P' then b.family_point else 0 end)),0) as dependentCnt
+		from t_announce a left outer join t_apply b on a.announc_id = b.announc_id
+		where a.del_yn = 'N' and b.aply_compl_dt is not null
+		group by a.year, a.seq
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selectActplanRank" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ApplyDao.selectActplanRank */
+	select
+	    a.code as rank
+	    ,b.activ_targetnm activTargetnm
+	    ,b.activ_rate  activRate
+	    ,c.wish_prognm wishPrognm
+	    ,c.wish_rate wishRate
+	from
+	(
+	  select code from tc_code where gubun  = 'RANK_CD'
+	) a left outer join
+	(
+	  select
+	     (select classify_nm from t_classify where gubun = 'ACTIVE_TARGET' and classify_id = x.activ_target) as activ_targetnm
+	     ,round((activ_cnt/sum(activ_cnt) over())*100, 2) as activ_rate, rank
+	  from (
+	    select activ_target, count(b.aply_id) as activ_cnt, ROW_NUMBER() OVER (ORDER BY count(b.aply_id) DESC) as rank
+	    from t_announce a inner join t_apply b on a.announc_id = b.announc_id
+	        inner join t_actplan c on b.aply_id = c.aply_id
+	    where a.year = #{year} and a.seq = #{seq}
+	    group by c.activ_target
+	    order by count(b.aply_id) desc
+	  ) x
+	<![CDATA[   where rank <= 10   ]]>
+	) b on a.code = b.rank
+	left outer join (
+	  select
+	     (select code_nm from tc_code where gubun = 'APPLY_PROGRAM' and code = x.wish_prog) as wish_prognm
+	     ,round((wish_cnt/sum(wish_cnt) over())*100, 2) as wish_rate, rank
+	  from (
+	    select wish_prog, count(b.aply_id) as wish_cnt, ROW_NUMBER() OVER (ORDER BY count(b.aply_id) DESC) as rank
+	    from t_announce a inner join t_apply b on a.announc_id = b.announc_id
+	        inner join t_wishprog c on b.aply_id = c.aply_id
+	    where a.year = #{year} and a.seq = #{seq}
+	    group by c.wish_prog
+	    order by count(b.aply_id) desc
+	  ) x
+	<![CDATA[   where rank <= 10   ]]>
+	) c on a.code = c.rank
+	order by to_number(rank) asc
+</select>
+
+<select id="selectEvalCnt" parameterType="Map" resultType="int">
+	/* kr.apfs.local.announce.dao.impl.ApplyDao.selectEvalCnt */
+	select count(aply_id)
+	from  t_announce a inner join t_apply b on a.announc_id = b.announc_id
+	where b.aply_compl_dt is not null and b.paper_result is not null and a.year = #{year} and a.seq = #{seq}
+</select>
+
+</mapper>

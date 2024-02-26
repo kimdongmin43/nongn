@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserDao">
+
+
+  	<select id="selectUser" parameterType="String" resultType="userVO">
+
+		SELECT
+
+			 USER_ID userId
+			,USER_CD userCd
+			,dbo.UF_CODE_NM('USER_CD',USER_CD) AS userCdNm
+			,USER_NM userNm
+			,LOGIN_ID loginId
+			,PASSWORD password
+			,PASSWORD_DT passwordDt
+			,EMAIL email
+			,TEL tel
+			,MOBILE mobile
+			,DEPT_NM deptNm
+			,NOTE note
+			,U.REG_USER_ID regUserId
+			,U.REG_DT regDt
+			,U.UPD_USER_ID updUserId
+			,U.UPD_DT updDt
+			,U.USE_YN useYn
+			,dbo.UF_CODE_NM('USE_YN',U.USE_YN) AS	useYnNm
+			,U.DEL_YN  delYn
+			,dbo.UF_CODE_NM('DEL_YN',U.DEL_YN) AS delYnNm
+			,U.SORT sort
+			,U.SITE_ID siteId
+			,SITE_NM siteNm
+			,LOC_ID	locId
+			,AGREE_DT agreeDt
+
+		FROM TC_USER U
+		LEFT OUTER JOIN TC_SITE S
+		ON U.SITE_ID = S.SITE_ID
+        	WHERE U.DEL_YN = 'N'
+
+        	<if test='userId != null and !userId.equals("")' >
+		AND USER_ID = #{userId}
+		</if>
+		<if test='loginId != null and !loginId.equals("")' >
+		AND LOGIN_ID = UPPER(#{loginId})
+		</if>
+	</select>
+
+	<select id="selectCityList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.user.dao.impl.UserDao.selectCityList */
+	SELECT site_id
+				,site_nm
+				,city_cd
+	FROM tc_site
+	WHERE  del_yn = 'N'
+		<!-- and use_yn = 'Y' --><!-- use_yn 컬럼 사용여부 확인필요 -->
+		and city_cd is not null
+	ORDER BY sort
+	</select>
+
+	<select id="selectUserPageList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.user.dao.impl.UserDao.selectUserPageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT T.* FROM (
+			SELECT
+
+				 USER_ID
+				,USER_CD
+				,(select code_nm from tc_code where mst_id = 'USER_CD' and code_id = TC_USER.user_cd) as USER_CD_NM
+				,USER_NM
+				,LOGIN_ID
+				,PASSWORD
+				,PASSWORD_DT
+				,EMAIL
+				,TEL
+				,MOBILE
+				,DEPT_NM
+				,NOTE
+				,REG_USER_ID
+				,REG_DT
+				,UPD_USER_ID
+				,UPD_DT
+				,USE_YN
+				,dbo.UF_CODE_NM('USE_YN',USE_YN) AS	USE_YN_NM
+				,DEL_YN
+				,dbo.UF_CODE_NM('DEL_YN',DEL_YN) AS DEL_YN_NM
+				,SORT
+				,SITE_ID
+				,LOC_ID
+				,AGREE_DT
+
+			FROM TC_USER
+	        WHERE DEL_YN = 'N'
+
+    		<if test='searchTxt != null and !searchTxt.equals("")' >
+	    		<if test='searchKey != null and !searchKey.equals("")' >
+			   		AND #{searchKey} LIKE '%'+#{searchTxt}+'%'
+			   	</if>
+		    </if>
+			<if test='searchGb != null and !searchGb.equals("")' >
+		    		AND 1=1
+			</if>
+		    <if test='regStaDt != null and !regStaDt.equals("") and regEndDt != null and !regEndDt.equals("")' >
+		            AND GET_DATEFORMAT(REG_DT) BETWEEN #{regStaDt} AND #{regEndDt}
+		    </if>
+		    <if test='auth != null and !auth.equals("")'>
+		            AND USER_CD = #{auth}
+		    </if>
+		) T
+
+		WHERE 1=1		
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+	<select id="selectUserSearchPageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserSearchPageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+		    	 USER_ID
+				,USER_CD
+				,USER_NM
+				,LOGIN_ID
+				,PASSWORD
+				,PASSWORD_DT
+				,EMAIL
+				,TEL
+				,MOBILE
+				,DEPT_NM
+				,NOTE
+				,REG_USER_ID
+				,REG_DT
+				,UPD_USER_ID
+				,UPD_DT
+				,USE_YN
+				,dbo.UF_CODE_NM('USE_YN',USE_YN) AS	USE_YN_NM
+				,DEL_YN
+				,dbo.UF_CODE_NM('DEL_YN',DEL_YN) AS DEL_YN_NM
+				,SORT
+				,SITE_ID
+				,LOC_ID
+				,AGREE_DT
+
+			FROM TC_USER
+		 WHERE  1=1
+		 	AND DEL_YN = 'N'
+				<if test='userNm != null and !userNm.equals("")' >
+				   AND USER_NM LIKE '%'+#{userNm}+'%')
+				</if>
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+	<select id="selectUserList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserList */
+		SELECT
+
+		      	 USER_ID
+				,USER_CD
+				,USER_NM
+				,LOGIN_ID
+				,PASSWORD
+				,PASSWORD_DT
+				,EMAIL
+				,TEL
+				,MOBILE
+				,DEPT_NM
+				,NOTE
+				,REG_USER_ID
+				,REG_DT
+				,UPD_USER_ID
+				,UPD_DT
+				,USE_YN
+				,dbo.UF_CODE_NM('USE_YN',USE_YN) AS	USE_YN_NM
+				,DEL_YN
+				,dbo.UF_CODE_NM('DEL_YN',DEL_YN) AS DEL_YN_NM
+				,SORT
+				,SITE_ID
+				,LOC_ID
+				,AGREE_DT
+
+		FROM TC_USER
+		WHERE 1 = 1
+			AND DEL_YN = 'N'
+			<if test='userNm != null and !userNm.equals("")' >
+			   AND USER_NM = #{userNm}
+			</if>
+	</select>
+
+	<select id="selectUserExist" parameterType="Map" resultType="integer">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserExist */
+		SELECT
+				COUNT(*)
+		FROM 	TC_USER
+		WHERE 	1=1
+			AND DEL_YN='N'
+			AND UPPER(LOGIN_ID) = UPPER(#{loginId})
+	</select>
+
+	<update id="insertUser" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.insertUser */
+		INSERT INTO
+		TC_USER (
+				 USER_ID
+				,USER_CD
+				,USER_NM
+				,LOGIN_ID
+				,PASSWORD
+				,PASSWORD_DT
+				,TEL
+				,DEPT_NM
+				,REG_USER_ID
+				,REG_DT
+				,USE_YN
+				,DEL_YN
+				,SITE_ID
+				,AGREE_DT
+		)
+		SELECT
+				 ISNULL(MAX(USER_ID),0)+1
+				,#{userCd}
+				,#{userNm}
+				,#{loginId}
+				,#{password}
+				,left(convert(varchar, getdate(), 112)+'000000',14)
+				,#{tel}
+				,#{deptNm}
+				,#{*userId}
+				,left(convert(varchar, getdate(), 112)+'000000',14)
+				,'Y'
+				,'N'
+				,'3'
+				,left(convert(varchar, getdate(), 112)+'000000',14)
+		FROM 	TC_USER
+	</update>
+
+	<update id="updateUser" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.updateUser */
+	    UPDATE
+	 			TC_USER
+		SET
+				TEL            		= #{tel}
+				<if test='userNm != null and !userNm.equals("")' >
+				,USER_NM        = #{userNm}
+				</if>
+				<if test='password != null and !password.equals("")' >
+				,PASSWORD       = #{password}
+				,PASSWORD_DT    = left(convert(varchar, getdate(), 112)+'000000',14)
+				</if>
+				<if test='userCd != null and !userCd.equals("")' >
+				,USER_CD        = #{userCd}
+				</if>
+				,DEPT_NM        = #{deptNm}
+				,UPD_USER_ID    = #{*userId}
+				,UPD_DT         = left(convert(varchar, getdate(), 112)+'000000',14)
+				,SORT           = #{sort}
+				,SITE_ID        = #{*siteId}
+		WHERE	1=1
+			AND DEL_YN='N'
+			AND USER_ID = #{userId}
+	</update>
+
+	<update id="deleteUser" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.deleteUser */
+	 	<!-- DELETE FROM
+			TC_USER
+		WHERE USER_ID = #{userId} -->
+		UPDATE
+				TC_USER
+		SET
+				DEL_YN = 'Y'
+		WHERE 1=1
+			AND DEL_YN = 'N'
+			AND USER_ID = #{userId}
+	</update>
+
+	<select id="selectUserEmailExist" parameterType="Map" resultType="integer">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserEmailExist */
+		SELECT
+				COUNT(*)
+		   FROM TC_USER
+		  WHERE DEL_YN = 'N'
+		    AND	USER_NM = #{userNm}
+		    AND EMAIL = #{email}
+	</select>
+
+	<update id="insertAuth" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.insertAuth */
+		UPDATE
+				TC_USER
+		SET
+				USER_CD 		= #{userCd}
+				,UPD_USER_ID    = #{*userId}
+				,UPD_DT         = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE
+				USER_ID = #{userId}
+	</update>
+
+	<delete id="deleteAuth" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.deleteAuth */
+	 	UPDATE 	TC_USER
+		SET		USER_CD = '999'
+		WHERE 	USER_ID = #{userId}
+	</delete>
+
+	<delete id="deleteManagerAuth" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.deleteManagerAuth */
+	 	UPDATE
+				TC_USER
+		SET
+				USER_CD 		= ''
+				,UPD_USER_ID    = #{*userId}
+				,UPD_DT         = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE
+				USER_ID 		= #{userId}
+	</delete>
+
+	<update id="insertManagerAuth" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.insertManagerAuth */
+		UPDATE
+				TC_USER
+		SET
+				USER_CD 		= #{userCd}
+				,UPD_USER_ID    = #{*userId}
+				,UPD_DT         = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE
+				USER_ID	 		= #{userId}
+	</update>
+
+	<update id="updatePwdConfirmWord" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.updatePwdConfirmWord */
+	 	UPDATE
+				TC_USER
+		SET 	 PASSWORD 		= #{password}
+				,UPD_USER_ID    = #{*userId}
+				,UPD_DT         = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE  	EMAIL 			= #{email}
+	</update>
+
+	<update id="updatePasswordChange" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.updatePasswordChange */
+	 	UPDATE
+				TC_USER
+		SET 	PASSWORD = 	#{userPw},
+		        PWD_MOD_DT = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE  USER_ID = 	#{userId}
+	</update>
+
+	<select id="selectAuthList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectAuthList */
+		SELECT 	CODE_ID as code, CODE_NM
+		FROM 	TC_CODE
+		WHERE 	MST_ID='USER_CD'
+		ORDER 	BY SORT
+	</select>
+
+	<select id="selectManagerAuthList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectManagerAuthList */
+		  SELECT
+		  			 USER_CD
+		  			,dbo.UF_CODE_NM('USER_CD',USE_YN) AS user_Cd_nm
+			FROM
+					TC_USER
+		WHERE 		USER_ID = #{userId}
+		ORDER BY 	USER_CD ASC
+	</select>
+
+	   <insert id="insertUserModHIstory" parameterType="Map">
+	     <selectKey resultType="String" keyProperty="hist_id" order="BEFORE">
+	       SELECT GET_GUID() FROM DUAL
+	     </selectKey>
+	       INSERT
+	       	INTO T_USERMODHISTORY
+	       	(USER_ID, HIST_ID, HIST_MSG, REG_USERNO, REG_DATE)
+	       	values
+	       	(#{userId}, #{histId}, #{histMsg}, #{*userId}, left(convert(varchar, getdate(), 112)+'000000',14) )
+	   </insert>
+
+	    <select id="selectAuthUserPageList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.user.dao.impl.UserDao.selectAuthUserPageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+			     USER_ID
+				,USER_CD
+				,USER_NM
+				,LOGIN_ID
+				,PASSWORD
+				,PASSWORD_DT
+				,EMAIL
+				,TEL
+				,MOBILE
+				,DEPT_NM
+				,NOTE
+				,REG_USER_ID
+				,REG_DT
+				,UPD_USER_ID
+				,UPD_DT
+				,USE_YN
+				,dbo.UF_CODE_NM('USE_YN',USE_YN) AS	USE_YN_NM
+				,DEL_YN
+				,dbo.UF_CODE_NM('DEL_YN',DEL_YN) AS DEL_YN_NM
+				,SORT
+				,SITE_ID
+				,LOC_ID
+				,AGREE_DT
+		FROM 	TC_USER
+		WHERE 	DEL_YN = 'N'
+		AND 	USER_CD >= #{userCd}
+   		<if test='searchTxt != null and !searchTxt.equals("")' >
+    		<if test='searchKey != null and !searchKey.equals("")' >
+		   		AND #{searchKey} LIKE '%' + #{searchTxt} + '%'
+		   	</if>
+	    </if>
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+	<update id="updateAgreement" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.updateAgreement */
+	 	UPDATE
+				TC_USER
+		SET 	AGREE_DT = 	left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE  	USER_ID = 	#{*userId}
+	</update>
+
+	<update id="insertUserLog" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.insertUserLog */
+	 	INSERT  INTO
+			TC_USERLOG
+			(
+				SITE_ID,
+				USER_ID,
+				LOG_ID,
+				LOG_DT,
+				SITE_CD,
+				IP
+		    )
+		   	SELECT
+		   		#{siteId},
+		   		#{userId},
+		   		ISNULL(MAX(LOG_ID),0)+1,
+		   		left(convert(varchar, getdate(), 112)+'000000',14) ,
+		   		#{siteCd},
+		   		#{ip}
+		   	FROM TC_USERLOG
+		   WHERE SITE_ID = #{siteId}
+		     AND USER_ID = #{userId}
+	</update>
+
+	<select id="selectUserLog" parameterType="Map" resultType="int">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectTodayConn */
+		SELECT
+				COUNT(DISTINCT USER_ID)
+		FROM 	TC_USERLOG
+		WHERE 	SUBSTR(LOG_DT,0,8) = TO_CHAR(SYSDATE,'YYYYMMDD')
+	</select>
+
+	<!-- 회원 탈퇴 -->
+	<update id="userDropOut" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.userDropOut */
+
+	 	UPDATE
+				TC_USER
+		SET
+				 USER_CD        = ''
+				,USER_NM        = ''
+				,LOGIN_ID       = ''
+				,PASSWORD       = ''
+				,PASSWORD_DT    = ''
+				,EMAIL          = ''
+				,TEL            = ''
+				,MOBILE         = ''
+				,DEPT_NM        = ''
+				,NOTE           = ''
+				,REG_USER_ID    = ''
+				,REG_DT         = ''
+				,UPD_USER_ID	= #{*userId}
+				,UPD_DT   		= left(convert(varchar, getdate(), 112)+'000000',14)
+				,DEL_YN 		= 'Y'
+				,SORT           = ''
+				,SITE_ID        = ''
+				,LOC_ID         = ''
+
+		WHERE  	USER_ID = 	#{userId}
+	</update>
+
+	<!-- 자동 회원 탈퇴 -->
+	<update id="userAutoDropOut" parameterType="Map" >
+	    /* kr.apfs.local.user.dao.impl.UserDao.userAutoDropOut */
+	 	UPDATE
+				TC_USER
+		SET
+				 USER_CD        = ''
+				,USER_NM        = ''
+				,LOGIN_ID       = ''
+				,PASSWORD       = ''
+				,PASSWORD_DT    = ''
+				,EMAIL          = ''
+				,TEL            = ''
+				,MOBILE         = ''
+				,DEPT_NM        = ''
+				,NOTE           = ''
+				,REG_USER_ID    = ''
+				,REG_DT         = ''
+				,UPD_USER_ID	= #{*userId}
+				,UPD_DT   		= left(convert(varchar, getdate(), 112)+'000000',14)
+				,DEL_YN 		= 'Y'
+				,SORT           = ''
+				,SITE_ID        = ''
+				,LOC_ID         = ''
+		WHERE  	1=1
+		AND 	DEL_YN != 'Y'
+		AND 	USER_CD = 'N'
+		AND 	AGREE_DT IS NOT NULL
+		AND 	TRUNC((SYSDATE+1) - TO_DATE(AGREE_DT,'YYYYMMDDHH24MISS')) > 730
+	</update>
+
+	<!-- 재 동의가 필요한 사용자 목록  -->
+	<select id="selectReAgreeUserList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectReAgreeUserList */
+		SELECT
+			  USER_ID
+			, LOGIN_ID
+			, USER_NM
+			, MOBILE
+		FROM TC_USER
+		WHERE 1=1
+			AND DEL_YN != 'Y'
+			AND USER_CD = #{userCd}
+			AND AGREE_DT IS NOT NULL
+			<if test='pDay != null and !pDay.equals("")' >
+			AND TRUNC((SYSDATE+1) - TO_DATE(AGREE_DT,'YYYYMMDDHH24MISS')) = #{pDay}
+			</if>
+			<if test='dDay != null and !dDay.equals("")' >
+			AND TRUNC((SYSDATE+1) - TO_DATE(AGREE_DT,'YYYYMMDDHH24MISS')) > #{dDay}
+			</if>
+	</select>
+
+	<!-- 11개월동안 로그인하지 않은 회원  -->
+	<select id="selectUserLoginList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserLoginList */
+		SELECT
+				 A.USER_ID
+				,A.USER_NM
+				,A.MOBILE
+				,B.LAST_LOG_DT
+		FROM 	TC_USER A,
+		(
+			SELECT MAX(LOG_DT) LAST_LOG_DT, USER_ID FROM TC_USERLOG GROUP BY USER_ID
+		)B
+		WHERE 	1=1
+		AND		A.USER_ID = B.USER_ID
+		AND 	DEL_YN = 'N'
+		AND 	USER_CD = #{userCd}
+		AND 	AGREE_DT IS NOT NULL
+		AND 	TRUNC((SYSDATE+1) - TO_DATE(LAST_LOG_DT ,'YYYYMMDDHH24MISS')) = #{pDay}
+	</select>
+
+
+
+	<select id="selectUserPassExist" parameterType="Map" resultType="integer">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserEmailExist */
+		SELECT
+				COUNT(*)
+		FROM 	TC_USER
+		WHERE 	USER_ID = #{*userId}
+		AND 	PASSWORD = #{password}
+	</select>
+
+	<select id="selectUserPhoneExist" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserPhoneExist */
+		SELECT
+				 USER_ID
+				,USER_CD
+				,USER_NM
+		FROM 	TC_USER
+		WHERE 	DEL_YN = 'N'
+		AND 	USER_NM = #{userNm}
+		AND 	MOBILE = #{mobile}
+	</select>
+
+	<select id="selectUserLogTotal" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserLogTotal */
+		SELECT
+		  ISNULL((SELECT COUNT(DISTINCT USER_ID) FROM TC_USERLOG WHERE SITE_CD = 'F' AND SUBSTR(LOG_DT,0,8) = TO_CHAR(SYSDATE,'YYYYMMDD') ),0) AS today_cnt,
+		  ISNULL((SELECT COUNT(DISTINCT USER_ID) FROM TC_USERLOG WHERE SITE_CD = 'F' ),0) AS whole_cnt
+		FROM DUAL
+	</select>
+
+	<select id="selectUserLogHour" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserLogHour */
+		SELECT
+		     X.H00, ROUND((X.H00/TOT_CNT)*100,2) AS HA00,
+		     X.H01, ROUND((X.H01/TOT_CNT)*100,2) AS HA01,
+		     X.H02, ROUND((X.H02/TOT_CNT)*100,2) AS HA02,
+		     X.H03, ROUND((X.H03/TOT_CNT)*100,2) AS HA03,
+		     X.H04, ROUND((X.H04/TOT_CNT)*100,2) AS HA04,
+		     X.H05, ROUND((X.H05/TOT_CNT)*100,2) AS HA05,
+		     X.H06, ROUND((X.H06/TOT_CNT)*100,2) AS HA06,
+		     X.H07, ROUND((X.H07/TOT_CNT)*100,2) AS HA07,
+		     X.H08, ROUND((X.H08/TOT_CNT)*100,2) AS HA08,
+		     X.H09, ROUND((X.H09/TOT_CNT)*100,2) AS HA09,
+		     X.H10, ROUND((X.H10/TOT_CNT)*100,2) AS HA10,
+		     X.H11, ROUND((X.H11/TOT_CNT)*100,2) AS HA11,
+		     X.H12, ROUND((X.H12/TOT_CNT)*100,2) AS HA12,
+		     X.H13, ROUND((X.H13/TOT_CNT)*100,2) AS HA13,
+		     X.H14, ROUND((X.H14/TOT_CNT)*100,2) AS HA14,
+		     X.H15, ROUND((X.H15/TOT_CNT)*100,2) AS HA15,
+		     X.H16, ROUND((X.H16/TOT_CNT)*100,2) AS HA16,
+		     X.H17, ROUND((X.H17/TOT_CNT)*100,2) AS HA17,
+		     X.H18, ROUND((X.H18/TOT_CNT)*100,2) AS HA18,
+		     X.H19, ROUND((X.H19/TOT_CNT)*100,2) AS HA19,
+		     X.H20, ROUND((X.H20/TOT_CNT)*100,2) AS HA20,
+		     X.H21, ROUND((X.H21/TOT_CNT)*100,2) AS HA21,
+		     X.H22, ROUND((X.H22/TOT_CNT)*100,2) AS HA22,
+		     X.H23, ROUND((X.H23/TOT_CNT)*100,2) AS HA23,
+		     X.H00+X.H01+X.H02+X.H03+X.H04+X.H05+X.H06+X.H07+X.H08+X.H09+X.H10+
+		     X.H11+X.H12+X.H13+X.H14+X.H15+X.H16+X.H17+X.H18+X.H19+X.H20+
+		     X.H21+X.H22+X.H23 AS H_TOT
+		FROM (
+		  SELECT
+		      SUM(CASE WHEN HH = '00' THEN 1 ELSE 0 END) AS H00,
+		      SUM(CASE WHEN HH = '01' THEN 1 ELSE 0 END) AS H01,
+		      SUM(CASE WHEN HH = '02' THEN 1 ELSE 0 END) AS H02,
+		      SUM(CASE WHEN HH = '03' THEN 1 ELSE 0 END) AS H03,
+		      SUM(CASE WHEN HH = '04' THEN 1 ELSE 0 END) AS H04,
+		      SUM(CASE WHEN HH = '05' THEN 1 ELSE 0 END) AS H05,
+		      SUM(CASE WHEN HH = '06' THEN 1 ELSE 0 END) AS H06,
+		      SUM(CASE WHEN HH = '07' THEN 1 ELSE 0 END) AS H07,
+		      SUM(CASE WHEN HH = '08' THEN 1 ELSE 0 END) AS H08,
+		      SUM(CASE WHEN HH = '09' THEN 1 ELSE 0 END) AS H09,
+		      SUM(CASE WHEN HH = '10' THEN 1 ELSE 0 END) AS H10,
+		      SUM(CASE WHEN HH = '11' THEN 1 ELSE 0 END) AS H11,
+		      SUM(CASE WHEN HH = '12' THEN 1 ELSE 0 END) AS H12,
+		      SUM(CASE WHEN HH = '13' THEN 1 ELSE 0 END) AS H13,
+		      SUM(CASE WHEN HH = '14' THEN 1 ELSE 0 END) AS H14,
+		      SUM(CASE WHEN HH = '15' THEN 1 ELSE 0 END) AS H15,
+		      SUM(CASE WHEN HH = '16' THEN 1 ELSE 0 END) AS H16,
+		      SUM(CASE WHEN HH = '17' THEN 1 ELSE 0 END) AS H17,
+		      SUM(CASE WHEN HH = '18' THEN 1 ELSE 0 END) AS H18,
+		      SUM(CASE WHEN HH = '19' THEN 1 ELSE 0 END) AS H19,
+		      SUM(CASE WHEN HH = '20' THEN 1 ELSE 0 END) AS H20,
+		      SUM(CASE WHEN HH = '21' THEN 1 ELSE 0 END) AS H21,
+		      SUM(CASE WHEN HH = '22' THEN 1 ELSE 0 END) AS H22,
+		      SUM(CASE WHEN HH = '23' THEN 1 ELSE 0 END) AS H23,
+		      COUNT(USER_ID) AS TOT_CNT
+		  FROM  (
+		  			  SELECT
+		  					  USER_ID
+							, SITE_ID
+							, LOG_ID
+							, LOG_DT
+							, SITE_CD
+							, IP
+							, SUBSTR(LOG_DT,9,2) HH
+					    FROM  TC_USERLOG
+		  		)
+		  <![CDATA[
+		  WHERE  SITE_CD = 'F' AND REPLACE(#{logStaDt},'-','')+'000000' <= LOG_DT
+		  AND REPLACE(#{logEndDt},'-','')+'235959' >= LOG_DT ]]>
+		) X
+	</select>
+
+	<select id="selectUserLogDay" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserLogDay */
+	    SELECT
+	        LOG_DD,
+	        TOT_USER_CNT,
+	        ROUND((TOT_USER_CNT/SUM(TOT_USER_CNT) OVER())*100, 2) AS avg_user_conn
+	    FROM (
+ 				SELECT
+			         TO_CHAR(TO_DATE(LOG_DT,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD') AS LOG_DD,
+			         COUNT(DISTINCT USER_ID) AS TOT_USER_CNT
+			     FROM TC_USERLOG
+			     <![CDATA[
+			     WHERE  SITE_CD = 'F'
+			     AND 	REPLACE(#{logStaDt},'-','')+'000000' <= LOG_DT AND REPLACE(#{logEndDt},'-','')+'235959' >= LOG_DT
+			     ]]>
+	     		GROUP BY TO_CHAR(TO_DATE(LOG_DT,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD')
+	    ) X ORDER BY LOG_DD DESC
+	</select>
+
+	<select id="selectUserLogYear" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectUserLogYear */
+	    SELECT
+	         	SUBSTR(LOG_DT,0,4) AS log_yyyy,
+	         	COUNT(DISTINCT USER_ID) AS tot_user_cnt
+		FROM 	TC_USERLOG
+		WHERE 	SITE_CD = 'F'
+		GROUP BY SUBSTR(LOG_DT,0,4)
+		ORDER BY SUBSTR(LOG_DT,0,4) DESC
+	</select>
+
+	<select id="selectManagerList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.user.dao.impl.UserDao.selectManagerList */
+		<!-- SELECT *
+		FROM ( -->
+					SELECT
+								loginid
+								,membid
+								,nm
+								,kccicd
+								,kcci_gubun
+								,empno
+								,mail_group
+								,dept_cd
+								,dept_nm
+								,comp_tel
+								,ROW_NUMBER() OVER (ORDER BY nm ASC) rnum
+					FROM T_SSO_X02@DL_SSO.KORCHAM.ORG
+					WHERE 1=1
+						AND kcci_gubun='1'
+					<if test='findText != null and !findText.equals("")' >
+						AND (nm LIKE '%'+#{findText}+'%' OR dept_nm LIKE '%'+#{findText}+'%' OR loginid LIKE '%'+#{findText}+'%' OR empno LIKE '%'+#{findText}+'%' )
+			    	</if>
+			    	<if test='chamCd != null and !chamCd.equals("")' >
+						AND kccicd=#{chamCd}
+			    	</if>
+		<!-- 			)
+		WHERE rnum BETWEEN 1 AND 100 -->
+	</select>
+</mapper>

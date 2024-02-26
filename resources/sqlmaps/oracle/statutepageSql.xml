@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StatutepageDao">
+
+	<select id="selectStatutepage" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.guidancepage.dao.impl.StatutepageDao.selectStatutepage */
+			SELECT
+				a.cont_id as cont_id_1
+				,a.title	as title_1
+				,a.contents	as contents_1
+		        ,a.sort
+		        ,b.cont_id as cont_id_2
+				,b.title as title_2
+				,b.contents	as contents_2
+		        ,b.sort
+		        ,c.cont_id as cont_id_3
+				,c.title	as title_3
+				,c.contents	as contents_3
+		        ,c.sort
+			FROM
+				TS_MENUcontents a
+		    JOIN TS_MENUcontents b
+		    ON
+		    b.menu_cls_cd = '10'
+		    AND b.sort = '2'
+		    AND b.site_id = '0'
+		    JOIN TS_MENUcontents c
+		    ON
+		    c.menu_cls_cd = '10'
+		    AND c.sort = '3'
+		    AND c.site_id = '0'
+			WHERE
+			1=1
+			AND a.menu_cls_cd = '10'
+		    AND a.sort = '1'
+		    AND a.site_id = '0'
+
+
+	</select>
+
+
+	<select id="selectStatutepage2" parameterType="Map" resultType="camelMap">
+			/*
+			kr.apfs.local.guidancepage.dao.impl.StatutepageDao.selectStatutepage
+			*/
+			SELECT
+				title
+				,contents
+				,cont_id
+				,sort
+
+			FROM 	TS_MENUcontents
+
+			WHERE	1=1
+				AND	menu_cls_cd = '10'
+			    AND	site_id = '0'
+			ORDER BY sort
+
+
+
+		</select>
+	<insert id="insertStatutepage" parameterType="Map" >
+		INSERT INTO TS_MENUcontents
+		(
+			site_id
+			,menu_cls_cd
+			,title
+			,contents
+			,reg_user_id
+			,reg_dt
+			,sort
+
+		)
+		VALUES
+		(
+			'0'
+			,'10'
+			,#{title}
+			,#{contents}
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			,#{sort}
+		)
+
+
+	</insert>
+
+	<update id="updateStatutepage" parameterType="Map" >
+	    /* kr.apfs.local.guidancepage.dao.impl.StatutepageDao.updateStatutepage */
+	    UPDATE
+	 		TS_MENUcontents
+		SET
+				title = #{title}
+				,contents = #{contents}
+				,upd_user_id = #{*userId}
+				,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE  cont_id = #{contId}
+	</update>
+
+	<select id = "selectStatutepageExist" parameterType = "Map" resultType="integer">
+		SELECT
+			COUNT(*)
+		FROM
+			TS_MENUcontents
+		WHERE
+		1=1
+		AND cont_id = #{contId1}
+	</select>
+
+</mapper>

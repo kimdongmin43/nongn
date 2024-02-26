@@ -1,0 +1,399 @@
+@charset "UTF-8";
+
+
+
+html {width:100%; height:100%;}
+body { width:100%; height:100%; color:#000000; font-family:NanumSquare, '맑은 고딕', Malgun Gothic, "돋움", Dotum, "굴림", Gulim, Tahoma, Verdana, AppleGothic, UnDotum, sans-serif; line-height: 1.4em; letter-spacing: 0px; font-size:16px; -webkit-text-size-adjust: 100%;}
+/* 2023-04-19 body 나눔스퀘어 추가 *//*23년 웹접근성 맑은고딕 부분 한쪽은 따옴표인데 반대편은 쌍따옴표여서 오류난거 같음...*/
+
+/* 링크 된 폰트 세팅 */
+a {color:#000000; text-decoration:none;}		/*23년 웹접근성 color:#222 > #000000*/
+a:link {color: #000000; text-decoration:none;}
+a:visited {color:#000000; text-decoration:none;}
+a:active {color:#000000; text-decoration:none;}
+a:hover {color:#333;text-decoration:none;/*text-decoration:underline;*/}
+
+:before, :after{background-repeat:no-repeat;}
+
+
+a:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+div:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+strong:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+img:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+html:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+body:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+div:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+dl:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+dt:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+dd:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+ul:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+ol:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+li:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+p:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+h1:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+h2:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+h3:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+h4:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+h5:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+h6:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+button:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+input:focus-visible {outline-style: solid; outline-width: 2px; outline-color:#000; border-radius:3px !important; outline-offset:-3px;}	/*웹접근성 2차*/
+select:focus-visible {outline-style: solid; outline-width: 2px; outline-color:#000; border-radius:3px; outline-offset:-3px;}	/*웹접근성 2차*/
+textarea:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+table:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+span:focus-visible {outline-style: dashed; outline-width: 3px; outline-color:blue; outline-offset:-3px;}	/*웹접근성 2차*/
+
+/* focus outline 
+input[type="text"]:focus, input[type="password"]:focus, select:focus {#outline:#0099ff solid 2px; background-color: #f3f9ff;border-color:#0099ff;}
+input[type="radio"]:focus, input[type="checkbox"]:focus {#outline:#0099ff solid 2px;}*/
+
+
+/* table reset */
+table {border-collapse: collapse;border-spacing: 0;}
+table caption { overflow: hidden; width: 0; height: 0; line-height: 0; text-indent: -9999px;} /*2024 웹 접근성 font-size: 0; 삭제*/
+
+/* button reset */
+button {
+	display:inline-block; overflow:visible; padding:0; border:0; background:transparent; text-align:center; vertical-align:middle; cursor:pointer;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+ 	}
+button::-moz-focus-inner,
+input::-moz-focus-inner {border:0;padding:0}/*  Firefox에서 <button>과 <input> 태그의 내부 여백을 없애줍니다. 호환성과 관련된 부분이니 꼭 정의해 줍니다. */
+
+/* input box reset */
+input {
+	box-sizing:border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing:border-box;
+	cursor:pointer;
+	}
+input:-ms-input-placeholder { color:#333; }
+input:-moz-placeholder { color:#333; }
+input::-moz-placeholder { color:#333; }
+input::-webkit-input-placeholder { color:#333; }
+input:disabled{/*240103 게시글 비밀번호 input 박스 비활설화 색상*/
+	background:gray;
+}
+input[type="button"],
+input[type="submit"]{border:0}
+input[type="text"],
+input[type="password"] {
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	/* border-radius:0;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	-o-border-radius:0; */
+	}
+ input[type="number"]{
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	/* border-radius:0;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	-o-border-radius:0; */
+	}
+input[type="text"]:disabled {background-color: #eee;}
+input[type="checkbox"], input[type="radio"] {margin:0;}
+input[type="checkbox"] { width:20px; height:20px; border:1px solid #c1c1c1; }
+input[type="checkbox"]:checked {box-shadow:none;}
+input[type="checkbox"] + label {margin-left:5px;}
+input[type="radio"] { width:20px; height:20px; border:1px solid #c1c1c1; #box-shadow:none; #background-color:#fff; }
+input[type="radio"]:checked {box-shadow:none;}
+
+input[type=file]{ margin:0; padding:0; border:0; border:1px solid #ccc; height:35px; }
+input[type=file]::-webkit-file-upload-button { margin:0 10px 0 0; padding:0 10px; border:0; background-color:#545656; color:#fff; height:35px; line-height:1.4; border-radius:0 5px 5px 0; }
+input[type=file]::-ms-value { border:1px solid #ccc; background-color:#fff; }
+input[type=file]::-ms-browse { border:1px solid #ccc; background-color:#393d4a; color:#fff; }
+
+select { height:35px; line-height:35px; /* border-radius:0;-webkit-border-radius:0;-moz-border-radius:0;-o-border-radius:0; */ }
+select:disabled {background-color: #eee;}
+
+
+input, button, select, textarea {font-family:NanumSquare, "맑은 고딕", Malgun Gothic, "돋움", Dotum, "굴림", Gulim, Tahoma, Verdana, AppleGothic, UnDotum, sans-serif;} /* 2023-04-20 나눔스퀘어 추가 */
+
+.clearfix:after {display:block; visibility:hidden; clear:both; content:"."; overflow:hidden; width:0; height:0; font-size:0; line-height:0; text-indent:-9999px;}
+.clearfix {display: inline-block;}
+/*.clearfix {display: block;}*/
+.clear {clear:both;}
+.hide {display:none;}
+/* .hide {clip: rect(0 0 0 0); width: 1px; height: 1px; position: absolute; overflow: hidden; margin: -1px; padding: 0; border: 0;}	2024 웹 접근성 */
+.hide2 {clip: rect(0 0 0 0); width: 1px; height: 1px; position: absolute; overflow: hidden; margin: -1px; padding: 0; border: 0;}	/*2024 웹 접근성*/
+
+.skip { visibility:hidden; overflow:hidden; position:absolute; height:0; width:0; background:transparent; font-size:0; }
+.over_h { overflow:hidden}
+.over_a { overflow: auto}
+.w100{width:100%}
+
+
+/*	.btn_list {color:#fff; background:#07a7e3; border-color:#07a7e3;}
+	.btn_submit {color:#fff; background:#07a7e3; border-color:#07a7e3;}		
+기존 CSS 20.10.20 */
+.btn_list {color:#fff; background:#1F9AC8; border-color:#1F9AC8;}
+.btn_submit {color:#fff; background:#1F9AC8; border-color:#1F9AC8;}
+
+.btn_apply {color:#fff; background:#365a99; border-color:#365a99;}
+.btn_cancel {color:#fff; background:#4e535a; border-color:#4e535a;}
+.btn_reply {color:#fff; background:#4e535a; border-color:#4e535a;}
+.btn_modify {color:#fff; background:#4e535a; border-color:#4e535a;}
+
+
+/* 추가 클래스 (2018.07.10(화) - jQuery 기반으로 대체 처리)   기존 CSS 20.10.20
+.btn_list_submit {color:#fff; background:#07a7e3; border-color:#07a7e3;}
+.btn_insert_submit {color:#fff; background:#07a7e3; border-color:#07a7e3;}
+.btn_edit_submit {color:#fff; background:#07a7e3; border-color:#07a7e3;}
+.btn_list_cancel_submit { color:#fff; background:#07a7e3; border-color:#07a7e3; }	*/
+.btn_list_submit {color:#fff; background:#1F9AC8; border-color:#1F9AC8;}
+.btn_insert_submit {color:#fff; background:#0678a3; border-color:#0678a3;}		   /* 배경색 수정 2022.02.18 #1F9AC8*/
+.btn_edit_submit {color:#fff; background:#1F9AC8; border-color:#1F9AC8;}
+.btn_list_cancel_submit { color:#535353; background:#FFF; border-color:#1F9AC8; }   /* 배경색 수정 2021.05.12 */
+
+
+/* btn Type */
+/* .btn_area {margin:20px 0; }
+.btn_area a {display:inline-block; padding:8px 25px; border:0; color:#fff; font-weight:600; font-size:14px;} */ /*outline-style: dashed; outline-width: 2px;*/
+/* .btn_area a.btn_list_cancel_submit { color:#535353; background:#FFF; border:1px solid #1F9AC8;} */   /* 배경색 수정 2021.05.12 - 위 동일한 문장에 대해 신규 추가 */
+
+
+.btn_fileView {display:inline-block; margin-left:5px; padding:0 8px; height:21px; line-height:21px; font-size:0.9em; color:#333; background:#fff url(/images/smba/bg_btn.png) repeat-x;border:1px solid #b8b8b8; vertical-align:middle;}
+.btn_down {display:inline-block; padding:0 20px; /* height:24px; line-height:24px; */ font-size:14px; color:#fff; background-color:#07a7e3; background:url('/images/btn/bg_icon_down.png') no-repeat 95% 6px;border:1px solid #07a7e3; text-indent:0px; vertical-align:middle;}
+.btn_view {display:inline-block; float:right; padding:8px 25px; background:#365a99; border:0; color:white; font-weight:bold; font-size:14px;}
+
+a.btn_download {display:inline-block; padding:8px 40px; color:#fff; font-weight:600; border-radius:5px;  background:#1F9AC8 url('/images/btn/bg_icon_down.png') no-repeat 10% 8px;}	/*	a.btn_download {display:inline-block; padding:8px 40px; color:#fff; font-weight:600; border-radius:5px;  background:#07a7e3; background:#07a7e3 url('/images/btn/bg_icon_down.png') no-repeat 10% 8px;}		20.10.20	*/
+a:hover.btn_download { text-decoration:none}
+
+button.table_btn {padding: 0 14px; height: 29px; font-size: 2px; font-weight: bold; border: 1px solid #c7c7c7; color: #4d4d4d; text-align: center; background-color: #e1e1e1;} 
+
+button.btn_add {padding: 0 12px; height: 26px; font-size: 12px; font-weight: 500; border: 1px solid #797f8d; color: #fff; text-align: center; background-color: #797f8d;} /* 추가*/
+button.btn_del {padding: 0 12px; height: 26px; font-size: 12px; font-weight: 500; border: 1px solid #797f8d; color: #484f60; text-align: center; background-color: #fff;} /* 삭제*/
+
+.state_on { display:inline-table; width:48px; font-size: 11px; font-weight: 600; color: #fff; text-align: center; background-color: #c97434;} /* 상태표시_미완료*/
+.state_off { display:inline-table; width:48px;  font-size: 11px; font-weight: 600; color: #fff; text-align: center; background-color: #5a6273;} /* 상태표시_완료*/
+
+/* input & Select Type */
+textarea {text-align: left; /*text-indent: 3px;*/ line-height: 1.4em; font-size:14px; padding:10px}
+p {/* line-height: 1.5em; text-align: left; */}
+select { height:34px; border:1px solid #d9d9d9; line-height:35px; text-align:left; }
+input {display: inline-block; display: inline; vertical-align: middle;}
+input[type=text],
+input[type=password] { height:35px; padding:0 5px; font-size:100%; text-indent:0; line-height:35px; text-align: left; }
+input[type=password].pwdSize {width:150px; height:35px; padding:0 5px; font-size:100%; text-indent:0; line-height:35px; text-align: left; }
+input[type=text]#captchaAnswer { width:150px; height:35px; padding:0 5px; font-size:100%; text-indent:0; line-height:35px; text-align: left; }
+/*  input {border: expression((this.type=='text')?'0px':''); height: 28px; font-size: 100%; text-indent: 1px; line-height: 28px; text-align: left;}   적용안되어 주석 2020.11.27 */
+input[type=text].alignc {text-align: center;}
+    .in_wp40 {width: 40px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp50 {width: 50px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp60 {width: 60px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp70 {width: 70px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp80 {width: 80px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp90 {width: 90px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp100 {width: 100px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp110 {width: 110px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp120 {width: 120px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp130 {width: 130px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp140 {width: 140px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp150 {width: 150px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp160 {width: 160px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp170 {width: 170px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp180 {width: 180px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp190 {width: 190px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp200 {width: 200px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp250 {width: 250px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp300 {width: 300px; border:1px solid #ccc; border-radius:5px; }
+    .in_wp400 {width: 400px; border:1px solid #ccc; border-radius:5px; }
+    .in_w15 {width: 15%; border:1px solid #ccc; border-radius:5px; }
+    .in_w20 {width: 20%; border:1px solid #ccc; border-radius:5px; }
+    .in_w25 {width: 25%; border:1px solid #ccc; border-radius:5px; }
+    .in_w25 {width: 25%; border:1px solid #ccc; border-radius:5px; } /*240103 게시판 boardcontentswrite 테이블 구성 변경으로 인상 구분 너비 조정*/
+    .in_w26 {width: 100%; border:1px solid #ccc; border-radius:5px; } /*240103 게시판 boardcontentswrite 테이블 구성 변경으로 인상 구분 너비 조정*/
+    .in_w30 {width: 30%; border:1px solid #ccc; border-radius:5px; }
+    .in_w33 {width: 33%; border:1px solid #ccc; border-radius:5px; }
+    .in_w35 {width: 35%; border:1px solid #ccc; border-radius:5px; }
+    .in_w39 {width: 39%; border:1px solid #ccc; border-radius:5px; }
+    .in_w40 {width: 40%; border:1px solid #ccc; border-radius:5px; }
+    .in_w45 {width: 45%; border:1px solid #ccc; border-radius:5px; }
+    .in_w50 {width: 50%; border:1px solid #ccc; border-radius:5px; }
+    .in_w60 {width: 60%; border:1px solid #ccc; border-radius:5px; }
+    .in_w70 {width: 70%; border:1px solid #ccc; border-radius:5px; }
+    .in_w80 {width: 80%; border:1px solid #ccc; border-radius:5px; }
+    .in_w90 {width: 90%; border:1px solid #ccc; border-radius:5px; }
+    .in_w93 {width: 93%; border:1px solid #ccc; border-radius:5px; }
+    .in_w95 {width: 95%; border:1px solid #ccc; border-radius:5px; }
+    .in_w96 {width: 96%; border:1px solid #ccc; border-radius:5px; }
+    .in_w98 {width: 98%; border:1px solid #ccc; border-radius:5px; }
+    .in_w100 { width:100%; border:1px solid #ccc; border-radius:5px; }
+    .in_bg { background:#d9d9d9}
+
+ /* Margin Set */
+.ml0	{margin-left:0px !important;}
+.ml5	{margin-left:5px !important;}	
+.ml10	{margin-left:10px !important;}		
+.ml15	{margin-left:15px !important;}
+.ml20	{margin-left:20px !important;}		
+.ml25	{margin-left:25px !important;}		
+.ml30	{margin-left:30px !important;}		
+.ml35	{margin-left:35px !important;}		
+.ml40	{margin-left:40px !important;}		
+.ml45	{margin-left:45px !important;}		
+.ml50	{margin-left:50px !important;}		
+.mr5	{margin-right:5px !important;}	
+.mr10	{margin-right:10px !important;}	
+.mr15	{margin-right:15px !important;}	
+.mr20	{margin-right:20px !important;}	
+.mr25	{margin-right:25px !important;}	
+.mr30	{margin-right:30px !important;}	
+.mr35	{margin-right:35px !important;}	
+.mr40	{margin-right:40px !important;}	
+.mr45	{margin-right:45px !important;}	
+.mr50	{margin-right:50px !important;}
+.mb0	{margin-bottom:0px !important;}
+.mb5	{margin-bottom:5px !important;}	
+.mb10	{margin-bottom:10px !important;}	
+.mb15	{margin-bottom:15px !important;}	
+.mb20	{margin-bottom:20px !important;}	
+.mb25	{margin-bottom:25px !important;}	
+.mb30	{margin-bottom:30px !important;}	
+.mb35	{margin-bottom:35px !important;}	
+.mb40	{margin-bottom:40px !important;}	
+.mb45	{margin-bottom:45px !important;}	
+.mb50	{margin-bottom:50px !important;}		
+.mt0	{margin-top:0px !important;}
+.mt5	{margin-top:5px !important;}	
+.mt10	{margin-top:10px !important;}		
+.mt15	{margin-top:15px !important;}		
+.mt20	{margin-top:20px !important;}		
+.mt25	{margin-top:25px !important;}		
+.mt30	{margin-top:30px !important;}		
+.mt35	{margin-top:35px !important;}		
+.mt40	{margin-top:40px !important;}		
+.mt45	{margin-top:45px !important;}		
+.mt50	{margin-top:50px !important;}
+
+/* Padding Set */
+.pl0	{padding-left:0px !important;}
+.pl1	{padding-left:1px !important;}  
+.pl5	{padding-left:5px !important;}		
+.pl10	{padding-left:10px !important;}	
+.pl15	{padding-left:15px !important;}	
+.pl20	{padding-left:20px !important;}	
+.pl25	{padding-left:25px !important;}	
+.pl30	{padding-left:30px !important;}	
+.pl35	{padding-left:35px !important;}	
+.pl40	{padding-left:40px !important;}	
+.pl45	{padding-left:45px !important;}	
+.pl50	{padding-left:50px !important;}	
+.pr5	{padding-right:5px !important;}	
+.pr10	{padding-right:10px !important;}	
+.pr15	{padding-right:15px !important;}	
+.pr20	{padding-right:20px !important;}	
+.pr25	{padding-right:25px !important;}	
+.pr30	{padding-right:30px !important;}	
+.pr35	{padding-right:35px !important;}	
+.pr40	{padding-right:40px !important;}	
+.pr45	{padding-right:45px !important;}	
+.pr50	{padding-right:50px !important;}
+.pb5	{padding-bottom:5px !important;}	
+.pb10	{padding-bottom:10px !important;}	
+.pb15	{padding-bottom:15px !important;}	
+.pb20	{padding-bottom:20px !important;}	
+.pb25	{padding-bottom:25px !important;}	
+.pb30	{padding-bottom:30px !important;}	
+.pb35	{padding-bottom:35px !important;}	
+.pb40	{padding-bottom:40px !important;}	
+.pb45	{padding-bottom:45px !important;}	
+.pb50	{padding-bottom:50px !important;}
+.pt0	{padding-top:0px !important;}
+.pt5	{padding-top:5px !important;}		
+.pt10	{padding-top:10px !important;}		
+.pt15	{padding-top:15px !important;}		
+.pt20	{padding-top:20px !important;}		
+.pt25	{padding-top:25px !important;}		
+.pt30	{padding-top:30px !important;}		
+.pt35	{padding-top:35px !important;}		
+.pt40	{padding-top:40px !important;}		
+.pt45	{padding-top:45px !important;}		
+.pt50	{padding-top:50px !important;}
+
+/* width Set */
+.wi10 {width:10%;}
+.wi15 {width:15%;}
+.wi20 {width:20%;}
+.wi25 {width:25%;}
+.wi30 {width:30%;}
+.wi35 {width:35%;}
+.wi40 {width:40%;}
+.wi45 {width:45%;}
+.wi50 {width:50%;}
+.wi55 {width:55%;}
+.wi60 {width:60%;}
+.wi65 {width:65%;}
+.wi70 {width:70%;}
+.wi75 {width:75%;}
+.wi80 {width:80%;}
+.wi85 {width:85%;}
+.wi90 {width:90%;}
+.wi95 {width:95%;}
+.wi100 {width:100%;}
+
+
+/* 정렬 */
+.fl_left { float:left !important; }
+.fl_right { float:right !important; }
+.fl_none { float:none !important; }
+.fl_clear { clear:both; height:0; font-size:0; line-height:0; }
+
+.clfix:after {content: ""; display: block; height:0; clear:both; visibility:hidden}
+.clfix {display: block}
+
+/* 텍스트 정렬 */
+.tal { text-align: left!important}
+.tac { text-align: center!important }
+.tar { text-align: right!important}
+
+/* 텍스트 기본 색상 */
+.fc_blue { color:#0b63ae !important; font-weight:700; }
+.fc_red { color:#c90000 !important; font-weight:700; }
+.fc_skyblue { color:#2D6EC8 !important; font-weight:700; }	/*	.fc_skyblue {color:#07a7e3 !important; font-weight:600}		20.10.20				2022.02.23   color:#1F9AC8 !important;*/
+.fc_green { color:#2e9622 !important; font-weight:700; }
+
+/* 텍스트 크기 */
+.fs_11 { font-size:11px !important; }
+.fs_12 { font-size:12px !important; }
+.fs_13 { font-size:13px !important; }
+.fs_14 { font-size:14px !important; }
+.fs_15 { font-size:15px !important; }
+.fs_16 { font-size:16px !important; }
+
+/* 라인 */
+.border_b { border-bottom:1px solid #ddd; }
+
+/* border */
+.borNone { border:none !important; }
+.borLNone { border-left:none !important; }
+.borRNone { border-right:none !important; }
+.borTNone { border-top:none !important; }
+.borBNone { border-bottom:none !important; }
+
+/*	2020.11.05  누락된 것으로 판단하여 추가 */
+.table_area {overflow: hidden; margin-bottom: 20px;}
+
+/* font-weight */
+.fw_300 { font-weight:300; }
+.fw_400 { font-weight:400; }
+.fw_700 { font-weight:700; }
+.fw_800 { font-weight:800; }
+
+/* text-decoration */
+.uline { text-decoration:underline; }
+
+/* border */
+.borBNone { border-bottom:0 none !important; }
+
+/* 넓이가 640px 이하일 때*/
+@media all and (max-width:640px){
+	body,input,textarea,button,select,table,h1,h2,h3,h4,h5,h6{font-size:14px}
+}

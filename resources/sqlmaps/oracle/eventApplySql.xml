@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EventApply">
+
+	<select id="selectEventApplyList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.event.dao.EventDao.selectEventApplyList */
+		SELECT 		ROWNUM AS rNum,
+		     		EVENT_ID,
+					SITE_ID,
+					APPLY_SEQ,
+					COMPANY_NO,
+					COMPANY_NM,
+					BIZ_TYPE,
+					BIZ_FORM,
+					MANAGER_NM,
+					DEPT_NM,
+					RANK_NM,
+					TEL,
+					FAX,
+					MOBILE,
+					EMAIL,
+					REG_USER_ID,
+					REG_DT,
+					UPD_USER_ID,
+					UPD_DT,
+					USE_YN,
+					UF_CODE_NM('USE_YN',USE_YN) use_yn_nm,
+					DEL_YN,
+					UF_CODE_NM('DEL_YN',DEL_YN) del_yn_nm,
+					SORT
+		FROM TS_EVENTAPPLY
+		WHERE 1=1
+		AND SITE_ID = #{*siteId}
+		AND EVENT_ID = #{eventId}
+		<!-- 단일건 요청 -->
+		<if test='applySeq != null and !applySeq.equals("")' >
+		AND APPLY_SEQ = #{applySeq}
+		</if>
+		<if test='managerNm != null and !managerNm.equals("")' >
+		AND MANAGER_NM = #{managerNm}
+		</if>
+		<if test='companyNo != null and !companyNo.equals("")' >
+		AND COMPANY_NO = #{companyNo}
+		</if>
+		<!-- 목록 요청 -->
+		<if test='applySeq == null or applySeq.equals("")' >
+		ORDER BY EVENT_ID DESC
+		</if>
+	</select>
+
+	<insert id="insertEventApply" parameterType="Map" >
+	    /* kr.apfs.local.event.dao.EventDao.insertEventApply */
+		INSERT INTO
+		TS_EVENTAPPLY (
+				APPLY_SEQ,
+				EVENT_ID,
+				SITE_ID,
+				COMPANY_NO,
+				COMPANY_NM,
+				BIZ_TYPE,
+				BIZ_FORM,
+				MANAGER_NM,
+				DEPT_NM,
+				RANK_NM,
+				TEL,
+				FAX,
+				MOBILE,
+				EMAIL,
+				REG_USER_ID,
+				REG_DT,
+				USE_YN,
+				DEL_YN
+		)
+		SELECT
+	     		NVL(MAX(APPLY_SEQ),0)+1,
+	     		#{eventId},
+				#{*siteId},
+				#{companyNo},
+				#{companyNm},
+				#{bizType},
+				#{bizForm},
+				#{managerNm},
+				#{deptNm},
+				#{rankNm},
+				#{tel},
+				#{fax},
+				#{mobile},
+				#{email},
+				#{regUserId},
+				TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+				'Y',
+				'N',
+		FROM TS_EVENTAPPLY
+		WHERE SITE_ID =#{*siteId}
+		AND	EVENT_ID =#{eventId}
+		<selectKey keyProperty="applySeq" resultType="Integer" order="AFTER">
+			SELECT MAX(APPLY_SEQ) FROM TS_EVENTAPPLY
+		</selectKey>
+	</insert>
+
+	<update id="updateEventApply" parameterType="Map" >
+	    /* kr.apfs.local.event.dao.EventDao.updateEventApply */
+	    UPDATE
+	 			TS_EVENTAPPLY
+		SET
+				COMPANY_NO 		= #{companyNo},
+				COMPANY_NM 		= #{companyNm},
+				BIZ_TYPE 		= #{bizType},
+				BIZ_FORM 		= #{bizForm},
+				MANAGER_NM 		= #{managerNm},
+				DEPT_NM 		= #{deptNm},
+				RANK_NM 		= #{rankNm},
+				TEL 			= #{tel},
+				FAX 			= #{fax},
+				MOBILE 			= #{mobile},
+				EMAIL 			= #{email},
+				UPD_USER_ID 	= #{updUserId},
+				UPD_DT 			= TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+
+		WHERE	SITE_ID			= #{*siteId}
+		AND		EVENT_ID 		= #{eventId}
+		AND		APPLY_SEQ		= #{applySeq}
+	</update>
+
+	<delete id="deleteEventApply" parameterType="Map" >
+	    /* kr.apfs.local.event.dao.EventDao.deleteEventApply */
+	 	DELETE 	FROM
+				TS_EVENTAPPLY
+		WHERE 	SITE_ID= #{*siteId}
+		AND 	EVENT_ID = #{eventId}
+		<if test='applySeq != null and !applySeq.equals("")' >
+		AND 	APPLY_SEQ = #{applySeq}
+		</if>
+		<if test='applySeqList != null' >
+		<foreach collection="applySeqList" item="item" index="index" open="AND APPLY_SEQ IN (" close=")" separator="," >
+		#{item}
+		</foreach>
+		</if>
+	</delete>
+</mapper>

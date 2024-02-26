@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LocationpageDao">
+
+	<select id="selectLocationpagePageList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.locationpage.dao.impl.LocationpageDao.selectLocationpagePageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+					loc_id
+		    	   ,site_id
+		    	   ,branch_nm
+		    	   ,addr2
+		    	   ,tel
+		    	   ,sort
+		  FROM ts_location
+		 WHERE 1 = 1
+		  AND site_id = #{*siteId}
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+	<select id="selectLocationpageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.locationpage.dao.impl.LocationpageDao.selectLocationpageList */
+		SELECT ROWNUM AS RNUM,
+		     		loc_id
+		     		,site_id
+					,title
+					,satis_yn
+					,meta_keyword
+					,reg_user_id
+					,(select user_nm from t_user where user_id = a.reg_user_id) as reg_usernm
+					,GET_DATEFORMAT(reg_dt) as regDt
+		FROM t_contents a
+		WHERE 1 = 1
+				<if test='title != null and !title.equals("")' >
+				   AND title = #{title}
+				</if>
+				<if test='contents != null and !contents.equals("")' >
+				   AND contents = #{contents}
+				</if>
+	</select>
+
+	<select id="selectLocationpage" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.locationpage.dao.impl.LocationpageDao.selectLocationpage */
+		SELECT
+					loc_id
+					,site_id
+					,addr2
+					,branch_nm
+					,lng
+					,lat
+					,tel
+					,loc_desc
+					,loc_comment
+					,sort
+		FROM ts_location
+		WHERE
+		1=1
+		AND loc_id = #{locId}
+		ORDER BY  sort DESC
+	</select>
+
+	<select id="selectLocationpage2" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.locationpage.dao.impl.LocationpageDao.selectLocationpage */
+		SELECT
+					loc_id
+					,site_id
+					,addr1
+					,addr2
+					,branch_nm
+					,lng
+					,lat
+					,tel
+					,loc_desc
+				    ,loc_comment
+					,sort
+		FROM ts_location
+		WHERE 1=1
+			AND site_id = #{*siteId}
+	<!-- 	AND loc_id = #{locId} -->
+		ORDER BY  sort ASC
+	</select>
+
+
+	<select id="selectLocationpageExist" parameterType="Map" resultType="integer">
+		SELECT  /* kr.apfs.local.contents.dao.impl.LocationpageDao.selectLocationpageExist */
+				  count(*)
+			FROM ts_location
+			WHERE 	site_id = #{*siteId}
+
+	</select>
+
+	<update id="insertLocationpage" parameterType="Map" >
+	    /* kr.apfs.local.locationpage.dao.impl.LocationpageDao.insertLocationpage */
+		INSERT INTO
+		ts_location (
+				loc_id
+				,site_id
+				,addr2
+				,branch_nm
+				,lng
+				,lat
+				,tel
+				,loc_desc
+				,loc_comment
+				,sort
+				,reg_user_id
+				,reg_dt
+		) VALUES (
+				(SELECT NVL(MAX(loc_id),0)+1 FROM ts_location )
+				,#{*siteId}
+				,#{addr2}
+				,#{branchNm}
+				,#{lng}
+				,#{lat}
+				,#{tel}
+				,#{locDesc}
+				,#{locComment}
+				,(SELECT NVL(MAX(sort),0)+1 FROM ts_location WHERE loc_id = #{locId})
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		)
+	</update>
+
+	<update id="updateLocationpage" parameterType="Map" >
+	    /* kr.apfs.local.locationpage.dao.impl.LocationpageDao.updateLocationpage */
+	    UPDATE
+	 		ts_location
+		SET
+				branch_nm = #{branchNm}
+				,addr2 = #{addr2}
+				,tel = #{tel}
+				,lng = #{lng}
+				,lat = #{lat}
+				,loc_desc = #{locDesc}
+				,loc_comment = #{locComment}
+				,upd_user_id = #{*userId}
+				,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE  loc_id = #{locId}
+	</update>
+
+	<delete id="deleteLocationpage" parameterType="Map" >
+	    /* kr.apfs.local.locationpage.dao.impl.LocationpageDao.deleteLocationpage */
+	 	UPDATE
+			t_contents
+			SET
+			del_yn = 'Y'
+		WHERE site_id = #{*siteId}
+	</delete>
+
+</mapper>

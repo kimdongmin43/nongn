@@ -1,0 +1,80 @@
+@charset "utf-8";
+
+
+.daopen_title_box {width:100%; height:245px; margin-bottom:25px;}
+.daopen_title_box.bg_daopen_tit1{background:#eff1f3 url('../images/gov30/daopen_tit_img1.png') no-repeat right 0;}
+.daopen_title_box.bg_daopen_tit2{background:#eff1f3 url('../images/gov30/daopen_tit_img2.png') no-repeat right 0;}
+.daopen_title_box.bg_daopen_tit3{background:#eff1f3 url('../images/gov30/daopen_tit_img3.png') no-repeat right 0;}
+    .daopen_txt_area {width:70%; padding:40px 40px 17px 40px;}
+	.daopen_txt_area2 {width:70%; padding:0 0 0 40px; overflow:hidden;}
+	.daopen_txt_area2 p {float:left; width:57%; padding:0 15px 0 0; line-height:1.3em; font-size:13px !important;}
+	.daopen_txt_area2 img {float:left; padding:12px 0 0 0;}
+
+.daopen_title_box h5 {font-size:21px; color:#333; font-weight:600; padding-bottom:10px;}
+.daopen_title_box p {font-size:15px; font-weight:500; padding-top:10px}
+
+
+/* 정보공개 안내 (수정2018.01.04)*/
+.daopen_area_s_bott {}
+.daopen_area_s_bott dl {padding:2% 0 1% 0; letter-spacing:0.01em;}
+   .daopen_area_s_bott dt {font-size:16px; font-weight:bold; margin-bottom:7px; padding:0 0 0 18px; background:url('../images/common/bul_depth2.gif') no-repeat 0 5px;}
+   .daopen_area_s_bott dd {font-size:14px; margin-bottom:4px; background: url('../images/sub/bg_bul_line.png') no-repeat 4px 9px; padding-left:15px}
+
+.list_type_daopen {margin:3px 0 10px 0; margin-left:5px; font-size:13px; color:#7d7d7d;}
+.list_type_daopen>li {background: url('../images/sub/bg_bul_rect.png') no-repeat 0 8px; padding-left:10px;}
+
+#daopen_content_2 dd img {margin:1% 1%}
+
+.daopen_con_sty {display:inline-block; width:49%; height:118px; margin:0 5px 5px 0; background-color:#f7f7f7;}
+    .daopen_con_sty dt {float:left; background-image:none; width:80%; margin-top:2%;}
+    .daopen_con_sty dd {float:right; width:18%; background-image:none; }
+
+
+
+
+
+
+
+/* 화면 해상도 width 1025px 이상 Design --------------------------------------*/
+@media screen and (min-width: 1025px){
+	
+	
+}
+
+
+
+/* 화면 해상도 width 640px 이상 960px 이하 Design --------------------------------------*/
+@media screen and (max-width: 1024px) and (min-width: 641px) {
+	
+	
+	
+}
+
+
+
+/* 화면 해상도 width 640px 이하 Design --------------------------------------*/
+@media screen and (max-width: 640px){
+	
+.daopen_con_sty {display:inline-block; width:100%; height:20%; margin:0 5px 5px 0; background-color:#f7f7f7;}	
+	
+}
+
+
+/* 화면 해상도 width 460px 이하 Design --------------------------------------*/
+@media screen and (max-width: 460px){
+
+.daopen_title_box {width:100%; height:30%; margin-bottom:25px;}
+.daopen_title_box.bg_daopen_tit1{background-color:#eff1f3;  background-image:none;}
+.daopen_title_box.bg_daopen_tit2{background-color:#eff1f3;  background-image:none;}
+.daopen_title_box.bg_daopen_tit3{background-color:#eff1f3;  background-image:none;}
+.daopen_txt_area {width:100%; padding:7% 4% 7% 4%;}
+	
+}
+
+
+
+
+
+
+
+

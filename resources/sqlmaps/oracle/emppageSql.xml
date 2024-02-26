@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EmppageDao">
+
+	<select id="selectEmppagePageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.emppage.dao.impl.EmppageDao.selectEmppagePageList */
+		<!-- <include refid="CommonSql.pageingTop"/> -->
+		SELECT
+		    d.emp_id
+			,d.site_id
+			,d.dept_id
+			,c.dept_nm
+			,d.rank_id
+			,b.rank_nm
+			,d.emp_nm
+			,d.attach_id
+			,e.file_path
+			,d.reg_user_id
+			,d.reg_dt
+			,d.upd_user_id
+			,d.upd_dt
+			,d.use_yn
+			,d.del_yn
+			,d.sort
+		  FROM ts_emp d
+		  JOIN ts_emprank b
+		  ON d.rank_id = b.rank_id
+		  JOIN ts_empdept c
+		  ON d.dept_id = c.dept_id
+		  LEFT OUTER JOIN tc_attachfile e
+		  ON d.attach_id = e.attach_id
+		  WHERE 1 = 1
+		  AND d.site_id = #{*siteId}
+		  AND d.del_yn = 'N'
+		  ORDER BY sort
+		<!-- <include refid="CommonSql.pageingBottom"/> -->
+	</select>
+
+		<select id="selectEmppagePageList2" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.emppage.dao.impl.EmppageDao.selectEmppagePageList */
+		<!-- <include refid="CommonSql.pageingTop"/> -->
+		SELECT
+		    d.emp_id
+			,d.site_id
+			,d.dept_id
+			,c.dept_nm
+			,d.rank_id
+			,b.rank_nm
+			,d.emp_nm
+			,d.attach_id
+			,e.file_path
+			,d.reg_user_id
+			,d.reg_dt
+			,d.upd_user_id
+			,d.upd_dt
+			,d.use_yn
+			,d.del_yn
+			,d.sort
+		  FROM ts_emp d
+		  JOIN ts_emprank b
+		  ON d.rank_id = b.rank_id
+		  JOIN ts_empdept c
+		  ON d.dept_id = c.dept_id
+		  LEFT OUTER JOIN tc_attachfile e
+		  ON d.attach_id = e.attach_id
+		  WHERE 1 = 1
+		  AND d.site_id = #{*siteId}
+		  AND d.del_yn = 'N'
+		  ORDER BY sort
+		<!-- <include refid="CommonSql.pageingBottom"/> -->
+	</select>
+
+	<select id="selectEmppageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.emppage.dao.impl.EmppageDao.selectEmppageList */
+		SELECT ROWNUM AS RNUM,
+		     		page_id
+					,title
+					,satis_yn
+					,meta_keyword
+					,reg_user_id
+					,(select user_nm from t_user where user_id = a.reg_user_id) as reg_usernm
+					,GET_DATEFORMAT(reg_dt) as regDt
+		FROM ts_emp a
+		WHERE 1 = 1
+				<if test='title != null and !title.equals("")' >
+				   AND title = #{title}
+				</if>
+				<if test='contents != null and !contents.equals("")' >
+				   AND contents = #{contents}
+				</if>
+				AND use_yn = 'Y'
+				AND del_yn = 'N'
+
+	</select>
+
+	<select id="selectEmppage" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.emppage.dao.impl.EmppageDao.selectEmppage */
+		SELECT
+		   			a.emp_id
+		   			,a.emp_nm
+		   			,a.dept_id
+		   			,a.rank_id
+		   			,a.attach_id
+		   			,b.file_id
+					,b.origin_file_nm
+					,b.file_path
+					,b.file_size
+		FROM ts_emp a
+		LEFT OUTER JOIN tc_attachfile b
+		ON a.attach_id = b.attach_id
+		WHERE
+		1=1
+		AND emp_id = #{empId}
+		AND use_yn = 'Y'
+		AND del_yn = 'N'
+
+	</select>
+
+	<select id="selectEmppageExist" parameterType="Map" resultType="integer">
+		SELECT  /* kr.apfs.local.contents.dao.impl.EmppageDao.selectEmppageExist */
+				  count(*)
+			FROM ts_emp
+			WHERE 	site_id = #{*siteId}
+
+	</select>
+
+	<insert id="insertEmppage" parameterType="Map" >
+	    /* kr.apfs.local.emppage.dao.impl.EmppageDao.insertEmppage */
+		INSERT INTO
+		ts_emp (
+				emp_id
+				,site_id
+				,dept_id
+				,rank_id
+				,emp_nm
+				,attach_id
+				,reg_user_id
+				,reg_dt
+				,use_yn
+				,del_yn
+				,sort
+		) VALUES (
+				(SELECT NVL(MAX(emp_id),0)+1 FROM ts_emp)
+				,#{*siteId}
+				,#{deptId}
+				,#{rankId}
+				,#{empNm}
+				,#{attachId}
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,'Y'
+				,'N'
+				,(SELECT NVL(MAX(sort),0)+1 FROM ts_emp WHERE site_id = #{*siteId} AND del_yn = 'N' )
+		)
+	</insert>
+
+	<update id="updateEmppage" parameterType="Map" >
+	    /* kr.apfs.local.emppage.dao.impl.EmppageDao.updateEmppage */
+	    UPDATE
+	 		ts_emp
+		SET
+				emp_nm = #{empNm}
+				,dept_id = #{deptId}
+				,rank_id = #{rankId}
+				,attach_id = #{attachId}
+				,upd_user_id = #{*userId}
+				,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+
+
+				<if test='file != null and !file.equals("")' >
+				,group_id = #{group_id_upd}
+				</if>
+		WHERE  emp_id = #{empId}
+	</update>
+
+	<delete id="deleteEmppage" parameterType="Map" >
+	    /* kr.apfs.local.emppage.dao.impl.EmppageDao.deleteEmppage */
+	 	UPDATE
+			ts_emp
+			SET
+			del_yn = 'Y'
+		WHERE emp_id = #{empId}
+	</delete>
+
+	<update id="updateEmppageSort" parameterType="Map">
+		UPDATE
+			ts_emp
+		SET
+			sort = #{sort}
+		WHERE
+			1=1
+		 AND emp_id = #{empId}
+
+
+	</update>
+
+
+	<select id = "selectEmpRankList"  parameterType="Map" resultType="camelMap">
+
+			SELECT
+				rank_id
+				,site_id
+				,rank_nm
+				,reg_user_id
+				,reg_dt
+				,upd_user_id
+				,upd_dt
+				,use_yn
+				,del_yn
+				,sort
+			FROM
+				ts_emprank
+			WHERE
+			1=1
+			AND site_id = #{*siteId}
+			AND del_yn = 'N'
+
+			<if test='searchtxt != null and !searchtxt.equals("")' >
+			AND rank_nm LIKE '%' + #{searchtxt} + '%'
+			</if>
+			ORDER BY sort ASC
+
+
+	</select>
+
+
+	<insert id="insertEmpRank" parameterType="Map" >
+		INSERT INTO ts_emprank
+		(
+				rank_id
+				,site_id
+				,rank_nm
+				,reg_user_id
+				,reg_dt
+				,use_yn
+				,del_yn
+				,sort
+		)
+		VALUES
+		(
+				(SELECT NVL(MAX(rank_id),0)+1 FROM ts_emprank)
+				,#{*siteId}
+				,#{rankNm}
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,'Y'
+				,'N'
+				,(SELECT NVL(MAX(sort),0)+1 FROM ts_emprank WHERE site_id = #{*siteId} AND del_yn = 'N')
+		)
+
+	</insert>
+	<update id="updateRankReorder" parameterType="Map" >
+			UPDATE ts_emprank
+			SET
+				sort = #{sort}
+			WHERE
+				1=1
+				AND rank_id = #{rankId}
+	</update>
+	<update id="updateRank" parameterType="Map" >
+			UPDATE ts_emprank
+			SET
+				rank_nm = #{rankNm}
+				,upd_user_id = #{*userId}
+				,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			WHERE
+				1=1
+				AND rank_id = #{rankId}
+	</update>
+
+
+
+	<select id="selectRank" parameterType="Map" resultType="camelMap">
+		   	SELECT
+		   		rank_id
+		   		,rank_nm
+		   	FROM
+		   		ts_emprank
+		   	WHERE
+		   		1=1
+		   		AND rank_id = #{rankId}
+		   		AND del_yn = 'N'
+
+	</select>
+
+	<delete id="deleteRank" parameterType="Map">
+				UPDATE ts_emprank
+			SET
+				del_yn = 'Y'
+				,upd_user_id = #{*userId}
+				,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			WHERE
+				1=1
+				AND rank_id = #{rankId}
+
+	</delete>
+
+
+
+
+
+
+
+
+
+
+	<select id = "selectEmpDeptList"  parameterType="Map" resultType="camelMap">
+
+			SELECT
+				dept_id
+				,site_id
+				,dept_nm
+				,reg_user_id
+				,reg_dt
+				,upd_user_id
+				,upd_dt
+				,use_yn
+				,del_yn
+				,sort
+			FROM
+				ts_empdept
+			WHERE
+			1=1
+			AND site_id = #{*siteId}
+			AND del_yn = 'N'
+
+			<if test='searchtxt != null and !searchtxt.equals("")' >
+			AND dept_nm LIKE '%' + #{searchtxt} + '%'
+			</if>
+
+			ORDER BY sort ASC
+	</select>
+
+
+	<insert id="insertEmpDept" parameterType="Map" >
+		INSERT INTO ts_empdept
+		(
+				dept_id
+				,site_id
+				,dept_nm
+				,reg_user_id
+				,reg_dt
+				,use_yn
+				,del_yn
+				,sort
+		)
+		VALUES
+		(
+				(SELECT NVL(MAX(dept_id),0)+1 FROM ts_empdept)
+				,#{*siteId}
+				,#{deptNm}
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,'Y'
+				,'N'
+				,(SELECT NVL(MAX(sort),0)+1 FROM ts_empdept WHERE site_id = #{*siteId} AND del_yn = 'N')
+		)
+
+	</insert>
+	<update id="updateDeptReorder" parameterType="Map" >
+			UPDATE ts_empdept
+			SET
+				sort = #{sort}
+			WHERE
+				1=1
+				AND dept_id = #{deptId}
+	</update>
+	<update id="updateDept" parameterType="Map" >
+			UPDATE ts_empdept
+			SET
+				dept_nm = #{deptNm}
+				,upd_user_id = #{*userId}
+				,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			WHERE
+				1=1
+				AND dept_id = #{deptId}
+	</update>
+
+
+
+	<select id="selectDept" parameterType="Map" resultType="camelMap">
+		   	SELECT
+		   		dept_id
+		   		,dept_nm
+		   	FROM
+		   		ts_empdept
+		   	WHERE
+		   		1=1
+		   		AND dept_id = #{deptId}
+		   		AND del_yn = 'N'
+
+	</select>
+
+	<delete id="deleteDept" parameterType="Map">
+				UPDATE ts_empdept
+			SET
+				del_yn = 'Y'
+				,upd_user_id = #{*userId}
+				,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			WHERE
+				1=1
+				AND dept_id = #{deptId}
+	</delete>
+
+
+</mapper>

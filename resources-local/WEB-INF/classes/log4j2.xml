@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+        <File name="FileAppender" fileName="application-${date:yyyyMMdd}.log" immediateFlush="false" append="true">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
+        <RollingFile name="FileLog"
+                    fileName="d:/logs/apfs.log"
+                    filePattern="d:/logs/apfs-%d{yyyy-MM-dd}-%i.log">
+           <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" charset="UTF-8" />
+           <Policies>
+               <TimeBasedTriggeringPolicy interval="1" />
+               <SizeBasedTriggeringPolicy size="10000KB" />
+           </Policies>
+           <DefaultRolloverStrategy max="20" fileIndex="min" />
+       </RollingFile>
+    </Appenders>
+    
+   
+    <Loggers>
+    
+    
+		<Logger name="org.apache" level="ERROR"></Logger> 
+		<Logger name="org.springframework" level="ERROR"></Logger> 
+		<Logger name="egovframework" level="ERROR"></Logger> 
+		<Logger name="egovframework.let" level="DEBUG"></Logger> 
+		<Logger name="egovframework.com.cmm" level="DEBUG"></Logger> 
+		<Logger name="jdbc.sqlonly" level="DEBUG"> <RegexFilter regex="(?s).*NOT_SQL_LOG.*" onMatch="DENY" onMismatch="NEUTRAL" useRawMsg="true" /> </Logger> 
+		<Logger name="jdbc.sqltiming" level="OFF"></Logger> <Logger name="jdbc.audit" level="OFF"></Logger> 
+		<Logger name="jdbc.resultset" level="OFF"></Logger> <Logger name="jdbc.resultsettable" level="OFF"></Logger> 
+		<Logger name="jdbc.connection" level="OFF"></Logger> <logger name="java.sql.ResultSet" level="OFF"></logger> 
+		<logger name="java.sql.PreparedStatement" level="OFF"></logger> <logger name="java.sql.Connection" level="OFF"></logger> 
+		<logger name="log4jdbc.debug" level="OFF"></logger> <logger name="org.quartz.core.QuartzSchedulerThread" level="OFF"></logger>
+
+    
+    
+        <Root  level="INFO">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="FileLog"  level="DEBUG"/>
+        </Root>
+
+    </Loggers>
+</Configuration>

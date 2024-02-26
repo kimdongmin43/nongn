@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MainData">
+
+	<select id="selectEContentsList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.MainData.selectEContentsList */
+
+		SELECT	DISTINCT BARCODE
+						, 'EBOOK' AS DIV_CD
+						, '전자책' AS DIV_NM
+						, TITLE
+						, NULL AS SUB_TITLE
+						, AUTHOR
+						, NULL  AS SUMM
+						, IMG_URL
+						, DETAIL_URL
+						, NULL AS CATEGORY
+						, NULL AS REG_DT
+						, 'http://ebook.korcham.net/' MORE_URL
+
+			FROM   (SELECT	SEQ_NO
+							, BARCODE
+							, TITLE
+							, AUTHOR
+							, IMG_URL
+							, DETAIL_URL
+					FROM	TB_EBOOK
+					ORDER BY SEQ_NO DESC )
+			WHERE  4 > ROWNUM
+
+		UNION ALL
+
+		SELECT	  NULL AS BARCODE
+						, 'MAGAZINE' AS DIV
+						, '매거진' AS DIV_NM
+						, TITLE
+						, SUB_TITLE
+						, NULL  AS AUTHOR
+						, NULL  AS SUMM
+						, IMG_URL
+						, DETAIL_URL
+						, NULL AS CATEGORY
+						, REGIST_DATE AS REG_DT
+						, 'http://magazine.korcham.net/' MORE_URL
+
+				FROM   (SELECT	TITLE
+								, SUB_TITLE
+								, IMG_URL
+								, DETAIL_URL
+								, TO_CHAR(REGIST_DATE, 'YYYY"년"MM"월"DD"일"' ) REGIST_DATE
+						FROM	TB_MAGAZINE
+						ORDER BY PUD_DATE DESC )
+				WHERE  4 > ROWNUM
+
+		UNION ALL
+
+		SELECT  NULL AS BARCODE
+					, 'BOOKZIP' AS DIV
+					, '도서요약' AS DIV_NM
+					, TITLE
+					, NULL AS SUB_TITLE
+					, AUTHOR
+					, SUMM
+					, IMG_URL
+					, DETAIL_URL
+					, CATEGORY
+					, REGIST_DATE AS REG_DT
+					, 'http://bookzip.korcham.net/' MORE_URL
+
+			FROM   (SELECT	TITLE
+							, AUTHOR
+							, SUMM
+							, IMG_URL
+							, DETAIL_URL
+							, CATEGORY
+							, TO_CHAR(REGIST_DATE, 'YYYY"년"MM"월"DD"일"' ) REGIST_DATE
+					FROM	TB_BOOKZIP
+					ORDER BY SEQ_NO DESC )
+			WHERE  4 > ROWNUM
+
+		UNION ALL
+
+		SELECT	  NULL AS BARCODE
+						, 'SERI_PRO' AS DIV
+						, 'SEPro' AS DIV_NM
+						, TITLE
+						, NULL AS SUB_TITLE
+						, NULL AS AUTHOR
+						, SUMM
+						, IMG_URL
+						, CONTENT_URL AS DETAIL_URL
+						, NULL AS CATEGORY
+						, NULL AS REG_DT
+						, 'http://www.seripro.org/' MORE_URL
+
+				FROM   (SELECT	TITLE
+								, SUMM
+								, CONTENT_URL
+								, IMG_URL
+						FROM	TB_SERI_PRO
+						ORDER BY REGIST_DATE DESC, SEQ_NO ASC )
+				WHERE   3 > ROWNUM
+	</select>
+
+
+	<select id="selectProspectList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.MainData.selectProspectList */
+		SELECT
+		   		  PART AS DIV_CD
+		   		, T1.SEQNO
+		   		, GUBUN AS DIV_NM
+		   		, TO_CHAR(T1.CALL_RATE) TITLE
+		   		, TO_CHAR(T1.REAL_DATE,'MM.DD') IN_DATE
+		   		, DECODE(T1.BEFORE_RATE,'-','0.00', TO_CHAR(T1.BEFORE_RATE,'99990.99')) WRITER
+		   		, 'http://www.korcham.net/nCham/Service/EconBrief/appl/ProspectBoardList.asp?board_type=1' MORE_URL
+		FROM
+		    (
+		    		 SELECT
+					              ('CALLRATE')PART
+					            , ('콜금리')GUBUN ,TO_DATE(REAL_DATE,'YYYY-MM-DD') REAL_DATE
+					            , DECODE(CALL_RATE  ,'0' ,'-' ,CALL_RATE ) CALL_RATE
+					            , BEFORE_RATE
+					            , SEQNO
+		        	FROM	  TB_ECONOMICDATA
+		        	WHERE  REAL_DATE>0
+		        	AND 	  CALL_RATE IS NOT NULL
+		    ) T1
+		WHERE  4 > ROWNUM
+
+		UNION ALL
+
+		SELECT
+			    	  'OIL'
+			    	, T1.SEQNO
+			    	, '유가(DUBAI)'
+			    	, TO_CHAR(T1.DUBAI)
+			    	, TO_CHAR(T1.REAL_DATE,'MM.DD') IN_DATE
+			    	, DECODE(T1.BEFORE_DUBAI,'-','0.00',TO_CHAR(T1.BEFORE_DUBAI,'99990.99'))
+			    	, 'http://www.korcham.net/nCham/Service/EconBrief/appl/ProspectBoardList.asp?board_type=6' MORE_URL
+		FROM
+		    (  SELECT
+							  TO_DATE(REAL_DATE,'YYYY-MM-DD') REAL_DATE
+							, DECODE(DUBAI,'0','-',DUBAI) DUBAI
+							, DECODE(BEFORE_DUBAI,'0','-',BEFORE_DUBAI) BEFORE_DUBAI
+							, SEQNO
+		        FROM  	TB_ECONOMICDATA
+		        WHERE	REAL_DATE>0
+		        AND 		DUBAI IS NOT NULL
+		    ) T1
+		WHERE     4 > ROWNUM
+
+		UNION ALL
+
+		SELECT
+			    	  'DOLLAR'
+			    	, T1.SEQNO
+			    	, '환율($)'
+			    	, TO_CHAR(T1.WONDOLLAR2,'9,990.99')
+			    	, TO_CHAR(T1.REAL_DATE,'MM.DD') IN_DATE
+			    	, DECODE(T1.BEFORE_DOLLAR2,'-','0.00',TO_CHAR(T1.BEFORE_DOLLAR2,'99990.99'))
+			    	, 'http://www.korcham.net/nCham/Service/EconBrief/appl/ProspectBoardList.asp?board_type=2' MORE_URL
+		FROM
+		    (  SELECT
+				           	   TO_DATE(REAL_DATE,'YYYY-MM-DD') REAL_DATE
+				           	, DECODE(WONDOLLAR2,'0','-',WONDOLLAR2) WONDOLLAR2
+				           	, BEFORE_DOLLAR2
+				           	, SEQNO
+		        FROM		TB_ECONOMICDATA
+		        WHERE 	REAL_DATE>0
+		        AND 		WONDOLLAR2 IS NOT NULL
+		    ) T1
+		WHERE  4 > ROWNUM
+
+		UNION ALL
+
+		SELECT
+			    	  'KOSPI'
+			    	, T1.SEQNO
+			    	, '주가(KOSPI)'
+			    	, TO_CHAR(T1.KOSPI,'9,990.99')
+			    	, TO_CHAR(T1.REAL_DATE,'MM.DD') IN_DATE
+			    	, DECODE(T1.BEFORE_KOSPI,'-','0.00',TO_CHAR(T1.BEFORE_KOSPI,'99990.99'))
+			    	, 'http://www.korcham.net/nCham/Service/EconBrief/appl/ProspectBoardList.asp?board_type=3' MORE_URL
+		FROM
+		    (  SELECT
+				           	  TO_DATE(REAL_DATE,'YYYY-MM-DD') REAL_DATE
+				           	, DECODE(KOSPI,'0','-',KOSPI) KOSPI
+				           	, BEFORE_KOSPI
+				           	, SEQNO
+		        FROM		TB_ECONOMICDATA
+		        WHERE 	REAL_DATE>0
+		        AND 		KOSPI IS NOT NULL
+		    ) T1
+		WHERE  4 > ROWNUM
+
+	</select>
+
+	<select id="selectSeminarList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.MainData.selectSeminarList */
+			SELECT * FROM (
+			SELECT * FROM (
+		            SELECT
+						A.SEQ_NO_D010 	AS SEQ_NO_D010,
+						A.TITLE 					AS TITLE,
+						A.HOST 					AS HOST,
+						A.CONTACT 				AS CONTACT,
+						A.EVENT_DATE 		AS EVENT_DATE,
+						A.PLACE 					AS PLACE,
+						A.SUMMARY 			AS SUMMARY,
+						A.EVENT_IMG 			AS EVENT_IMG
+				FROM T_CH_D010 A, T_CH_D011 B
+		          WHERE A.SEQ_NO_D010 = B.SEQ_NO_D010
+		          AND A.DEL_YN = 'N'
+				AND A.OPEN_YN = 'Y'
+                    AND A.OPEN_YN = 'Y'
+                    AND A.EVENT_DATE IS NOT NULL
+		          GROUP BY A.SEQ_NO_D010,
+						A.TITLE,
+						A.HOST,
+						A.CONTACT,
+						A.EVENT_DATE,
+						A.PLACE,
+						A.SUMMARY,
+						A.OPEN_YN,
+						A.EVENT_IMG,
+						A.DEL_YN,
+						A.REGIST_DATE,
+						A.HIT,
+						B.S_PATH
+				ORDER BY A.SEQ_NO_D010 DESC
+				)A
+				WHERE 9 > ROWNUM
+		          ORDER BY DBMS_RANDOM.RANDOM
+		)A
+		WHERE ROWNUM =1
+	</select>
+
+</mapper>

@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrgchartpageDao">
+
+
+<!-- 	<select id="selectOrgchartpage" parameterType="Map" resultType="camelMap">
+		SELECT
+		a.cont_id
+		,a.site_id
+		,a.attach_id
+		,a.contents
+		,b.file_id
+		,b.origin_file_nm
+		,b.file_path
+		,b.file_size
+
+		FROM
+		TS_MENUcontents a
+		LEFT OUTER JOIN tc_attachfile b
+		ON
+		a.attach_id  = b.attach_id
+		WHERE
+		1=1
+		AND site_id = #{*siteId}
+		AND menu_cls_cd = '7'
+
+	</select>
+
+
+	<select id="selectOrgchartpage2" parameterType="Map" resultType="camelMap">
+		SELECT
+		a.cont_id
+		,a.site_id
+		,a.attach_id
+		,a.contents
+		,b.file_id
+		,b.origin_file_nm
+		,b.file_path
+		,b.file_size
+
+		FROM
+		TS_MENUcontents a
+		LEFT OUTER JOIN tc_attachfile b
+		ON
+		a.attach_id  = b.attach_id
+		WHERE
+		1=1
+		AND site_id = #{*siteId}
+		AND menu_cls_cd = '7'
+
+	</select> -->
+
+			<select id="selectOrgchartpage2" parameterType="Map" resultType="camelMap">
+
+					select
+
+					FARM_ID,
+					GUBUN,
+					ITEM_NUM,
+					JOIN_NUM,
+					HOUSE_NUM,
+					YEAR,
+					SUB_FEE,
+					PREMIUM,
+					SUB_RATE
+
+					from ts_farmhouse
+					where 1=1
+
+
+				   AND YEAR = #{searchTxt}
+
+			 </select>
+
+			<select id="selectOrgchartAll" parameterType="Map" resultType="camelMap">
+			select
+
+					A.YEAR,
+					A.SUB_RATE as FRATE,
+					(select SUB_RATE from ts_farmhouse where YEAR= A.YEAR and GUBUN = 'L'  )  as LRATE
+			from ts_farmhouse A
+			where A.GUBUN = 'F'
+			AND DEL_YN != 'Y'
+			order by A.YEAR
+			 </select>
+
+
+			 <select id="selectIndicators" parameterType="Map" resultType="camelMap">
+			 	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectIndicators */
+			  	<!-- <include refid="CommonSql.pageingTop"/> -->
+					select
+			        FARM_ID,
+					case GUBUN
+					WHEN 'F' THEN '농작물'
+					WHEN 'L' THEN '가축'
+					ELSE 'NONE'
+					END AS GU,
+					ITEM_NUM,
+					JOIN_NUM,
+					HOUSE_NUM,
+					YEAR,
+					SUB_FEE,
+					PREMIUM,
+					SUB_RATE,
+					DEL_YN
+
+					from ts_farmhouse
+					where 1=1
+					AND YEAR = #{searchTxt}
+					AND DEL_YN != 'Y'
+
+					ORDER BY YEAR ASC
+
+			 <!-- 	<include refid="CommonSql.pageingBottom"/>  -->
+
+			 </select>
+
+			 	 <select id="selectIndicatorsback" parameterType="Map" resultType="camelMap">
+			 	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectIndicatorsback */
+			  	<!-- <include refid="CommonSql.pageingTop"/> -->
+					select
+
+					GUBUN,
+					ITEM_NUM,
+					JOIN_NUM,
+					HOUSE_NUM, 
+					YEAR,
+					SUB_FEE,
+					PREMIUM,
+					SUB_RATE,
+					DEL_YN
+
+					from ts_farmhouse
+					where 1=1
+					AND DEL_YN != 'Y'
+				<if test='farmId != null and !farmId.equals("")' >
+					AND FARM_ID = #{farmId}
+				</if>
+
+
+			 <!-- 	<include refid="CommonSql.pageingBottom"/>  -->
+
+			 	</select>
+
+
+			 <insert id="insertIndicators" parameterType="Map">
+				/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.insertIndicators */
+				INSERT INTO ts_farmhouse
+				(
+				 	FARM_ID,
+					GUBUN,
+					ITEM_NUM,
+					JOIN_NUM,
+					HOUSE_NUM,
+					YEAR,
+					SUB_FEE,
+					PREMIUM,
+					SUB_RATE,
+					DEL_YN
+				)
+				VALUES
+				(
+					(SELECT ISNULL(MAX(FARM_ID),0)+1 FROM ts_farmhouse)
+					,#{gubun}
+					,#{itemNum}
+					,#{joinNum}
+					,#{houseNum}
+					,#{year}
+					,#{subFee}
+					,#{premium}
+					,#{subRate}
+					,'N'
+				)
+			</insert>
+
+				<update id="updateIndicators" parameterType="Map">
+
+					UPDATE ts_farmhouse
+					SET
+					GUBUN = #{gubun}
+					,ITEM_NUM = #{itemNum}
+					,JOIN_NUM = #{joinNum}
+					,HOUSE_NUM = #{houseNum}
+					,YEAR = #{year}
+					,SUB_FEE = #{subFee}
+					,PREMIUM = #{premium}
+					,SUB_RATE = #{subRate}
+
+					WHERE
+					1=1
+					AND FARM_ID = #{farmId}
+
+				</update>
+				
+				
+				<update id="deleteIndicators" parameterType="Map">
+
+					UPDATE ts_farmhouse
+					SET
+					DEL_YN = 'Y'
+					
+					WHERE
+					1=1
+					AND FARM_ID = #{farmId}
+			
+
+				</update>
+
+	 <select id="selectchart1" parameterType="Map" resultType="camelMap">
+	 	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectchart1 */
+
+		SELECT
+		      [목적물중분류] as MG
+		      ,round(sum([대상면적]),2) as SUM1
+		      ,round(sum([가입면적]),2) as SUM2
+		      ,round(sum([농가수]),0) as SUM3
+		      ,round(sum([건수]),0) as SUM4
+		      ,round(sum([농지수]),0) as SUM5
+		      ,round(sum([가입금액]),2) as SUM6
+		      ,round(sum([순보험료]),2) as SUM7
+		      ,round(sum([지급보험금]),2) as SUM8
+		      ,CASE WHEN sum([대상면적]) >0 THEN
+				round(round(sum([가입면적]) / sum([대상면적]) *100,2),1)
+				ELSE
+				0
+				END as SUM9
+		FROM [dbo].[TB_INSU_농작물품목별]
+		WHERE  [기준년월] = #{searchYM}
+
+		GROUP BY ROLLUP( [목적물중분류])
+		order by CASE [목적물중분류]
+			           WHEN '과수4종' THEN 1
+			           WHEN '과수기타' THEN 2
+			           WHEN '논작물' THEN 3
+			           WHEN '밭작물' THEN 4
+					   WHEN '채소' THEN 5
+					   WHEN '특작' THEN 6
+					   WHEN '임산물' THEN 7
+					   WHEN '시설작물' THEN 8
+					   WHEN '버섯재배사' THEN 9
+					   WHEN '농업시설' THEN 10
+			           ELSE 0
+			         END
+	</select>
+	 <select id="selectchart2" parameterType="Map" resultType="camelMap">
+	 	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectchart2 */
+		SELECT [시도] as MG
+		     ,round(sum([대상면적]),2) as SUM1
+		     ,round(sum([가입면적]),2) as SUM2
+		     ,round(sum([농가수]),0) as SUM3
+		     ,round(sum([건수]),0) as SUM4
+		     ,round(sum([농지수]),0) as SUM5
+		     ,round(sum([가입금액]),2) as SUM6
+		     ,round(sum([순보험료]),2) as SUM7
+		     ,round(sum([지급보험금]),2) as SUM8
+			 ,round(round(CONVERT(DECIMAL(20,8),sum([가입면적])) / CONVERT(DECIMAL(20,8),sum([대상면적])) *100, 2),1) AS SUM9
+		 FROM [dbo].[TB_INSU_농작물지역별] A
+		 WHERE  [기준년월] = #{searchYM}
+		GROUP BY ROLLUP([시도])
+		 order by CASE [시도]
+					WHEN '서울특별시' THEN 1
+					WHEN '부산광역시' THEN 2
+					WHEN '대구광역시' THEN 3
+					WHEN '인천광역시' THEN 4
+					WHEN '광주광역시' THEN 5
+					WHEN '대전광역시' THEN 6
+					WHEN '울산광역시' THEN 7
+					WHEN '세종특별자치시' THEN 8
+					WHEN '경기도' THEN 9
+					WHEN '강원도' THEN 10
+					WHEN '충청북도' THEN 11
+					WHEN '충청남도' THEN 12
+					WHEN '전라북도' THEN 13
+					WHEN '전라남도' THEN 14
+					WHEN '경상북도' THEN 15
+					WHEN '경상남도' THEN 16
+					WHEN '제주특별자치도' THEN 17
+					ELSE 0
+					END
+	</select>
+
+
+ 		<select id="selectchart3" parameterType="Map" resultType="camelMap">
+	 	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectchart3 
+					round(round(sum([가입두수]) / sum([대상두수]) *100,2),1)
+	 	*/
+		SELECT [중분류] as  MG
+		      ,round(sum([대상두수]),2) as SUM1
+		      ,round(sum([가입두수]),2) as SUM2
+		      ,round(sum([농가수]),0) as SUM3
+		      ,round(sum([건수]),0) as SUM4
+		      ,round(sum([가입금액]),2) as SUM5
+		      ,round(sum([순보험료]),2) as SUM6
+		      ,round(sum([지급보험금]),2) as SUM7
+		      ,round(sum([가입률]),2) as SUM8
+		      ,CASE WHEN sum([대상두수]) >0 THEN
+					round(sum([가입두수]) / sum([대상두수]) *100, 1)
+					ELSE
+					0
+					END as SUM9
+		  FROM [dbo].[TB_INSU_가축축종별]
+		  WHERE  [기준년월] = #{searchYM}
+		  GROUP BY ROLLUP ([중분류])
+		  order by CASE [중분류]
+					WHEN '소' THEN 1
+					WHEN '돼지' THEN 2
+					WHEN '말' THEN 3
+					WHEN '가금' THEN 4
+					WHEN '기타가축' THEN 5
+					ELSE 0
+					END
+		</select>
+
+ 		<select id="selectchart4" parameterType="Map" resultType="camelMap">
+	 	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectchart4 
+			        ELSE round(round(SUM(가입두수)/SUM(대상두수)*100,2),1) END as SUM9 
+	 	*/
+		SELECT 시도 AS MG
+			 , round(SUM(ISNULL(대상두수,0)),2) as SUM1
+			 , round(SUM(ISNULL(가입두수,0)),2) as SUM2
+			 , round(SUM(ISNULL(농가수,0)),0) as SUM3
+			 , round(SUM(ISNULL(건수,0)),0) as SUM4
+			 , round(SUM(ISNULL(가입금액,0)),2) as SUM6
+			 , round(SUM(ISNULL(순보험료,0)),2) as SUM7
+			 , round(SUM(ISNULL(지급보험금,0)),2) as SUM8
+			 , CASE WHEN SUM(ISNULL(가입두수,0)) = 0 THEN 0
+			        ELSE round(SUM(가입두수)/SUM(대상두수)*100, 1) END as SUM9 
+		  FROM TB_INSU_가축지역별
+		 WHERE 기준년월 = #{searchYM}
+		 GROUP BY ROLLUP(시도)
+		 ORDER BY CASE 시도
+					WHEN '서울특별시' THEN 1
+					WHEN '부산광역시' THEN 2
+					WHEN '대구광역시' THEN 3
+					WHEN '인천광역시' THEN 4
+					WHEN '광주광역시' THEN 5
+					WHEN '대전광역시' THEN 6
+					WHEN '울산광역시' THEN 7
+					WHEN '세종특별자치시' THEN 8
+					WHEN '경기도' THEN 9
+					WHEN '강원도' THEN 10
+					WHEN '충청북도' THEN 11
+					WHEN '충청남도' THEN 12
+					WHEN '전라북도' THEN 13
+					WHEN '전라남도' THEN 14
+					WHEN '경상북도' THEN 15
+					WHEN '경상남도' THEN 16
+					WHEN '제주특별자치도' THEN 17
+				  ELSE 0 END
+
+		</select>
+
+ 		<select id="selectchart5" parameterType="Map" resultType="camelMap">
+	 	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectchart5 */
+			SELECT 지역 as MG
+			      ,ROUND(SUM(가입면적),2) as SUM1
+			      ,ROUND(SUM(농가수),0) as SUM2
+			      ,ROUND(SUM(순보험료),2) as SUM3
+			      ,ROUND(SUM(국고),2) as SUM4
+			      ,ROUND(SUM(시도),2) as SUM5
+			      ,ROUND(SUM(시군구),2) as SUM6
+			      ,ROUND(SUM(농가부담),2) as SUM7
+			      ,CASE WHEN CAST(SUM(가입면적)*100 AS DECIMAL(20,0))=0 THEN 0
+				   ELSE SUM(ROUND(순보험료,2))*1000000/SUM(ROUND(가입면적,2)) END as SUM8
+			      ,CASE WHEN CAST(SUM(가입면적)*100 AS DECIMAL(20,0))=0 THEN 0
+				   ELSE ROUND(SUM(ROUND(농가부담,2)) * 1000000 /SUM(ROUND(가입면적,2)),2) END  as SUM9
+			  FROM TB_INSU_농작물보험료수준
+			  WHERE  기준년월 = (SELECT MAX(기준년월) FROM TB_INSU_농작물보험료수준 WHERE LEFT(기준년월,4) = #{searchYM})
+			  <if test='searchC != "" and searchC != null'>
+			  		AND 소분류 = #{searchC}
+			  </if>
+			  <if test='searchB != "" and searchB != null'>
+			  		AND 중분류 = #{searchB}
+			  </if>
+			  <if test='searchA != "" and searchA != null'>
+			  		AND 대분류 = #{searchA}
+			  </if>
+			  GROUP BY ROLLUP(지역)
+			   order by CASE 지역
+					WHEN '서울특별시' THEN 1
+					WHEN '부산광역시' THEN 2
+					WHEN '대구광역시' THEN 3
+					WHEN '인천광역시' THEN 4
+					WHEN '광주광역시' THEN 5
+					WHEN '대전광역시' THEN 6
+					WHEN '울산광역시' THEN 7
+					WHEN '세종특별자치시' THEN 8
+					WHEN '경기도' THEN 9
+					WHEN '강원도' THEN 10
+					WHEN '충청북도' THEN 11
+					WHEN '충청남도' THEN 12
+					WHEN '전라북도' THEN 13
+					WHEN '전라남도' THEN 14
+					WHEN '경상북도' THEN 15
+					WHEN '경상남도' THEN 16
+					WHEN '제주특별자치도' THEN 17
+					ELSE 0
+					END
+		</select>
+
+ 		<select id="selectchart6" parameterType="Map" resultType="camelMap">
+	 	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectchart6 */
+		WITH VW_BASE_DATA AS
+		(
+		SELECT A1.중분류
+			 , A1.소분류
+			 , A1.지역
+			 , ROUND(SUM(A1.가입두수),2) AS 가입두수
+			 , ROUND(SUM(A1.농가수),2) AS 농가수
+			 , ROUND(SUM(A1.순보험료),2) AS 순보험료	
+			 , ROUND(SUM(A1.국고),2) AS 국고	
+			 , ROUND(SUM(A1.시도),2) AS 시도
+			 , ROUND(SUM(A1.시군구),2) AS 시군구	
+			 , ROUND(SUM(A1.농가부담),2) AS 농가부담	
+			 , ROUND(SUM(A1.천두당보험료_원),2) AS 천두당보험료_원	
+			 , ROUND(SUM(A1.천두당농가부담보험료_원),2) AS 천두당농가부담보험료_원
+		  FROM TB_INSU_가축보험료수준 A1
+		 WHERE A1.기준년월 = (SELECT MAX(기준년월) FROM TB_INSU_가축보험료수준 WHERE LEFT(기준년월,4) = #{searchYM}) 
+		  	  <if test='searchC != "" and searchC != null'>
+			  		AND 소분류 = #{searchC}
+			  </if>
+			  <if test='searchB != "" and searchB != null'>
+			  		AND 중분류 = #{searchB}
+			  </if>
+		 GROUP BY A1.중분류
+			 , A1.소분류
+			 , A1.지역
+		)
+					SELECT 지역 AS MG
+					     , SUM(가입두수) AS SUM1
+					     , SUM(농가수) AS SUM2
+					     , SUM(순보험료) AS SUM3
+					     , SUM(국고) AS SUM4
+					     , SUM(시도) AS SUM5
+					     , SUM(시군구) AS SUM6
+					     , SUM(농가부담) AS SUM7
+					     , CASE WHEN SUM([가입두수])=0 THEN 0
+								     ELSE (SUM(순보험료)*1000000)/SUM(가입두수)
+							END 
+						  	AS SUM8
+					     ,CASE WHEN SUM([가입두수])=0 THEN 0
+						       ELSE ROUND((SUM([농가부담])* 1000000)/SUM(가입두수),0) END AS SUM9
+					FROM VW_BASE_DATA 			   
+					GROUP BY ROLLUP(지역)
+					 order by CASE 지역
+							WHEN '서울특별시' THEN 1
+							WHEN '부산광역시' THEN 2
+							WHEN '대구광역시' THEN 3
+							WHEN '인천광역시' THEN 4
+							WHEN '광주광역시' THEN 5
+							WHEN '대전광역시' THEN 6
+							WHEN '울산광역시' THEN 7
+							WHEN '세종특별자치시' THEN 8
+							WHEN '경기도' THEN 9
+							WHEN '강원도' THEN 10
+							WHEN '충청북도' THEN 11
+							WHEN '충청남도' THEN 12
+							WHEN '전라북도' THEN 13
+							WHEN '전라남도' THEN 14
+							WHEN '경상북도' THEN 15
+							WHEN '경상남도' THEN 16
+							WHEN '제주특별자치도' THEN 17
+							ELSE 0
+							END 	 
+		</select>
+
+	<select id="selectchartdn" parameterType="Map" resultType="camelMap">
+	 	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectchartdn */
+	<if test='chartKey == "1" '>
+		SELECt * from (
+			SELECT
+			CASE WHEN 1 > GROUPING_ID([목적물중분류],[품목명]) or [목적물대분류] IS NULL THEN
+			ISNULL([목적물대분류],'합계')
+			ELSE
+			'소계'
+			END  AS M1
+			,[목적물중분류] AS M2
+			,[품목명] AS m3
+			,GROUPING_ID([목적물중분류],[품목명]) as ROLL
+			,round(sum([대상면적]),2) as SUM1
+			,round(sum([가입면적]),2) as SUM2
+			,round(sum([농가수]),0) as SUM3
+			,round(sum([건수]),0) as SUM4
+			,round(sum([농지수]),0) as SUM5
+			,round(sum([가입금액]),2) as SUM6
+			,round(sum([순보험료]),2) as SUM7
+			,round(sum([지급보험금]),2) as SUM8
+			,CASE WHEN sum([대상면적]) >0 THEN
+				round(sum([가입면적]) / sum([대상면적]) *100,2)
+				ELSE
+				0
+				END as SUM9
+			FROM [dbo].[TB_INSU_농작물품목별]
+			WHERE  [기준년월] =  #{searchYM}
+			GROUP BY ROLLUP([목적물대분류], [목적물중분류], [품목명])
+			) A
+		 WHERE ROLL !=1
+	</if>
+	<if test='chartKey == "2" '>
+
+		SELECT ISNULL([시도], '합계') as M1
+		     ,round(sum([대상면적]),2) as SUM1
+		     ,round(sum([가입면적]),2) as SUM2
+		     ,round(sum([농가수]),0) as SUM3
+		     ,round(sum([건수]),0) as SUM4
+		     ,round(sum([농지수]),0) as SUM5
+		     ,round(sum([가입금액]),2) as SUM6
+		     ,round(sum([순보험료]),2) as SUM7
+		     ,round(sum([지급보험금]),2) as SUM8
+			 ,round(CONVERT(DECIMAL(20,8),sum([가입면적])) / CONVERT(DECIMAL(20,8),sum([대상면적])) *100,2) AS SUM9
+		 FROM [dbo].[TB_INSU_농작물지역별] A
+		 WHERE  [기준년월] = #{searchYM}
+		GROUP BY ROLLUP([시도])
+		 order by CASE [시도]
+					WHEN '서울특별시' THEN 1
+					WHEN '부산광역시' THEN 2
+					WHEN '대구광역시' THEN 3
+					WHEN '인천광역시' THEN 4
+					WHEN '광주광역시' THEN 5
+					WHEN '대전광역시' THEN 6
+					WHEN '울산광역시' THEN 7
+					WHEN '세종특별자치시' THEN 8
+					WHEN '경기도' THEN 9
+					WHEN '강원도' THEN 10
+					WHEN '충청북도' THEN 11
+					WHEN '충청남도' THEN 12
+					WHEN '전라북도' THEN 13
+					WHEN '전라남도' THEN 14
+					WHEN '경상북도' THEN 15
+					WHEN '경상남도' THEN 16
+					WHEN '제주특별자치도' THEN 17
+					ELSE 18
+					END
+
+	</if>
+	<if test='chartKey == "3" '>
+	SELECT
+		CASE WHEN 1 > GROUPING_ID([중분류],[소분류]) or [중분류] IS NULL THEN
+		ISNULL([중분류],'합계')
+		ELSE
+		'소계'
+		END  AS M1
+		,[소분류] AS m2
+		,round(sum([대상두수]),2) as SUM1
+		,round(sum([가입두수]),2) as SUM2
+		,round(sum([농가수]),0) as SUM3
+		,round(sum([건수]),0) as SUM4
+  	  --,round(sum([농지수]),0) as SUM5
+		,round(sum([가입금액]),2) as SUM6
+		,round(sum([순보험료]),2) as SUM7
+		,round(sum([지급보험금]),2) as SUM8
+		,CASE WHEN sum([대상두수]) >0 THEN
+			round(sum([가입두수]) / sum([대상두수]) *100,2)
+			ELSE
+			0
+			END as SUM9
+	FROM [dbo].[TB_INSU_가축축종별]
+	WHERE  [기준년월] = #{searchYM}
+	GROUP BY ROLLUP([중분류], [소분류])
+	</if>
+	<if test='chartKey == "4" '>
+
+		SELECT ISNULL(시도, '합계') AS M1
+			 --, round(SUM(ISNULL(대상두수,0)),2) as SUM1
+			 , round(SUM(ISNULL(가입두수,0)),2) as SUM2
+			 , round(SUM(ISNULL(농가수,0)),0) as SUM3
+			 , round(SUM(ISNULL(건수,0)),0) as SUM4
+			 , round(SUM(ISNULL(가입금액,0)),2) as SUM6
+			 , round(SUM(ISNULL(순보험료,0)),2) as SUM7
+			 , round(SUM(ISNULL(지급보험금,0)),2) as SUM8
+			 , CASE WHEN SUM(ISNULL(가입두수,0)) = 0 THEN 0
+			        ELSE round(SUM(가입두수)/SUM(대상두수)*100,2) END as SUM9 
+		  FROM TB_INSU_가축지역별
+		 WHERE 기준년월 = #{searchYM}
+		 GROUP BY ROLLUP(시도)
+		 ORDER BY CASE 시도
+					WHEN '서울특별시' THEN 1
+					WHEN '부산광역시' THEN 2
+					WHEN '대구광역시' THEN 3
+					WHEN '인천광역시' THEN 4
+					WHEN '광주광역시' THEN 5
+					WHEN '대전광역시' THEN 6
+					WHEN '울산광역시' THEN 7
+					WHEN '세종특별자치시' THEN 8
+					WHEN '경기도' THEN 9
+					WHEN '강원도' THEN 10
+					WHEN '충청북도' THEN 11
+					WHEN '충청남도' THEN 12
+					WHEN '전라북도' THEN 13
+					WHEN '전라남도' THEN 14
+					WHEN '경상북도' THEN 15
+					WHEN '경상남도' THEN 16
+					WHEN '제주특별자치도' THEN 17
+				  ELSE 18 END
+	</if>
+	<if test='chartKey == "5" '>
+		WITH VW_BASE_DATA AS
+		(
+		SELECT A1.대분류
+			 , A1.중분류
+			 , A1.소분류
+			 , A1.지역
+			 , ROUND(SUM(A1.가입면적),2) AS 가입면적
+			 , ROUND(SUM(A1.농가수),2) AS 농가수
+			 , ROUND(SUM(A1.순보험료),2) AS 순보험료	
+			 , ROUND(SUM(A1.국고),2) AS 국고	
+			 , ROUND(SUM(A1.시도),2) AS 시도
+			 , ROUND(SUM(A1.시군구),2) AS 시군구	
+			 , ROUND(SUM(A1.농가부담),2) AS 농가부담	
+		  FROM TB_INSU_농작물보험료수준 A1
+		 WHERE A1.기준년월 = (SELECT MAX(기준년월) FROM TB_INSU_농작물보험료수준 WHERE LEFT(기준년월,4) = #{searchYM})
+		 <if test='searchC != "" and searchC != null'>
+		    AND [소분류] = #{searchC}
+		 </if>
+		 <if test='searchB != "" and searchB != null'>
+		    AND [중분류] = #{searchB}
+		 </if>
+		 <if test='searchA != "" and searchA != null'>
+		    AND [대분류] = #{searchA}
+		 </if>   
+		 GROUP BY A1.대분류
+		     , A1.중분류
+			 , A1.소분류
+			 , A1.지역
+		)
+		SELECT CASE WHEN 대분류 IS NULL THEN '합계'
+			   ELSE 대분류 END as 대분류
+			 , CASE WHEN 대분류 IS NOT NULL AND 중분류 IS NULL THEN '소계'
+			   ELSE 중분류 END as 중분류
+			 , CASE WHEN 대분류 IS NOT NULL AND 중분류 IS NOT NULL AND 소분류 IS NULL THEN '소계'
+			   ELSE 소분류 END as 소분류
+			 , CASE WHEN 대분류 IS NOT NULL AND 중분류 IS NOT NULL AND 소분류 IS NOT NULL AND 지역 IS NULL THEN '소계'
+			   ELSE 지역 END as MG
+		     , ROUND(SUM(가입면적),2) as SUM1
+		     , ROUND(SUM(농가수),0) as SUM2
+		     , ROUND(SUM(순보험료),2) as SUM3
+		     , ROUND(SUM(국고),2) as SUM4
+		     , ROUND(SUM(시도),2) as SUM5
+		     , ROUND(SUM(시군구),2) as SUM6
+		     , ROUND(SUM(농가부담),2) as SUM7
+		     , CASE WHEN CAST(SUM(가입면적) AS DECIMAL(20,2))=0.00 THEN 0
+		       ELSE ROUND(SUM(ROUND(순보험료,2))*1000000/SUM(ROUND(가입면적,2)),0) END as SUM8
+		     , CASE WHEN CAST(SUM(가입면적) AS DECIMAL(20,2))=0.00 THEN 0
+		       ELSE ROUND(SUM(ROUND(농가부담,2)) * 1000000 /SUM(ROUND(가입면적,2)),0) END  as SUM9
+		  FROM VW_BASE_DATA
+		 GROUP BY ROLLUP(대분류,중분류,소분류,지역)
+		 ORDER BY ISNULL(대분류, '합계'), ISNULL(중분류, '합계'), ISNULL(소분류, '합계'), CASE 지역
+			           WHEN '서울특별시' THEN 1
+			           WHEN '부산광역시' THEN 2
+			           WHEN '대구광역시' THEN 3
+			           WHEN '인천광역시' THEN 4
+			           WHEN '광주광역시' THEN 5
+			           WHEN '대전광역시' THEN 6
+			           WHEN '울산광역시' THEN 7
+			           WHEN '세종특별자치시' THEN 8
+			           WHEN '경기도' THEN 9
+			           WHEN '강원도' THEN 10
+			           WHEN '충청북도' THEN 11
+			           WHEN '충청남도' THEN 12
+			           WHEN '전라북도' THEN 13
+			           WHEN '전라남도' THEN 14
+			           WHEN '경상북도' THEN 15
+			           WHEN '경상남도' THEN 16
+			           WHEN '제주특별자치도' THEN 17
+			           ELSE 18
+		          END
+	</if>
+	<if test='chartKey == "6" '>
+	SELECT CASE WHEN 중분류 IS NULL THEN '합계'
+	       ELSE 중분류 END AS 중분류
+	     , CASE WHEN 중분류 IS NOT NULL AND 소분류 IS NULL THEN '소계'
+		   ELSE 소분류 END AS 소분류
+		 , CASE WHEN 중분류 IS NOT NULL AND 소분류 IS NOT NULL AND 지역 IS NULL THEN '소계'
+		   ELSE 지역 END as MG
+	     , ROUND(SUM(가입두수),2) as SUM1
+	     , ROUND(SUM(농가수),0) as SUM2
+	     , ROUND(SUM(순보험료),2) as SUM3
+	     , ROUND(SUM(국고),2) as SUM4
+	     , ROUND(SUM(시도),2) as SUM5
+	     , ROUND(SUM(시군구),2) as SUM6
+	     , ROUND(SUM(농가부담),2) as SUM7
+	     , CASE WHEN CAST(SUM([가입두수]) AS DECIMAL(20,2))=0.00 THEN 0
+		        ELSE ROUND(ROUND(SUM([순보험료]),2)*1000000/ROUND(SUM([가입두수]),2),0) END as SUM8
+	     , CASE WHEN CAST(SUM([가입두수]) AS DECIMAL(20,2))=0.00 THEN 0
+		        ELSE ROUND(cast(ROUND(SUM([농가부담]),2) as decimal(20,2))/cast(ROUND(SUM([가입두수]),2) as decimal(20,2)) * 1000000,0) END as SUM9
+	FROM TB_INSU_가축보험료수준	
+	WHERE  기준년월 = (SELECT MAX(기준년월) FROM TB_INSU_가축보험료수준 WHERE LEFT(기준년월,4) = #{searchYM})
+	  <if test='searchC != "" and searchC != null'>
+	  		AND 소분류 = #{searchC}
+	  </if>
+	  <if test='searchB != "" and searchB != null'>
+	  		AND 중분류 = #{searchB}
+	  </if>
+	GROUP BY ROLLUP(중분류, 소분류, 지역)
+	ORDER BY ISNULL(중분류, '합계'), ISNULL(소분류, '합계'), CASE 지역
+				  WHEN '서울특별시' THEN 1
+				  WHEN '부산광역시' THEN 2
+				  WHEN '대구광역시' THEN 3
+				  WHEN '인천광역시' THEN 4
+				  WHEN '광주광역시' THEN 5
+				  WHEN '대전광역시' THEN 6
+				  WHEN '울산광역시' THEN 7
+				  WHEN '세종특별자치시' THEN 8
+				  WHEN '경기도' THEN 9
+				  WHEN '강원도' THEN 10
+				  WHEN '충청북도' THEN 11
+				  WHEN '충청남도' THEN 12
+				  WHEN '전라북도' THEN 13
+				  WHEN '전라남도' THEN 14
+				  WHEN '경상북도' THEN 15
+				  WHEN '경상남도' THEN 16
+				  WHEN '제주특별자치도' THEN 17
+				  ELSE 18
+			 END
+	</if>
+	</select>
+
+
+
+
+	<select id="selectchartcode" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectchartcode */
+	<if test='codeKey == "6" '>
+SELECT
+       [중분류] as M1
+      ,[소분류] as gubun
+FROM [apfs].[dbo].[TB_INSU_가축보험료수준]
+group by [중분류],[소분류]
+order by [중분류],[소분류]
+	</if>
+	<if test='codeKey != "6" '>
+SELECT
+      [대분류] as M1
+      ,[중분류] as M2
+      ,[소분류] as gubun
+FROM [apfs].[dbo].[TB_INSU_농작물보험료수준]
+group by [대분류],[중분류],[소분류]
+order by [대분류],[중분류],[소분류]
+	</if>
+	</select>
+
+
+
+
+	<select id="selectOrgchartpageExist" parameterType="Map"
+		resultType="integer">
+		/*
+		kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectOrgchartpageExist
+		*/
+		SELECT
+		count(*)
+		FROM TS_MENUcontents
+		WHERE site_id = #{*siteId}
+		AND
+		menu_cls_cd = '7'
+
+	</select>
+
+
+	<insert id="insertOrgchartpage" parameterType="Map">
+		/*
+		kr.apfs.local.contents.dao.impl.OrgchartpageDao.insertOrgchartpage
+		*/
+		INSERT INTO TS_MENUcontents
+		(
+		site_id
+		,menu_cls_cd
+		,contents
+		,attach_id
+		,reg_user_id
+		,reg_dt
+		)
+		VALUES
+		(
+		#{*siteId}
+		,'7'
+		,#{contents}
+		,#{attachId}
+		,#{*userId}
+		,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		)
+	</insert>
+
+	<update id="updateOrgchartpage" parameterType="Map">
+
+		UPDATE TS_MENUcontents
+		SET
+		attach_id = #{attachId}
+		,contents = #{contents}
+		,upd_user_id = #{*userId}
+		,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+
+		WHERE
+		1=1
+		AND cont_id = #{contId}
+		AND site_id = #{*siteId}
+	</update>
+
+
+
+
+
+
+
+</mapper>

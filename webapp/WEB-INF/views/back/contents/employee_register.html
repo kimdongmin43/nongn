@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi" />
+		<title>임직원현황 &lt; 콘텐츠관리 &lt; 대한상공회의소</title>
+		<link rel="stylesheet" type="text/css" href="../../../css/default.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/common.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/table.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/layout.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/sub.css" />
+		<!--[if lt IE 9]>
+			<script type="text/javascript" src="../../js/html5.js"></script>
+		<![endif]-->
+		
+		<script type="text/javascript" src="../../../js/jquery-1.11.3.min.js"></script>
+		
+		<script type="text/javascript">
+
+            // full bg
+			$(document).ready(function(){
+				$('.left_area').css('min-height', $(document).height() - 114 );
+
+				$('#lnb_split').css('min-height', $(document).height() - 114 );
+
+				$('.lnb_split_box').css('min-height', $(document).height() - 0 );
+
+				$('.btn_split').css('min-height', $(document).height() - 0 );
+			});
+			//$(window).height() -> 천체 길이
+			//-top height
+		</script>
+	</head>
+
+	<body>
+	<div id="wrap">
+		<!-- skip_nav --> 
+		<div id="skip_nav">  
+			<a href="#nav">메인메뉴 바로가기</a>
+			<a href="#content">본문내용 바로가기</a>
+		</div>
+		<!-- //skip --> 
+		
+		<!-- header -->
+		<div id="header">
+		<header>
+			<!-- topheader_area -->
+			<div class="topheader_area">
+				<div class="logo_area">
+					<h1 class="home_logo"><img src="../../../images/common/logo.png" alt="대한상공회의소" /></h1>
+					<span class="logotitle">지역상공회의소 관리자</span>
+				</div>
+				<!-- hsection -->
+				<div class="hsection_area">
+					<select class="center_select" title="권한 구분">
+						<option value="0">권한명</option>
+					</select>
+					<a href="#none" class="btn logout" title="로그아웃 하기">
+						<span>로그아웃</span>
+					</a>
+				</div>
+				<!--// hsection -->
+			</div>
+			<!--// topheader_area -->
+			<!-- gnb_menu -->
+			<div id="nav">
+			<nav>
+				<ul class="menu">
+					<li>
+						<a href="#none" title="사이트관리">
+							<span>사이트관리</span>
+						</a>
+					</li>
+					<li>
+						<a href="#none" title="배너/팝업관리">
+							<span>배너/팝업관리</span>
+						</a>
+					</li>
+					<li class="on">
+						<a href="#none" title="콘텐츠관리">
+							<span>콘텐츠관리</span>
+						</a>
+					</li>
+					<li>
+						<a href="#none" title="게시판등록관리">
+							<span>게시판등록관리</span>
+						</a>
+					</li>
+					<li>
+						<a href="#none" title="게시글등록관리">
+							<span>게시글등록관리</span>
+						</a>
+					</li>
+					<li class="last">
+						<a href="#none" title="행사/교육시스템">
+							<span>행사/교육시스템</span>
+						</a>
+					</li>
+					<li>
+						<a href="#none" title="시스템관리">
+							<span>시스템관리</span>
+						</a>
+					</li>
+				</ul>
+			</nav>
+			</div>
+			<!--// gnb_menu -->
+		</header>
+		</div>
+		<!-- //header -->
+		<!-- container -->
+		<div id="container">
+		<article>
+			<!-- left_area -->
+			<div class="left_area">
+				<!-- lnb_area -->
+				<div class="lnb_area">
+					<h2 class="title">콘텐츠관리</h2>
+					<ul class="lnb">
+						<li>
+							<a href="#none" title="소개페이지 페이지로 이동">
+								<span>소개페이지</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="인사말 페이지로 이동">
+								<span>인사말</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="연혁 페이지로 이동">
+								<span>연혁</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="역대회장 페이지로 이동">
+								<span>역대회장</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="의원현황 페이지로 이동">
+								<span>의원현황</span>
+							</a>
+						</li>
+						<li class="on">
+							<a href="#none" title="임직원현황 페이지로 이동">
+								<span>임직원현황</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="조직도 페이지로 이동">
+								<span>조직도</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="비전(CI) 페이지로 이동">
+								<span>비전(CI)</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="찾아오시는 길 페이지로 이동">
+								<span>찾아오시는 길</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="상공회의소 법령 페이지로 이동">
+								<span>상공회의소 법령</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="비전(CI) 페이지로 이동">
+								<span>비전(CI)</span>
+							</a>
+						</li>
+						<li>
+							<a href="#none" title="안내 페이지로 이동">
+								<span>안내</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<!--// lnb_area -->
+			</div>
+			<!--// left_area -->
+			<!-- lnb_split -->
+			<div id="lnb_split">
+				<div class="lnb_split_box">
+					<a href="#none" class="btn_split fold" title="왼쪽 메뉴접기"><span>메뉴접기</span></a>
+					<!-- 접고나면 보여야 하는 버튼
+					<a href="#none" class="btn_split unfold" title="왼쪽 메뉴펼치기"><span>메뉴펼치기</span></a>
+					-->
+				</div>
+			</div>
+			<!--// lnb_split -->
+			<!-- content_area -->
+			<div class="content_area">
+				<!-- location -->
+				<div class="location">
+					<ul>
+						<li>HOME</li>
+						<li>콘텐츠관리</li>
+						<li>
+							<strong>임직원현황</strong>
+						</li>
+					</ul>
+				</div>
+				<!--//  location -->
+				<!-- content -->
+				<div id="content">
+					<!-- title_and_info_area -->
+					<div class="title_and_info_area">
+						<!-- main_title -->
+						<div class="main_title">
+							<h3 class="title">임직원현황</h3>
+						</div>
+						<!--// main_title -->
+					</div>	
+					<!--// title_and_info_area -->
+					<!-- table_area -->
+					<div class="table_area">
+						<table class="write">
+							<caption>등록 화면</caption>
+							<colgroup>
+								<col style="width: 140px;">
+								<col style="width: *;">
+							</colgroup>
+							<tbody>
+							<tr>
+								<th scope="row">
+									<label for="name">임직원명 <strong class="color_pointr">*</strong></label>
+								</th>
+								<td>
+									<input id="name" name="name" type="text" class="in_w100" />
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="work">담당업무 <strong class="color_pointr">*</strong></label>
+								</th>
+								<td>
+									<select id="work" class="in_wp150">
+										<option value="">사무국장</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">
+									<label for="position">직위 <strong class="color_pointr">*</strong></label>
+								</th>
+								<td>
+									<select id="position" class="in_wp150">
+										<option value="">회장</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">사진 <strong class="color_pointr">*</strong></th>
+								<td>
+									<div class="file_area">
+										<label for="attached_file" class="hidden">파일 선택하기</label>
+										<input id="attached_file" name="attached_file" type="file" class="in_w100" />
+									</div>
+									<div class="file_area">
+										<ul class="file_list">
+											<li>
+												<a href="#none" title="파일_01.hwp">사진이미지.png</a>
+												<a href="#none" class="btn_file_delete" title="파일 삭제">
+													<img src="../../../images/icon/icon_delete.png" alt="삭제">
+												</a>
+											</li>
+										</ul>
+									</div>
+									<p class="margint5 color_pointo">가로 000px / 세로 000px 권장 사이즈이며, jpg, png, gif 확장자만 사용 가능합니다.</p>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<!--// table_area -->
+					<!-- button_area -->
+					<div class="button_area">
+						<div class="float_right">
+							<button class="btn save" title="저장하기">
+								<span>저장</span>
+							</button>
+							<button class="btn list" title="목록">
+								<span>목록</span>
+							</button>
+						</div>
+					</div>
+					<!--// button_area -->
+					
+					<!-- button_area -->
+					<div class="button_area">
+						<div class="float_right">
+							<button class="btn save" title="저장하기">
+								<span>저장</span>
+							</button>
+							<button class="btn cancel" title="삭제">
+								<span>삭제</span>
+							</button>
+							<button class="btn list" title="목록">
+								<span>목록</span>
+							</button>
+						</div>
+					</div>
+					<!--// button_area -->
+				</div>
+				<!--// content -->
+			</div>
+			<!--// content_area -->
+		</article>	
+		</div>
+		<!-- //container -->
+		<!-- footer --> 
+		<div id="footer">
+		<footer>
+			
+		</footer>
+		</div>
+		<!--// footer -->
+	</div>
+	</body>
+</html>

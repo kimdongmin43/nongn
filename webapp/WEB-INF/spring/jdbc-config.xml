@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+            
+	<!-- MyBatis 맵퍼의 SQL 문장에 대한 파라미터 및 리턴 타입을 담을 클래스를 검색 할 패키지 지정 -->
+
+	<!-- 지역상공 -->
+  
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="#{jdbc['jdbc.driverClass']}" />
+		<property name="url" value="#{jdbc['jdbc.url']}" />
+		<property name="username" value="#{jdbc['jdbc.username']}" />
+<!-- 		<property name="password" value="ENC(09Z43M1IEbDj9xXHpoEmUwMHLgPkIWCI)" /> -->
+		 <property name="password" value="#{jdbc['jdbc.password']}" />
+		<property name="maxActive" value="30"/>
+		<property name="maxIdle" value="5"/>
+		<property name="maxWait" value="1000"/>
+		<property name="defaultAutoCommit" value="true"/>
+	</bean>
+
+	<!--
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="#{jdbc['jdbc.driverClass']}" />
+		<property name="url" value="#{jdbc['jdbc.url']}" />
+		<property name="username" value="#{jdbc['jdbc.username']}" />
+		<property name="password" value="#{jdbc['jdbc.password']}" />
+		<property name="maxActive" value="30"/>
+		<property name="maxIdle" value="5"/>
+		<property name="maxWait" value="1000"/>
+		<property name="defaultAutoCommit" value="true"/>
+	</bean>
+	 -->
+
+		    <!-- Jasypt -->
+<!--     <bean id="environmentVariablesConfiguration" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig"> -->
+<!--         <property name="algorithm" value="PBEWITHMD5ANDDES"/> -->
+																													<!-- <property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD"/> -->
+<!--         <property name="password" value="test"/> -->
+<!--     </bean>     -->
+<!--     <bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor"> -->
+<!--         <property name="config" ref="environmentVariablesConfiguration"/> -->
+<!--     </bean>     -->
+<!--     <bean id="propertyConfig" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer"> -->
+<!--         <constructor-arg ref="configurationEncryptor"/> -->
+<!--         <property name="location" value="classpath:config/jdbc.properties"/> -->
+<!--     </bean>  -->
+
+
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="kr.apfs.local" />
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource-log4j-remix"/>
+		<property name="mapperLocations" value="classpath:sqlmaps/**/*.xml" />
+		<property name="configLocation" value="classpath:config/SqlMapConfig.xml" />
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="dataSource-log4j-remix" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="dataSource" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="SQL         :  "/>
+            </bean>
+        </property>
+    </bean>
+	
+	
+			<!-- 230718 DB계정 암호화 -->    
+    <!-- Jasypt Start -->
+<!-- 	<bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentPBEConfig"> -->
+		<!-- 사용할 암호화 알고리즘 -->
+<!-- 		<property name="algorithm" value="PBEWithMD5AndDES" /> -->
+		<!-- PBE (패스워드 기반 암호화) 암호 설정-->
+<!-- 	    <property name="password" value="test_password" />  -->
+<!-- 	</bean>  	 -->
+	
+<!-- 	<bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">   -->
+<!-- 		<property name="config" ref="encryptorConfig" />   -->
+<!-- 	</bean>   -->
+	 
+<!-- 	<bean class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer"> -->
+<!-- 		<constructor-arg ref="encryptor" /> -->
+<!-- 		<property name="locations"> -->
+<!-- 			<list> -->
+				<!-- application.properties 파일 경로 -->
+<!-- 				<value>classpath:config/jdbc.properties</value> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean>	 -->
+<!-- Jasypt End -->
+	
+<!-- 230908 암호화 설정 jasypt -->
+<!-- <bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentPBEConfig"> -->
+<!--   <property name="algorithm" value="PBEWithMD5AndDES" /> -->
+<!--   <property name="passwordEnvName" value="JDBC_KEY" /> -->
+<!-- </bean> -->
+
+<!-- <bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor"> -->
+<!--   <property name="config" ref="encryptorConfig" /> -->
+<!-- </bean> -->
+
+<!-- <bean class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer"> -->
+<!--   <constructor-arg ref="encryptor" /> -->
+<!--   <property name="locations"> -->
+<!--     <list> -->
+<!--       <value>classpath:config/jdbc.properties</value> -->
+<!--     </list> -->
+<!--   </property> -->
+<!-- </bean> -->
+<!-- 230908 암호화 설정 jasypt -->
+	 
+	 <!--  
+    <bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+        <property name="algorithm" value="PBEWithMD5AndDES" />
+        <property name="password" value="!zik0404@" />
+    </bean>
+    
+    <bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+        <property name="config" ref="encryptorConfig"></property>
+    </bean>
+
+    <bean id="propertyConfigurer" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+        <constructor-arg ref="encryptor" />
+            <property name="locations">
+                <list>
+                    <value>classpath:config/jdbc.properties</value>
+                </list>
+            </property>
+    </bean>	 
+	 -->
+	 
+</beans>

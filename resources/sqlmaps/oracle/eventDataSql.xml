@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EventData">
+
+	<select id="selectCompanyList_old" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.event.dao.EventData.selectCompanyList */
+
+		SELECT
+
+				 CO_NO
+				,CO_DIV
+				,COMP_REG_NO
+				,CORP_NO
+				,COMP_DIV
+				,CONAME_HANG
+				,CONAME_ENGL
+				,REP_NM_HANG
+				,REP_NM_ENGL
+				,TEL
+				,FAX
+				,MAJOR_PRD
+				,BIZKIND
+				,BIZKIND_ORG
+				,ZIPCODE
+				,ADDR
+				,ADDR2
+				,ENGL_ADDR
+				,REGN_CODE
+				,HOMEPAGE
+				,SUPLY_CO
+				,ANN_SALES
+				,BIZ_TYPE
+				,ITEM
+				,FND_DATE
+				,EMP_CNT
+				,USE_DIV
+				,VOLU_DIV
+				,REG_TM
+				,REG_ID
+				,CHG_TM
+				,CHG_ID
+				,ASSOCIATE
+				,KORCHAM_NAME
+				,ADDR3
+				,ROADCODE
+				,'Y' as LOCAL_DB
+
+		FROM TC_COMPANY
+
+		WHERE 1=1
+		<!-- 단일건 요청 -->
+
+		AND COMP_REG_NO = #{compRegNo}
+
+	</select>
+
+		<!-- SELECT
+
+				CO_CODE 							as CO_NO
+				,CO_CODE							as COMP_REG_NO
+				,PRE_FIRM_NAME					as CONAME_HANG
+				,'N' as LOCAL_DB
+
+		FROM fe.tb_member_info
+
+		WHERE 1=1
+
+		AND CO_CODE = #{compRegNo}
+		AND ROWNUM = 1
+		ORDER BY TAX_YEAR DESC, TAX_SESSION DESC -->
+
+	<select id="selectCompany2List" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.event.dao.EventData.selectCompanyList */
+
+
+
+			SELECT
+
+				FD_COMPANY_REGIST 					as CO_NO
+				,FD_COMPANY_REGIST					as COMP_REG_NO
+				,FD_COMPANY_KNAME					as CONAME_HANG
+				,'N' as LOCAL_DB
+
+		FROM mb.tmbn01master
+
+		WHERE 1=1
+
+		AND FD_COMPANY_REGIST = #{compRegNo}
+		AND ROWNUM = 1
+
+	</select>
+
+
+	<select id="selectCompanyList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.event.dao.EventData.selectCompanyList */
+		SELECT
+
+				 CO_NO
+				,CO_DIV
+				,COMP_REG_NO
+				,CORP_NO
+				,COMP_DIV
+				,CONAME_HANG
+				,CONAME_ENGL
+				,REP_NM_HANG
+				,REP_NM_ENGL
+				,TEL
+				,FAX
+				,MAJOR_PRD
+				,BIZKIND
+				,BIZKIND_ORG
+				,ZIPCODE
+				,ADDR
+				,ADDR2
+				,ENGL_ADDR
+				,REGN_CODE
+				,HOMEPAGE
+				,SUPLY_CO
+				,ANN_SALES
+				,BIZ_TYPE
+				,ITEM
+				,FND_DATE
+				,EMP_CNT
+				,USE_DIV
+				,VOLU_DIV
+				,REG_TM
+				,REG_ID
+				,CHG_TM
+				,CHG_ID
+				,ASSOCIATE
+				,KORCHAM_NAME
+				,ADDR3
+				,ROADCODE
+				,'N' as LOCAL_DB
+
+		FROM GSMB.TBMR_CO_TEST@CDLINK.KORCHAM.ORG
+
+		WHERE 1=1
+
+		AND COMP_REG_NO = #{compRegNo}
+
+
+		UNION ALL
+
+		SELECT
+
+				 CO_NO
+				,CO_DIV
+				,COMP_REG_NO
+				,CORP_NO
+				,COMP_DIV
+				,CONAME_HANG
+				,CONAME_ENGL
+				,REP_NM_HANG
+				,REP_NM_ENGL
+				,TEL
+				,FAX
+				,MAJOR_PRD
+				,BIZKIND
+				,BIZKIND_ORG
+				,ZIPCODE
+				,ADDR
+				,ADDR2
+				,ENGL_ADDR
+				,REGN_CODE
+				,HOMEPAGE
+				,SUPLY_CO
+				,ANN_SALES
+				,BIZ_TYPE
+				,ITEM
+				,FND_DATE
+				,EMP_CNT
+				,USE_DIV
+				,VOLU_DIV
+				,REG_TM
+				,REG_ID
+				,CHG_TM
+				,CHG_ID
+				,ASSOCIATE
+				,KORCHAM_NAME
+				,ADDR3
+				,ROADCODE
+				,'Y' as LOCAL_DB
+
+		FROM TC_COMPANY
+
+		WHERE 1=1
+		<!-- 단일건 요청 -->
+
+		AND COMP_REG_NO = #{compRegNo}
+
+	</select>
+
+	<select id="selectNewEventList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.event.dao.EventData.selectNewEventList */
+		<if test='miv_start_index != null and !miv_start_index.equals("")' >
+		<include refid="CommonSql.pageingTop"/>
+		</if>
+	 	SELECT
+
+				 CHAM_CD
+				,BSN_SEQ_NO
+				,BSN_ID
+				,BSN_STATUS
+				,BSN_TITLE
+				,SECURITY_GRADE
+				,BSN_START_DD
+				,BSN_END_DD
+				,RECEIVE_START_DD
+				,RECEIVE_END_DD
+				,BSN_RESULT_CONTENT
+				,WEB_REQ_YN
+				,REGIST_ID
+				,BSN_PLACE
+				,BSN_CONTENT
+				,BSN_ATTENDCOST
+				,COMMENTS
+				,CHARGE_ID
+				,BSN_BUDGET
+				,BSN_EXPENSE
+				,DEL_YN
+				,DEL_DATE
+				,DEPT_CD
+				,REGIST_NM
+				,DEPT_NM
+				,TO_CHAR(REGIST_DATE,'YYYY.MM.DD') REGIST_DATE
+				,BSN_CLASSIFY_CD
+				,DEPT_PHONENUM
+				,UPDATE_ID
+				,UPDATE_DATE
+				,REGIST_SYS
+				,BSN_COMPLETE_DD
+				,REGIST_CHAM_CD
+				,MIG
+				,JOIN_YN
+				,CALCULATE_YN
+				,CALCULATE_DATE
+				,SUBSIDY
+				,CON_START_DD
+				,CON_END_DD
+				,COMPETENT_DEPT
+				,CALCULATE_END_DATE
+
+		FROM T_BP_A010
+		WHERE 1=1
+		AND CHAM_CD IN (#{chamCd})
+		AND (INSTR(BSN_CLASSIFY_CD,'0007') = 1 OR INSTR(BSN_CLASSIFY_CD,'0000') = 1)
+		AND DEL_YN='N'
+		AND BSN_TITLE IS NOT NULL
+		<if test='searchyear != null and !searchyear.equals("")' >
+			AND BSN_START_DD like '%'+#{searchyear}+'%'
+		</if>
+		<if test='searchtxt != null and !searchtxt.equals("")' >
+			AND BSN_TITLE like '%'+#{searchtxt}+'%'
+		</if>
+
+		<if test='miv_start_index != null and !miv_start_index.equals("")' >
+		<include refid="CommonSql.pageingBottom"/>
+		</if>
+	</select>
+
+	<select id="selectNewEducationList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.event.dao.EventData.selectNewEducationList */
+		<if test='miv_start_index != null and !miv_start_index.equals("")' >
+		<include refid="CommonSql.pageingTop"/>
+		</if>
+	 	SELECT
+
+				 CHAM_CD
+				,BSN_SEQ_NO
+				,BSN_ID
+				,BSN_STATUS
+				,BSN_TITLE
+				,SECURITY_GRADE
+				,BSN_START_DD
+				,BSN_END_DD
+				,RECEIVE_START_DD
+				,RECEIVE_END_DD
+				,BSN_RESULT_CONTENT
+				,WEB_REQ_YN
+				,REGIST_ID
+				,BSN_PLACE
+				,BSN_CONTENT
+				,BSN_ATTENDCOST
+				,COMMENTS
+				,CHARGE_ID
+				,BSN_BUDGET
+				,BSN_EXPENSE
+				,DEL_YN
+				,DEL_DATE
+				,DEPT_CD
+				,REGIST_NM
+				,DEPT_NM
+				,REGIST_DATE
+				,BSN_CLASSIFY_CD
+				,DEPT_PHONENUM
+				,UPDATE_ID
+				,UPDATE_DATE
+				,REGIST_SYS
+				,BSN_COMPLETE_DD
+				,REGIST_CHAM_CD
+				,MIG
+				,JOIN_YN
+				,CALCULATE_YN
+				,CALCULATE_DATE
+				,SUBSIDY
+				,CON_START_DD
+				,CON_END_DD
+				,COMPETENT_DEPT
+				,CALCULATE_END_DATE
+
+		FROM T_BP_A010
+		WHERE 1=1
+		AND CHAM_CD IN (#{chamCd})
+		AND INSTR(BSN_CLASSIFY_CD,'0000') = 1
+		AND DEL_YN='N'
+
+		ORDER BY BSN_ID DESC
+
+		<if test='miv_start_index != null and !miv_start_index.equals("")' >
+		<include refid="CommonSql.pageingBottom"/>
+		</if>
+	</select>
+
+	<update id="insertEventDataList" parameterType="Map">
+		<!-- INSERT INTO
+		GSMB.TBMR_CO_TEST@CDLINK.KORCHAM.ORG
+		(
+				 CO_NO
+				,CO_DIV
+				,COMP_REG_NO
+				,CORP_NO
+				,COMP_DIV
+				,CONAME_HANG
+				,CONAME_ENGL
+				,REP_NM_HANG
+				,REP_NM_ENGL
+				,TEL
+				,FAX
+				,MAJOR_PRD
+				,BIZKIND
+				,BIZKIND_ORG
+				,ZIPCODE
+				,ADDR
+				,ADDR2
+				,ENGL_ADDR
+				,REGN_CODE
+				,HOMEPAGE
+				,SUPLY_CO
+				,ANN_SALES
+				,BIZ_TYPE
+				,ITEM
+				,FND_DATE
+				,EMP_CNT
+				,USE_DIV
+				,VOLU_DIV
+				,REG_TM
+				,REG_ID
+				,CHG_TM
+				,CHG_ID
+				,ASSOCIATE
+				,KORCHAM_NAME
+				,ADDR3
+				,ROADCODE
+		)
+		SELECT
+
+				 CO_NO
+				,CO_DIV
+				,COMP_REG_NO
+				,CORP_NO
+				,COMP_DIV
+				,CONAME_HANG
+				,CONAME_ENGL
+				,REP_NM_HANG
+				,REP_NM_ENGL
+				,TEL
+				,FAX
+				,MAJOR_PRD
+				,BIZKIND
+				,BIZKIND_ORG
+				,ZIPCODE
+				,ADDR
+				,ADDR2
+				,ENGL_ADDR
+				,REGN_CODE
+				,HOMEPAGE
+				,SUPLY_CO
+				,ANN_SALES
+				,BIZ_TYPE
+				,ITEM
+				,FND_DATE
+				,EMP_CNT
+				,USE_DIV
+				,VOLU_DIV
+				,REG_TM
+				,REG_ID
+				,CHG_TM
+				,CHG_ID
+				,ASSOCIATE
+				,KORCHAM_NAME
+				,ADDR3
+				,ROADCODE
+
+		FROM TC_COMPANY
+		WHERE 1=1
+		AND  CO_NO IN 		(
+											SELECT COMPANY_NO
+											FROM TS_EVENT EVE
+
+											LEFT OUTER JOIN TS_EVENTAPPLY APP
+											ON EVE.EVENT_ID = APP.EVENT_ID
+											AND EVE.SITE_ID = APP.SITE_ID
+
+											WHERE 1=1
+											AND EVE.PROJECT_ID = #{projectId}
+											AND EVE.PROJECT_SEQ = #{projectSeq}
+									)
+		AND  CO_NO NOT IN (
+											SELECT CO_NO
+											FROM
+											GSMB.TBMR_CO_TEST@CDLINK.KORCHAM.ORG
+									   ); -->
+
+
+
+		/* kr.apfs.local.event.dao.EventData.insertEventApplyList */
+		BEGIN
+
+		DELETE BP.T_BP_A080_TEST@CDLINK.KORCHAM.ORG
+		WHERE CHAM_CD = #{chamCd}
+		AND BSN_ID=#{projectId}
+		AND BSN_SEQ_NO=#{projectSeq};
+
+	 	INSERT INTO
+	 	BP.T_BP_A080_TEST@CDLINK.KORCHAM.ORG
+		(
+				 REQ_SEQ_NO
+				,ATTEND_YN
+				,COMP_NM
+				,REP_NM
+				,BSN_NO
+				,IND_CLASSIFY_NUM
+				,ADDR
+				,REP_PHONE
+				,REP_FAX_NO
+				,REP_EMAIL
+				,HOMEPAGE
+				,CHARGE_DEPT_NM
+				,CHARGE_POS
+				,CHARGE_NM
+				,CHARGE_PHONE
+				,CHARGE_FAX_NO
+				,CHARGE_EMAIL
+				,MOCOMP_NM
+				,EMP_CNT
+				,CPRTIN_COMP_CNT
+				,KORCHAM_ID
+				,REQ_YN
+				,CHAM_CD
+				,BSN_ID
+				,BSN_SEQ_NO
+				,REGIST_ID
+				,REGIST_DATE
+				,UPDATE_ID
+				,UPDATE_DATE
+				,ZIPCODE
+				,MIG
+				,DIPLOMA_YN
+				,ATTEND_UPDATE_DATE
+
+		)
+		SELECT
+
+				(SELECT NVL(MAX(REQ_SEQ_NO),0) +1 FROM BP.T_BP_A080_TEST@CDLINK.KORCHAM.ORG WHERE REQ_SEQ_NO>2017013370)
+				,EMP.ATTEND_YN
+				,COM.CONAME_HANG
+				,COM.REP_NM_HANG
+				,COM.COMP_REG_NO
+				,NULL
+				,COM.ADDR
+				,COM.TEL
+				,COM.FAX
+				,NULL
+				,COM.HOMEPAGE
+				,APP.DEPT_NM
+				,APP.RANK_NM
+				,APP.MANAGER_NM
+				,APP.TEL
+				,APP.FAX
+				,APP.EMAIL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,'Y'
+				,EVE.PROJECT_CD
+				,EVE.PROJECT_ID
+				,EVE.PROJECT_SEQ
+				,#{*userId}
+				,SYSDATE
+				,#{*userId}
+				,SYSDATE
+				,COM.ZIPCODE
+				,NULL
+				,NULL
+				,NULL
+
+		FROM TS_EVENT EVE
+
+		LEFT OUTER JOIN TS_EVENTAPPLY APP
+		ON EVE.EVENT_ID = APP.EVENT_ID
+		AND EVE.SITE_ID = APP.SITE_ID
+
+		LEFT OUTER JOIN TS_EVENTAPPLYLIST EMP
+		ON APP.EVENT_ID = EMP.EVENT_ID
+		AND APP.SITE_ID = EMP.SITE_ID
+		AND APP.APPLY_SEQ = EMP.APPLY_SEQ
+
+		LEFT OUTER JOIN TC_COMPANY COM
+		ON COM.COMP_REG_NO = APP.COMPANY_NO
+
+		WHERE 1=1
+		AND EVE.PROJECT_ID = #{projectId}
+		AND EVE.PROJECT_SEQ = #{projectSeq};
+
+		DELETE BP.T_BP_A081_TEST@CDLINK.KORCHAM.ORG
+		WHERE CHAM_CD = #{chamCd}
+		AND BSN_ID = #{projectId}
+		AND BSN_SEQ_NO = #{projectSeq};
+
+	 	INSERT INTO
+	 	BP.T_BP_A081_TEST@CDLINK.KORCHAM.ORG
+		(
+				 REQ_SEQ_NO
+				,SEQ_NO
+				,NM
+				,DEPT
+				,POS
+				,PHONE
+				,FAX_NO_NUM
+				,EMAIL
+				,CHAM_CD
+				,BSN_ID
+				,BSN_SEQ_NO
+				,REQ_YN
+				,ATTEND_YN
+				,PERSON_ID
+				,MOBILE_NO
+				,ACT_START_DD
+				,ACT_END_DD
+				,COMP_NM
+				,BSN_NO
+				,MIG
+				,ONLINE_YN
+				,PERSON_YN
+				,DATA_ID
+				,OE_SEQ
+		)
+		SELECT
+
+				(SELECT MAX(REQ_SEQ_NO) FROM BP.T_BP_A080_TEST@CDLINK.KORCHAM.ORG)
+				,(SELECT NVL(MAX(SEQ_NO),0) +1 FROM BP.T_BP_A081_TEST@CDLINK.KORCHAM.ORG)
+				,EMP.EMP_NM
+				,EMP.DEPT_NM
+				,EMP.RANK_NM
+				,EMP.TEL
+				,EMP.FAX
+				,EMP.EMAIL
+				,#{chamCd}
+				,EVE.PROJECT_ID
+				,EVE.PROJECT_SEQ
+				,'Y'
+				,EMP.ATTEND_YN
+				,NULL
+				,EMP.MOBILE
+				,EVE.START_DY
+				,EVE.END_DY
+				,APP.COMPANY_NM
+				,APP.COMPANY_NO
+				,NULL
+				,EVE.ONLINE_YN
+				,NULL
+				,NULL
+				,(SELECT COUNT(*)+1 FROM BP.T_BP_A081_TEST@CDLINK.KORCHAM.ORG WHERE BSN_ID=#{projectId} AND EMP.MOBILE=NVL(MOBILE_NO,' ')) OE_SEQ
+
+		FROM TS_EVENT EVE
+
+		LEFT OUTER JOIN TS_EVENTAPPLY APP
+		ON EVE.EVENT_ID = APP.EVENT_ID
+		AND EVE.SITE_ID = APP.SITE_ID
+
+		INNER JOIN TS_EVENTAPPLYLIST EMP
+		ON APP.EVENT_ID = EMP.EVENT_ID
+		AND APP.SITE_ID = EMP.SITE_ID
+		AND EMP.ATTEND_YN = 'Y'
+		AND APP.APPLY_SEQ = EMP.APPLY_SEQ
+
+		WHERE 1=1
+		AND EVE.PROJECT_ID = #{projectId}
+		AND EVE.PROJECT_SEQ = #{projectSeq};
+
+		END;
+	</update>
+
+</mapper>

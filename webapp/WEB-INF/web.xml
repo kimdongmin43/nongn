@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+			/WEB-INF/spring/root-context.xml
+			/WEB-INF/spring/transaction-context.xml
+			/WEB-INF/spring/security-context.xml
+			/WEB-INF/spring/scheduling-context.xml
+		</param-value>
+  </context-param>
+  
+<!--   <security-constraint> -->
+<!-- 	<web-resource-collection> -->
+<!-- 		<web-resource-name>Restricted methods</web-resource-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 		<http-method>PUT</http-method> -->
+<!-- 		<http-method>DELETE</http-method> -->
+<!-- 		<http-method>MOVE</http-method> -->
+<!-- 		<http-method>OPTIONS</http-method> -->
+<!-- 		<http-method>TRACE</http-method> -->
+<!-- 		<http-method>PATCH</http-method> -->
+<!-- 	</web-resource-collection> -->
+<!-- 	<auth-constraint> -->
+<!-- 		<role-name></role-name> -->
+<!-- 	</auth-constraint> -->
+<!--   </security-constraint> -->
+
+
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>kr.apfs.local.common.context.FwContextListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>kr.apfs.local.common.context.SessionCounterListener</listener-class>
+  </listener>
+  <listener>
+  	<listener-class> org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>appServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/spring/servlet-context.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>appServlet</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>appServlet</servlet-name>
+    <url-pattern>*.ajax</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DownloadView</display-name>
+    <servlet-name>DownloadView</servlet-name>
+    <servlet-class>kr.apfs.local.ocm.common.util.DownloadView</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DownloadView</servlet-name>
+    <url-pattern>/DownloadView</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CaptchaServlet</servlet-name>
+    <servlet-class>kr.apfs.local.common.util.captcha.CaptchaServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CaptchaServlet</servlet-name>
+    <url-pattern>/captcha</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>htmlServlet</servlet-name>
+  	<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+  	<load-on-startup>2</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>htmlServlet</servlet-name>
+  	<url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
+  <error-page>
+    <error-code>401</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+    <error-code>403</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+    <error-code>405</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+    <error-code>406</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+    <error-code>412</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+    <error-code>501</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+    <error-code>502</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+    <error-code>503</error-code>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+  	<exception-type>java.lang.Throwable</exception-type>
+    <location>/error.do</location>
+  </error-page>
+  <error-page>
+  	<exception-type>java.io.IOException</exception-type>
+    <location>/error.do</location>
+  </error-page>
+  
+  	<!-- 
+  		Cross site Scripting 취약점 방지를 위하여 
+  		XSS - CrossScriptingFilter를 별도로 추가함 
+  		처리일자 : 2018.06.08(금)
+  	-->
+	<filter>
+	    <filter-name>XSS</filter-name>
+	    <filter-class>kr.apfs.local.filter.CrossScriptingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>XSS</filter-name>
+	    <url-pattern>/front/*</url-pattern>
+	</filter-mapping>
+	<!-- 
+		X-Frame-Options header 취약점 방지(경고 방지 등)를 위하여
+		XSS - httpHeaderSecurity 필터를 별도로 추가함
+		처리일자 : 2018.06.11(월)
+	-->
+	<filter>
+        <filter-name>httpHeaderSecurity</filter-name>
+        <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
+        <init-param>
+            <param-name>antiClickJackingOption</param-name>
+            <param-value>ALLOW-FROM</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>httpHeaderSecurity</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+</web-app>

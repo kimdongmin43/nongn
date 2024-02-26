@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PopnotiDao">
+
+	<select id="selectPopnotiPageList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.popnoti.dao.impl.PopnotiDao.selectPopnotiPageList */
+
+	SELECT
+                   	
+		    		POP.noti_id as imgId
+					,POP.title
+					,POP.use_yn					
+					,POP.attach_id
+					,POP.url
+					,POP.reg_user_id
+					,(select user_nm from tc_user where user_id = POP.reg_user_id) as reg_user_nm
+					,(SELECT CONVERT(CHAR(8),GETDATE(),112)) as reg_dt
+					,POP.site_id
+					,ATT.FILE_ID
+					,ATT.FILE_NM
+					,ATT.FILE_TYPE
+					,ATT.FILE_SIZE
+					,ATT.ORIGIN_FILE_NM
+					,ATT.FILE_PATH
+	FROM TS_POP POP
+		  	   LEFT OUTER JOIN (
+					SELECT
+					ATTACH_ID,
+					MAX(FILE_ID) FILE_ID
+					FROM
+					TC_ATTACHFILE
+					GROUP BY
+					ATTACH_ID
+					) MAX
+				ON POP.ATTACH_ID  = MAX.ATTACH_ID
+
+				LEFT OUTER JOIN TC_ATTACHFILE ATT
+				ON POP.ATTACH_ID  = MAX.ATTACH_ID
+				AND MAX.FILE_ID = ATT.FILE_ID
+				WHERE 1 = 1
+				AND site_id = #{*siteId}
+				AND noti_id = #{imgId}
+				AND del_yn = 'N'
+				
+	</select>
+
+	<select id="selectPopnotiList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.popnoti.dao.impl.PopnotiDao.selectPopnotiList */
+		SELECT ROW_NUMBER() OVER (ORDER BY pop.noti_id desc) AS R_NUM
+		     		,POP.noti_id as imgId
+					,POP.title
+					,POP.use_yn
+					,POP.url				
+					,ATT.FILE_ID
+					,ATT.FILE_NM
+					,ATT.FILE_TYPE
+					,ATT.FILE_SIZE
+					,ATT.ORIGIN_FILE_NM
+					,ATT.FILE_PATH
+		 	   FROM TS_POP POP
+		  	   LEFT OUTER JOIN (
+					SELECT
+					ATTACH_ID,
+					MAX(FILE_ID) FILE_ID
+					FROM
+					TC_ATTACHFILE
+					GROUP BY
+					ATTACH_ID
+					) MAX
+				ON POP.ATTACH_ID  = MAX.ATTACH_ID
+
+				LEFT OUTER JOIN TC_ATTACHFILE ATT
+				ON POP.ATTACH_ID  = MAX.ATTACH_ID
+				AND MAX.FILE_ID = ATT.FILE_ID
+
+				WHERE 1 = 1
+				AND del_yn = 'N'			
+
+				<if test='title != null and !title.equals("")' >
+				   AND title = #{title}
+				</if>
+				<if test='contents != null and !contents.equals("")' >
+				   AND contents = #{contents}
+				</if>
+				<if test='useYn != null and !useYn.equals("")' >
+				   AND use_yn = #{useYn}
+				</if>				
+				<if test='tabGbn != null and tabGbn.equals("B")' >
+				   AND site_id = '3'
+				</if>
+	</select>
+
+	<select id="selectMainPopnotiList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.popnoti.dao.impl.PopnotiDao.selectMainPopnotiList */
+			  SELECT TOP 8 
+			  		ROW_NUMBER() OVER (ORDER BY pop.noti_id desc) AS R_NUM
+		     		,POP.noti_id as imgId
+					,POP.title
+					,POP.use_yn
+					,POP.url				
+					,ATT.FILE_ID
+					,ATT.FILE_NM
+					,ATT.FILE_TYPE
+					,ATT.FILE_SIZE
+					,ATT.ORIGIN_FILE_NM
+					,ATT.FILE_PATH
+		 	   FROM TS_POP POP
+		  	   LEFT OUTER JOIN (
+					SELECT
+					ATTACH_ID,
+					MAX(FILE_ID) FILE_ID
+					FROM
+					TC_ATTACHFILE
+					GROUP BY
+					ATTACH_ID
+					) MAX
+				ON POP.ATTACH_ID  = MAX.ATTACH_ID
+
+				LEFT OUTER JOIN TC_ATTACHFILE ATT
+				ON POP.ATTACH_ID  = MAX.ATTACH_ID
+				AND MAX.FILE_ID = ATT.FILE_ID
+
+				WHERE 1 = 1
+				AND del_yn = 'N'			
+
+			
+	</select>
+
+	<select id="selectPopnoti" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.popnoti.dao.impl.PopnotiDao.selectPopnoti */
+		SELECT
+		   			noti_id
+					,title
+					,contents
+					,use_yn
+					,(SELECT CONVERT(CHAR(8),GETDATE(),112)) AS start_dy
+					,(SELECT CONVERT(CHAR(8),GETDATE(),112)) AS end_dy
+					,width
+					,height
+					,[top]
+					,[left]
+					,attach_id
+					<!-- ,(SELECT file_nm FROM tc_attachfile WHERE attach_id = a.attach_id) as file_nm -->
+					,reg_user_id
+					,(select user_nm from tc_user where user_id = a.reg_user_id) as reg_user_nm
+					,(SELECT CONVERT(CHAR(8),GETDATE(),112)) as reg_dt
+					,site_id
+		FROM ts_pop a
+		WHERE  noti_id = #{notiId}
+		AND site_id = #{*siteId}
+	</select>
+
+	<select id="selectPopnotiExist" parameterType="Map" resultType="integer">
+		SELECT /* kr.apfs.local.popnoti.dao.impl.PopnotiDao.selectPopnotiExist */
+				  count(*)
+			FROM ts_pop
+			WHERE noti_id = #{notiId}
+			AND site_id = #{*siteId}
+			
+			
+
+	</select>
+
+	<update id="insertPopnoti" parameterType="Map" >
+	    /* kr.apfs.local.popnoti.dao.impl.PopnotiDao.insertPopnoti */
+		INSERT INTO
+		ts_pop (
+				title
+				,contents
+				,use_yn				
+				,attach_id
+				,reg_user_id
+				,reg_dt				
+				,site_id
+				,del_yn
+				,sort
+				,url
+		) VALUES (				
+				#{title}
+				,#{contents}
+				,#{useYn}							
+				,#{attachId}
+				,#{*userId}
+				,left(convert(varchar, getdate(), 112)+'000000',14)				
+				,'3'
+				,'N'
+				,(SELECT ISNULL(MAX(sort),0)+1 FROM ts_pop)
+				,#{url}
+		)
+	</update>
+
+	<update id="updatePopnoti" parameterType="Map" >
+	    /* kr.apfs.local.popnoti.dao.impl.PopnotiDao.updatePopnoti */
+	    UPDATE
+	 		ts_pop
+		SET
+				title = #{title}
+				,contents = #{contents}
+				,use_yn = #{useYn}
+			<!-- 	,start_dy = REPLACE(#{startDy},'-','')
+				,end_dy = REPLACE(#{endDy},'-','')
+				,width = #{width}
+				,height = #{height}
+				,[top] = #{top}
+				,[left] = #{left} -->
+				,attach_id = #{attachId}
+				,upd_user_id = #{*userId}
+				,url = #{url}
+				,upd_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE 
+		1=1
+		AND noti_id = #{imgId}
+		AND site_id = #{*siteId}
+		
+	</update>
+
+	<delete id="deletePopnoti" parameterType="Map" >
+	    /* kr.apfs.local.popnoti.dao.impl.PopnotiDao.deletePopnoti */
+	    UPDATE
+	 		ts_pop
+		SET
+		  del_yn = 'Y'
+		WHERE 
+		1=1
+		AND noti_id = #{imgId}
+		AND site_id = #{*siteId}
+		
+	</delete>
+
+</mapper>

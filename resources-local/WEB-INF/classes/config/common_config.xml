@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<configuration>
+
+	<system>
+		<defaultLocale>ko</defaultLocale>
+		<defaultCharacterEncording>UTF-8</defaultCharacterEncording>
+		<refreshCheckSecond>60</refreshCheckSecond>
+		<isDevelopServer>true</isDevelopServer>
+
+		<site>
+			<name>apfs</name>
+		</site>
+
+		<server>
+			<url>http://localhost</url>
+			<docroot>C:\dev\workspace\apfs\src\main\webapp</docroot>
+			 <httpsPort>8443</httpsPort>
+		</server>
+
+		<!-- Base Context -->
+		<baseContext></baseContext>
+		<mail>
+			<adminemail>admin@test.co.kr</adminemail>
+			<adminname>seoulyouth 관리자</adminname>
+			<protocol>smtp</protocol>
+			<authority>false</authority>
+			<smtp>
+				<host>100.100.100.100</host>
+				<port>25</port>
+				<userid>#</userid>
+				<password>#</password>
+			</smtp>
+		</mail>
+		<applyBaseTime>20</applyBaseTime>
+		<applyDelayTime>300</applyDelayTime>
+	</system>
+
+	<common>
+		<upload>
+			<MaxFileSize>20</MaxFileSize>
+			<basePath>D:/file/</basePath>
+			<temp>c:/progrmas/seoulyouth_fs/upload/temp/</temp>
+			<urlPath>/seoulyouth_fs/upload/</urlPath>
+		</upload>
+		<url>
+		    <local>http://localhost/seoulyouth_fs/upload/</local>
+		</url>
+	</common>
+
+	<fileType>
+		<!--name of file type  -->
+		<names>img,zip,pdf,doc,ppt,xls,hwp,movie</names>
+		<types>
+			<img>gif,jpg,jpeg,png,bmp</img>
+			<zip>zip</zip>
+			<pdf>pdf</pdf>
+			<doc>doc,docx</doc>
+			<xls>xls,xlsx,csv</xls>
+			<ppt>ppt,pptx</ppt>
+			<hwp>hwp</hwp>
+			<movie>wmv,avi,asf,mpg,mpeg</movie>
+		</types>
+		<!-- image file of file types  -->
+		<images>
+			<base>/images/common/icon</base>
+			<default>${fileType.images.base}/ico_etc.gif</default>
+			<img>${fileType.images.base}/ico_img.gif</img>
+			<zip>${fileType.images.base}/ico_zip.gif</zip>
+			<pdf>${fileType.images.base}/ico_pdf.gif</pdf>
+			<doc>${fileType.images.base}/ico_doc.gif</doc>
+			<xls>${fileType.images.base}/ico_xls.gif</xls>
+			<ppt>${fileType.images.base}/ico_ppt.gif</ppt>
+			<hwp>${fileType.images.base}/ico_hwp.gif</hwp>
+			<movie>${fileType.images.base}/ico_movie.gif</movie>
+		</images>
+	</fileType>
+
+	<sms>
+	      <id>youthhope</id>
+	      <pw>hope6578</pw>
+	      <host>115.84.164.23</host>
+	      <port>80</port>
+	      <sms_page>/SMS/ext_sms_send.do</sms_page>
+	      <lms_page>/SMS/ext_lms_send.do</lms_page>
+	      <mms_page>/SMS/ext_mms_send.do</mms_page>
+	      <iotimeout>5000</iotimeout>
+	      <connectiontimeout>5000</connectiontimeout>
+	</sms>
+
+	<juso>
+	     <front>
+	         <domain>youthhope.seoul.go.kr</domain>
+	         <key>U01TX0FVVEgyMDE3MDIxNDEwNTQxOTE4OTkw</key>
+	     </front>
+	     <back>
+	         <domain>youthhope.eseoul.go.kr</domain>
+	         <key>U01TX0FVVEgyMDE3MDIxNDEwNTQxOTE4OTky</key>
+	     </back>
+	</juso>
+
+	<realName>
+		<key>SB00000</key>
+	</realName>
+
+</configuration>

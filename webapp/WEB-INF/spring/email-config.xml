@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+ 
+	<!-- 이메일 인증 처리 -->
+	<!-- 메일 보내기 (SEND) -->
+	<!-- 메일은 지메일(Gmail)을 기준으로 진행함 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="465" />		
+<!-- 		<property name="port" value="587" /> -->
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="username" value="email.username" />
+		<property name="password" value="email.password" />
+	
+	
+		<!-- email 요청시는 SMTP -->
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.debug">true</prop>      	
+
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<!-- prop key="mail.smtp.ssl.enable">true</prop-->
+			</props>
+	    </property>
+	</bean>
+	
+	<!-- Email, EmailSender Bean 등록 -->
+	<bean id="email" class="kr.apfs.local.common.util.email.Email"></bean>
+	<bean id="emailSender" class="kr.apfs.local.common.util.email.EmailSender"></bean>	
+</beans>

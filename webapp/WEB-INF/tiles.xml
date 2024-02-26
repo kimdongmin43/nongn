@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://127.0.0.1:8080/assets/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<definition name="back_layout" template="/WEB-INF/views/templates/back/Frame.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/templates/back/Header.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/templates/back/Body.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/templates/back/Footer.jsp"/>
+	</definition>
+
+	<definition name="front_layout" template="/WEB-INF/views/templates/front/Frame.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/templates/front/Header.jsp"/>
+		<put-attribute name="left" value="/WEB-INF/views/templates/front/Left.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/templates/front/Body.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/templates/front/Footer.jsp"/>
+	</definition>
+
+	<definition name="front_common_layout" template="/WEB-INF/views/templates/front/Frame.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/templates/front/Header.jsp"/>
+		<put-attribute name="left" value="/WEB-INF/views/templates/front/Left2.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/templates/front/Body.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/templates/front/Footer.jsp"/>
+	</definition>
+
+	<definition name="front_search_layout" template="/WEB-INF/views/templates/front/Frame.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/templates/front/Header.jsp"/>
+		<put-attribute name="left" value="/WEB-INF/views/templates/front/Left3.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/templates/front/Body.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/templates/front/Footer.jsp"/>
+	</definition>
+
+
+	<definition name="blank_layout" template="/WEB-INF/views/templates/Blank.jsp">
+		<put-attribute name="body" value="/WEB-INF/views/templates/back/Body.jsp"/>
+	</definition>
+
+	<definition name="popup_layout" template="/WEB-INF/views/templates/back/Popup.jsp">
+		<put-attribute name="body" value="/WEB-INF/views/templates/back/Body.jsp"/>
+	</definition>
+
+	<definition name="popup_f_layout" template="/WEB-INF/views/templates/front/Popup.jsp">
+		<put-attribute name="body" value="/WEB-INF/views/templates/front/Body.jsp"/>
+	</definition>
+
+	<definition name="/back/*" extends="back_layout">
+		<put-attribute name="body" value="/WEB-INF/views/back/{1}.jsp"/>
+	</definition>
+
+	<definition name="/back/*/*" extends="back_layout">
+		<put-attribute name="body" value="/WEB-INF/views/back/{1}/{2}.jsp"/>
+	</definition>
+
+	<definition name="/sub/back/*/*" extends="blank_layout">
+		<put-attribute name="body" value="/WEB-INF/views/back/{1}/{2}.jsp"/>
+	</definition>
+
+	<definition name="/popup/back/*/*" extends="popup_layout">
+		<put-attribute name="body" value="/WEB-INF/views/back/{1}/{2}.jsp"/>
+	</definition>
+
+	<definition name="/front/*/*" extends="front_layout">
+		<put-attribute name="body" value="/WEB-INF/views/front/{1}/{2}.jsp"/>
+	</definition>
+
+	<definition name="/comm/front/*/*" extends="front_common_layout">
+		<put-attribute name="body" value="/WEB-INF/views/front/{1}/{2}.jsp"/>
+	</definition>
+
+	<definition name="/search/front/*/*" extends="front_search_layout">
+		<put-attribute name="body" value="/WEB-INF/views/front/{1}/{2}.jsp"/>
+	</definition>
+
+	<definition name="/sub/front/*/*" extends="blank_layout">
+		<put-attribute name="body" value="/WEB-INF/views/front/{1}/{2}.jsp"/>
+	</definition>
+
+	<definition name="/popup/front/*/*" extends="popup_f_layout">
+		<put-attribute name="body" value="/WEB-INF/views/front/{1}/{2}.jsp"/>
+	</definition>
+
+	<definition name="/root/*/*/*" extends="blank_layout">
+		<put-attribute name="body" value="/{1}/{2}/{3}.jsp"/>
+	</definition>
+
+	<!-- <definition name="/root/*" extends="blank_layout">
+		<put-attribute name="body" value="/{1}.jsp"/>
+	</definition> -->
+
+</tiles-definitions>

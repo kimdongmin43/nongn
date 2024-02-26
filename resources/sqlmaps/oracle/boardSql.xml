@@ -1,0 +1,2025 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardDao">
+
+
+
+	<select id="selectBoardPageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardPageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+		    		 board_id
+					,title
+					,board_cd
+					,dbo.UF_CODE_NM('BOARD_TYPE',board_cd) board_cd_nm
+					,contents
+					,detail_yn
+					,write_mem_cd
+					,read_mem_cd
+					,item_use
+					,item_required
+					,item_out
+					,item_user
+					,view_print
+					,view_size
+					,view_sort
+					,noti_cnt
+					,file_cnt
+					,reg_mem_id
+					,reg_dt
+					,upd_mem_id
+					,upd_dt
+					,use_yn
+					,(select code_nm from tc_code where mst_id = 'USE_YN' and code_id = tb.detail_yn) as detail_yn_nm
+					,(select code_nm from tc_code tc where mst_id = 'USE_YN' and tc.code_id = tb.use_yn) as use_yn_nm
+					,(select code_nm from tc_code where mst_id = 'BOARD_TYPE' and code_id = tb.board_cd) as type_nm
+					,(select count(1) from ts_boardcontents tbc where tbc.board_id = tb.board_id and tbc.del_yn != 'Y' ) as write_cnt
+					,(select count(1) from ts_boardetc tbe where tbe.board_id = tb.board_id and tbe.del_yn != 'Y' ) as write_cnt_etc		<!-- ts_boardetc 게시물수 -->
+					<!-- ,case when isnull(instr(item_use, 'cate', 1, 1),0) > 0 then 'Y' else 'N' end as cate_yn -->
+					,'N' as cate_yn
+		  FROM ts_board tb
+		 WHERE 1 = 1
+		 		AND use_yn = 'Y'
+		 		AND del_yn != 'Y'
+				<if test='searchtype != null and !searchtype.equals("")' >
+				   AND board_cd = #{searchtype}
+				</if>
+				<if test='searchTxt != null and searchKey.equals("NM")' >
+				   AND (title LIKE '%' + #{searchTxt} + '%' OR contents LIKE '%' + #{searchTxt} + '%' )
+				</if>
+				<if test='searchTxt != null and searchKey.equals("CD")' >
+				   AND board_id = #{searchTxt}
+				</if>
+<!-- 				<if test='defaulttype != null and !defaulttype.equals("")' >
+				   AND board_cd = #{defaulttype}
+				</if> -->
+				<if test='defaulttype != null and defaulttype.equals("P")' >
+					AND board_cd IN ('P','R','I')
+				</if>
+				<if test='defaulttype != null and !defaulttype.equals("P")' >
+					AND board_cd = #{defaulttype}
+				</if>
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+	<select id="selectBoardList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardList */
+		SELECT
+		     		board_id
+					,title
+					,board_cd
+					,dbo.UF_CODE_NM('BOARD_TYPE',board_cd) board_cd_nm
+					,(select code_nm from tc_code where mst_id = 'BOARD_TYPE' and code_id = a.board_cd) as type_nm
+					,detail_yn
+					,write_mem_cd
+					,read_mem_cd
+					,item_use
+					,item_required
+					,item_out
+					,item_user
+					,view_print
+					,view_size
+					,view_sort
+					,noti_cnt
+					,file_cnt
+					,reg_mem_id
+					,(SELECT user_nm FROM tc_user tu WHERE tu.user_id = a.reg_mem_id) AS reg_usernm
+					<!-- ,dbo.UF_USER_NM(reg_mem_id) reg_user_nm -->
+					,reg_dt
+					,reg_dt as reg_dt2
+					,upd_mem_id
+					,upd_dt
+					,site_id
+					,'/front/board/boardContentsListPage.do?boardId='+convert(varchar,BOARD_ID) as ref_url
+		FROM ts_board a
+		WHERE 1 = 1
+			AND del_yn != 'Y'
+		<if test='defaulttype != null and defaulttype.equals("P")' >
+			AND board_cd IN ('P','R','I')
+		</if>
+		<if test='defaulttype != null and !defaulttype.equals("P")' >
+			AND board_cd = #{defaulttype}
+		</if>
+			ORDER BY board_id DESC
+	</select>
+
+	<select id="selectBoard" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoard */
+		SELECT
+		   			 board_id
+					,title
+					,board_cd
+					,contents
+					,detail_yn
+					,write_mem_cd
+					,read_mem_cd
+					,item_use
+					,item_required
+					,item_out
+					,item_user
+					,view_print
+					,view_size
+					,view_sort
+					,noti_cnt
+					,file_cnt
+					,reg_mem_id
+					,reg_dt
+					,upd_mem_id
+					,upd_dt
+
+		FROM ts_board
+		WHERE 1 = 1
+
+	      			<if test='boardId != null and !boardId.equals("")' >
+				   AND board_id = #{boardId}
+				</if>
+				<if test='title != null and !title.equals("")' >
+				   AND title = #{title}
+				</if>
+				<if test='boardCd != null and !boardCd.equals("")' >
+				   AND board_cd = #{boardCd}
+				</if>
+				<if test='contents != null and !contents.equals("")' >
+				   AND contents = #{contents}
+				</if>
+				<if test='detailYn != null and !detailYn.equals("")' >
+				   AND detail_yn = #{detailYn}
+				</if>
+				<if test='writeMemCd != null and !writeMemCd.equals("")' >
+				   AND write_mem_cd = #{writeMemCd}
+				</if>
+				<if test='readMemCd != null and !readMemCd.equals("")' >
+				   AND read_mem_cd = #{readMemCd}
+				</if>
+				<if test='itemUse != null and !itemUse.equals("")' >
+				   AND item_use = #{itemUse}
+				</if>
+				<if test='itemRequired != null and !itemRequired.equals("")' >
+				   AND item_required = #{itemRequired}
+				</if>
+				<if test='viewPrint != null and !viewPrint.equals("")' >
+				   AND view_print = #{viewPrint}
+				</if>
+				<if test='viewSize != null and !viewSize.equals("")' >
+				   AND view_size = #{viewSize}
+				</if>
+				<if test='viewSort != null and !viewSort.equals("")' >
+				   AND view_sort = #{viewSort}
+				</if>
+				<if test='notiCnt != null and !notiCnt.equals("")' >
+				   AND noti_cnt = #{notiCnt}
+				</if>
+				<if test='fileCnt != null and !fileCnt.equals("")' >
+				   AND file_cnt = #{fileCnt}
+				</if>
+				<if test='s_userId != null and !regUserId.equals("")' >
+				   AND reg_mem_id = #{*userId}
+				</if>
+				<if test='regDt != null and !regDt.equals("")' >
+				   AND reg_dt = #{regDt}
+				</if>
+				<if test='updMmId != null and !updMmId.equals("")' >
+				   AND upd_mem_id = #{updMemId}
+				</if>
+				<if test='updDt != null and !updDt.equals("")' >
+				   AND upd_dt = #{updDt}
+				</if>
+	</select>
+
+	<select id="selectBoardExist" parameterType="Map" resultType="integer">
+		SELECT /* kr.apfs.local.board.dao.impl.BoardDao.selectBoardExist */
+				  count(*)
+			FROM ts_board
+			WHERE
+			1=1
+					AND	board_id = #{boardId}
+
+	</select>
+
+	<!-- 게시판 등록  -->
+	<update id="insertBoard" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.insertBoard */
+		INSERT INTO
+		ts_board (
+				title
+				,board_id
+				,board_cd
+				,contents
+				,detail_yn
+				,write_mem_cd
+				,read_mem_cd
+				,item_use
+				,item_required
+				,item_out
+				,item_user
+				,view_print
+				,view_size
+				,view_sort
+				,reg_mem_id
+				,reg_dt
+				,upd_mem_id
+				,upd_dt
+				,use_yn
+				,file_cnt
+				,site_id
+				,del_yn
+		) VALUES (
+				#{title}
+				,(SELECT isnull(MAX(board_id),0)+1 FROM ts_board)
+				,#{boardCd}
+				,#{contents}
+				,#{detailYn}
+				,#{writeMemCd}
+				,#{readMemCd}
+				,#{itemUse}
+				,#{itemRequired}
+				,#{itemOut}
+				,#{itemUser}
+				,#{viewPrint}
+				,#{viewSize}
+				,#{viewSort}
+				,#{*userId}
+				,left(convert(varchar, getdate(), 112)+'000000',14)
+				,#{*userId}
+				,left(convert(varchar, getdate(), 112)+'000000',14)
+				,'Y'
+				,#{fileCnt}
+				,#{*siteId}
+				,'N'
+		)
+	</update>
+
+	<!-- 게시판 기본정보  -->
+	<update id="updateBoard" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.updateBoard */
+	    UPDATE
+	 		ts_board
+		SET
+				title = #{title}
+				,contents = #{contents}
+				,detail_yn = #{detailYn}
+				,write_mem_cd = #{writeMemCd}
+				,read_mem_cd = #{readMemCd}
+				,upd_mem_id = #{*userId}
+				,upd_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+				,use_yn = #{useYn}
+		WHERE  1=1
+		    		AND	board_id = #{boardId}
+	</update>
+
+	<!-- 게시판 항목설정  -->
+	<update id="updateBoardItemSet" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.updateBoardItemSet */
+	    UPDATE
+	 		ts_board
+		SET
+				item_use = #{itemUse}
+				<!-- ,item_required = #{itemRequired} -->
+				,item_out =(
+					CASE
+					WHEN SUBSTRING(#{itemOut},1,1) = '|' THEN ' #{itemOut}'
+					ELSE #{itemOut}
+					END
+					)
+				,item_user = #{itemUser}
+				,noti_cnt = #{notiCnt}
+				,file_cnt = #{fileCnt}
+				,upd_mem_id = #{*userId}
+				,upd_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE  1=1
+		    		AND	board_id = #{boardId}
+	</update>
+
+	<!-- 게시판 목록뷰설정  -->
+	<update id="updateBoardViewSet" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.updateBoardItemSet */
+	    UPDATE
+	 		ts_board
+		SET
+				view_print = #{viewPrint}
+				,view_size = #{viewSize}
+				,view_sort = #{viewSort}
+				,item_user = #{itemUser}
+				,upd_mem_id = #{*userId}
+				,upd_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE  1=1
+		    		AND	board_id = #{boardId}
+	</update>
+
+	<!-- 게시판 삭제  -->
+	<update id="deleteBoard" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.deleteBoard */
+	 	UPDATE
+	 		ts_board
+		SET
+			del_yn = 'Y'
+		WHERE  1=1
+				AND	board_id = #{boardId}
+	</update>
+
+	<!-- 게시판 상세정보 -->
+	<select id="selectBoardDetail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardDetail */
+		SELECT
+		   			a.board_id
+					,a.title
+					,a.board_cd
+					,a.contents
+					,a.detail_yn
+					,a.write_mem_cd
+					,a.read_mem_cd
+					,a.item_use
+					,a.item_required
+					,a.item_out
+					,a.item_user
+					,a.view_print
+					,a.view_size
+					,a.view_sort
+					,a.noti_cnt
+					,a.file_cnt
+					,a.reg_mem_id
+					,a.upd_mem_id
+					,a.upd_dt
+					,a.use_yn
+					,(SELECT user_nm FROM tc_user tu WHERE tu.user_id = a.reg_mem_id) as reg_usernm
+					<!-- ,GET_DATEFORMAT(a.reg_dt) as reg_dt -->
+					<!-- ,TO_CHAR(TO_DATE(a.reg_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as reg_dt -->
+					,a.reg_dt
+					,'N' as cate_yn
+					,(SELECT count(1) FROM ts_boardcontents tb WHERE tb.board_id = a.board_id AND tb.NOTI_YN = 'Y' AND tb.DEL_YN = 'N') as noti_sum
+		FROM ts_board a
+		WHERE 1 = 1
+			 AND a.board_id = #{boardId}
+	</select>
+
+	<!-- 게시판 카테고리 리스트 -->
+	<select id="selectBoardCategoryList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardCategoryList */
+		SELECT
+				cate_id
+				,board_id
+				,sort
+				,use_yn
+				,cate_nm
+				,(select code_nm from tc_code where mst_id = 'USE_YN' and code_id = tb.use_yn) as use_yn_nm
+		FROM ts_boardcategory tb
+		WHERE  tb.board_id = #{boardId}
+			AND del_yn != 'Y'
+		ORDER BY sort
+	</select>
+
+	<!-- 게시판 카테고리 -->
+	<select id="selectBoardCategoryDetail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardCategoryDetail */
+		SELECT
+				cate_id
+				,board_id
+				,sort
+				,use_yn
+				,cate_nm
+				,reg_user_id
+				,(SELECT user_nm FROM tc_user tu WHERE tu.user_id = a.reg_user_id) as reg_usernm
+				<!-- ,GET_DATEFORMAT(reg_dt) as reg_dt -->
+				<!-- ,TO_CHAR(TO_DATE(reg_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as reg_dt -->
+				,reg_dt
+		FROM ts_boardcategory a
+		WHERE  board_id = #{boardId}
+			AND cate_id = #{cateId}
+			AND del_yn != 'Y'
+		ORDER BY sort
+	</select>
+
+	<!-- 게시판 카테고리 등록 -->
+	<update id="insertBoardCategory" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.insertBoardCategory */
+		INSERT INTO
+		ts_boardcategory (
+				cate_id
+				,board_id
+				,site_id
+				,sort
+				,use_yn
+				,cate_nm
+				,reg_user_id
+				,reg_dt
+				,upd_user_id
+				,upd_dt
+				,del_yn
+		) VALUES (
+				(SELECT isnull(MAX(cate_id),0)+1 FROM ts_boardcategory)<!-- #{cateId} -->
+				,#{boardId}
+				,#{*siteId}
+				,(SELECT isnull(MAX(sort),0)+1 FROM ts_boardcategory where board_id = #{boardId})
+				,#{useYn}
+				,#{cateNm}
+				,#{*userId}
+				,left(convert(varchar, getdate(), 112)+'000000',14)
+				,#{*userId}
+				,left(convert(varchar, getdate(), 112)+'000000',14)
+				,'N'
+		)
+	</update>
+
+	<!-- 게시판 카테고리 수정 -->
+	<update id="updateBoardCategory" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.updateBoardCategory */
+	    UPDATE
+	 		ts_boardcategory
+		SET
+				cate_nm = #{cateNm}
+				,sort = #{sort}
+				,use_yn = #{useYn}
+				,upd_user_id = #{*userId}
+				,upd_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE  1=1
+		    		AND	board_id = #{boardId}
+		    		AND cate_id = #{cateId}
+	</update>
+
+	<!-- 게시판 카테고리 삭제 -->
+	<update id="deleteBoardCategory" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.deleteBoardCategory */
+	 	<!-- DELETE FROM
+			ts_boardcategory
+		WHERE  1=1
+				AND	board_id = #{boardId}
+				AND cate_id = #{cateId} -->
+		UPDATE
+			 ts_boardcategory
+		SET
+			del_yn='Y'
+		WHERE  1=1
+				AND	board_id = #{boardId}
+				AND cate_id = #{cateId}
+	</update>
+
+	<!-- 메뉴 매핑여부 확인 -->
+	<select id="chkBoardMapp" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.chkBoardMapp */
+	    SELECT
+				count(ref_board_id) as cnt
+		FROM ts_menu
+		WHERE  ref_board_id = #{boardId}
+	</select>
+	
+	<select id="chkBoardExistContents" parameterType="Map" resultType="Integer">
+	/* kr.apfs.local.board.dao.impl.BoardDao.chkBoardExistContents */
+	SELECT COUNT(1) CNT
+	  FROM TS_BOARDCONTENTS
+	 WHERE BOARD_ID = #{boardId}
+	     AND TITLE LIKE #{title}
+	     AND CONTENTS LIKE #{contents}
+	     AND CONT_ID BETWEEN (SELECT MAX(CONT_ID)-5 FROM TS_BOARDCONTENTS WHERE BOARD_ID = #{boardId}) AND (SELECT MAX(CONT_ID) FROM TS_BOARDCONTENTS WHERE BOARD_ID = #{boardId})
+	     AND DEL_YN = 'N'
+	</select>
+
+	<!-- 게시물 등록 -->
+	<update id="insertBoardContents" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.insertBoardContents */
+		INSERT INTO
+		ts_boardcontents (
+			board_id
+			,cate_id
+			,title
+			,contents
+			,ref_seq
+			,relevel_seq
+			,restep_seq
+			,title_link
+			,reg_mem_nm
+			,mobile
+			,sms_yn
+			,url_nm
+			,url_link
+			,source
+			,noti_yn
+			,open_yn
+			,img_attach_id
+			,attach_id
+			,password
+			<!-- ,book_dt -->
+			,reg_ip
+			,reg_mem_id
+			,reg_dt
+			,upd_mem_id
+			,upd_dt
+			,del_yn
+			,site_id
+			,hit
+			,use_yn
+			,etc0
+			,etc1
+			,etc2
+			,etc3
+			,etc4
+			,etc5
+			,etc6
+			,etc7
+			,etc8
+			,etc9
+			,etc10
+			,etc11
+			,etc12
+			,etc13
+			,etc14
+			,etc15
+			,etc16
+			,etc17
+			,etc18
+			,etc19
+			,noti_seq
+			<if test='sDupInfo != null and (boardId == 20072 or boardId == 20075 or boardId == 20062 or boardId == 51 or boardId == 20057 ) ' >
+			,dikey
+			</if>
+			,contents_srch
+		) VALUES (
+			#{boardId}
+			,#{cateId}
+			,#{title}
+			,#{contents}
+			<if test='mode != null and mode.equals("W")' >
+			,(SELECT isnull(MAX(ref_seq),0)+1 FROM ts_boardcontents WHERE board_id = #{boardId})
+			</if>
+			<if test='mode != null and mode.equals("R")' >
+			,#{refSeq}
+			</if>
+			,#{relevelSeq}
+			,#{restepSeq}
+			,#{titleLink}
+			<if test = 'boardId == 51'>
+			,(SELECT SUBSTRING(#{regMemNm}, 0, 2) + CASE
+					WHEN LEN(#{regMemNm}) <![CDATA[ < ]]> '10'
+                                         THEN '**'
+                                         ELSE REPLICATE('*', LEN(#{regMemNm}) - 1) + SUBSTRING(#{regMemNm}, LEN(#{regMemNm}), LEN(#{regMemNm}) + 2)
+                                     END)
+			</if>
+			<if test = 'boardId != 51'>
+			,#{regMemNm}
+			</if>
+			,#{mobile}
+			,#{smsYn}
+			,#{urlNm}
+			,#{urlLink}
+			,#{source}
+			<if test='notiYn != null and notiYn != ""' >
+			,#{notiYn}
+			</if>
+			<if test='notiYn == null or notiYn == ""' >
+			,'N'
+			</if>
+			,#{openYn}
+			,#{imgAttachId}
+			,#{attachId}
+			,#{password}
+			,#{*userip}
+			,#{*userId}
+			<if test='regDt != null and regDt != ""' >
+			,REPLACE(#{regDt},'-','')
+			</if>
+			<if test='regDt == null or regDt == ""' >
+			,left(convert(varchar, getdate(), 112)+'000000',14)
+			</if>
+			,#{*userId}
+			,left(convert(varchar, getdate(), 112)+'000000',14)
+			,'N'
+			,#{*siteId}
+			,'0'
+			,'Y'
+			,#{etc0}
+			,#{etc1}
+			,#{etc2}
+			,#{etc3}
+			,#{etc4}
+			,#{etc5}
+			,#{etc6}
+			,#{etc7}
+			,#{etc8}
+			,#{etc9}
+			,#{etc10}
+			,#{etc11}
+			,#{etc12}
+			,#{etc13}
+			,#{etc14}
+			,#{etc15}
+			,#{etc16}
+			,#{etc17}
+			,#{etc18}
+			,#{etc19}
+			<if test='notiYn == null or notiYn.equals("N")' >
+			,null
+			</if>
+			<if test='notiYn != null and notiYn.equals("Y")' >
+			,(SELECT isnull(MAX(noti_seq),0)+1 FROM ts_boardcontents WHERE board_id = #{boardId})
+			</if>
+			<if test='sDupInfo != null and (boardId == 20072 or boardId == 20075 or boardId == 20062 or boardId == 51 or boardId == 20057) ' >
+			,#{sDupInfo}
+			</if>
+			,#{contentsSrch}
+		)
+	</update>
+
+	<!-- 게시물 등록(ETC) -->
+	<update id="insertBoardContentsEtc" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.insertBoardContentsEtc */
+		INSERT INTO
+		ts_boardetc (
+			cont_id
+			,board_id
+			,cate_id
+			,ceo
+			,main_item
+			,title
+			,contents
+			<!-- ,contents -->
+			,ref_seq
+			,company_nm
+			<!-- ,relevel_seq
+			,restep_seq
+			,title_link -->
+			,reg_mem_nm
+			<!--,mobile
+			,sms_yn
+			,url_nm
+			,url_link
+			,source
+			,noti_yn
+			,open_yn
+			,img_attach_id -->
+			,post
+			,addr1
+			,tel
+			,fax
+			,email
+			,homepage
+			,division
+			,product_desc
+			,attach_id
+			,note
+			<!-- ,book_yn -->
+			,password
+			<!-- ,book_dt
+			,reg_ip -->
+			,hit
+			,reg_mem_id
+			,reg_dt
+			,upd_mem_id
+			,upd_dt
+			,del_yn
+			,site_id
+			,use_yn
+		) VALUES (
+			(SELECT isnull(MAX(cont_id),0)+1 FROM ts_boardetc)<!-- #{contId} -->
+			,#{boardId}
+			,#{cateId}
+			,#{ceo}
+			,#{mainItem}
+			,#{title}
+			,#{contents}
+			<!-- ,#{contents} -->
+			<if test='mode != null and mode.equals("W")' >
+			,(SELECT isnull(MAX(ref_seq),0)+1 FROM ts_boardetc WHERE board_id = #{boardId})
+			</if>
+			,#{companyNm}
+			<!-- <if test='mode != null and mode.equals("R")' >
+			,#{refSeq}
+			</if>
+			,#{relevelSeq}
+			,#{restepSeq}
+			,#{titleLink} -->
+			,#{regMemNm}
+			<!-- ,#{mobile}
+			,#{smsYn}
+			,#{urlNm}
+			,#{urlLink}
+			,#{source}
+			<if test='notiYn != null and notiYn != ""' >
+			,#{notiYn}
+			</if>
+			<if test='noti_yn == null or noti_yn == ""' >
+			,'N'
+			</if>
+			,#{openYn}
+			,#{imgAttachId} -->
+			,#{post}
+			,#{addr1}
+			,#{tel}
+			,#{fax}
+			,#{email}
+			,#{homepage}
+			,#{division}
+			,#{productDesc}
+			,#{attachId}
+			,#{note}
+			,'0'
+			<!-- ,#{bookYn} -->
+			,#{password}
+			<!-- <if test='bookDt != null and bookDt != ""' >
+			,REPLACE(#{bookDt},'-','')
+			</if>
+			<if test='book_dt == null or book_dt == ""' >
+			,TO_CHAR(SYSDATE,'YYYYMMDD')
+			</if>
+			,#{*userip} -->
+			,#{*userId}
+			,left(convert(varchar, getdate(), 112)+'000000',14)
+			,#{*userId}
+			,left(convert(varchar, getdate(), 112)+'000000',14)
+			,'N'
+			,#{*siteId}
+			,'Y'
+		)
+	</update>
+
+	<!-- 게시물 수정 -->
+	<update id="updateBoardContents" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.updateBoardContents */
+	    UPDATE
+	 		ts_boardcontents
+		SET
+			cate_id = #{cateId}
+			,title = #{title}
+			,contents = #{contents}
+			,title_link = #{titleLink}
+			,reg_mem_nm = #{regMemNm}
+			,mobile = #{mobile}
+			,sms_yn = #{smsYn}
+			,url_nm = #{urlNm}
+			,url_link = #{urlLink}
+			,source = #{source}
+			<if test='notiYn != null and notiYn != ""' >
+			,noti_yn = #{notiYn}
+			</if>
+			,open_yn = #{openYn}
+			,img_attach_id = #{imgAttachId}
+			,attach_id = #{attachId}
+			,password = #{password}
+			,reg_ip = #{userIp}
+			<if test='regDt != null and regDt != ""' >
+			,reg_dt = REPLACE(#{regDt},'-','')
+			</if>
+			,upd_mem_id = #{*userId}
+			,upd_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+			,etc0 = #{etc0}
+			,etc1 = #{etc1}
+			,etc2 = #{etc2}
+			,etc3 = #{etc3}
+			,etc4 = #{etc4}
+			,etc5 = #{etc5}
+			,etc6 = #{etc6}
+			,etc7 = #{etc7}
+			,etc8 = #{etc8}
+			,etc9 = #{etc9}
+			,etc10 = #{etc10}
+			,etc11 = #{etc11}
+			,etc12 = #{etc12}
+			,etc13 = #{etc13}
+			,etc14 = #{etc14}
+			,etc15 = #{etc15}
+			,etc16 = #{etc16}
+			,etc17 = #{etc17}
+			,etc18 = #{etc18}
+			,etc19 = #{etc19}
+			<if test='notiYn == null or notiYn.equals("N")'>
+			,noti_seq = null
+			</if>
+			<if test='notiYn != null and notiYn.equals("Y")'>
+				<if test='notiSeq == null or notiSeq.equals("")'>
+					,noti_seq = (SELECT isnull(MAX(noti_seq),0)+1 FROM ts_boardcontents WHERE board_id = #{boardId})
+				</if>
+			</if>
+			,contents_srch = #{contentsSrch}
+		WHERE  1=1
+			AND	board_id = #{boardId}
+			AND cont_id = #{contId}
+
+
+	</update>
+
+	<!-- 게시물 수정(ETC) -->
+	<update id="updateBoardContentsEtc" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.updateBoardContentsEtc */
+	    UPDATE
+	 		ts_boardetc
+		SET
+			cate_id = #{cateId}
+			,title = #{title}
+			,ceo = #{ceo}
+			,main_item = #{mainItem}
+			,company_nm = #{companyNm}
+			,reg_mem_nm = #{regMemNm}
+			,contents = #{contents}
+			,post = #{post}
+			,addr1 = #{addr1}
+			,tel = #{tel}
+			,fax = #{fax}
+			,email = #{email}
+			,site_id = #{*siteId}
+			,homepage = #{homepage}
+			,division    = #{division}
+			,product_desc = #{productDesc}
+
+			<!-- ,mobile = #{mobile}
+			,sms_yn = #{smsYn}
+			,url_nm = #{urlNm}
+			,url_link = #{urlLink}
+			,source = #{source}
+			<if test='notiYn != null and notiYn != ""' >
+			,#{notiYn}
+			</if>
+			,open_yn = #{openYn}
+			,img_attach_id = #{imgAttachId} -->
+			,attach_id = #{attachId}
+			,note = #{note}
+			<!-- ,book_yn = #{bookYn} -->
+			<!-- ,password = #{password} -->
+			<!-- <if test='bookDt != null and bookDt != ""' >
+			,book_dt = REPLACE(#{bookDt},'-','')
+			</if> -->
+			<!-- ,reg_ip = #{*userip} -->
+			,upd_mem_id = #{*userId}
+			,upd_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE  1=1
+			AND	board_id = #{boardId}
+			AND cont_id = #{contId}
+
+	</update>
+
+	<!-- 답변게시물여부를 확인 -->
+	<select id="chkBoardChildContents" parameterType="Map" resultType="Integer">
+		/* kr.apfs.local.board.dao.impl.BoardDao.chkBoardChildContents */
+		SELECT
+				COUNT(1) AS cnt
+		FROM
+	    (
+	    SELECT
+	        ref_seq
+	        , restep_seq
+	        , board_id
+	    FROM ts_boardcontents
+	    WHERE 1 = 1
+	        AND (del_yn is null or del_yn != 'Y')
+	        AND	board_id = #{boardId}
+	        AND cont_id = #{contId}
+
+	    ) A,
+	    ts_boardcontents B
+		WHERE A.board_id = B.board_id
+			 AND A.ref_seq = B.ref_seq
+	    	AND B.restep_seq > A.restep_seq
+	</select>
+
+	<!-- 게시물 패스워드 확인 -->
+	<select id="chkBoardPass" parameterType="Map" resultType="Integer">
+		/* kr.apfs.local.board.dao.impl.BoardDao.chkBoardPass */
+		SELECT
+				COUNT(1) AS cnt
+		FROM ts_boardcontents
+		WHERE 1 = 1
+	        AND	board_id = #{boardId}
+	        AND cont_id = #{contId}
+	        AND password = #{password}
+	</select>
+
+	<!-- 게시물 삭제 -->
+	<update id="deleteBoardContents" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.deleteBoardContents */
+	    UPDATE
+	 		ts_boardcontents
+		SET
+			<!-- del_yn = 'Y' -->
+			del_yn = #{delYn}
+		WHERE  1=1
+			AND	board_id = #{boardId}
+			AND cont_id = #{contId}
+
+	</update>
+
+	<!-- 게시물 삭제(ETC) -->
+	<update id="deleteBoardContentsEtc" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.deleteBoardContentsEtc */
+	    UPDATE
+	 		ts_boardetc
+		SET
+			<!-- del_yn = 'Y' -->
+			del_yn = #{delYn}
+		WHERE  1=1
+			AND	board_id = #{boardId}
+			AND cont_id = #{contId}
+
+	</update>
+
+	<!-- 게시물 재정렬 -->
+	<update id="updateBoardContentsReorder" parameterType="Map" >
+	    /* com.intocps.board.dao.impl.BoardDao.updateBoardContentsReorder */
+	    UPDATE
+	 		ts_boardcontents
+		SET
+				restep_seq = restep_seq + 1
+		WHERE  board_id = #{boardId}
+			AND ref_seq = #{refSeq} and restep_seq > #{restepSeq}
+
+	</update>
+
+	<!-- 조회수 증가 -->
+	<update id="updateBoardContentsHits" parameterType="Map" >
+	    /* com.intocps.board.dao.impl.BoardDao.updateBoardContentsHits */
+	    UPDATE
+	 		ts_boardcontents
+		SET
+				hit = hit + 1
+		WHERE  board_id = #{boardId}
+			AND cont_id = #{contId}
+
+	</update>
+	
+	<update id="updateEtcBoardContentsHits" parameterType="Map" >
+	    /* com.intocps.board.dao.impl.BoardDao.updateBoardContentsHits */
+	    UPDATE
+	 		ts_boardetc
+		SET
+				hit = hit + 1
+		WHERE  board_id = #{boardId}
+			AND cont_id = #{contId}
+
+	</update>
+	
+	
+
+	<!-- 게시판 설정 리스트(item_out) -->
+	<select id="selectBoardItemList_old" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardItemSortList */
+		SELECT
+		    i_use
+		    , i_out
+		FROM ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) i_use
+		   FROM (SELECT item_use txt FROM ts_board WHERE board_id = #{boardId} ) a
+		CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_use
+		LEFT OUTER JOIN ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^|]+', 1, level) i_out
+			FROM (SELECT item_out txt FROM ts_board WHERE board_id = #{boardId}) a
+		CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^|]+',''))+1 ) t_out
+		ON ( t_use.lv = t_out.lv )
+		ORDER BY t_use.lv
+	</select>
+	<!-- 게시판 설정 리스트(item_out) -->
+	<select id="selectBoardItemList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardItemSortList */
+	select item_use, item_out from ts_board WHERE board_id = #{boardId}
+	</select>
+
+	<!-- 게시판 설정 리스트(view_print) -->
+	<select id="selectBoardViewSortList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardViewSortList */
+		SELECT *
+		FROM (
+						SELECT t_use.pos as lv, i_use,	i_out,i_user
+						FROM
+							(SELECT pos, VAL1 as i_use FROM FN_SPLIT((select item_use from ts_board where board_id=#{boardId}),',')) t_use
+							left outer join
+							(SELECT pos, VAL1 as i_out FROM FN_SPLIT((select item_out from ts_board where board_id=#{boardId}),'|')) t_out
+							ON ( t_use.pos = t_out.pos )
+							left outer join
+							(SELECT pos, VAL1 as i_user FROM FN_SPLIT((select item_user from ts_board where board_id=#{boardId}),',')) t_user
+							ON ( t_use.pos = t_user.pos )
+						)X
+		LEFT OUTER JOIN (
+						SELECT v_print,	v_sort,	v_size, item_user
+						 FROM
+							(SELECT pos, VAL1 as v_print FROM FN_SPLIT((select view_print from ts_board where board_id=#{boardId}),',')) t_print
+							left outer join
+							(SELECT pos, VAL1 as v_sort FROM FN_SPLIT((select view_sort from ts_board where board_id=#{boardId}),',')) t_sort
+							ON ( t_print.pos = t_sort.pos )
+							left outer join
+							(SELECT pos, VAL1 as v_size FROM FN_SPLIT((select view_size from ts_board where board_id=#{boardId}),',')) t_size
+							ON ( t_print.pos = t_size.pos )
+							left outer join
+							(SELECT pos, VAL1 as item_user FROM FN_SPLIT((select item_user from ts_board where board_id=#{boardId}),',')) item_user
+							ON ( t_print.pos = item_user.pos )
+						) Y
+		ON X.I_USE = Y.V_PRINT
+		ORDER BY isnull(Y.v_sort,99),X.lv
+	</select>
+	<!-- 게시판 설정 리스트(view_print) -->
+	<select id="selectBoardViewSortList_old" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardViewSortList */
+
+		SELECT *
+		FROM (
+										SELECT
+											t_use.lv
+										    , i_use
+										    , i_out
+										    ,i_user
+										FROM ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) i_use
+										   FROM (SELECT item_use txt FROM ts_board WHERE board_id = #{boardId} ) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_use
+										LEFT OUTER JOIN ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^|]+', 1, level) i_out
+											FROM (SELECT item_out txt FROM ts_board WHERE board_id = #{boardId} ) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^|]+',''))+1 ) t_out
+										ON ( t_use.lv = t_out.lv )
+										LEFT OUTER JOIN ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) i_user
+											FROM (SELECT item_user txt FROM ts_board WHERE board_id = #{boardId} ) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_user
+										ON ( t_use.lv = t_user.lv )
+										ORDER BY t_use.lv
+										) X
+		LEFT OUTER JOIN (
+										SELECT
+										    v_print
+										    , v_sort
+										    , v_size
+										    , item_user
+										    , COUNT(v_sort) OVER() AS total_cnt
+										FROM ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) v_print
+										   FROM (SELECT view_print txt FROM ts_board WHERE board_id = #{boardId} ) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_print
+										LEFT OUTER JOIN ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) v_sort
+										   FROM (SELECT view_sort txt FROM ts_board WHERE board_id = #{boardId} ) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_sort
+										ON ( t_print.lv = t_sort.lv )
+										LEFT OUTER JOIN ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) v_size
+										   FROM (SELECT view_size txt FROM ts_board WHERE board_id = #{boardId} ) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_size
+										ON ( t_print.lv = t_size.lv )
+										LEFT OUTER JOIN ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) v_size
+										   FROM (SELECT item_user txt FROM ts_board WHERE board_id = #{boardId} ) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) item_user
+										ON ( t_print.lv = item_user.lv )
+										ORDER by v_sort
+										) Y
+		ON X.I_USE = Y.V_PRINT
+		ORDER BY Y.v_sort,X.lv
+	</select>
+
+	<!-- 게시판 리스트 페이지 -->
+	<select id="selectBoardContentsPageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardContentsPageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+			tbc.cont_id
+			,tbc.board_id
+			,tbc.cate_id
+			,tbc.title
+			<!-- ,tbc.contents -->
+			,tbc.ref_seq
+			,tbc.restep_seq
+			,tbc.relevel_seq
+			,tbc.title_link
+			,tbc.reg_mem_nm
+			,tbc.mobile
+			,tbc.sms_yn
+			,tbc.url_nm
+			,tbc.url_link
+			,tbc.source
+			, ( case when  substring(tbc.title,1,4) = '[공지]' then  'Y'  else  tbc.noti_yn   end  )   as  noti_yn  
+			--,tbc.noti_yn
+			,tbc.open_yn
+			,tbc.img_attach_id
+			<!-- ,(SELECT file_nm FROM tc_attachfile WHERE file_id = tbc.img_attach_id) as image_file_nm -->
+			,tci.file_path as image_file_nm
+			,(SELECT top 1 file_path FROM tc_attachfile where attach_id = tbc.attach_id ) as img_path
+			,(SELECT top 1 file_nm FROM tc_attachfile where attach_id = tbc.attach_id ) as img_nm
+			,(SELECT top 1 origin_file_nm FROM tc_attachfile where attach_id = tbc.attach_id ) as origin_img_nm		<!-- 20.10.21 파일 원래 이름 조회 추가 -->
+			,tbc.attach_id
+			,tbc.book_yn
+			,tbc.password
+			,tbc.etc0
+			,tbc.etc1
+			,tbc.etc2
+			,tbc.etc3
+			,tbc.etc4
+			,tbc.etc5
+			,tbc.etc6
+			,tbc.etc7
+			,tbc.etc8
+			,tbc.etc9
+			,tbc.etc10
+			,tbc.etc11
+			,tbc.etc12
+			,tbc.etc13
+			,tbc.etc14
+			,tbc.etc15
+			,tbc.etc16
+			,tbc.etc17
+			,tbc.etc18
+			,tbc.etc19
+			,tbc.noti_seq
+			,tbc.reg_mem_id
+			<!-- ,GET_DATEFORMAT(tbc.reg_dt) as reg_dt -->
+			<!-- ,TO_CHAR(TO_DATE(tbc.reg_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as reg_dt -->
+			,tbc.reg_dt
+			,tbc.upd_mem_id
+			,tbc.upd_dt
+			,tbc.hit
+			,tbc.reg_ip
+			,(SELECT cate_nm FROM ts_boardcategory tbcate where tbcate.board_id = tbc.board_id and tbcate.cate_id = tbc.cate_id) as cate_nm
+			<!-- ,GET_DATEFORMAT(tbc.book_dt) as book_dt -->
+			<!-- ,isnull(tba.contents,tbc2.contents) as contents_txt -->
+			,CASE WHEN (isnull(tba.contents,tbc2.contents) is null)THEN 'N' ELSE 'Y' END reply_yn
+			<!-- ,CASE WHEN (tba.contents is null or tba.contents = '' )THEN 'N' ELSE 'Y' END reply_yn -->
+			,(SELECT COUNT(1) FROM ts_boardcomment WHERE cont_id = tbc.cont_id) AS comment_cnt
+			<!-- ,(SELECT ROUND(AVG(point),1) FROM t_satisfy ts WHERE ts.cont_id = tbc.cont_id) as satisfy -->
+			<!-- ,(SELECT COUNT(1) AS recommend FROM ts_boardrecomm tbr WHERE tbr.cont_id = tbc.cont_id AND tbr.updown = 'Y') as recommend -->
+			,(SELECT top 1 file_id FROM tc_attachfile where attach_id = tbc.attach_id ) as path
+			,tcf.file_id
+			,tcf.file_nm
+			,tcf.FILE_PATH
+			<!-- ,tbc.contents -->
+		FROM ts_boardcontents tbc
+		LEFT OUTER JOIN ts_boardcontents tbc2
+          ON tbc.title = tbc2.title
+          and tbc2.relevel_seq > 0
+		LEFT OUTER JOIN ts_boardanswer tba
+		ON(tba.cont_id = tbc.cont_id)
+		LEFT OUTER JOIN (			<!-- 20.10.21  tcf, tci는 조건이 맞지 않아 조회가 되지 않으므로 불필요로 추정 -->
+	            SELECT
+	            	top 1
+	                attach_id
+	                , file_id
+	                , rank() over(partition by attach_id order by file_id) cnt
+	                , file_nm
+	                , origin_file_nm
+	            	, file_path
+	            FROM tc_attachfile
+	    ) tcf
+	    ON(tbc.attach_id = tcf.attach_id)
+	    LEFT OUTER JOIN (
+	            SELECT
+	            	top 1
+	                attach_id
+	                , file_id
+                    , file_path
+	                , rank() over(PARTITION BY attach_id order by file_id desc) num
+	                , file_nm
+	                , origin_file_nm
+	            FROM tc_attachfile
+                WHERE file_type IN ('jpg','png','gif')
+	    ) tci
+	    ON(tbc.attach_id = tci.attach_id)
+		WHERE 1 = 1
+			AND	tbc.board_id = #{boardId}
+
+			AND (tbc.relevel_seq = 0 OR tbc.relevel_seq is null)
+			<if test='delYn != null and !delYn.equals("")' >
+			<!-- AND (tbc.del_yn is null or tbc.del_yn = 'N') -->
+			AND tbc.del_yn = #{delYn}
+			</if>
+			<if test='notiYn != null and !notiYn.equals("")' >
+			AND tbc.noti_yn = #{notiYn}
+			</if>
+			<if test='backyn != null and !backyn.equals("B")' >
+			<!-- AND TO_CHAR(SYSDATE,'YYYYMMDD') <![CDATA[ >= ]]> REPLACE(tbc.book_dt,'-','') -->
+			</if>
+			<if test='cate_id != null and !cate_id.equals("")' >
+				AND tbc.cate_id = #{cateId}
+			</if>
+			<if test='searchTxt != null and searchKey.equals("A")' >
+				AND (tbc.title LIKE '%' + #{searchTxt} + '%' OR tbc.contents LIKE '%' + #{searchTxt} + '%' OR tbc.contents LIKE '%' + #{searchTxt} + '%')
+			</if>
+			<if test='searchTxt != null and searchKey.equals("T")' >
+				AND tbc.title LIKE '%' + #{searchTxt} + '%'
+			</if>
+			<if test='searchTxt != null and searchKey.equals("C")' >
+				AND (tbc.contents LIKE '%' + #{searchTxt} + '%' OR  tbc.contents LIKE '%' + #{searchTxt} + '%')
+			</if>
+			<if test='searchTxt != null and searchKey.equals("U")' >
+				AND tbc.reg_mem_nm LIKE '%' + #{searchTxt} + '%'
+			</if>
+			<if test='reply_ststus != null and reply_ststus.equals("W")' >
+				AND tba.contents is null
+			</if>
+			<if test='reply_ststus != null and reply_ststus.equals("S")' >
+				AND tba.contents is not null
+			</if>
+			<if test='sDupInfo != null and (boardId == 20072 or boardId == 20075 or boardId == 20062 ) ' >
+				AND tbc.dikey = #{sDupInfo}
+			</if>
+			<if test='selTab != null' >
+				AND tbc.etc0 = #{selTab}
+			</if>
+			<if test='etc0 != null' >
+				AND tbc.etc0 = #{etc0}
+			</if>
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+	<!-- 게시판 리스트 페이지(ETC) -->
+	<select id="selectBoardContentsPageListEtc" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardContentsPageListEtc */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+			tbe.cont_id
+			,tbe.board_id
+			,tbe.cate_id
+			,tbe.title
+			,tbe.company_nm
+			,tbe.ceo
+			,tbe.contents
+			,tbe.main_item
+			,(SELECT top 1 file_path FROM tc_attachfile where attach_id = tbe.attach_id ) as img_path
+			,(SELECT top 1 file_nm FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN ('jpg','png','gif')  ) as img_nm
+			,(SELECT top 1 file_nm FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN  ('pdf','pptx','ppt') ) as img_nm2
+			,tbe.ref_seq		
+			,tbe.reg_mem_nm
+			,tbe.post
+			,tbe.addr1
+			,tbe.tel
+			,tbe.fax
+			,tbe.email
+			,tbe.site_id
+			,tbe.product_desc
+			,tbe.attach_id
+			,tbe.note
+			,tbe.homepage
+			,tbe.hit
+			,tbe.reg_mem_id
+			,tbe.reg_dt
+			,tbe.upd_mem_id
+			,tbe.upd_dt
+			,(SELECT cate_nm FROM ts_boardcategory tbeate where tbeate.board_id = tbe.board_id and tbeate.cate_id = tbe.cate_id) as cate_nm
+			,(SELECT top 1 file_id FROM tc_attachfile where attach_id = tbe.attach_id  and file_type IN ('pdf','pptx','ppt')) as img_id
+			,(SELECT top 1 file_id FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN ('jpg','png','gif') ) as img_id2
+	
+		FROM ts_boardetc tbe
+		LEFT OUTER JOIN (
+	        SELECT
+			
+				top 1
+	            attach_id
+	            ,file_id
+	            ,file_path
+	            ,file_nm
+			
+	        FROM
+	            tc_attachfile
+
+	    ) tcf
+		ON(tbe.attach_id = tcf.attach_id)
+		 LEFT OUTER JOIN (
+	            SELECT
+					top 1
+	                attach_id
+	                , file_id
+                    , file_path
+	                , rank() over(PARTITION BY attach_id order by file_id desc) num
+	                , file_nm
+	                , origin_file_nm
+	            FROM tc_attachfile
+                WHERE file_type IN ('jpg','png','gif')
+	    ) tci
+	    ON(tbe.attach_id = tci.attach_id)
+		
+		WHERE 1 = 1
+			AND	tbe.board_id = #{boardId}
+			
+			<if test='delYn != null and !delYn.equals("")' >
+			AND tbe.del_yn = #{delYn}
+			</if>
+			<!-- AND (tbe.del_yn is null or tbe.del_yn = 'N') -->
+			<if test='cate_id != null and !cate_id.equals("")' >
+				AND tbe.cate_id = #{cateId}
+			</if>
+			<if test='searchTxt != null and searchKey.equals("T")' >
+				AND (tbe.title LIKE '%' + #{searchTxt} + '%')
+			</if>
+			<if test='searchTxt != null and searchKey.equals("C")' >
+				AND (tbe.note LIKE '%' + #{searchTxt} + '%')
+			</if>
+			<if test='searchTxt != null and searchKey.equals("A")' >
+				AND (tbe.title LIKE '%' + #{searchTxt} + '%' OR tbe.note LIKE '%' + #{searchTxt} + '%' OR tbe.note LIKE '%' + #{searchTxt} + '%' )
+			</if>
+			<if test='searchTxt != null and searchKey.equals("U")' >
+				AND (tbe.reg_mem_nm LIKE '%' + #{searchTxt} + '%')
+			</if>
+			<if test='reply_ststus != null and reply_ststus.equals("W")' >
+				AND tba.contents is null
+			</if>
+			<if test='reply_ststus != null and reply_ststus.equals("S")' >
+				AND tba.contents is not null
+			</if>
+			
+	 <include refid="CommonSql.pageingBottom"/> 
+	 
+	</select>
+
+	<!-- 게시물 상세정보 -->
+	<select id="selectContentsDetail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectContentsDetail */
+		SELECT
+			tbc.cont_id
+			,tbc.board_id
+			,tbc.cate_id
+			,(SELECT title FROM ts_board WHERE board_id = tbc.board_id) as btitle
+			,tbc.title
+			,tbc.contents
+			,tbc.ref_seq
+			,tbc.restep_seq
+			,tbc.relevel_seq
+			,tbc.title_link
+			,tbc.reg_mem_nm
+			,tbc.mobile
+			,'/front/board/boardContentsView.do?boardId='+ convert(varchar,tbc.BOARD_ID) + '&#38;contId=' + convert(varchar,tbc.CONT_ID) AS REF_URL
+			,tbc.sms_yn
+			,tbc.url_nm
+			,tbc.url_link
+			,tbc.source
+			<!-- ,tbc.satisfy -->
+			,tbc.noti_yn
+			,isnull(tbc.open_yn,'Y') open_yn
+			,tbc.img_attach_id
+			,(SELECT file_nm FROM tc_attachfile WHERE file_id = tbc.img_attach_id) as image_file_nm
+			,(SELECT file_path FROM tc_attachfile WHERE file_id = tbc.img_attach_id) as image_file_path
+			,tbc.attach_id
+			<!-- ,taf.file_id
+			,taf.origin_file_nm
+			,taf.file_path
+			,taf.file_size  -->
+			,tbc.book_yn
+			,tbc.password
+			,tbc.etc0
+			,tbc.etc1
+			,tbc.etc2
+			,tbc.etc3
+			,tbc.etc4
+			,tbc.etc5
+			,tbc.etc6
+			,tbc.etc7
+			,tbc.etc8
+			,tbc.etc9
+			,tbc.etc10
+			,tbc.etc11
+			,tbc.etc12
+			,tbc.etc13
+			,tbc.etc14
+			,tbc.etc15
+			,tbc.etc16
+			,tbc.etc17
+			,tbc.etc18
+			,tbc.etc19
+			,tbc.dikey
+			,tbc.reg_mem_id
+			<!-- ,GET_DATEFORMAT(tbc.reg_dt) as reg_dt -->
+			<!-- ,TO_CHAR(TO_DATE(tbc.reg_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as reg_dt -->
+			,tbc.reg_dt
+			,tbc.upd_mem_id
+			,tbc.upd_dt
+			,tbc.hit
+			,tbc.reg_ip
+			,tbc.del_yn
+			,(SELECT cate_nm FROM ts_boardcategory tbcate where tbcate.board_id = tbc.board_id and tbcate.cate_id = tbc.cate_id) AS cate_nm
+			<!-- ,GET_DATEFORMAT(book_dt) AS book_dt -->
+			,CASE WHEN (tbc.password IS NULL OR tbc.password = '') THEN 'N' ELSE 'Y' END pass_yn
+			,isnull(tba.contents,tbc2.contents) as contents_txt
+			,CASE WHEN (isnull(tba.contents,tbc2.contents) is null)THEN 'N' ELSE 'Y' END reply_yn
+			,CASE WHEN tba.contents is null THEN tbc2.reg_dt ELSE tba.reg_dt END reply_date
+			,tba.attach_id as attach_id_answer
+			<!-- ,GET_DATEFORMAT(tba.reg_dt) AS contents_date -->
+			<!-- ,TO_CHAR(TO_DATE(tba.reg_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as contents_date -->
+			,tba.reg_dt AS contents_date
+			,TM.MENU_ID
+			<!-- ,CASE WHEN (SELECT COUNT(1) FROM t_satisfy ts WHERE ts.cont_id = tbc.cont_id AND reg_mem_id = #{*userId}) > 0 THEN 'Y' ELSE 'N' END satisfy_yn -->
+		FROM ts_boardcontents tbc
+
+		LEFT OUTER JOIN ts_boardcontents tbc2
+          ON tbc.title = tbc2.title
+          and tbc2.relevel_seq > 0
+
+		LEFT OUTER JOIN ts_boardanswer tba
+		ON(tba.cont_id = tbc.cont_id)
+
+		LEFT OUTER JOIN (SELECT MIN(MENU_ID) AS MENU_ID,SITE_ID,REF_BOARD_ID FROM TS_MENU WHERE REF_BOARD_ID= #{boardId} AND DEL_YN='N' AND SITE_CD=#{*siteCd} GROUP BY SITE_ID,REF_BOARD_ID) TM
+		ON TBC.SITE_ID = TM.SITE_ID
+		AND TBC.BOARD_ID = TM.REF_BOARD_ID
+
+		<!-- LEFT OUTER JOIN tc_attachfile taf
+		ON tbc.attach_id = taf.attach_id -->
+		WHERE (tbc.del_yn is null or tbc.del_yn = 'N')	
+			<!-- AND TM.MENU_ID =  (SELECT MIN(MENU_ID) FROM TS_MENU WHERE REF_BOARD_ID= #{boardId} AND DEL_YN='N' AND SITE_CD=#{*siteCd} GROUP BY SITE_ID) -->
+
+			<!-- AND (tbc.del_yn is null or tbc.del_yn = 'N') -->
+			<if test='boardId != null and !boardId.equals("")' >
+			AND	tbc.board_id = #{boardId}
+			</if>
+			AND tbc.cont_id = #{contId}
+
+			<!-- AND TM.DEL_YN='N'
+			AND (TM.SITE_CD=#{*siteCd}) -->
+	</select>
+	
+	<!-- 게시물 이전글 다음글 (open_yn, del_yn 등 필드, 조건 추가) - 2018.07.05(목) (주)아사달 대리 함민석 -->
+	<select id="selectPreNextContents" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectPreNextContents */
+
+			SELECT 
+				board_id, 
+				ref_seq, 
+				cont_id, 
+				next_id, 
+				next_title, 
+				next_open_yn,
+				del_yn, 
+				pre_id, 
+				pre_title, 
+				pre_open_yn 
+			FROM 
+			(
+			    SELECT board_id, ref_seq, cont_id, 
+			       LAG(cont_id, 1) OVER (ORDER by REG_DT) next_id, 
+			       LAG(title, 1, '다음글') OVER (ORDER by REG_DT) next_title, 
+			       LAG(open_yn, 1) OVER (ORDER by REG_DT) next_open_yn, 
+			       del_yn, 
+			       LEAD(cont_id, 1) OVER (ORDER by REG_DT) pre_id, 
+			       LEAD(title, 1, '이전글') OVER (ORDER by REG_DT) pre_title, 
+			       LEAD(open_yn, 1) OVER (ORDER by REG_DT) pre_open_yn 
+			    FROM 
+			    	ts_boardcontents 
+				WHERE 
+					board_id = #{boardId} 
+				AND (del_yn is null or del_yn = 'N')
+				AND del_yn != 'Y'
+				<if test='searchTxt != null and searchKey.equals("T")' >
+				AND title LIKE '%' + #{searchTxt} + '%'
+				</if>
+				<if test='searchTxt != null and searchKey.equals("C")' >
+				AND contents LIKE '%' + #{searchTxt} + '%'
+				</if>
+				<if test='searchTxt != null and searchKey.equals("A")' >
+				AND (title LIKE '%' + #{searchTxt} + '%' OR contents LIKE '%' + #{searchTxt} + '%')
+				</if>
+				<if test='searchTxt != null and searchKey.equals("U")' >
+				AND reg_mem_nm LIKE '%' + #{searchTxt} + '%'
+				</if>
+				<if test='selTab != null' >
+				AND etc0 = #{selTab}
+				</if>
+			)B 
+		WHERE 1=1
+		AND B.cont_id = #{contId} 
+		AND (B.del_yn is null or B.del_yn = 'N')
+		AND B.del_yn != 'Y'
+	</select>
+
+	<!--  -->
+
+	<!-- 게시물 상세정보(ETC) -->
+	<select id="selectContentsDetailEtc" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectContentsDetailEtc */
+		SELECT
+			 tbe.cont_id
+			,tbe.board_id
+			,tbe.cate_id
+			,tbe.ceo
+			,tbe.main_item
+			,tbe.title
+			,tbe.contents
+			,tbe.company_nm
+			,tbe.ref_seq
+			,tbe.reg_mem_nm
+			,tbe.post
+			,tbe.addr1
+			,tbe.tel
+			,tbe.division
+			,tbe.fax
+			,tbe.email
+			,tbe.site_id
+			,tbe.homepage
+			,tbe.product_desc
+			,tbe.attach_id
+			,tbe.note
+			,tbe.reg_mem_id
+			,tbe.reg_dt
+			,tbe.upd_mem_id
+			,tbe.upd_dt
+			,tbe.del_yn
+			,(SELECT top 1 file_path FROM tc_attachfile where attach_id = tbe.attach_id  ) as img_path
+			,(SELECT top 1 file_nm FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN ('jpg','png','gif') ) as img_nm
+			,(SELECT top 1 file_nm FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN  ('pdf','pptx','ppt') ) as img_nm2
+			,(SELECT cate_nm FROM ts_boardcategory tbcate where tbcate.board_id = tbe.board_id and tbcate.cate_id = tbe.cate_id) AS cate_nm
+			,(SELECT top 1 file_id FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN ('pdf','pptx','ppt') ) as img_id
+			,(SELECT top 1 file_id FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN ('jpg','png','gif') ) as img_id2
+			<!-- ,GET_DATEFORMAT(tbe.reg_dt) AS reg_dt -->
+			<!-- ,GET_DATEFORMAT(tba.reg_dt) AS contents_date -->
+			<!-- ,TO_CHAR(TO_DATE(tbe.reg_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as reg_dt -->
+			<!-- ,TO_CHAR(TO_DATE(tba.reg_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as contents_date -->
+			,tbe.reg_dt
+			,tba.reg_dt AS contents_date
+			<!-- ,tbe.contents -->
+			<!-- ,tbe.restep_seq
+			,tbe.relevel_seq
+			,tbe.title_link -->
+			<!-- ,tbe.mobile
+			,tbe.sms_yn
+			,tbe.url_nm
+			,tbe.url_link
+			,tbe.source
+			,tbe.satisfy
+			,tbe.noti_yn
+			,tbe.open_yn
+			,tbe.img_attach_id
+			,(SELECT origin_file_nm FROM tc_attachfile WHERE file_id = tbe.img_attach_id) as image_file_nm -->
+			<!-- ,tbe.book_yn -->
+			<!-- ,tbe.password
+			,tbe.etc1
+			,tbe.etc2
+			,tbe.etc3
+			,tbe.etc4
+			,tbe.etc5 -->
+			<!-- ,tbe.hit
+			,tbe.reg_ip -->
+			<!-- ,CASE WHEN (tbe.password IS NULL OR tbe.password = '') THEN 'N' ELSE 'Y' END pass_yn
+			,tba.contents as contents_txt
+			,tba.attach_id as attach_id_answer -->
+			<!-- ,CASE WHEN (SELECT COUNT(1) FROM t_satisfy ts WHERE ts.cont_id = tbe.cont_id AND reg_mem_id = #{*userId}) > 0 THEN 'Y' ELSE 'N' END satisfy_yn -->
+		FROM ts_boardetc tbe
+		LEFT OUTER JOIN ts_boardanswer tba
+		ON(tba.cont_id = tbe.cont_id)
+		WHERE (tbe.del_yn is null or tbe.del_yn = 'N')
+			<if test='boardId != null and !boardId.equals("")' >
+			AND	tbe.board_id = #{boardId}
+			</if>
+			AND tbe.cont_id = #{contId}
+	</select>
+
+
+		<!-- 상품홍보상세 -->
+		<select id="selectGoods" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectGoods */
+			SELECT
+			 tbe.cont_id
+			,tbe.board_id
+			,tbe.cate_id
+			,tbe.ceo
+			,tbe.contents
+			,(SELECT top 1 file_path FROM tc_attachfile where attach_id = tbe.attach_id  ) as img_path
+			,(SELECT top 1 file_nm FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN ('jpg','png','gif') ) as img_nm
+			,(SELECT top 1 file_nm FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN  ('pdf','pptx','ppt') ) as img_nm2
+			,tbe.main_item
+			,tbe.title
+			,tbe.company_nm
+			,tbe.ref_seq
+			,tbe.reg_mem_nm
+			,tbe.post
+			,tbe.addr1
+			,tbe.tel
+			,tbe.fax
+			,tbe.email
+			,tbe.division
+			,tbe.site_id
+			,tbe.homepage
+			,tbe.product_desc
+			,tbe.attach_id
+			,tbe.note
+			,tbe.reg_mem_id
+			,tbe.reg_dt
+			,tbe.upd_mem_id
+			,tbe.upd_dt
+			,tbe.del_yn
+			,tbe.reg_dt
+			,tcf.file_id
+			,(SELECT top 1 file_id FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN ('pdf','pptx','ppt') ) as img_id
+			,(SELECT top 1 file_id FROM tc_attachfile where attach_id = tbe.attach_id and file_type IN ('jpg','png','gif') ) as img_id2
+		FROM ts_boardetc tbe
+		LEFT OUTER JOIN (
+	        SELECT
+	        	top 1
+	            attach_id
+	            , file_id
+	            , file_path
+	        FROM
+	            tc_attachfile
+	        WHERE 1 = 1
+	    ) tcf
+		ON(tbe.attach_id = tcf.attach_id)
+		WHERE (tbe.del_yn is null or tbe.del_yn = 'N')
+			<if test='boardId != null and !boardId.equals("")' >
+			AND	tbe.board_id = #{boardId}
+			</if>
+			AND tbe.cont_id = #{contId}
+	</select>
+
+
+	<!-- 게시물 이전글 다음글(ETC) -->
+	<select id="selectPreNextContentsEtc" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectPreNextContentsEtc */
+		SELECT * FROM
+		(
+		    SELECT 	  board_id
+		    		, ref_seq
+		    		, cont_id /*
+		    		, LEAD(cont_id, 1) OVER (ORDER by REF_SEQ) next_id,
+		       LEAD(title, 1, '다음글') OVER (ORDER by REF_SEQ) next_title,
+		       LAG(cont_id, 1) OVER (ORDER by REF_SEQ) pre_id,
+		       LAG(title, 1, '이전글') OVER (ORDER by REF_SEQ) pre_title
+		       */
+		    FROM ts_boardetc
+			WHERE board_id = #{boardId}
+				AND (del_yn is null or del_yn = 'N')
+				<if test='searchTxt != null and searchKey.equals("T")' >
+				AND tbe.title LIKE '%' + #{searchTxt} + '%'
+				</if>
+				<if test='searchTxt != null and searchKey.equals("C")' >
+				AND tbe.note LIKE '% + #{searchTxt} + '%'
+				</if>
+				<if test='searchTxt != null and searchKey.equals("A")' >
+				AND (tbe.title LIKE '%' + #{searchTxt} + '%' OR tbe.note LIKE '%' + #{searchTxt} + '%' )
+				</if>
+				<if test='searchTxt != null and searchKey.equals("U")' >
+				AND tbe.reg_mem_nm LIKE '%' + #{searchTxt} + '%'
+				</if>
+				<!-- AND TO_CHAR(SYSDATE,'YYYYMMDD')   >=   REPLACE(book_dt,'-','') -->
+		) as ETC
+		WHERE cont_id = #{contId}
+	</select>
+
+	<!--  -->
+
+	<!-- 답변 저장 -->
+	<update id="saveBoardContentsAnswer" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.saveBoardContentsAnswer */
+	    MERGE INTO ts_boardanswer A
+		USING
+		( 	SELECT
+				#{contId} as cont_id,
+				#{boardId} as board_id,
+				#{*siteId} as site_id,
+				#{contents} as contents_txt
+			 ) B
+		ON (A.cont_id = B.cont_id AND A.board_id = B.board_id AND A.site_id = B.site_id)
+		WHEN MATCHED THEN
+			UPDATE
+				SET A.contents = B.contents_txt, reg_mem_id = #{*userId}, reg_dt = left(convert(varchar, getdate(), 112)+'000000',14), attach_id = #{attachId}
+			WHEN NOT MATCHED THEN
+			INSERT
+				(cont_id,board_id,site_id, contents, reg_mem_id, reg_dt, attach_id)
+			VALUES
+				(B.cont_id,B.board_id,B.site_id, B.contents_txt, #{*userId}, left(convert(varchar, getdate(), 112)+'000000',14), #{attachId})
+				;
+	</update>
+
+	<!--  댓글 패스워드 확인 -->
+	<select id="chkComment" parameterType="Map" resultType="Integer">
+		/* kr.apfs.local.board.dao.impl.BoardDao.chkComment */
+		SELECT
+				COUNT(1) AS cnt
+		FROM ts_boardcomment
+		WHERE 1 = 1
+	        AND cont_id = #{contId}
+	        AND comment_id = #{commentId}
+	        AND password = #{password}
+	</select>
+
+	<!-- 댓글 리스트 -->
+	<select id="selectBoardCommentList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardCommentList */
+		SELECT
+		    COUNT(comment_id) OVER() AS total_cnt
+		    ,comment_id
+		    ,cont_id
+		    ,contents
+		    ,grp
+		    ,sort
+		    ,reg_mem_nm
+		    ,CASE WHEN (password IS NULL OR password = '') THEN 'N' ELSE 'Y' END pass_yn
+		    ,depth
+		    ,reg_mem_id
+		    <!-- ,GET_DATEFORMAT(reg_dt) AS reg_dt -->
+		    <!-- ,TO_CHAR(TO_DATE(reg_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as reg_dt -->
+		    ,reg_dt
+		    ,SUBSTR(reg_dt, 9,2)+':'+SUBSTR(reg_dt, 11,2)+':'+SUBSTR(reg_dt, 13,2) AS reg_time
+		FROM ts_boardcomment
+		WHERE cont_id = #{contId}
+		ORDER BY grp DESC, sort ASC
+	</select>
+
+	<!-- 댓글 저장 -->
+	<update id="saveComment" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.saveComment */
+		INSERT INTO
+		ts_boardcomment (
+			comment_id
+			, cont_id
+			, contents
+			, grp
+			, sort
+			, reg_mem_nm
+			, password
+			, depth
+			, reg_mem_id
+			, reg_dt
+		) VALUES (
+			#{commentId}
+			,#{contId}
+			,#{contents}
+			<if test='grp != null and grp == 0' >
+			,(SELECT isnull(MAX(grp),0)+1 FROM ts_boardcomment WHERE cont_id = #{contId})
+			</if>
+			<if test='grp != null and grp != 0' >
+			,#{grp }
+			</if>
+			,#{sort}
+			,#{regMemNm}
+			,#{password}
+			,#{depth}
+			,#{*userId}
+			,left(convert(varchar, getdate(), 112)+'000000',14)
+		)
+	</update>
+
+	<!-- 댓글 수정 -->
+	<update id="updateComment" parameterType="Map" >
+	    /* com.intocps.board.dao.impl.BoardDao.updateComment */
+	    UPDATE
+	 		ts_boardcomment
+		SET
+				contents = #{contents}
+				,  reg_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+		WHERE  1=1
+				AND	cont_id = #{contId}
+				AND comment_id = #{commentId}
+	</update>
+
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.deleteComment */
+	 	DELETE FROM
+			ts_boardcomment
+		WHERE  1=1
+				AND	cont_id = #{contId}
+				AND comment_id = #{commentId}
+	</delete>
+
+	<!-- 댓글 재정렬 -->
+	<update id="updateCommentReorder" parameterType="Map" >
+	    /* com.intocps.board.dao.impl.BoardDao.updateCommentReorder */
+	    UPDATE
+	 		ts_boardcomment
+		SET
+				sort = sort + 1
+		WHERE  cont_id = #{contId}
+			AND comment_id = #{commentId}
+			AND grp = #{grp}
+			AND sort > #{sort}
+	</update>
+
+	<!-- 만족도 저장 -->
+	<update id="saveSatisfy" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.saveSatisfy */
+		INSERT INTO
+		t_satisfy (
+			satisfy_id
+			, cont_id
+			, ip
+			, point
+			, reg_mem_id
+			, reg_dt
+		) VALUES (
+			(SELECT isnull(MAX(satisfy_id),0)+1 FROM t_satisfy)<!-- #{satisfyId} -->
+			,#{contId}
+			,#{*userip}
+			,#{point}
+			,#{*userId}
+			,left(convert(varchar, getdate(), 112)+'000000',14)
+		)
+	</update>
+
+	<!-- 추천 저장 -->
+	<update id="saveRecommend" parameterType="Map" >
+	    /* kr.apfs.local.board.dao.impl.BoardDao.saveRecommend */
+	    MERGE INTO ts_boardrecomm A
+		USING
+		( 	SELECT
+				#{contId} as cont_id,
+				#{*userId} as user_id,
+				#{recommendYn} as updown
+			FROM DUAL ) B
+		ON (A.cont_id = B.cont_id AND A.user_id = B.user_id)
+		WHEN MATCHED THEN
+			UPDATE
+				SET A.updown = B.updown, reg_mem_id = #{*userId}, reg_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+			WHEN NOT MATCHED THEN
+			INSERT
+				(cont_id, user_id, updown, reg_mem_id, reg_dt)
+			VALUES
+				(B.cont_id, B.user_id, B.updown, B.user_id, left(convert(varchar, getdate(), 112)+'000000',14))
+	</update>
+
+	<!-- 추천 정보 -->
+	<select id="selectRecommend" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectRecommend */
+		SELECT
+	        COUNT(1) OVER() AS total_cnt
+	        , (CASE when USER_ID = #{*userId} THEN 'Y' ELSE 'N' END) AS recommend_yn
+		FROM ts_boardrecomm
+		WHERE cont_id = #{contId}
+	        AND updown = 'Y'
+	</select>
+
+	<!-- 답신여부 확인 -->
+	<select id="chkSmsRecv" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.chkSmsRecv */
+		SELECT
+	        mobile
+		FROM ts_boardcontents
+		WHERE board_id = #{boardId}
+			AND cont_id = #{contId}
+	        AND sms_yn = 'Y'
+	</select>
+
+	<!-- 게시판 메인 출력용 게시물 -->
+	<select id="selectLoadMainBoard" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectLoadMainBoard */
+		SELECT
+			T.*
+		FROM (
+			SELECT
+				tbc.cont_id
+				,tbc.board_id
+				,tbc.cate_id
+				,tbc.title
+				,tbc.contents
+				,tbc.ref_seq
+				,tbc.restep_seq
+				,tbc.relevel_seq
+				,tbc.title_link
+				,tbc.reg_mem_nm
+				,tbc.img_attach_id
+				,(SELECT file_nm FROM tc_attachfile WHERE file_id = tbc.img_attach_id) as image_file_nm
+				,tbc.reg_dt
+			FROM ts_boardcontents tbc
+			WHERE 1 = 1
+				AND (tbc.del_yn is null or tbc.del_yn = 'N')
+				AND	tbc.board_id = #{boardId}
+				<!-- AND TO_CHAR(SYSDATE,'YYYYMMDD') <![CDATA[ >= ]]> REPLACE(tbc.book_dt,'-','') -->
+				ORDER BY tbc.ref_seq DESC
+		) T
+		WHERE 1=1
+			AND ROWNUM <![CDATA[ < ]]> #{size}+1
+	</select>
+
+	<!-- 게시판 순서조정 정보를 수정한다 (상단공지순서)  -->
+	<update id="updateBoardSort" parameterType="Map" >
+	/* kr.apfs.local.board.dao.impl.BoardDao.updateBoardSort */
+	    UPDATE ts_boardcontents
+	    SET noti_seq = #{notiSeq}
+	    WHERE cont_id = #{contId}
+	</update>
+
+
+	<!-- 메뉴등록 보드리스트 -->
+	<select id="selectMenuBoardList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectMenuBoardList */
+
+		SELECT
+		b.*
+		,	(
+				CASE
+					WHEN (SELECT COUNT(*) FROM ts_menu c WHERE c.ref_board_id = b.board_id AND DEL_YN = 'N' )  > 0
+				THEN
+					'Y'
+				ELSE
+				    'N'
+				END
+				)  as ref_yn
+		 FROM
+	(
+		SELECT
+		     		board_id
+					,title
+					,board_cd
+					,dbo.UF_CODE_NM('BOARD_TYPE',board_cd) board_cd_nm
+					,(select code_nm from tc_code where mst_id = 'BOARD_TYPE' and code_id = a.board_cd) as type_nm
+					,detail_yn
+					,write_mem_cd
+					,read_mem_cd
+					,item_use
+					,item_required
+					,item_out
+					,item_user
+					,view_print
+					,view_size
+					,view_sort
+					,noti_cnt
+					,file_cnt
+					,reg_mem_id
+					,(SELECT user_nm FROM tc_user tu WHERE tu.user_id = a.reg_mem_id) AS reg_usernm
+					<!-- ,dbo.UF_USER_NM(reg_mem_id) reg_user_nm -->
+					,reg_dt
+					,reg_dt as reg_dt2
+					,upd_mem_id
+					,upd_dt
+					,site_id
+					,'/front/board/boardContentsListPage.do?boardId='+convert(varchar,BOARD_ID) as ref_url
+		FROM ts_board a
+		WHERE 1 = 1
+			AND del_yn != 'Y'
+		<if test='defaulttype != null and defaulttype.equals("P")' >
+			AND board_cd IN ('P','R','I')
+		</if>
+		<if test='defaulttype != null and !defaulttype.equals("P")' >
+			AND board_cd = #{defaulttype}
+		</if>
+		)b
+	ORDER BY ref_yn ASC ,title ASC
+	</select>
+
+
+	<select id="selectKorchamBoardList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectMenuBoardList */
+
+		SELECT
+   		 a.*,	(
+				CASE
+					WHEN (SELECT COUNT(menu_id) FROM ts_menu c WHERE c.ref_board_id = a.board_id AND DEL_YN = 'N' )  > 0
+				THEN
+					'Y'
+				ELSE
+				    'N'
+				END
+				)  as ref_yn
+		 FROM
+		 		(
+				(SELECT '11' as board_id ,'일반형' as board_cd_nm,'대한상의 브리프' as title,'대한상의 브리프' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=11' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2,1 as sort FROM dual)
+				UNION ALL
+				(SELECT '7' as board_id ,'일반형' as board_cd_nm,'대한상의 인포' as title,'대한상의 인포' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=7' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2,1 as sort FROM dual)
+				UNION ALL
+				SELECT '3' as board_id ,'포토뉴스(리스트)' as board_cd_nm,'온라인세미나' as title,'온라인세미나' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=3' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2, 2 as sort FROM dual
+				UNION ALL
+				SELECT '18' as board_id ,'신규' as board_cd_nm,'발간자료' as title,'발간자료' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=18' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2 , 3 as sort FROM dual
+				UNION ALL
+				SELECT '13' as board_id ,'일반형' as board_cd_nm,'대한상의보도자료' as title,'대한상의보도자료' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=13' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2 ,4 as sort FROM dual
+				UNION ALL
+				SELECT '19' as board_id ,'포토뉴스(리스트)' as board_cd_nm,'대한상의포토뉴스' as title,'대한상의포토뉴스' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=19' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2,5 as sort FROM dual
+				UNION ALL
+				SELECT '15' as board_id ,'일반형' as board_cd_nm,'경제칼럼' as title,'경제칼럼' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=15' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2, 6 as sort FROM dual
+				UNION ALL
+				SELECT '14' as board_id ,'일반형' as board_cd_nm,'해외경제동향' as title,'해외경제동향' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=14' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2, 7 as sort FROM dual
+				UNION ALL
+				SELECT '17' as board_id ,'일반형' as board_cd_nm,'경제정책정보' as title,'경제정책정보' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=17' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2,8 as sort FROM dual
+				UNION ALL
+				SELECT '12' as board_id ,'일반형' as board_cd_nm,'기업뉴스' as title,'기업뉴스' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=12' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2, 9 as sort FROM dual
+				UNION ALL
+				SELECT '16' as board_id ,'일반형' as board_cd_nm,'유관기관소식' as title,'유관기관소식' as contents,'N' as detail,'/front/boardlink/boardlinkContentsListPage.do?boardId=16' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2, 10 as sort FROM dual
+				UNION ALL
+				SELECT '20' as board_id ,'유관기관' as board_cd_nm,'유관기관' as title,'유관기관' as contents,'N' as detail,'/front/contents/recommPage.do' as ref_url,'수퍼관리자' as reg_user_nm,'2017.10.31' as reg_dt2, 10 as sort FROM dual
+				)a ORDER BY  ref_yn ASC,sort ASC
+
+
+	</select>
+	
+	<select id="pwdCheck" parameterType="Map" resultType="camelMap">
+		SELECT password
+		FROM ts_boardcontents
+		WHERE board_id = #{boardId}		
+		   AND cont_id = #{contId}
+	</select>
+	
+	<select id="selectDownloadExcelBoardList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectDownloadExcelBoardList */
+
+	SELECT TOP 100 B.total_cnt-B.RNUM+1 AS 번호
+	         , B.제목
+	         , B.답변상태
+	         , SUBSTRING(B.작성일,1,8) AS 작성일
+	         , B.공개여부
+	         , B.질의내용
+	         , B.답변내용
+	         , SUBSTRING(B.답변일자,1,8) AS 답변일자
+	  FROM (
+			     SELECT A.*,
+			                 ROW_NUMBER() OVER(ORDER BY cont_id DESC, 작성일 DESC) AS RNUM,
+			                 COUNT(*) OVER() AS total_cnt 
+			        FROM (SELECT tbc.cont_id
+										,tbc.board_id
+										,tbc.cate_id
+										,tbc.title as 제목
+										,tbc.etc0
+										,tbc.contents as 질의내용
+										,tba.contents as 답변내용
+										,CASE WHEN (tbc.open_yn = 'Y') THEN '공개' ELSE '비공개' END 공개여부
+										,tbc.reg_dt as 작성일
+										,tba.reg_dt as 답변일자
+										,CASE WHEN (isnull(tba.contents,tbc2.contents) is null)THEN '답변대기' ELSE '답변완료' END  답변상태
+										,(SELECT COUNT(1) FROM ts_boardcomment WHERE cont_id = tbc.cont_id) AS comment_cnt
+										,(SELECT top 1 file_id FROM tc_attachfile where attach_id = tbc.attach_id ) as path
+							   FROM ts_boardcontents tbc
+										LEFT OUTER JOIN ts_boardcontents tbc2 ON tbc.title = tbc2.title and tbc2.relevel_seq > 0
+										LEFT OUTER JOIN ts_boardanswer tba ON(tba.cont_id = tbc.cont_id)
+						 	 WHERE 1 = 1
+							 	 AND	tbc.board_id = '51'
+								 AND (tbc.relevel_seq = 0 OR tbc.relevel_seq is null)
+								 AND tbc.del_yn = 'N'
+							 ) A
+			   )B
+   WHERE B.작성일 BETWEEN #{beginDate} and #{endDate}
+<if test='cateId != null and !cateId.equals("")' >
+			AND	B.etc0 = #{cateId}
+</if>
+<if test='reply_ststus != null and reply_ststus.equals("W")' >
+	AND B.답변상태 = '답변대기'
+</if>
+<if test='reply_ststus != null and reply_ststus.equals("S")' >
+	AND B.답변상태 = '답변완료'
+</if>
+	</select>
+</mapper>
+
+
+

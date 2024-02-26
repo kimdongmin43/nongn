@@ -1,0 +1,30 @@
+@charset "utf-8";
+
+
+
+/* site_guide */
+
+.site_guide_area > h4 {font-size:20px; font-weight:bold; margin-bottom:20px;}
+.site_guide_area > .sga_box > h5 {font-size:16px; font-weight:600; margin-bottom:7px;}
+	.ctn_box { border:2px solid #ddd; padding:15px; margin-bottom:20px; font-weight:600 }
+    .sga_box {margin-bottom:30px; letter-spacing:0.01em;}
+		.sga_box ul {}
+		.u_dep_1 {margin-top:9px; padding:0 17px;}
+		.u_dep_1 > li {}
+		.u_dep_2 {margin-top:5px;}
+		.u_dep_2 li {font-size:13px; color:#878787; padding:0 10px;}
+
+		.sga_box ol {}
+		.sga_box ol > li {margin-bottom:5px;}
+
+		.sga_box dl {margin-top:7px; padding:0 17px;}
+		.sga_box dl dt {margin-top:5px;}
+		.sga_box dl dd {}
+
+		.sga_box table {width:100%; font-size:12px; border-top:1px solid #b5b5b5; border-left:1px solid #b5b5b5; margin:7px 0;}
+		.sga_box table thead th {border-right:1px solid #b5b5b5; border-bottom:1px solid #b5b5b5; background-color:#f0f0f0; padding:3px;}
+		.sga_box table tbody td {border-right:1px solid #b5b5b5; border-bottom:1px solid #b5b5b5; text-align:center; padding:3px;}
+
+	.sga_box_p1 {font-size:18px; font-weight:600; margin-bottom:10px;}
+	.sga_box_p2 {font-size:14px; font-weight:500; letter-spacing:0.01em; color:#666;}
+		.sga_box_p2 span {font-size:15px; font-weight:bold; color:#000;}

@@ -1,0 +1,62 @@
+@charset "utf-8";
+
+.loanco_title_box {width:100%; min-height:245px; margin-bottom:25px;}
+.loanco_title_box.bg_daopen_tit4{background:#eff1f3 url('/images/data/ffund_tit_img1.png') no-repeat right 0;}
+
+    .loanco_txt_area {width:70%; padding:40px 40px 17px 40px;}
+	.loanco_txt_area2 {width:70%; padding:0 0 0 40px; overflow:hidden;}
+	.loanco_txt_area2 p {float:left; width:57%; padding:0 15px 0 0; line-height:1.3em; font-size:13px !important;}
+	.loanco_txt_area2 img {float:left; padding:12px 0 0 0;}
+    .loanco_txt_area p.loanco_intro_tit {font-size:22px; color:#333; font-weight:600; padding-bottom:10px}
+
+.loanco_title_box p {font-size:15px; font-weight:500; padding-top:10px}
+
+.loan_textsty dt {font-size:13px !important; font-weight:bold;  margin:3px 0;}
+.loan_textsty ul {margin:0; padding:0 0 0 10px;}
+.loan_textsty li {font-size:12px !important; margin:0;}
+
+
+
+
+/* 화면 해상도 width 1025px 이상 Design --------------------------------------*/
+@media screen and (min-width: 1025px){
+	
+	
+}
+
+
+
+/* 화면 해상도 width 640px 이상 960px 이하 Design --------------------------------------*/
+@media screen and (max-width: 1024px) and (min-width: 641px) {
+	
+	
+	
+}
+
+
+
+/* 화면 해상도 width 640px 이하 Design --------------------------------------*/
+@media screen and (max-width: 640px){
+	
+	
+	
+}
+
+
+/* 화면 해상도 width 460px 이하 Design --------------------------------------*/
+@media screen and (max-width: 460px){
+
+.loanco_title_box {width:100%; min-height:200px; margin-bottom:25px;}
+.loanco_title_box.bg_daopen_tit4{background:#eff1f3;}
+.loanco_txt_area {width:100%; padding:40px 40px 17px 40px;}
+
+	
+}
+
+
+
+
+
+
+
+

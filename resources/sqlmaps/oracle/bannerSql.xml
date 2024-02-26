@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BannerDao">
+
+	<select id="selectBannerPageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.banner.dao.impl.BannerDao.selectBannerPageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+		    	 ROWNUM
+				,BANNER_ID
+				,SITE_ID
+				,SECTION_CD
+				,TITLE
+				,ALT
+				,URL
+				,TARGET_CD
+				,ATTACH_ID
+				,HIT
+				,REG_USER_ID
+				,REG_DT
+				,UPD_USER_ID
+				,UPD_DT
+				,USE_YN
+				,DEL_YN
+				,SORT
+				,(SELECT USER_NM FROM T_USER WHERE USER_ID = A.REG_USER_ID) AS regUserNm
+		 FROM TS_BANNER A
+		  WHERE 1 = 1
+		<choose>
+		<when test='siteId != null and !siteId.equals("")' >
+		AND SITE_ID = #{siteId}
+		</when>
+		<otherwise>
+		AND ( SITE_ID = #{*siteId} OR  SITE_ID =  CASE WHEN #{*siteCd} = 'F' THEN  '0' ELSE  NULL END	)
+		</otherwise>
+		</choose>
+		<if test='mainId != null and !mainId.equals("")' >
+		AND MAIN_ID = #{mainId}
+		</if>
+		<!-- 단일건 요청 -->
+		<if test='bannerId != null and !bannerId.equals("")' >
+		AND BANNER_ID = #{bannerId}
+		</if>
+		<!--// 단일건 요청 -->
+		<if test='region != null and !region.equals("")' >
+		   AND REGION = #{region}
+		</if>
+		<if test='useYn != null and !useYn.equals("")' >
+		   AND USE_YN = #{useYn}
+		</if>
+
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+	<select id="selectBannerList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.banner.dao.impl.BannerDao.selectBannerList */
+		SELECT
+			<if test='sectionCd != null and sectionCd.equals("1")' >
+				TOP 3
+			</if>
+				ROW_NUMBER() OVER (PARTITION BY SECTION_CD ORDER BY SORT) R_NUM
+				,BANNER_ID
+				,SITE_ID
+				,SECTION_CD
+				,TITLE
+				,ALT
+				,URL
+				,TARGET_CD
+				,dbo.UF_CODE_NM('TARGET_CD',TARGET_CD) TARGET_CD_NM
+				,A.ATTACH_ID
+				,HIT
+				,A.REG_USER_ID
+				,A.REG_DT
+				,A.UPD_USER_ID
+				,A.UPD_DT
+				,A.USE_YN
+				,A.DEL_YN
+				,A.SORT
+				,(SELECT USER_NM FROM TC_USER WHERE USER_ID = A.REG_USER_ID) AS REG_USER_NM
+				,ATT.FILE_ID
+				,ATT.FILE_NM
+				,ATT.FILE_TYPE
+				,ATT.FILE_SIZE
+				,ATT.ORIGIN_FILE_NM
+				,ATT.FILE_PATH
+
+		FROM TS_BANNER A
+
+		LEFT OUTER JOIN  (
+			SELECT
+					ATTACH_ID,
+					MIN(FILE_ID) FILE_ID
+			FROM
+					TC_ATTACHFILE
+			GROUP BY
+					ATTACH_ID
+		) MIN
+       	ON  A.ATTACH_ID = MIN.ATTACH_ID
+
+		LEFT OUTER JOIN TC_ATTACHFILE ATT
+		ON MIN.ATTACH_ID = ATT.ATTACH_ID
+		AND MIN.FILE_ID = ATT.FILE_ID
+
+		WHERE 1=1
+		AND DEL_YN = 'N'
+		AND USE_YN = 'Y'
+
+
+		<if test='sectionCd != null and !sectionCd.equals("")' >
+		AND SECTION_CD = #{sectionCd}
+		</if>
+		<if test='useYn != null and !useYn.equals("")' >
+		AND USE_YN = #{useYn}
+		</if>
+		<!-- 단일건 요청 -->
+		<if test='bannerId != null and !bannerId.equals("")' >
+		AND BANNER_ID = #{bannerId}
+		</if>
+		<if test='sectionCd != null and sectionCd.equals("1")' >
+
+		UNION ALL
+
+
+		SELECT
+		 		TOP 1
+		    	  ROW_NUMBER() OVER (PARTITION BY BOARD_ID ORDER BY CONT_ID DESC) ROWNUM
+				,CONT_ID AS BANNER_ID
+				,3
+				,1
+				,TITLE
+				,CONTENTS
+				,'/front/board/boardContentsView.do?contId='+ convert(varchar,CONT_ID)+'&#38;boardId='+ convert(varchar,BOARD_ID) AS URL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+		 FROM TS_BOARDCONTENTS B
+		 WHERE BOARD_ID = '20039'
+		 AND DEL_YN = 'N'
+		 AND USE_YN = 'Y'
+
+
+		UNION ALL
+
+
+		SELECT
+		 		TOP 1
+		    	  ROW_NUMBER() OVER (PARTITION BY BOARD_ID ORDER BY CONT_ID DESC) ROWNUM
+				,CONT_ID AS BANNER_ID
+				,3
+				,1
+				,TITLE
+				,CONTENTS
+				,'/front/board/boardContentsView.do?contId='+ convert(varchar,CONT_ID)+'&#38;boardId='+ convert(varchar,BOARD_ID) AS URL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+		 FROM TS_BOARDCONTENTS B
+		 WHERE BOARD_ID = '20058'
+		 AND DEL_YN = 'N'
+		 AND USE_YN = 'Y'
+
+
+		UNION ALL
+
+
+		SELECT
+		 		TOP 1
+		    	  ROW_NUMBER() OVER (PARTITION BY BOARD_ID ORDER BY CONT_ID DESC) ROWNUM
+				,CONT_ID AS BANNER_ID
+				,3
+				,1
+				,TITLE
+				,CONTENTS
+				,'/front/board/boardContentsView.do?contId='+ convert(varchar,CONT_ID)+'&#38;boardId='+ convert(varchar,BOARD_ID) AS URL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+		 FROM TS_BOARDCONTENTS B
+		 WHERE BOARD_ID = '20059'
+		 AND DEL_YN = 'N'
+		 AND USE_YN = 'Y'
+		</if>
+
+
+
+
+		<!-- //단일건 요청 -->
+		 <!-- ORDER BY SORT ASC -->
+	</select>
+
+
+
+	<select id="selectBanner" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.banner.dao.impl.BannerDao.selectBanner */
+		SELECT
+					 a.BANNER_ID
+					,a.SITE_ID
+					,a.SECTION_CD
+					,a.TITLE
+					,a.ALT
+					,a.URL
+					,a.TARGET_CD
+					,a.ATTACH_ID
+					,a.HIT
+					,a.REG_USER_ID
+					,(SELECT CONVERT(CHAR(8),GETDATE(),112)) AS REG_DT
+					,a.UPD_USER_ID
+					,a.UPD_DT
+					,a.USE_YN
+					,a.DEL_YN
+					,a.SORT
+					,b.FILE_ID
+					,b.ORIGIN_FILE_NM
+					,b.FILE_PATH
+					,b.FILE_SIZE
+					,(SELECT USER_NM FROM TC_USER WHERE USER_ID = A.REG_USER_ID) AS reg_user_nm
+		FROM TS_BANNER a
+		LEFT OUTER JOIN TC_ATTACHFILE b
+		ON a.attach_id = b.attach_id
+		WHERE 1=1
+		AND SITE_ID = <if test='cTabGbn == "A"' >#{*siteId}</if><if test='cTabGbn == "B"' >'0'</if>
+		AND BANNER_ID = #{bannerId}
+
+	</select>
+
+	<select id="selectBannerExist" parameterType="Map" resultType="integer">
+		/* kr.apfs.local.banner.dao.impl.BannerDao.selectBannerExist */
+		SELECT
+			  COUNT(*)
+		FROM TS_BANNER
+		WHERE  1=1
+		AND SITE_ID = #{*siteId}
+		AND BANNER_ID = #{bannerId}
+	</select>
+
+	<update id="insertBanner" parameterType="Map" >
+	    /* kr.apfs.local.banner.dao.impl.BannerDao.insertBanner */
+		INSERT INTO
+		TS_BANNER (
+				 BANNER_ID
+				,SITE_ID
+				,SECTION_CD
+				,TITLE
+				,ALT
+				,URL
+				,TARGET_CD
+				,ATTACH_ID
+				,REG_USER_ID
+				,REG_DT
+				,USE_YN
+				,DEL_YN
+				,HIT
+				,SORT
+
+		)
+		VALUES
+		(
+		<!-- 		(SELECT NVL(MAX(BANNER_ID) ,0)+1 FROM TS_BANNER WHERE SITE_ID = <if test='cTabGbn == "A"' >#{*siteId}</if><if test='cTabGbn == "B"' >'0'</if>)
+
+				<if test='cTabGbn == "A"' >
+		      		,#{*siteId}
+				</if>
+				<if test='cTabGbn == "B"' >
+		      		,'0'
+				</if> -->
+				(SELECT ISNULL(MAX(banner_id),0)+1 FROM TS_BANNER)
+				,'3'
+				,#{sectionCd}
+				,#{title}
+				,#{alt}
+				,#{url}
+			   	,#{targetCd}
+				,#{attachId}
+				,#{*userId}
+				,(SELECT CONVERT(CHAR(8),GETDATE(),112))
+				,'Y'
+				,'N'
+				,0
+				,'1'<!-- (SELECT ISNULL(MAX(sort) ,0)+1 FROM ts_banner WHERE site_id = <if test='cTabGbn == "A"' >#{*siteId}</if><if test='cTabGbn == "B"' >'0'	</if> AND del_yn = 'N' AND section_cd = #{cSectionCd}) -->
+		)
+	</update>
+
+	<select id="selectBannerListBack" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.banner.dao.impl.BannerDao.selectBannerListBack */
+			SELECT
+				BANNER_ID
+				,SITE_ID
+				,SECTION_CD
+				,TITLE
+				,ALT
+				,URL
+				,TARGET_CD
+				,ATTACH_ID
+				,HIT
+				,REG_USER_ID
+				,REG_DT
+				,UPD_USER_ID
+				,UPD_DT
+				,USE_YN
+				,DEL_YN
+				,SORT
+				,(SELECT USER_NM FROM TC_USER WHERE USER_ID = A.REG_USER_ID) AS reg_user_nm
+		FROM TS_BANNER A
+		WHERE 1=1
+ 		AND section_cd = #{sectionCd}
+		AND del_yn = 'N'
+		<if test='useYn != null and !useYn.equals("")' >
+		AND use_yn = #{useYn}
+		</if>
+      	<if test = 'tabGbn == "B"' >
+      	AND SITE_ID = '0'
+      	</if>
+      	<if test='tabGbn == "A"' >
+      	AND SITE_ID = #{*siteId}
+		</if>
+
+		 ORDER BY use_yn desc, sort asc
+	</select>
+
+
+	<update id="updateBanner" parameterType="Map" >
+	    /* kr.apfs.local.banner.dao.impl.BannerDao.updateBanner */
+	    UPDATE
+	 		TS_BANNER
+		SET
+			BANNER_ID     = #{bannerId}
+			,SECTION_CD   = #{sectionCd}
+			,TITLE        = #{title}
+			,ALT          = #{alt}
+			,URL          = #{url}
+			,TARGET_CD    = #{targetCd}
+			,UPD_USER_ID  = #{*userId}
+			,UPD_DT       = (SELECT CONVERT(CHAR(8),GETDATE(),112))
+			,USE_YN       = #{useYn}
+			<if test = 'useYn == "N"' >
+      		,SORT = NULL
+      		</if>
+
+		WHERE  1=1
+		AND BANNER_ID  = #{bannerId}
+		<if test='cTabGbn == "A"' >
+		AND SITE_ID = #{*siteId}
+		</if>
+		<if test='cTabGbn == "B"' >
+		AND SITE_ID = '0'
+		</if>
+	</update>
+
+	<delete id="deleteBanner" parameterType="Map" >
+	    /* kr.apfs.local.banner.dao.impl.BannerDao.deleteBanner */
+	 	UPDATE 	TS_BANNER
+	 	SET DEL_YN = 'Y'
+		WHERE 1=1
+		AND BANNER_ID = #{bannerId}
+		<if test='cTabGbn == "A"' >
+		AND SITE_ID = #{*siteId}
+		</if>
+		<if test='cTabGbn == "B"' >
+		AND SITE_ID = '0'
+		</if>
+
+	</delete>
+
+	<update id="updateBannerReoder" parameterType="Map" >
+	    /* kr.apfs.local.banner.dao.impl.BannerDao.updateBannerSort */
+	    UPDATE TS_BANNER
+	    SET 	SORT = #{sort},
+	    		UPD_USER_ID = #{*userId},
+				UPD_DT = (SELECT CONVERT(CHAR(8),GETDATE(),112))
+	    WHERE 1=1
+	    AND BANNER_ID = #{bannerId}
+	    <if test='cTabGbn == "A"' >
+		AND SITE_ID = #{*siteId}
+		</if>
+		<if test='cTabGbn == "B"' >
+		AND SITE_ID = '0'
+		</if>
+	</update>
+
+	<update id="deleteBannerReorder" parameterType="Map" >
+	    /* kr.apfs.local.banner.dao.impl.BannerDao.deleteBannerReorder */
+	    UPDATE
+	 		TS_BANNER
+		SET
+		        SORT = SORT - 1
+		        ,UPD_USER_ID = #{*userId}
+				,UPD_DT = (SELECT CONVERT(CHAR(8),GETDATE(),112))
+		WHERE
+		SORT > (SELECT SORT FROM TS_BANNER WHERE BANNER_ID = #{bannerId} AND SITE_ID = #{*siteId} )
+		<if test='cTabGbn == "A"' >
+		AND SITE_ID = #{*siteId}
+		</if>
+		<if test='cTabGbn == "B"' >
+		AND SITE_ID = '0'
+		</if>
+	</update>
+
+	<select id = "selectBannerArea" resultType = "camelMap">
+	SELECT
+		code_id
+		,code_nm
+	FROM
+		tc_code
+	WHERE
+		1=1
+		AND mst_id = 'BANNER_REGION'
+		AND use_yn = 'Y'
+		AND ext_01 LIKE '%' + {value} + '%'
+	</select>
+
+	<select id = "selectMainType" resultType ="String">
+		SELECT
+			A.CODE_ID
+		FROM
+			TC_CODE A
+		JOIN TS_MAIN B
+		ON A.CODE_ID = B.MAIN_CD
+		WHERE
+			1=1
+		AND SITE_ID = #{*siteId}
+		AND A.MST_ID = 'MAIN_CD'
+	     AND B.PUB_YN = 'Y'
+	</select>
+</mapper>

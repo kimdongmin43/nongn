@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util-3.2.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd ">
+
+	<context:component-scan base-package="kr.apfs.local">
+       	<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+    
+    <!--<context:property-placeholder location="classpath:config/application.properties" /> -->
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<util:properties id="jdbc" location="classpath:config/jdbc.properties" />
+	
+	<!-- 230714 NICE 본인인증시 필요한 사이트코드, 사이트패스워드 SW보안약점 진단으로 암호화 처리 -->
+	<util:properties id="siteInfo" location="classpath:config/siteInfo.properties" />
+	
+	<!-- 230714 NICE 본인인증시 필요한 사이트코드, 사이트패스워드 SW보안약점 진단으로 암호화 처리 -->
+	<util:properties id="emailInfo" location="classpath:config/emailInfo.properties" />
+
+	<import resource="jdbc-config.xml" />
+	<import resource="email-config.xml" />
+	
+
+    
+</beans>

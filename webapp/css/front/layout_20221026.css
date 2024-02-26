@@ -1,0 +1,465 @@
+@charset "utf-8";
+
+
+/* 화면 해상도 width 640px 이상 Design --------------------------------------*/
+@media screen and (min-width: 1025px){
+
+	body {overflow-x: auto;}
+
+	/* layout */
+	#wrap {overflow: hidden;}
+	
+	#skip_nav {height:0}
+	#skip_nav a {display: block; position: absolute; left: 0; top: -100px; width: 100%; height: 1px; text-align: center}
+	#skip_nav a:focus, #skip_nav a:active {position: absolute; top: 0; z-index: 999999; height: 25px; padding: 10px 0; font-size: 1.4em; font-weight: 700; color: #36348f; background: #fff;}
+
+
+	#container {overflow: hidden; clear: both;}
+	.left_area {overflow: hidden; float: left; width: 200px; margin-right: 38px;}
+	.content_area {overflow: hidden;}
+		.sub_background01 {overflow: hidden; height: 160px; background: url('/images/front/common/sub_bg.jpg') repeat-x center center;}
+	    #content.main {overflow: hidden; width: 1100px; margin: 0px auto;}
+	    #content.sub {overflow: hidden; width: 1100px; margin: 60px auto;}
+	    #content.sub.w890 {overflow: hidden; width: 890px;}
+	    #content {overflow: hidden; display: block;}
+	 #aside {overflow: hidden;}
+	 #footer {overflow: hidden; background-color: #444444;}
+
+	
+   	/* header */
+	#header {position: relative; z-index: 300; width: 100%; height: 80px; margin: 0 auto; border-top: 5px solid #5b81c9; border-bottom: 1px solid #c2cee3; background-color: #e4ebf8;}
+		.header_area {overflow: hidden; width: 1100px; margin: 0 auto;}
+		h1.home_logo {float: left; display: inline-block; height: 80px; line-height: 70px; z-index: 1; }
+	
+	/* mobile_menu */
+	#mnav {display: none;}
+	.gnb_area {display: none;}
+		
+	/* nav */
+	#nav {overflow: hidden; float: left; width: 854px; margin-left: 30px;}
+	.gnb {/*height: 62px;*/ margin: 0 auto;}
+	.gnb nav {z-index: 100; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+		.gnb nav li {list-style: none;}
+		.gnb nav > ul {position: relative; z-index: 6; *zoom: 1;}
+		.gnb nav > ul:after {content:""; display: block; clear: both;}
+		
+		.gnb nav > ul.menu6 > li {width: 16.6%;} /* 메뉴 6개 일때 */
+		.gnb nav > ul.menu6 > li:last-child {width: 17%;} /* 메뉴 6개 일때 맨마지막 */
+		
+		.gnb nav > ul > li {float: left; position: relative; z-index: 99;}
+		.gnb nav > ul > li > a > span > img {display: inline-block; margin-top: 8px; vertical-align: top;}
+		.gnb nav > ul > li.on {background: url('/images/front/common/gnb_line_on_bg.png') repeat-x 0px bottom;}
+		.gnb nav > ul > li.on > a {height: 80px; line-height: 80px; color: #386ed4;}
+		.gnb nav > ul > li > a {display:block; height: 80px; font-weight:bold; text-align: center; text-decoration: none; font-size: 17px; color: #3d4b65; line-height: 80px; letter-spacing: -0.08em;}
+		.gnb nav > ul > li > a.on,
+		.gnb nav > ul > li > a:hover {height: 80px; line-height: 80px; color: #2f64cd; text-decoration: none; background: url('/images/front/common/gnb_line_on_bg.png') repeat-x 0px bottom;}
+		.gnb nav > ul > li:hover > div > ul {/*background: #045d9b;*/}
+		.gnb nav > ul > li:hover > div > ul > li {/*padding-left: 10px;*/ background: url('/images/front/common/gnb_bullet_on.png') no-repeat 0px 8px;}
+		.gnb nav > ul > li:hover > div > ul > li > a {/*color: #ffffff;*/}
+		
+		.gnb nav > ul > li > div {display: none; z-index: 20; width: 100%; min-height: 183px;}
+		.gnb nav > ul > li > div > ul {min-height: 183px; /*padding: 8px 0 0;*/ background: url('/images/front/common/gnb_line_bg.png') repeat-y 0px 0px #ffffff;}
+		.gnb nav > ul > li > div > ul:hover {/*background: #045d9b;*/}
+		
+		.gnb nav > ul > li > div > ul > li {/*padding:0 10px; margin-left: 15px; margin-top: 10px; padding-left: 10px;*/ height: 30px; line-height: 30px; text-align: center; background: url('/images/front/common/gnb_bullet_off.png') no-repeat 0px 8px;}
+		.gnb nav > ul > li > div > ul > li a {display: block; height: 30px; font-size: 13px; font-weight: bold; color: #4d4d4d; line-height: 30px;}
+		.gnb nav > ul > li > div > ul:hover a {/*color: #ffffff;*/ }
+		.gnb nav > ul > li > div > ul:hover a:hover {color:#ffffff; background-color: #386ed4; text-decoration: none;}
+		
+		.gnb nav.on .nav_bg {display: block; position: absolute; z-index: 4; width: 100%; min-height: 183px; top: 80px; left: 0; border-bottom: 2px solid #386ed4; background: url('/images/front/common/gnb_bg.png') repeat 0px 0px;}
+		.gnb nav .nav_bg span {overflow-x: hidden; position: relative; z-index: 4; display: block; width: 100%; min-height: 183px; left: 0; background: url('/images/front/common/gnb_bg.png') repeat 0px 0px;}
+
+
+		#gnb_mobile {display: none;}
+
+	div.header_btn_area {overflow: hidden;  display: inline-block; float: right; width: 80px; height: 80px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; text-align: right;}
+		div.header_btn_area a {margin-bottom: 5px;}
+		div.header_btn_area a.btn_header {display: inline-block; width: 66px; height: 23px; font-size: 13px; font-weight: bold; text-align: center; text-decoration: none; line-height: 23px; border:1px solid #4366a9; border-radius: 5px; background-color: #ffffff;}
+		div.header_btn_area a.btn_header span {color: #3f63a7;}
+
+	/* sub페이지 백그라운드 */
+	.sub_background_txt {overflow: hidden; text-align: center; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+		.sub_background_txt strong {display: block; margin-top: 40px; padding-bottom: 17px; font-size: 25px; font-weight: bold; color: #333333; background: url('/images/front/common/sub_background_txtbg.png') no-repeat center bottom;}
+		.sub_background_txt span {display: block; padding-top: 17px; font-size: 13px; color: #333333;}	
+	
+	/* location */
+	.location_area {height: 50px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; border-bottom: 1px solid #e5e5e5;}
+		.location_area:after {content: ""; display: block; clear: both;}
+		.location_division {width: 1100px; margin: 0 auto;} 
+		.location {}
+			.location > li {float: left; padding: 0 20px; font-size: 14px; color: #4d4d4d; list-style: none; line-height: 50px; background: url('/images/front/common/bg_location.png') no-repeat right 12px;}
+			.location > li:last-child {padding: 0 45px;}
+			.location > li > a {color: #0067b4; font-weight: bold;}
+			.location > li > a > span {padding-right: 20px; background: url('/images/front/common/location_arrow.png') no-repeat right center;} 	
+			.location > li.last_location_btn {position: relative;}
+			.location > li.last_location_btn div.sub_location {display: none; position: absolute; width: 100%; top: 51px; left: 0px; z-index: 9999;}
+			.location > li.last_location_btn div.sub_location.on {display:block;}
+			.location > li.last_location_btn div.sub_location ul {border-right: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc; background-color: #ffffff;}
+			.location > li.last_location_btn div.sub_location ul li {list-style: none; text-align: center; line-height: 1.3em; border-bottom: 1px solid #dcdcdc;}
+			.location > li.last_location_btn div.sub_location ul li a {display: block; padding: 10px 20px; font-weight: bold; color: #626262; background-color: #ffffff;}
+			.location > li.last_location_btn div.sub_location ul li a:hover {display: block; text-decoration: none; color: #ffffff; background-color: #0067b4;}
+
+	/* 만족도 */
+	.satisfaction_area {overflow: hidden; padding: 20px 33px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; border: 1px solid #dcdcdc;}
+	.satisfaction_area strong {display: inline-block; padding-left: 30px; font-size: 13px; color: #2a2d41; vertical-align: middle; line-height: 35px; background: url('/images/front/common/satisfaction_bg.png') no-repeat left center;}
+	.satisfaction_area .satisfaction_radio_area {overflow: hidden; float: right;}
+	.satisfaction_area ul {overflow: hidden; display: inline-block; vertical-align: middle;}
+	.satisfaction_area ul li {float: left; list-style: none;}
+	.satisfaction_area ul li label {font-size: 13px; color: #2a2d41;}
+	.satisfaction_area button.satisfaction {
+	width: 60px; height: 35px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; color: #ffffff; font-size: 14px; font-weight: bold;
+	vertical-align: middle;
+	 border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    background-color: #0487cb;
+	}
+	
+	/* tab area */
+	.tab_area {display: none;}
+		.m_tab_area {display: none;}
+	
+	/* content */
+	.contents {overflow: hidden;}
+	
+	.title_area {overflow: hidden; margin-bottom: 10px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+		.title_area h3.title {display: block; font-size: 20px; font-weight: bold; color: #333333;}
+		
+	.sub_title_area {overflow: hidden; margin-bottom: 20px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}	
+	.sub_title_area.mb0 {margin-bottom: 0px;}
+		.sub_title_area h3.sub_title03 {display: block; font-size: 16px; font-weight: bold; color: #0067b4;}
+		.sub_title_area h4.sub_title {display: block; padding-left: 35px; font-size: 18px; font-weight: bold; color: #383838;}
+		.sub_title_area h4.sub_title02 {display: block; padding-left: 15px; font-size: 18px; font-weight: bold; color: #383838;}
+		.sub_title_area h4.sub_title03 {display: block; font-size: 16px; font-weight: bold; color: #0067b4;}
+		.sub_title_area h5.sub_title {display: block; margin-left: 20px; padding-left: 10px; font-size: 16px; font-weight: bold; color: #383838;}
+		.sub_title_area h5.sub_title02 {display: block; padding-left: 15px; font-size: 18px; font-weight: bold; color: #383838;}
+	
+	/* footer */
+	.footer_area {width: 1100px; height: 115px; margin: 0 auto; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+	.footer_logo_area {overflow: hidden; float: left; margin-top: 32px;}
+	.footer_logo_area img {width: 129px; height: 35px;}
+	.footer_content {overflow: hidden; margin: 0 0 0 35px; padding: 22px 0 0 0px;  background: url('/images/front/common/footer_content_bar.png') no-repeat 0px 40px;}
+	.footer_left {overflow: hidden; float: left;}
+		.footer_addr_area {overflow: hidden; display: block; font-size: 13px; color: #ebebeb; line-height: 1.6em;}
+		.footer_addr_area ul.footer_link_list {overflow: hidden;}
+		.footer_addr_area ul.footer_link_list li {list-style: none; float: left; padding: 0 10px; background: url('/images/front/common/footer_bar.png') no-repeat left 4px;}
+		.footer_addr_area ul.footer_link_list li:first-child {padding: 0 10px 0 0; background: none;}
+		.footer_addr_area ul.footer_link_list li a {font-size: 13px; color: #ebebeb;}		
+		.footer_addr_area ul.footer_addr_list {overflow: hidden; line-height: 30px;}
+		.footer_addr_area ul.footer_addr_list li {float: left; padding: 0 10px; list-style: none; background: url('/images/front/common/footer_bar.png') no-repeat left 8px;}
+		.footer_addr_area ul.footer_addr_list li:first-child {padding: 0 10px 0 0; background: none;}
+		.footer_addr_area ul.footer_addr_list li.last_addr_list {margin-left: 20px; vertical-align: top; background: none;}
+		
+}
+
+
+/* 화면 해상도 width 640px 이상 960px 이하 Design --------------------------------------*/
+@media screen and (max-width: 1024px) and (min-width: 641px) {
+
+	/* layout */
+	#wrap {overflow: hidden;}
+
+	#skip_nav {height:0}
+	#skip_nav a {display: block; position: absolute; left: 0; top: -100px; width: 100%; height: 1px; text-align: center}
+	#skip_nav a:focus, #skip_nav a:active {position: absolute; top: 0; z-index: 99999; height: 25px; padding: 10px 0; font-size: 1.4em; font-weight: 700; color: #36348f; background: #fff;}
+
+	#nav {display: none;}
+	#container {overflow: hidden; clear: both;}
+	.container {overflow: hidden;}
+	.left_area {display: none;}
+	.content_area {overflow: hidden;}
+	.sub_background01 {overflow: hidden; height: 160px; background: url('/images/front/common/sub_bg.jpg') repeat-x center center;}
+	    #content {overflow: hidden;}
+		#content.main {overflow: hidden;}
+		#content.sub {overflow: hidden; margin: 60px auto; padding: 0 10px;}
+	 #aside {overflow: hidden;}
+	 #footer {overflow: hidden; padding: 0 10px 30px 10px; background-color: #444444;}
+
+	 /* header */
+	#header {position: relative; z-index: 300; width: 100%; height: 80px; margin: 0 auto; background-color: #e4ebf8;}
+		.header_area {overflow: hidden; margin: 0 auto; text-align: center;}
+		a.home_logo {overflow: hidden;}
+		h1.home_logo {display: inline-block; height: 80px; line-height: 70px; z-index: 1; }
+		div.header_btn_area {display: none;}
+
+	/* mobile_menu */
+	#gnb_mobile {position: absolute; top: 10px; left: 10px;}
+	#gnb_mobile_on {position: absolute; top: 15px; left: 15px;}
+	#mnav {z-index: 999999; width: 100%; height: 100%;}
+		#mnav .gnb_area {overflow: hidden; display: block; position: relative; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; background: url('/images/front/common/blank_bg.png') repeat 0px 0px;}
+		#mnav .nav_info {overflow: hidden; display: block; width: 100%; height: 60px; border-bottom: 1px solid #dcdcdc; background-color: #eeeeee;}
+		#mnav .nav {display: block; width: 80%; height: 100%; background-color: #ffffff;}
+		#mnav .m_close_area {float: right; margin: 25px 25px 0 0;}
+		
+		.mobile_title_area {height: 69px; border-bottom: 2px solid #dcdcdc; background-color: #ffffff;}
+			.mobile_title_area h2.title {float: left; margin: 13px 0 0 15px; font-size: 1.3em; font-weight: bold; color: #ffffff; line-height: 50px;}
+			
+			#mnav .nav_info strong {margin-left: 20px; font-size: 18px; font-weight: bold; line-height: 60px; color: #000000;}
+			#mnav .nav_info .nav_info_btn_area {overflow: hidden; float: right; display: inline-block; margin-right: 22px; line-height: 60px;} 
+			#mnav .nav_info .nav_info_btn_area a.btn_logout {display: inline-block; width: 75px; height: 26px; line-height: 26px; text-align: center; color: #5b81c9; font-weight: bold; border: 1px solid #5b81c9; border-radius: 3px; background-color: #ffffff;}
+			#mnav .nav_info .nav_info_btn_area a.btn_logout:hover {text-decoration: none;}
+			#mnav .nav_info .nav_info_btn_area a.btn_logout span {font-size: 13px; color: #5b81c9;}
+			
+			#mnav ul.mobile_menu {overflow: hidden;}
+				#mnav ul.mobile_menu > li {border-bottom: 1px dotted #5c5c5c; list-style: none; background: url('/images/front/mobile/gnb_plus.png') no-repeat 95% 19px #ffffff;}
+				#mnav ul.mobile_menu > li.on {background: url('/images/front/mobile/gnb_minus.png') no-repeat 95% 28px #5b81c9;}
+				#mnav ul.mobile_menu > li.on > a {color: #ffffff;} 
+				#mnav ul.mobile_menu > li:first-child {border-top: 0px}
+				#mnav ul.mobile_menu > li > a {display: block; padding: 20px 0 16px 30px; font-size: 16px; font-weight: bold; color: #333333;}
+				#mnav ul.mobile_menu > li > a:hover {text-decoration: none;}
+				#mnav ul.mobile_menu > li > ul {padding: 18px 32px; border-top: 1px dotted #5c5c5c; border-bottom: 1px dotted #c3c3c3; background-color: #e7eefc;}
+				#mnav ul.mobile_menu > li > ul > li {padding-left: 8px; margin-top: 24px; list-style: none; background: url('/images/front/mobile/bullet_m_menu.png') no-repeat 0 6px;}
+				#mnav ul.mobile_menu > li > ul > li:first-child {margin-top: 0}
+					#mnav ul.mobile_menu > li > ul > li {background: url('/images/front/common/gnb_bullet_bg.png') no-repeat 0 4px;}
+					#mnav ul.mobile_menu > li > ul > li > a {padding-left: 5px; font-size: 15px; font-weight: bold; color: #005783;}
+				#mnav ul.mobile_menu > li > ul > li > ul > li {margin-top: 14px; padding-left: 15px; list-style: none; background: url('/images/front/mobile/gnb_bullet02.png') no-repeat 5px 8px;}
+					#mnav ul.mobile_menu > li > ul > li > ul > li > a {font-size: 13px; color: #ffffff;}
+	
+	/* sub페이지 백그라운드 */
+	.sub_background_txt {overflow: hidden; text-align: center; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+		.sub_background_txt strong {display: block; margin-top: 40px; padding-bottom: 17px; font-size: 25px; font-weight: bold; color: #333333; background: url('/images/front/common/sub_background_txtbg.png') no-repeat center bottom;}
+		.sub_background_txt span {display: block; padding-top: 17px; font-size: 13px; color: #333333;}	
+	
+	/* location */
+	.location_area {height: 50px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; border-bottom: 1px solid #e5e5e5;}
+	.location_area:after {content: ""; display: block; clear: both;}
+		.location_division {margin: 0 auto;} 
+		.location {}
+			.location > li {float: left; padding: 0 20px; font-size: 14px; color: #4d4d4d; list-style: none; line-height: 50px; background: url('/images/front/common/bg_location.png') no-repeat right center;}
+			.location > li:last-child {padding: 0 45px;}
+			.location > li > a {color: #0067b4; font-weight: bold;}
+			.location > li > a > span {padding-right: 20px; background: url('/images/front/common/location_arrow.png') no-repeat right center;} 	
+			.location > li.last_location_btn {position: relative;}
+			.location > li.last_location_btn div.sub_location {display: none; position: absolute; width: 100%; top: 51px; left: 0px; z-index: 9999;}
+			.location > li.last_location_btn div.sub_location.on {display:block;}
+			.location > li.last_location_btn div.sub_location ul {border-right: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc; background-color: #ffffff;}
+			.location > li.last_location_btn div.sub_location ul li {list-style: none; text-align: center; line-height: 1.3em; border-bottom: 1px solid #dcdcdc;}
+			.location > li.last_location_btn div.sub_location ul li a {display: block; padding: 10px 20px; font-weight: bold; color: #626262; background-color: #ffffff;}
+			.location > li.last_location_btn div.sub_location ul li a:hover {display: block; text-decoration: none; color: #ffffff; background-color: #0067b4;}
+	
+	
+	/* 만족도 */
+	.satisfaction_area {overflow: hidden; padding: 20px 15px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; border: 1px solid #dcdcdc;}
+	.satisfaction_area strong {display: inline-block; padding: 10px 0 10px 30px; font-size: 13px; color: #2a2d41; vertical-align: middle; background: url('/images/front/common/satisfaction_bg.png') no-repeat left 10px;}
+	.satisfaction_area .satisfaction_radio_area {overflow: hidden;}
+	.satisfaction_area ul {overflow: hidden; display: block; vertical-align: middle; margin: 10px 0 0 10px;}
+	.satisfaction_area ul li {float: left; list-style: none;}
+	.satisfaction_area ul li label {font-size: 13px; color: #2a2d41;}
+	.satisfaction_area button.satisfaction {
+	float: right; width: 60px; height: 35px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; color: #ffffff; font-size: 14px; font-weight: bold;
+	vertical-align: middle;
+	 border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    background-color: #0487cb;
+	}
+	
+	/* lnb */
+	#lnb {display: none;}
+	
+	/* tab area */
+	.tab_area {display: none; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+		.m_tab_area {overflow: hidden; display: block; margin: 10px 0 0px 0; padding: 15px 15px; border: 1px solid #008cd6;
+		border-radius: 3px;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		}
+		.m_tab_area strong {display: block; margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #122270;}
+		.m_tab_select {overflow: hidden; display: inline-block; position: relative; z-index: 0; width: 100%; height: 40px; padding: 0; border: 1px solid #cfcfcf; background-color: #fdfdfd;
+			border-radius: 3px;
+			-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+		}
+		.m_tab_area .menu_select {display: block; width: 100%; height: 40px; padding: 0 30px 0 7px; border: 0 none; text-align: left; font-size: 15px; color: #3d3d3d; line-height: 40px; color: #222222; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; background: none;
+			-webkit-appearance: none;
+		}
+		.m_tab_area .box_arrow {position: absolute; z-index: -10; width: 38px; height: 38px; top: 0; right: 0; border-left: 1px solid #e6e6e6; background: url('/images/front/common/arrow_down1.png') no-repeat right top #fcfcfc;
+			border-radius: 0 3px 3px 0; 	
+			-webkit-border-radius: 0 3px 3px 0; 
+			-moz-border-radius: 0 3px 3px 0;
+		 }
+		.m_tab_area .ico_arrow {overflow:hidden; display: inline-block; width: 7px; height: 5px; margin: 10px 0 0 1px; vertical-align: top; background-position: -10px 0;}
+	
+
+	/* content */
+	.contents {overflow: hidden;}
+	.title_area {overflow: hidden; margin-bottom: 10px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+		.title_area h3.title {display: block; padding-top: 14px; font-size: 25px; font-weight: bold; color: #000000;}
+	.sub_title_area {overflow: hidden; margin-bottom: 20px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}	
+		.sub_title_area h4.sub_title {display: block; padding-left: 35px; font-size: 18px; font-weight: bold; color: #383838;}
+		.sub_title_area h4.sub_title02 {display: block; padding-left: 15px; font-size: 18px; font-weight: bold; color: #383838;}
+		.sub_title_area h5.sub_title {display: block; margin-left: 20px; padding-left: 10px; font-size: 16px; font-weight: bold; color: #383838;}
+		.sub_title_area h5.sub_title02 {display: block; padding-left: 15px; font-size: 18px; font-weight: bold; color: #383838;}
+
+	/* footer */
+	.footer_area {height: 170px; margin: 0 auto; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+	.footer_logo_area {overflow: hidden; margin-top: 32px; text-align: center;} 
+	.footer_logo_area img {width: 129px; height: 35px;}
+	.footer_content {overflow: hidden; margin-top: 30px; text-align: center; background: url('/images/front/common/footer_content_bar.png') no-repeat 0px 40px;}
+	.footer_left {overflow: hidden;}
+		.footer_addr_area ul.footer_link_list {overflow: hidden; display: inline-block; text-align: center;}
+			.footer_addr_area ul.footer_link_list li {list-style: none; float: left; padding: 0 10px; background: url('/images/front/common/footer_bar.png') no-repeat left 4px;}
+			.footer_addr_area ul.footer_link_list li:first-child {padding: 0 10px 0 0; background: none;}
+			.footer_addr_area ul.footer_link_list li a {font-size: 13px; color: #ebebeb;}		
+		.footer_addr_area {overflow: hidden; display: block; font-size: 13px; color: #ffffff; line-height: 1.6em;}
+		.footer_addr_area ul.footer_addr_list {overflow: hidden;}
+		.footer_addr_area ul.footer_addr_list li.last_addr_list {display: none;}
+}
+
+
+/* 화면 해상도 width 640px 이하 Design --------------------------------------*/
+@media screen and (max-width: 640px){
+
+	/* layout */
+	#wrap {overflow: hidden;}
+
+	#skip_nav {height:0}
+	#skip_nav a {display: block; position: absolute; left: 0; top: -100px; width: 100%; height: 1px; text-align: center}
+	#skip_nav a:focus, #skip_nav a:active {position: absolute; top: 0; z-index: 99999; height: 25px; padding: 10px 0; font-size: 1.4em; font-weight: 700; color: #36348f; background: #fff;}
+	
+	#nav {display: none;}
+	#container {overflow: hidden; clear: both;}
+	.container {overflow: hidden;}
+	.left_area {display: none;}
+	.content_area {overflow: hidden;}
+	.sub_background01 {overflow: hidden; height: 100px; background: url('/images/front/common/sub_bg.jpg') repeat-x center center;}
+	    #content {overflow: hidden;}
+		#content.main {overflow: hidden;}
+		#content.sub {overflow: hidden; padding: 10px 10px 20px 10px;}
+	 #aside {overflow: hidden;}
+	 #footer {overflow: hidden; padding: 0 10px 30px 10px; background-color: #444444;}
+
+	 /* header */
+	#header {position: relative; z-index: 300; width: 100%; height: 80px; margin: 0 auto; background-color: #e4ebf8;}
+		.header_area {overflow: hidden; margin: 0 auto; text-align: center;}
+		a.home_logo {overflow: hidden;}
+		h1.home_logo {display: inline-block; height: 80px; line-height: 70px; z-index: 1; }
+		div.header_btn_area {display: none;}
+	
+		
+	/* mobile_menu */
+	#gnb_mobile {position: absolute; top: 10px; left: 10px;}
+	#gnb_mobile_on {position: absolute; top: 15px; left: 15px;}
+	#mnav {z-index: 999999; width: 100%; height: 100%;}
+		#mnav .gnb_area {overflow: hidden; display: block; position: relative; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; background: url('/images/front/common/blank_bg.png') repeat 0px 0px;}
+		#mnav .nav_info {overflow: hidden; display: block; width: 100%; height: 60px; border-bottom: 1px solid #dcdcdc; background-color: #eeeeee;}
+		#mnav .nav {display: block; width: 80%; height: 100%; background-color: #ffffff;}
+		#mnav .m_close_area {float: right; margin: 25px 25px 0 0;}
+		
+		.mobile_title_area {height: 69px; border-bottom: 2px solid #dcdcdc; background-color: #ffffff;}
+			.mobile_title_area h2.title {float: left; margin: 13px 0 0 15px; font-size: 1.3em; font-weight: bold; color: #ffffff; line-height: 50px;}
+			
+			#mnav .nav_info strong {margin-left: 20px; font-size: 18px; font-weight: bold; line-height: 60px; color: #000000;}
+			#mnav .nav_info .nav_info_btn_area {overflow: hidden; float: right; display: inline-block; margin-right: 5px; line-height: 60px;} 
+			#mnav .nav_info .nav_info_btn_area a.btn_logout {display: inline-block; width: 75px; height: 26px; line-height: 26px; text-align: center; color: #5b81c9; font-weight: bold; border: 1px solid #5b81c9; border-radius: 3px; background-color: #ffffff;}
+			#mnav .nav_info .nav_info_btn_area a.btn_logout:hover {text-decoration: none;}
+			#mnav .nav_info .nav_info_btn_area a.btn_logout span {font-size: 13px; color: #5b81c9;}
+			
+			#mnav ul.mobile_menu {overflow: hidden;}
+				#mnav ul.mobile_menu > li {border-bottom: 1px dotted #5c5c5c; list-style: none; background: url('/images/front/mobile/gnb_plus.png') no-repeat 95% 19px #ffffff;}
+				#mnav ul.mobile_menu > li.on {background: url('/images/front/mobile/gnb_minus.png') no-repeat 95% 28px #5b81c9;}
+				#mnav ul.mobile_menu > li.on > a {color: #ffffff;} 
+				#mnav ul.mobile_menu > li:first-child {border-top: 0px}
+				#mnav ul.mobile_menu > li > a {display: block; padding: 20px 0 16px 30px; font-size: 16px; font-weight: bold; color: #333333;}
+				#mnav ul.mobile_menu > li > a:hover {text-decoration: none;}
+				#mnav ul.mobile_menu > li > ul {padding: 18px 32px; border-top: 1px dotted #5c5c5c; border-bottom: 1px dotted #c3c3c3; background-color: #e7eefc;}
+				#mnav ul.mobile_menu > li > ul > li {padding-left: 8px; margin-top: 24px; list-style: none; background: url('/images/front/mobile/bullet_m_menu.png') no-repeat 0 6px;}
+				#mnav ul.mobile_menu > li > ul > li:first-child {margin-top: 0}
+					#mnav ul.mobile_menu > li > ul > li {background: url('/images/front/common/gnb_bullet_bg.png') no-repeat 0 4px;}
+					#mnav ul.mobile_menu > li > ul > li > a {padding-left: 5px; font-size: 15px; font-weight: bold; color: #005783;}
+				#mnav ul.mobile_menu > li > ul > li > ul > li {margin-top: 14px; padding-left: 15px; list-style: none; background: url('/images/front/mobile/gnb_bullet02.png') no-repeat 5px 8px;}
+					#mnav ul.mobile_menu > li > ul > li > ul > li > a {font-size: 13px; color: #ffffff;}
+	
+	/* sub페이지 백그라운드 */
+	.sub_background_txt {overflow: hidden; text-align: center; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+		.sub_background_txt strong {display: block; margin-top: 40px; font-size: 20px; font-weight: bold; color: #333333;}
+		.sub_background_txt span {display: none;}	
+	
+	/* location */
+	.location_area {padding: 25px 0; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; }
+		.location_area:after {content: ""; display: block; clear: both;}
+		.location_division {margin: 0 auto;} 
+		.location {}
+			.location > li {float: left; padding: 0 13px 0 6px; font-size: 13px; color: #4d4d4d; list-style: none; background: url('/images/front/common/m_bg_location.png') no-repeat right center;}
+			.location > li:last-child {background: none;}
+			.location > li > a {color: #0067b4; font-weight: bold; letter-spacing: -0.04em;}
+			.location > li > a > span {padding-right: 20px; background: url('/images/front/common/location_arrow.png') no-repeat right center;} 	
+			.location > li.last_location_btn {}
+			.location > li.last_location_btn a {position: relative;}
+			.location > li.last_location_btn div.sub_location {display: none; position: absolute; width: 100%; left: 0px; z-index: 9999; border-top: 1px solid #0067b4;}
+			.location > li.last_location_btn div.sub_location.on {display: block;}
+			.location > li.last_location_btn div.sub_location ul {border-right: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc; background-color: #ffffff;}
+			.location > li.last_location_btn div.sub_location ul li {list-style: none; text-align: center; line-height: 1.3em; border-bottom: 1px solid #dcdcdc;}
+			.location > li.last_location_btn div.sub_location ul li a {display: block; padding: 10px 20px; font-size: 13px; font-weight: bold; text-align: left; color: #626262; background-color: #ffffff;}
+			.location > li.last_location_btn div.sub_location ul li a:hover {display: block; text-decoration: none; color: #ffffff; background-color: #0067b4;}
+	
+	/* 만족도 */
+	.satisfaction_area {overflow: hidden; padding: 20px 15px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; border: 1px solid #dcdcdc;}
+		.satisfaction_area strong {display: inline-block; padding: 10px 0 10px 30px; font-size: 13px; color: #2a2d41; vertical-align: middle; background: url('/images/front/common/satisfaction_bg.png') no-repeat left 5px;}
+		.satisfaction_area .satisfaction_radio_area {overflow: hidden;}
+		.satisfaction_area ul {overflow: hidden; display: block; vertical-align: middle; margin: 10px 0 0 10px;}
+		.satisfaction_area ul li {list-style: none;}
+		.satisfaction_area ul li + li {margin-top: 5px;}
+		.satisfaction_area ul li label {font-size: 13px; color: #2a2d41;}
+		.satisfaction_area button.satisfaction {
+		float: right; width: 60px; height: 35px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; color: #ffffff; font-size: 14px; font-weight: bold;
+		vertical-align: middle;
+		 border-radius: 3px;
+	    -webkit-border-radius: 3px;
+	    -moz-border-radius: 3px;
+	    background-color: #0487cb;
+		}
+	
+	/* lnb */
+	#lnb {display: none; }
+
+	/* tab area */
+	.tab_area {display: none; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+		.m_tab_area {overflow: hidden; display: block; margin: 10px 0 0px 0; padding: 15px 15px; border: 1px solid #008cd6;
+		border-radius: 3px;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		}
+		.m_tab_area strong {display: block; margin-bottom: 10px; font-size: 17px; font-weight: bold; color: #122270;}
+		.m_tab_select {overflow: hidden; display: inline-block; position: relative; z-index: 0; width: 100%; height: 40px; padding: 0; border: 1px solid #cfcfcf; background-color: #fdfdfd;
+			border-radius: 3px;
+			-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+		}
+		.m_tab_area .menu_select {display: block; width: 100%; height: 40px; padding: 0 30px 0 7px; border: 0 none; text-align: left; font-size: 15px; color: #3d3d3d; line-height: 40px; color: #222222; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; background: none;
+			-webkit-appearance: none;
+		}
+		.m_tab_area .box_arrow {position: absolute; z-index: -10; width: 38px; height: 38px; top: 0; right: 0; border-left: 1px solid #e6e6e6; background: url('/images/front/common/arrow_down1.png') no-repeat right top #fcfcfc;
+			border-radius: 0 3px 3px 0; 	
+			-webkit-border-radius: 0 3px 3px 0; 
+			-moz-border-radius: 0 3px 3px 0;
+		 }
+		.m_tab_area .ico_arrow {overflow:hidden; display: inline-block; width: 7px; height: 5px; margin: 10px 0 0 1px; vertical-align: top; background-position: -10px 0;}
+	
+
+	/* content */
+	.contents {overflow: hidden;}
+	.title_area {overflow: hidden; margin-bottom: 10px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+		.title_area h3.title {display: block; padding-top: 14px; font-size: 25px; font-weight: bold; color: #000000;}
+	.sub_title_area {overflow: hidden; margin-bottom: 20px; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}	
+		.sub_title_area h4.sub_title {display: block; padding-left: 35px; font-size: 18px; font-weight: bold; color: #383838;}		
+		.sub_title_area h4.sub_title02 {display: block; padding-left: 15px; font-size: 18px; font-weight: bold; color: #383838;}
+		.sub_title_area h5.sub_title {display: block; margin-left: 20px; padding-left: 10px; font-size: 16px; font-weight: bold; color: #383838;}
+		.sub_title_area h5.sub_title02 {display: block; padding-left: 15px; font-size: 18px; font-weight: bold; color: #383838;}
+	
+
+/* footer */
+	.footer_area {height: 170px; margin: 0 auto; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+	.footer_logo_area {overflow: hidden; margin-top: 32px; text-align: center;} 
+	.footer_logo_area img {width: 129px; height: 35px;}
+	.footer_content {overflow: hidden; margin-top: 30px; text-align: center; background: url('/images/front/common/footer_content_bar.png') no-repeat 0px 40px;}
+	.footer_left {overflow: hidden;}
+		.footer_addr_area ul.footer_link_list {overflow: hidden; display: inline-block; text-align: center;}
+			.footer_addr_area ul.footer_link_list li {list-style: none; float: left; padding: 0 10px; background: url('/images/front/common/footer_bar.png') no-repeat left 4px;}
+			.footer_addr_area ul.footer_link_list li:first-child {padding: 0 10px 0 0; background: none;}
+			.footer_addr_area ul.footer_link_list li a {font-size: 13px; color: #ebebeb;}		
+		.footer_addr_area {overflow: hidden; display: block; font-size: 13px; color: #ffffff; line-height: 1.6em;}
+			.footer_addr_area ul.footer_addr_list {overflow: hidden;}
+			.footer_addr_area ul.footer_addr_list li.last_addr_list {display: none;}
+		
+}

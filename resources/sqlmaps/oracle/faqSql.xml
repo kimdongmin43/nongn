@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FaqDao">
+
+	<select id="selectFaqPageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.faq.dao.impl.FaqDao.selectFaqPageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+ 		 		 FAQ_ID
+				,TITLE
+				,SATISFY_YN
+				,SATISFY_POINT
+				,SORT
+				,USE_YN
+				,REG_USER_ID
+				,(SELECT USER_NM FROM T_USER WHERE USER_ID = A.REG_USER_ID) AS REG_USER_NM
+				,GET_DATEFORMAT(REG_DT) AS REG_DT
+		  FROM T_FAQ A
+		 WHERE 1 = 1
+
+				<if test='title != null and !title.equals("")' >
+				   AND TITLE = #{title}
+				</if>
+				<if test='contents != null and !contents.equals("")' >
+				   AND CONTENTS = #{contents}
+				</if>
+				<if test='useYn != null and !useYn.equals("")' >
+				   AND USE_YN = #{useYn}
+				</if>
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+	<select id="selectFaqList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.faq.dao.impl.FaqDao.selectFaqList */
+		SELECT
+			ROWNUM AS RNUM
+     		,FAQ_ID
+			,TITLE
+			,SATISFY_YN
+			,NVL(SATISFY_POINT,0) SATISFY_POINT
+			,CONTENTS
+			,SORT
+			,USE_YN
+			,REG_USER_ID
+			,(SELECT USER_NM FROM T_USER WHERE USER_ID = A.REG_USER_ID) AS REG_USER_NM
+			,GET_DATEFORMAT(REG_DT) AS REG_DT
+		FROM T_FAQ A
+		WHERE 1 = 1
+				<if test='searchTxt != null and !searchTxt.equals("")' >
+				   AND (UPPER(title) LIKE '%'+UPPER(#{searchTxt})+'%' OR INSTR(CONTENTS, UPPER(#{searchTxt})) > 0 OR INSTR(CONTENTS, LOWER(#{searchTxt})) > 0 )
+				</if>
+				<if test='useYn != null and !useYn.equals("")' >
+				   AND USE_YN = #{useYn}
+				</if>
+		ORDER BY SORT ASC
+	</select>
+
+	<select id="selectFaq" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.faq.dao.impl.FaqDao.selectFaq */
+		SELECT
+			  FAQ_ID
+			, TITLE
+			, SATISFY_YN
+			, SATISFY_POINT
+			, CONTENTS
+			, SORT
+			, USE_YN
+			, REG_USER_ID
+			, (SELECT USER_NM FROM T_USER WHERE USER_ID = A.REG_USER_ID) AS REG_USER_NM
+			, GET_DATEFORMAT(REG_DT) AS REG_DT
+		FROM  T_FAQ A
+		WHERE FAQ_ID = #{faqId}
+	</select>
+
+	<select id="selectFaqExist" parameterType="Map" resultType="integer">
+		/* kr.apfs.local.faq.dao.impl.FaqDao.selectFaqExist */
+		SELECT
+			 COUNT(*)
+		FROM T_FAQ
+		WHERE FAQ_ID = #{faqId}
+
+	</select>
+
+	<update id="insertFaq" parameterType="Map" >
+	    /* kr.apfs.local.faq.dao.impl.FaqDao.insertFaq */
+		INSERT INTO
+		T_FAQ (
+				 FAQ_ID
+				,TITLE
+				,SATISFY_YN
+				,SATISFY_POINT
+				,CONTENTS
+				,SORT
+				,USE_YN
+				,REG_USER_ID
+				,REG_DT
+				,UPD_USER_ID
+				,UPD_DT
+		) VALUES (
+				#{faqId}
+				,#{title}
+				,#{satisfyYn}
+				,#{satisfyPoint}
+				,#{contents}
+				,(SELECT NVL(max(sort),0)+1 FROM t_faq )
+				,#{useYn}
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		)
+	</update>
+
+	<update id="updateFaq" parameterType="Map" >
+	    /* kr.apfs.local.faq.dao.impl.FaqDao.updateFaq */
+	    UPDATE
+	 			T_FAQ
+		SET
+				 TITLE 			= #{title}
+				,SATISFY_YN 	= #{satisfyYn}
+				,CONTENTS 		= #{contents}
+				,USE_YN 		= #{useYn}
+				,UPD_USER_ID 	= #{*userId}
+				,UPD_DT 		= TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE 	 FAQ_ID = #{faqId}
+	</update>
+
+	<delete id="deleteFaq" parameterType="Map" >
+	    /* kr.apfs.local.faq.dao.impl.FaqDao.deleteFaq */
+	 	DELETE 	FROM
+				T_FAQ
+		WHERE 	FAQ_ID = #{faqId}
+	</delete>
+
+	<update id="updateFaqSort" parameterType="Map" >
+	    /* kr.apfs.local.faq.dao.impl.FaqDao.updateFaqSort */
+	    UPDATE T_FAQ
+	    SET SORT = #{sort}
+	    WHERE faq_id = #{faqId}
+	</update>
+
+	<update id="deleteFaqReorder" parameterType="Map" >
+	    /* kr.apfs.local.faq.dao.impl.FaqDao.deleteFaqReorder */
+	    UPDATE
+	 		T_FAQ
+		SET
+		        SORT = SORT - 1
+		WHERE	SORT > (SELECT SORT FROM T_FAQ WHERE FAQ_ID = #{faqId})
+	</update>
+
+	<!-- 게시판 메인 출력용 -->
+	<select id="selectLoadMainFaq" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectLoadMainFaq */
+		SELECT
+			T.*
+		FROM (
+			SELECT
+				FAQ_ID
+				,TITLE
+			FROM T_FAQ
+			WHERE 1 = 1
+				AND USE_YN = 'Y'
+			ORDER BY SORT ASC
+		) T
+		WHERE 1=1
+			AND ROWNUM <![CDATA[ < ]]> #{size}+1
+	</select>
+
+</mapper>

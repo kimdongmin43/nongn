@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ActplanDao">
+
+<select id="selectActplanPageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ActplanDao.selectActplanPageList */
+	<include refid="CommonSql.pageingTop"/>
+			  select x.announc_id announcId
+			  , z.aply_id  aplyId
+			  , y.user_id  userId
+			  , y.user_nm  userNm
+			  , z.mobile   mobile
+			  , z.give_yn  giveYn
+			  ,(select code_nm from tc_code where gubun = 'GIVE_STOP_REASON' and code =  z.givestop_reason ) as givestopReasonNm,
+		        nvl(act_pay_1,'N') as act_pay_1, nvl(act_submit_1,'N') as actSubmit_1,
+		        nvl(act_pay_2,'N') as act_pay_2, nvl(act_submit_2,'N') as actSubmit_2,
+		        nvl(act_pay_3,'N') as act_pay_3, nvl(act_submit_3,'N') as actSubmit_3,
+		        nvl(act_pay_4,'N') as act_pay_4, nvl(act_submit_4,'N') as actSubmit_4,
+		        nvl(act_pay_5,'N') as act_pay_5, nvl(act_submit_5,'N') as actSubmit_5,
+		        nvl(act_pay_6,'N') as act_pay_6, nvl(act_submit_6,'N') as actSubmit_6,
+		        nvl(act_pay_7,'N') as act_pay_7, nvl(act_submit_7,'N') as actSubmit_7,
+		        nvl(act_pay_8,'N') as act_pay_8, nvl(act_submit_8,'N') as actSubmit_8,
+		        nvl(act_pay_9,'N') as act_pay_9, nvl(act_submit_9,'N') as actSubmit_9,
+		        nvl(act_pay_10,'N') as act_pay_10, nvl(act_submit_10,'N') as actSubmit_10,
+		        nvl(act_pay_11,'N') as act_pay_11, nvl(act_submit_11,'N') as actSubmit_11,
+		        nvl(act_pay_12,'N') as act_pay_12, nvl(act_submit_12,'N') as actSubmit_12
+			  from (
+			        select announc_id announcId
+					        , aply_id aplyId
+					        , user_id userNo,
+			                min(case when act_seq = 1  then pay_yn end) actPay_1,
+			                min(case when act_seq = 1  then submit_yn end) actSubmit_1,
+			                min(case when act_seq = 2  then pay_yn end) actPay_2,
+			                min(case when act_seq = 2  then submit_yn end) actSubmit_2,
+			                min(case when act_seq = 3  then pay_yn end) actPay_3,
+			                min(case when act_seq = 3  then submit_yn end) actSubmit_3,
+			                min(case when act_seq = 4  then pay_yn end) actPay_4,
+			                min(case when act_seq = 4  then submit_yn end) actSubmit_4,
+			                min(case when act_seq = 5  then pay_yn end) actPay_5,
+			                min(case when act_seq = 5  then submit_yn end) actSubmit_5,
+			                min(case when act_seq = 6  then pay_yn end) actPay_6,
+			                min(case when act_seq = 6  then submit_yn end) actSubmit_6,
+			                min(case when act_seq = 7  then pay_yn end) actPay_7,
+			                min(case when act_seq = 7  then submit_yn end) actSubmit_7,
+			                min(case when act_seq = 8  then pay_yn end) actPay_8,
+			                min(case when act_seq = 8  then submit_yn end) actSubmit_8,
+			                min(case when act_seq = 9  then pay_yn end) actPay_9,
+			                min(case when act_seq = 9  then submit_yn end) actSubmit_9,
+			                min(case when act_seq = 10  then pay_yn end) actPay_10,
+			                min(case when act_seq = 10  then submit_yn end) actSubmit_10,
+			                min(case when act_seq = 11  then pay_yn end) actPay_11,
+			                min(case when act_seq = 11  then submit_yn end) actSubmit_11,
+			                min(case when act_seq = 12  then pay_yn end) actPay_12,
+			                min(case when act_seq = 12  then submit_yn end) actSubmit_12
+			        from (
+			            select a.announc_id, b.user_id, c.act_seq, b.aply_id,
+			                     case when c.act_seq = 1 then
+			                            case when (select y.aply_id
+			                            from t_apply x inner join t_orientation y on x.aply_id = y.aply_id
+			                            where  x.announc_id = a.announc_id and x.aply_id = b.aply_id) is not null
+			                            then 'Y' else 'N' end
+			                     else
+			                          case when e.aply_id is not null then 'Y' else 'N' end
+			                     end  as pay_yn,
+			                     case when e.aply_id is not null then 'Y' else 'N' end as submit_yn
+			            from t_announce a inner join t_apply b on a.announc_id = b.announc_id
+			                   inner join  t_actsubmit c on a.announc_id = c.announc_id
+			                   left outer join t_actreport e on c.announc_id = e.announc_id and c.act_seq = e.act_seq and b.aply_id = e.aply_id
+			            where a.year = #{year} and a.seq = #{seq} and b.second_result = 'P'
+			        ) group by announc_id, aply_id, user_id
+			  ) x inner join t_user y on x.user_id = y.user_id
+			       inner join t_apply z on x.aply_id = z.aply_id
+			  where 1 = 1
+    		<if test='searchTxt != null and !searchTxt.equals("")' >
+	    		<if test='searchKey != null and searchKey.equals("userNm")' >
+			   		AND upper(user_nm) LIKE '%'+upper(#{searchTxt})+'%'
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("loginId")' >
+			   		AND upper(login_id) LIKE '%'+upper(#{searchTxt})+'%'
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("mobile")' >
+			   		AND mobile = #{searchTxt}
+			   	</if>
+	    		<if test='searchKey != null and searchKey.equals("email")' >
+			   		AND email = #{searchTxt}
+			   	</if>
+		    </if>
+	        <if test='actSeq != null and !actSeq.equals("")' >
+		        <if test='submitYn != null and !submitYn.equals("")' >
+				   AND act_submit_#{actSeq} = #{submitYn}
+				 </if>
+			</if>
+	        <if test='giveYn != null and !giveYn.equals("")' >
+			   AND give_yn = #{giveYn}
+			</if>
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selectActplanCodeList" parameterType="Map" resultType="camelMap">
+		select
+			b.act_seq+'' as code,
+			'활동개월'+b.act_seq+'차('+GET_DATEFORMAT(submit_stadt)+'~'+GET_DATEFORMAT(submit_stadt)+')' as codenm
+		from t_announce a inner join t_actsubmit b on a.announc_id = b.announc_id
+		where a.year = #{year}  and a.seq = #{seq}
+		order by act_seq
+</select>
+
+<select id="selectActplanExcelList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.ActplanDao.selectActplanExcelList */
+			  select rownum as rNum
+			  , x.announc_id          announcId
+			  , y.user_id             userId
+			  , y.user_nm             userNm
+			  , z.email               email
+			  , z.birthday            birthday
+			  , z.mobile              mobile
+			  , z.hometel             hometel
+			  , z.postno              postno
+			  , z.basic_addr          basicAddr
+			  , z.detail_addr         detailAddr
+			  , z.seoul_live_priod    seoulLivePriod
+			  , z.give_yn             giveYn
+
+			       ,(select code_nm from tc_code where gubun = 'GIVE_STOP_REASON' and code =  z.givestop_reason ) as givestop_reason_nm
+			       ,(select code_nm from tc_code where gubun = 'ADMINISTRATOR_CD' and code = z.administ_cd ) as administNm
+			       , nvl(act_pay_1,'N') as act_pay_1, nvl(act_submit_1,'N') as actSubmit_1,
+			        nvl(act_pay_2,'N') as act_pay_2, nvl(act_submit_2,'N') as actSubmit_2,
+			        nvl(act_pay_3,'N') as act_pay_3, nvl(act_submit_3,'N') as actSubmit_3,
+			        nvl(act_pay_4,'N') as act_pay_4, nvl(act_submit_4,'N') as actSubmit_4,
+			        nvl(act_pay_5,'N') as act_pay_5, nvl(act_submit_5,'N') as actSubmit_5,
+			        nvl(act_pay_6,'N') as act_pay_6, nvl(act_submit_6,'N') as actSubmit_6,
+			        nvl(act_pay_7,'N') as act_pay_7, nvl(act_submit_7,'N') as actSubmit_7,
+			        nvl(act_pay_8,'N') as act_pay_8, nvl(act_submit_8,'N') as actSubmit_8,
+			        nvl(act_pay_9,'N') as act_pay_9, nvl(act_submit_9,'N') as actSubmit_9,
+			        nvl(act_pay_10,'N') as act_pay_10, nvl(act_submit_10,'N') as actSubmit_10,
+			        nvl(act_pay_11,'N') as act_pay_11, nvl(act_submit_11,'N') as actSubmit_11,
+			        nvl(act_pay_12,'N') as act_pay_12, nvl(act_submit_12,'N') as actSubmit_12
+			  from (
+			        select announc_id, aply_id, user_id,
+			                min(case when act_seq = 1  then pay_yn end) actPay_1,
+			                min(case when act_seq = 1  then submit_yn end) actSubmit_1,
+			                min(case when act_seq = 2  then pay_yn end) actPay_2,
+			                min(case when act_seq = 2  then submit_yn end) actSubmit_2,
+			                min(case when act_seq = 3  then pay_yn end) actPay_3,
+			                min(case when act_seq = 3  then submit_yn end) actSubmit_3,
+			                min(case when act_seq = 4  then pay_yn end) actPay_4,
+			                min(case when act_seq = 4  then submit_yn end) actSubmit_4,
+			                min(case when act_seq = 5  then pay_yn end) actPay_5,
+			                min(case when act_seq = 5  then submit_yn end) actSubmit_5,
+			                min(case when act_seq = 6  then pay_yn end) actPay_6,
+			                min(case when act_seq = 6  then submit_yn end) actSubmit_6,
+			                min(case when act_seq = 7  then pay_yn end) actPay_7,
+			                min(case when act_seq = 7  then submit_yn end) actSubmit_7,
+			                min(case when act_seq = 8  then pay_yn end) actPay_8,
+			                min(case when act_seq = 8  then submit_yn end) actSubmit_8,
+			                min(case when act_seq = 9  then pay_yn end) actPay_9,
+			                min(case when act_seq = 9  then submit_yn end) actSubmit_9,
+			                min(case when act_seq = 10  then pay_yn end) actPay_10,
+			                min(case when act_seq = 10  then submit_yn end) actSubmit_10,
+			                min(case when act_seq = 11  then pay_yn end) actPay_11,
+			                min(case when act_seq = 11  then submit_yn end) actSubmit_11,
+			                min(case when act_seq = 12  then pay_yn end) actPay_12,
+			                min(case when act_seq = 12  then submit_yn end) actSubmit_12
+			        from (
+			            select a.announc_id, b.user_id, c.act_seq, b.aply_id,
+			                     case when c.act_seq = 1 then
+			                            case when (select y.aply_id
+			                            from t_apply x inner join t_orientation y on x.aply_id = y.aply_id
+			                            where  x.announc_id = a.announc_id and x.aply_id = b.aply_id) is not null
+			                            then 'Y' else 'N' end
+			                     else
+			                          case when e.aply_id is not null then 'Y' else 'N' end
+			                     end  as pay_yn,
+			                     case when e.aply_id is not null then 'Y' else 'N' end as submit_yn
+			            from t_announce a inner join t_apply b on a.announc_id = b.announc_id
+			                   inner join  t_actsubmit c on a.announc_id = c.announc_id
+			                   left outer join t_actreport e on c.announc_id = e.announc_id and c.act_seq = e.act_seq and b.aply_id = e.aply_id
+			            where a.year = #{p_year} and a.seq = #{pSeq} and b.second_result = 'P'
+			        ) group by announc_id, aply_id, user_id
+			  ) x inner join t_user y on x.user_id = y.user_id
+			       inner join t_apply z on x.aply_id = z.aply_id
+			  where 1 = 1
+			<if test='p_searchTxt != null and !p_searchTxt.equals("")' >
+	    		<if test='p_searchKey != null and p_searchKey.equals("userNm")' >
+			   		AND upper(user_nm) LIKE '%'+upper(#{p_searchTxt})+'%'
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("loginId")' >
+			   		AND upper(login_id) LIKE '%'+upper(#{p_searchTxt})+'%'
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("mobile")' >
+			   		AND mobile = #{p_searchTxt}
+			   	</if>
+	    		<if test='p_searchKey != null and p_searchKey.equals("email")' >
+			   		AND email = #{p_searchTxt}
+			   	</if>
+		    </if>
+		    <if test='p_actSeq != null and !p_actSeq.equals("")' >
+		        <if test='p_submitYn != null and !p_submitYn.equals("")' >
+				   AND act_submit_#{p_actSeq} = #{p_submitYn}
+				 </if>
+			</if>
+			ORDER BY y.user_nm
+</select>
+
+<select id="selectActplanReportExcelList" parameterType="Map" resultType="camelMap">
+ select
+ 	      rownum as rNum
+		, a.announc_id         announcId
+		, e.user_id            userId
+		, e.user_nm            userNm
+		, d.email              email
+		, d.birthday           birthday
+		, d.mobile             mobile
+		, d.hometel            hometel
+		, d.postno             postno
+		, d.basic_addr         basicAddr
+		, d.detail_addr        detailAddr
+		, d.seoul_live_priod   seoulLivePriod
+		, c.act_seq            actSeq
+		, c.opinion            opinion
+		, c.require            require
+		, c.whatsay		       whatsay
+		, (select code_nm from tc_code where gubun = 'ADMINISTRATOR_CD' and code = d.administ_cd ) as administNm
+		, (select rtrim(xmlagg(xmlelement(e, y.classify_nm, ', ') order by x.seq).extract('//text()'), ', ') from t_reportactplan x inner join t_classify y on x.activ_target2 = y.classify_id where y.gubun = 'ACTIVE_TARGET' and x.announc_id = c.announc_id and x.act_seq = c.act_seq and x.aply_id = c.aply_id) as activTarget
+		, (select rtrim(xmlagg(xmlelement(e, y.classify_nm, ', ') order by x.seq).extract('//text()'), ', ') from t_reportattainment x inner join t_classify y on x.attain_cd3 = y.classify_id where y.gubun = 'REPORT_ATTAINMENT' and x.announc_id = c.announc_id and x.act_seq = c.act_seq and x.aply_id = c.aply_id) as attainResult
+		, (select rtrim(xmlagg(xmlelement(e, y.code_nm, ', ') order by x.seq).extract('//text()'), ', ') from t_joinprogram x inner join tc_code y on x.program = y.code where y.gubun = 'APPLY_PROGRAM' and x.announc_id = c.announc_id and x.act_seq = c.act_seq and x.aply_id = c.aply_id) as program
+		, (select rtrim(xmlagg(xmlelement(e, x.satis, ', ') order by x.seq).extract('//text()'), ', ') from t_joinprogram x where x.announc_id = c.announc_id and x.act_seq = c.act_seq and x.aply_id = c.aply_id) as progSatis
+		, (select rtrim(xmlagg(xmlelement(e, x.etc_reason, ', ') order by x.seq).extract('//text()'), ', ') from t_joinprogram x where x.announc_id = c.announc_id and x.act_seq = c.act_seq and x.aply_id = c.aply_id) as progEtc
+
+  from t_announce a inner join t_apply d on a.announc_id = d.announc_id
+        inner join t_actsubmit b on a.announc_id = b.announc_id
+        left outer join t_actreport c on b.announc_id = c.announc_id
+            and b.act_seq = c.act_seq and d.aply_id = c.aply_id
+        inner join t_user e on d.user_id = e.user_id
+ where d.second_result = 'P' and a.year = #{p_year} and a.seq = #{p_seq} and b.act_seq = #{p_actSeq}
+ order by e.user_nm
+</select>
+
+<select id="selectApplyActplanList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ActplanDao.selectApplyActplanList */
+	SELECT
+	       aply_id
+	     , seq
+	     , up_activ_target
+	     , activ_target
+	FROM t_actplan
+	WHERE aply_id = #{aplyId}
+	order by seq asc
+</select>
+
+<update id="insertApplyActplan" parameterType="Map" >
+   /* kr.apfs.local.announce.dao.impl.ActplanDao.insertApplyActplan */
+	INSERT INTO
+	t_actplan (
+			aply_id
+			,seq
+			,up_activ_target
+			,activ_target
+			,reg_user_id
+			,reg_dt
+	) VALUES (
+			 #{aplyId}
+			,#{seq}
+			,#{upActivTarget}
+			,#{activTarget}
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</update>
+
+<delete id="deleteApplyActplan" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ActplanDao.deleteApplyActplan */
+ 	DELETE FROM
+		t_actplan
+	WHERE aply_id = #{aplyId}
+</delete>
+
+<select id="selectApplyWishprogList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ActplanDao.selectApplyWishprogList */
+	SELECT
+	     aply_id aplyId
+	     , seq seq
+	     , wish_prog wishProg
+	FROM t_wishprog
+	WHERE aply_id = #{aplyId}
+	order by seq asc
+</select>
+
+<update id="insertApplyWishprog" parameterType="Map" >
+   /* kr.apfs.local.announce.dao.impl.ActplanDao.insertApplyWishprog */
+	INSERT INTO
+	t_wishprog (
+			aply_id
+			,seq
+			,wish_prog
+			,reg_user_id
+			,reg_dt
+	) VALUES (
+			#{aplyId}
+			,#{seq}
+			,#{wishProg}
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</update>
+
+<delete id="deleteApplyWishprog" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ActplanDao.deleteApplyWishprog */
+ 	DELETE FROM
+		t_wishprog
+	WHERE aply_id = #{aplyId}
+</delete>
+
+<select id="selectActreport" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ActplanDao.selectActreport */
+	SELECT   a.announc_id     announcId
+		    ,c.user_nm	      userNm
+			,a.act_seq        actSeq
+			,a.aply_id        aplyId
+			,a.opinion        opinion
+			,a.require        require
+			,a.whatsay        whatsay
+			,a.reg_user_id   regUsesrId
+			,a.reg_dt         regDt
+
+			,to_char(to_date(c.birth,'YYYYMMDD'),'YYYY"년"MM"월"DD"일"') as birth
+	FROM t_actreport a inner join t_apply b on a.aply_id = b.aply_id
+	           inner join t_user c on b.user_id = c.user_id
+	WHERE a.announc_id = #{announcId} and a.act_seq = #{actSeq} and a.aply_id = #{aplyId}
+</select>
+
+<update id="insertActreport" parameterType="Map" >
+   /* kr.apfs.local.announce.dao.impl.ActplanDao.insertActreport */
+	INSERT INTO t_actreport
+	(
+		announc_id
+		,act_seq
+		,aply_id
+		,opinion
+		,require
+		,whatsay
+		,reg_user_id
+		,reg_dt
+		,upd_user_id
+		,upd_dt
+	)
+	VALUES(
+		 #{announcId}
+		,#{actSeq}
+		,#{aplyId}
+		,#{opinion}
+		,#{require}
+		,#{whatsay}
+		,#{*userId}
+		,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		,#{*userId}
+		,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</update>
+
+<update id="updateActreport" parameterType="Map" >
+   /* kr.apfs.local.announce.dao.impl.ActplanDao.updateActreport */
+	UPDATE T_ACTREPORT
+	SET
+		opinion = #{opinion}
+		,require = #{require}
+		,whatsay = #{whatsay}
+		,upd_user_id = #{*userId}
+		,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE announc_id = #{announcId}
+		AND act_seq = #{actSeq}
+		AND aply_id = #{aplyId}
+</update>
+
+<delete id="deleteActreport" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ActplanDao.deleteActreport */
+	DELETE FROM T_ACTREPORT
+	WHERE announc_id = #{announcId}
+		AND act_seq = #{actSeq}
+		AND aply_id = #{aplyId}
+</delete>
+
+<select id="selectReportActplanList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ActplanDao.selectReportActplanList */
+	SELECT
+		 act_seq         actSeq
+		,announc_id      announcId
+		,aply_id         aplyId
+		,seq             seq
+		,activ_target1   activTarget1
+		,activ_target2   activTarget2
+
+	FROM t_reportactplan a
+	WHERE announc_id = #{announcId} and act_seq = #{actSeq} and aply_id = #{aplyId}
+</select>
+
+<update id="insertReportActplan" parameterType="Map" >
+   /* kr.apfs.local.announce.dao.impl.ActplanDao.insertReportActplan */
+	INSERT INTO t_reportactplan
+	(
+		announc_id
+		,act_seq
+		,aply_id
+		,seq
+		,activ_target1
+		,activ_target2
+	)
+	VALUES(
+		 #{announcId}
+		,#{actSeq}
+		,#{aplyId}
+		,#{seq}
+		,#{activTarget1}
+		,#{activTarget2}
+	)
+</update>
+
+<delete id="deleteReportActplan" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ActplanDao.deleteReportActplan */
+	DELETE FROM t_reportactplan
+	WHERE announc_id = #{announcId} and act_seq = #{actSeq} and aply_id = #{aplyId}
+</delete>
+
+<select id="selectReportattainmentList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ActplanDao.selectReportattainmentList */
+	SELECT
+		 announc_id     announcId
+		,act_seq        actSeq
+		,aply_id        aplyId
+		,seq            seq
+		,attain_cd1     attainCd1
+		,attain_cd2     attainCd2
+		,attain_cd3     attainCd3
+		,attain_rate    attainRate
+
+	FROM t_reportattainment a
+	WHERE announc_id = #{announcId} and act_seq = #{actSeq} and aply_id = #{aplyId}
+</select>
+
+<update id="insertReportattainment" parameterType="Map" >
+   /* kr.apfs.local.announce.dao.impl.ActplanDao.insertReportattainment */
+	INSERT INTO t_reportattainment
+	(
+		announc_id
+		,act_seq
+		,aply_id
+		,seq
+		,attain_cd1
+		,attain_cd2
+		,attain_cd3
+		,attain_rate
+	)
+	VALUES(
+		 #{announcId}
+		,#{actSeq}
+		,#{aplyId}
+		,#{seq}
+		,#{attainCd1}
+		,#{attainCd2}
+		,#{attainCd3}
+		,#{attainRate}
+	)
+</update>
+
+<delete id="deleteReportattainment" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ActplanDao.deleteReportattainment */
+	DELETE FROM T_REPORTATTAINMENT
+	WHERE announc_id = #{announcId} and act_seq = #{actSeq} and aply_id = #{aplyId}
+</delete>
+
+<select id="selectJoinprogramList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ActplanDao.selectJoinprogramList */
+	SELECT
+		 announc_id announcId
+		,act_seq    actSeq
+		,aply_id    aplyId
+		,seq        seq
+		,program    program
+		,satis      satis
+		,reason     reason
+		,etc_reason etcReason
+
+	FROM t_joinprogram a
+	WHERE announc_id = #{announcId} and act_seq = #{actSeq} and aply_id = #{aplyId}
+</select>
+
+<update id="insertJoinprogram" parameterType="Map" >
+   /* kr.apfs.local.announce.dao.impl.ActplanDao.insertJoinprogram */
+	INSERT INTO t_joinprogram
+	(
+		announc_id
+		,act_seq
+		,aply_id
+		,seq
+		,program
+		,satis
+		,reason
+		,etc_reason
+	)
+	VALUES(
+		 #{announcId}
+		,#{actSeq}
+		,#{aplyId}
+		,#{seq}
+		,#{program}
+		,#{satis}
+		,#{reason}
+		,#{etcReason}
+	)
+</update>
+
+<delete id="deleteJoinprogram" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.ActplanDao.deleteJoinprogram */
+	DELETE FROM t_joinprogram
+	WHERE announc_id = #{announcId} and act_seq = #{actSeq} and aply_id = #{aplyId}
+</delete>
+
+<!-- 메인페이지 청년수당 일정안내 -->
+<select id="selectMainAnnounce" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ActplanDao.selectMainAnnounce */
+	SELECT
+		a.announc_id announcId
+		, a.year     year
+		, a.seq      seq
+		, a.open_yn  openYn
+		, case when to_char(sysdate,'yyyymmddhh24miss') between a.aply_stadt and a.aply_enddt then 'Y' else 'N' end yplyYn
+		, case when to_char(sysdate,'yyyymmddhh24miss') between a.eval_stadt and a.eval_enddt then 'Y' else 'N' end evalYn
+		, case when to_char(sysdate,'yyyymmdd') =  to_char(to_date(a.rel_dt, 'yyyymmddhh24miss'), 'yyyymmdd') then 'Y' else 'N' end relYn
+	FROM t_announce a
+	WHERE del_yn = 'N'
+		AND to_char(sysdate,'yyyymmddhh24miss') between mng_stadt and mng_enddt
+	ORDER BY a.year desc, a.seq desc
+</select>
+
+<select id="selectReportActplanRank" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ActplanDao.selectReportActplanRank */
+	select
+	    a.code as rank
+	    ,b.activ_targetnm activTargetnm
+	    ,b.activ_rate activRate
+	    ,c.attain_nm attainNm
+	    ,c.attain_rate attainRate
+	from
+	(
+	  select code from tc_code where gubun  = 'RANK_CD'
+	) a left outer join
+	(
+	  select
+	     (select classify_nm from t_classify where gubun = 'ACTIVE_TARGET' and classify_id = x.activ_target) as activ_targetnm
+	     ,round((activ_cnt/sum(activ_cnt) over())*100, 2) as activ_rate, rank
+	  from (
+	    select activ_target2 as activ_target, count(c.aply_id) as activ_cnt, ROW_NUMBER() OVER (ORDER BY count(c.aply_id) DESC) as rank
+	    from t_announce a inner join t_actreport b on a.announc_id = b.announc_id
+	        inner join t_reportactplan c on b.announc_id = c.announc_id and b.act_seq = c.act_seq and b.aply_id = c.aply_id
+	    where a.year = #{year} and a.seq = #{seq} and b.act_seq = #{actSeq}
+	    group by c.activ_target2
+	    order by count(c.aply_id) desc
+	  ) x
+	<![CDATA[  where rank <= 10   ]]>
+	) b on a.code = b.rank
+	left outer join (
+	  select
+	     (select classify_nm from t_classify where gubun = 'REPORT_ATTAINMENT' and classify_id = x.attain_cd) as attain_nm
+	     ,round((attain_cnt/sum(attain_cnt) over())*100, 2) as attain_rate, rank
+	  from (
+	    select attain_cd3 as attain_cd, count(c.aply_id) as attain_cnt, ROW_NUMBER() OVER (ORDER BY count(c.aply_id) DESC) as rank
+	    from t_announce a inner join t_actreport b on a.announc_id = b.announc_id
+	        inner join t_reportattainment c on b.announc_id = c.announc_id and b.act_seq = c.act_seq and b.aply_id = c.aply_id
+	    where a.year = #{year} and a.seq = #{seq} and b.act_seq = #{actSeq}
+	    group by c.attain_cd3
+	    order by count(c.aply_id) desc
+	  ) x
+	  <![CDATA[  where rank <= 10   ]]>
+	) c on a.code = c.rank
+	order by to_number(rank) asc
+</select>
+
+<select id="selectReportJoinprogramRank" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.ActplanDao.selectReportJoinprogramRank */
+	select
+	    a.code as rank
+	    ,b.program_nm programNm
+	    ,b.program_rate programRate
+	    ,b.satis satis
+	from
+	(
+	  select code from tc_code where gubun  = 'RANK_CD'
+	) a
+	left outer join (
+	  select
+	     (select code_nm from tc_code where gubun = 'APPLY_PROGRAM' and code = x.program) as program_nm
+	     ,round((program_cnt/sum(program_cnt) over())*100, 2) as program_rate, satis, rank
+	  from (
+	    select program, count(c.aply_id) as program_cnt
+         ,avg(c.satis) as satis
+         ,ROW_NUMBER() OVER (ORDER BY count(c.aply_id) DESC) as rank
+	    from t_announce a inner join t_actreport b on a.announc_id = b.announc_id
+	        inner join t_joinprogram c on b.announc_id = c.announc_id and b.act_seq = c.act_seq and b.aply_id = c.aply_id
+	    where a.year = #{year} and a.seq = #{seq} and b.act_seq = #{actSeq}
+	    group by c.program
+	    order by count(c.aply_id) desc
+	  ) x
+	  <![CDATA[   where rank <= 10  ]]>
+	) b on a.code = b.rank
+	order by to_number(rank) asc
+</select>
+
+<update id="updateActplanGiveStop" parameterType="Map" >
+   /* kr.apfs.local.announce.dao.impl.ActplanDao.updateActplanGiveStop */
+	UPDATE T_APPLY
+	SET
+		give_yn = #{giveYn}
+		,givestop_reason = #{givestopReason}
+		,upd_user_id = #{*userId}
+		,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE aply_id = #{aplyId}
+</update>
+
+</mapper>

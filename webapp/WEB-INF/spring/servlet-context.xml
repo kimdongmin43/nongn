@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+	<context:component-scan base-package="kr.apfs.local">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+	</context:component-scan>
+	<!--  <context:property-placeholder location="classpath:config/application.properties" /> -->
+
+
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="customArgumentResolvers">
+			<list>
+				<bean class="kr.apfs.local.common.support.CustomArgumentResolver" />
+			</list>
+		</property>
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+		p:order="2" p:viewClass="org.springframework.web.servlet.view.JstlView"
+		p:prefix="/WEB-INF/views/" p:suffix=".jsp" />
+
+	<!-- for JFile -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
+		p:order="1" />
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="0">
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
+	</bean>
+
+	<bean id="tilesConfigurer"  class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- jsonView 설정 -->
+	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">		
+		<property name="contentType" value="application/json;charset=UTF-8" />
+		<!-- <property name="extractValueFromSingleKeyModel" value="true" /> -->
+	</bean>
+
+
+	<!-- 공통 엑셀 다운로드 View -->
+	<bean id="genericExcelView" class="kr.apfs.local.common.excel.GenericExcelView"></bean>
+	<bean id="excelDownResolver" class="kr.apfs.local.common.util.ExcelDownLoadFile"></bean>
+
+	<!-- MULTIPART RESOLVERS -->
+	<!-- regular spring resolver -->
+	<bean id="spring.RegularCommonsMultipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="600000000" /> <!-- 600MB -->
+		<property name="maxInMemorySize" value="100000000" />
+		<!-- <property name="maxUploadSize" value="3000000000" />
+		<property name="maxInMemorySize" value="100000000" />-->
+	</bean>
+	<alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" />
+
+	<!-- 메시지 관리 -->
+	<mvc:interceptors>
+		<bean id="localeChangeInterceptor"
+			class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang"></property>
+		</bean>
+		<mvc:interceptor>
+			<!-- <mvc:mapping path="/**/**/*.do" /> -->
+	         <mvc:mapping path="/**/*" />
+	         <!-- <mvc:exclude-mapping path="/login/*.do*" /> -->
+	         <mvc:exclude-mapping path="/index.jsp" />
+	         <mvc:exclude-mapping path="/auth.do" />
+	         <mvc:exclude-mapping path="/login.do" />
+	         <mvc:exclude-mapping path="/front/**/*" />
+	         <bean class="kr.apfs.local.common.web.interceptor.SessionInterceptor" />
+	     </mvc:interceptor>
+	     <mvc:interceptor>
+			<!-- <mvc:mapping path="/**/**/*.do" /> -->
+	         <mvc:mapping path="/**/*.do" />
+	         <mvc:mapping path="/**/*" />
+	         <!-- <mvc:exclude-mapping path="/login/*.do*" /> -->
+	         <bean class="kr.apfs.local.common.web.interceptor.DefaultInterceptor" />
+	     </mvc:interceptor>
+	</mvc:interceptors>
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="ko" />
+	</bean>
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:prop/message" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="cacheSeconds" value="180" /><!-- 180초 단위로 메시지 파일의 변경내역을 반영한다(클래패스 경로 이외의 파일만) -->
+	</bean>
+
+	<bean id="fileDownloadViewResolver" class="kr.apfs.local.common.web.view.DownloadViewResolver" />
+    <bean id="jqGridViewResolver" class="kr.apfs.local.common.web.view.JqGridViewResolver" />
+	<!-- Spring context 받아오기   -->
+	<bean id="applicationContextProvider" class="kr.apfs.local.common.support.ApplicationContextProvider"></bean>
+
+	<!-- file download -->
+	<bean id="download" class="kr.apfs.local.common.util.DownloadView"/>
+	
+	
+	
+	<mvc:annotation-driven /><!-- 2020.11.02 추가 -->
+</beans>

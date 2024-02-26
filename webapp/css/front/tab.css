@@ -1,0 +1,42 @@
+
+/*서브상단탭메뉴*/
+.tab.line { margin-bottom: 40px; }
+.tab.line ul{position:relative;overflow: hidden; height: 85px; }
+.tab.line ul:after{content:"";display:block;clear:both}
+.tab.line li{float:left !important; width:13%; background:#c73180; height: 120px; text-align: center; font-weight: bold}
+.tab.line li:nth-child(1) {width: 22%}
+
+.tab.line li.center{ width:15%;}
+.tab.line li.center:nth-child(1) {width: 25%}
+
+.tab.line li.info{ width:20%;}
+.tab.line li.global{ width:25%;}
+.tab.line li.game{ width:33.33333333333333%;}
+
+
+.tab.line li a{position:relative;background:url(/images/bg_line_1.png) right top repeat-y #c73180;color:white; display: block; text-align: center; height: 41px;}
+.tab.line li a span{display:inline-block; width: 100%; height: 100%; letter-spacing:-1px;cursor:pointer;line-height: 37px;}
+.tab.line li ul{width:100%;position:absolute;top:40px;left:0px; background: #f7f7f7; padding-top: 13px;}
+.tab.line li ul:after{content:"";display:block;clear:both}
+.tab.line li li{position:relative;left:35px;padding:0 4px;overflow:visible; background: #f7f7f7; width: auto;}
+.tab.line li li:nth-child(1) { width: auto}
+.tab.line li li a{padding:0;margin:0;border:0 !important;color:#666 !important;font-weight:normal;background:url(/images/icon_home.png) left 0 no-repeat !important ;letter-spacing:normal; padding-left: 21px; height: auto}
+.tab.line li li:nth-child(1) a,.tab.line li li:nth-child(2) a { color: #757474 !important}
+.tab.line li li:nth-child(3) a{ color: #3f3f3f !important }
+.tab.line li li:nth-child(2) a, .tab.line li li:nth-child(3) a {background:url(/images/icon_arrow_right.png) left 1px no-repeat !important ; padding-left: 13px; margin-left: 10px;}
+.tab.line li.active a{background:#f7f7f7; color:#515151; display: block; width: 100%; }
+.tab.line li.active a span{line-height: 37px; font-weight:bold}
+.tab.line li li a:hover,
+.tab.line li li a:active,
+.tab.line li li a:focus,
+.tab.line li li.active a{color:#333 !important; text-align: center; font-weight: normal; }
+.tab.line.jx{padding:0}
+.tab.line.jx ul{border:0; height: 63px}
+.tab.line.jx li{float:none}
+.tab.line.jx li a{float:none;display:block;font-weight:bold;color:#333;border:1px solid #eee !important;border-bottom-color:#ccc !important;background:#fafafa !important; font-size: 14px !important; font-family: 'Nanum Gothic' !important;}
+.tab.line.jx li ul{position:static;display:block;padding:5px 0;left:0;top:0}
+.tab.line.jx li li{display:inline}
+.tab.line.jx li li a{display:inline;letter-spacing:normal;border:0 !important;font-weight:normal !important;color:#666 !important;background:none !important}
+.tab.line.jx li li a:hover,
+.tab.line.jx li li a:active,
+.tab.line.jx li li a:focus{text-decoration:underline}

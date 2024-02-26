@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="HistorypageDao">
+
+	 <select id = "selectHistorypageExist" parameterType = "Map" resultType="integer">
+	 /* kr.apfs.local.guidancepage.dao.impl.HistorypageDao.selectHistorypageExist */
+
+	 	SELECT
+	 		COUNT(*)
+	 	FROM
+	 		TS_MENUCONTENTS
+	 	WHERE
+	 		1=1
+	 		AND SITE_ID = #{*siteId}
+	 		AND MENU_CLS_CD = '3'
+	 		AND CONT_ID = #{contId}
+
+	 </select>
+
+	<select id="selectHistorypage" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.guidancepage.dao.impl.HistorypageDao.selectHistorypage */
+		SELECT
+			 CONT_ID
+			,TITLE
+			,CONTENTS
+			,SORT
+		FROM
+			TS_MENUCONTENTS
+		WHERE
+		1=1
+		AND SITE_ID 	= #{*siteId}
+		AND MENU_CLS_CD = '3'
+		AND DEL_YN 		= 'N'
+		ORDER BY SORT DESC
+
+
+	</select>
+
+	<update id="updateHistorypage" parameterType="Map" >
+	    /* kr.apfs.local.guidancepage.dao.impl.HistorypageDao.updateHistorypage */
+	    UPDATE
+	 		TS_MENUCONTENTS
+		SET
+				 TITLE 			= #{title}
+				,CONTENTS 		= #{contents}
+				,UPD_USER_ID 	= #{*userId}
+				,UPD_DT 		= TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,SORT 			= #{sort}
+		WHERE
+		1=1
+		AND CONT_ID = #{contId}
+		AND SITE_ID = #{*siteId}
+		AND MENU_CLS_CD = '3'
+
+	</update>
+
+	<update id = "deleteHistorypage" parameterType="Map">
+		UPDATE
+			TS_MENUCONTENTS
+		SET
+			DEL_YN = 'Y'
+			,UPD_USER_ID = #{*userId}
+			,UPD_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE
+			1=1
+			AND site_id = #{*siteId}
+			AND menu_cls_cd = '3'
+			AND CONT_ID IN(<foreach collection="contId" item="item" index="index" separator=",">#{item}</foreach>)
+
+
+	</update>
+
+	<insert id = "insertHistorypage" parameterType="Map" >
+
+		INSERT INTO
+			TS_MENUCONTENTS
+			(
+				 SITE_ID
+				,MENU_CLS_CD
+				,TITLE
+				,CONTENTS
+				,SORT
+				,REG_USER_ID
+				,REG_DT
+				,USE_YN
+				,DEL_YN
+			)
+			VALUES
+			(
+				#{*siteId}
+				,'3'
+				,#{title}
+				,#{contents}
+				,#{sort}
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,'Y'
+				,'N'
+			)
+
+	</insert>
+</mapper>

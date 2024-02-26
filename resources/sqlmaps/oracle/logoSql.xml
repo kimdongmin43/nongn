@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LogoDao">
+
+	<select id="selectLogo" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.logo.dao.impl.LogoDao.selectLogo */
+		SELECT
+			 LOGO_ID          logoId
+			,SITE_ID		  siteId
+			,FRONT_TOP		  frontTop
+			,FRONT_BOTTOM	  frontBottom
+			,BACK_TITLE       backTitle
+			,BACK_TOP		  backTop
+			,BACK_REFER       backRefer
+			,BACK_SUB_TITLE   backSubTitle
+			,BACK_SUB_TOP     backSubTop
+			,REG_USER_ID      regUserId
+			,REG_DT           regDt
+		FROM  TS_LOGO
+		WHERE SITE_ID= #{*siteId}
+		<!-- 단일건 요청 -->
+		<if test='logoId != null and !logoId.equals("")' >
+		AND LOGO_ID = #{logoId}
+		</if>
+	</select>
+
+	<update id="insertLogo" parameterType="Map" >
+	    /* kr.apfs.local.logo.dao.impl.LogoDao.insertLogo */
+		MERGE INTO TS_LOGO A
+        USING DUAL ON(
+              A.LOGO_ID = #{logoId}
+        )
+        WHEN MATCHED THEN
+            UPDATE SET
+			 FRONT_TOP 		= #{frontTop}
+			,FRONT_BOTTOM 	= #{frontBottom}
+			,BACK_TITLE 	= #{backTitle}
+			,BACK_TOP 		= #{backTop}
+			,BACK_REFER 	= #{backRefer}
+			,BACK_SUB_TITLE = #{backSubTitle}
+			,BACK_SUB_TOP 	= #{backSubTop}
+			,REG_USER_ID 	= #{*userId}
+			,REG_DT 		= TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE SITE_ID= #{*siteId}
+		AND	  LOGO_ID= #{logoId}
+        WHEN NOT MATCHED THEN
+        INSERT
+      	(
+				 LOGO_ID
+				,SITE_ID
+				,FRONT_TOP
+				,FRONT_BOTTOM
+				,BACK_TITLE
+				,BACK_TOP
+				,BACK_REFER
+				,BACKSUB_TITLE
+				,BACKSUB_TOP
+				,REG_USER_ID
+				,REG_DT
+		) SELECT
+				 NVL(MAX(LOGO_ID),0)+1
+				,#{*siteId}
+				,#{frontTop}
+				,#{frontBottom}
+				,#{backTitle}
+				,#{backTop}
+				,#{backRefer}
+				,#{backSubTitle}
+				,#{backSubTop}
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		   WHERE SITE_ID= #{*siteId}
+	</update>
+
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+							http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- 문자 발송 -->
+	<!-- <bean id="userAgreeTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+		p:jobDetail-ref="userAgreeDetail"
+		p:cronExpression="0 0 9 * * ? *" /> 초,분,시,일,월,주의일,년도
+
+	<bean id="userAgreeDetail"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+		p:jobClass="kr.apfs.local.scheduling.job.UserAgreeJob">
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="UserAgreeService" value-ref="userAgreeService" />
+			</map>
+		</property>
+		<property name="durability" value="true">
+		</property>
+	</bean>
+	<bean id="userAgreeService" class="kr.apfs.local.scheduling.service.impl.UserAgreeServiceImpl" /> -->
+
+	<!-- 탈퇴처리 -->
+	<!-- <bean id="userDropTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+		p:jobDetail-ref="userDropDetail"
+		p:cronExpression="0 0 4 * * ? *" /> 초,분,시,일,월,주의일,년도
+
+	<bean id="userDropDetail"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+		p:jobClass="kr.apfs.local.scheduling.job.UserDropJob">
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="UserDropService" value-ref="userDropService" />
+			</map>
+		</property>
+		<property name="durability" value="true">
+		</property>
+	</bean>
+	<bean id="userDropService" class="kr.apfs.local.scheduling.service.impl.UserDropServiceImpl" />
+
+	<bean
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="userAgreeTrigger" />
+				<ref bean="userDropTrigger" />
+			</list>
+		</property>
+	</bean> -->
+
+</beans>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AuthDao">
+
+	<select id="selectAuthPageList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.auth.dao.impl.AuthDao.selectAuthPageList */
+		<include refid="CommonSql.pageingTop"/>
+			SELECT
+	    		user_cd user_cd
+				,grp
+				,(select code_nm from tc_code where gubun = 'AUTH_GROUP' and code = a.grp) as grp_nm
+				,auth_nm
+				,auth_desc
+				,use_yn
+				,range
+				,orgn
+				,reg_user_id
+				,reg_dt
+		  FROM tc_auth a
+		 WHERE 1 = 1
+				<if test='auth_nm != null and !auth_nm.equals("")' >
+				   AND auth_nm = #{authNm}
+				</if>
+				<if test='useYn != null and !useYn.equals("")' >
+				   AND use_yn = #{useYn}
+				</if>
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+	<select id="selectAuthList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.auth.dao.impl.AuthDao.selectAuthList */
+		SELECT ROWNUM AS RNUM,
+		     		user_cd
+					,grp
+					,(select code_nm from tc_code where gubun = 'AUTH_GROUP' and code = a.grp) as grp_nm
+					,auth_nm
+					,auth_desc
+					,use_yn
+					,range
+					,orgn
+					,reg_user_id
+					,reg_dt
+		FROM tc_user a
+	</select>
+
+	<select id="selectAuth" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.auth.dao.impl.AuthDao.selectAuth */
+		SELECT
+		   				user_cd
+					,grp
+					,auth_nm
+					,auth_desc
+					,use_yn
+					,range
+					,orgn
+					,reg_user_id
+					,reg_dt
+		FROM tc_user
+		WHERE user_cd = #{userCd}
+	</select>
+
+	<select id="selectAuthExist" parameterType="Map" resultType="integer">
+		 /* kr.apfs.local.auth.dao.impl.AuthDao.selectAuthExist */
+			SELECT  count(*)
+			FROM tc_user
+			WHERE	user_cd = #{userCd}
+
+	</select>
+
+	<update id="insertAuth" parameterType="Map" >
+	    /* kr.apfs.local.auth.dao.impl.AuthDao.insertAuth */
+		INSERT INTO
+		tc_user (
+				 user_cd
+				,grp
+				,auth_nm
+				,auth_desc
+				,use_yn
+				,range
+				,orgn
+				,reg_user_id
+				,reg_dt
+				,upd_user_id
+				,upd_dt
+		) VALUES (
+				#{userCd}
+				,#{grp}
+				,#{authNm}
+				,#{authDesc}
+				,#{useYn}
+				,#{range}
+				,#{orgn}
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		)
+	</update>
+
+	<update id="updateAuth" parameterType="Map" >
+	    /* kr.apfs.local.auth.dao.impl.AuthDao.updateAuth */
+	    UPDATE
+	 		tc_user
+		SET
+				grp = #{grp}
+				,auth_nm = #{authNm}
+				,auth_desc = #{authDesc}
+				,use_yn = #{useYn}
+				,range = #{range}
+				,orgn = #{orgn}
+				,upd_user_id = #{*userId}
+				,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE user_cd = #{userCd}
+	</update>
+
+	<delete id="deleteAuth" parameterType="Map" >
+	    /* kr.apfs.local.auth.dao.impl.AuthDao.deleteAuth */
+	 	DELETE FROM
+			tc_user
+		WHERE user_cd = #{userCd}
+	</delete>
+
+	<select id="managerAuthPageList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.auth.dao.impl.AuthDao.selectAuthPageList */
+		<include refid="CommonSql.pageingTop"/>
+	        SELECT
+	                 a.user_id     userId
+	                ,a.login_id    loginId
+	                ,a.user_nm     userNm
+	                ,a.password    password
+	                ,a.intro       intro
+	                ,a.mail        mail
+	                ,a.mobile      mobile
+	                ,a.del_yn      delYn
+	                ,a.password_dt passwordDt
+	                ,a.birth       birth
+	                ,a.tel    	   tel
+	                ,a.post        post
+	                ,a.addr1       addr1
+	                ,a.addr2       addr2
+	                ,GET_DATEFORMAT(a.agree_dt) as agreeDt
+	                ,a.user_cd	   userCd
+	                ,'' authNm
+	                ,a.dept
+	                ,a.reg_user_id regUserId
+	                ,GET_DATEFORMAT(a.reg_dt) as regDt
+	        FROM t_user a inner join t_managerauth b on a.user_id = b.user_id
+	        WHERE a.del_yn = 'N' and A.USER_GB = 'M'
+	        AND b.user_cd = #{userCd}
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+
+
+	<update id="insertManagerAuth" parameterType="Map" >
+	    /* kr.apfs.local.auth.dao.impl.AuthDao.insertManagerAuth */
+		UPDATE
+					TC_USER
+			SET
+					USER_CD 		= #{userCd}
+					,UPD_USER_ID    = #{*userId}
+					,UPD_DT         = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			WHERE
+					USER_ID = #{userId}
+	</update>
+
+	<delete id="deleteManagerAuth" parameterType="Map" >
+	    /* kr.apfs.local.auth.dao.impl.AuthDao.deleteManagerAuth */
+	 	UPDATE
+					TC_USER
+			SET
+					USER_CD 		= '999'
+					,UPD_USER_ID    = #{*userId}
+					,UPD_DT         = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			WHERE
+					USER_ID 		= #{userId}
+	</delete>
+
+</mapper>

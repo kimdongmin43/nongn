@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IntropageDao">
+
+	<select id="selectIncotermsPageList" parameterType="Map" resultType="camelMap">
+		SELECT
+			G010_SEQ_NO
+			,G010_CATEGORY
+			,TITLE
+			,CONTENTS
+			,INSERT_DATE
+			,UPDATE_DATE
+			,DEL_YN
+		FROM TS_INCOTERMS
+		WHERE 1=1
+			AND DEL_YN='N'
+		ORDER BY G010_CATEGORY, G010_SEQ_NO
+	</select>
+
+</mapper>

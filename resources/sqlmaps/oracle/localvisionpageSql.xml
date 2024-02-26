@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LocalvisionpageDao">
+
+
+	<select id = "selectLocalvisionpage" parameterType = "Map" resultType = "camelMap">
+
+		SELECT
+			a.cont_id
+			,a.site_id
+			,a.menu_cls_cd
+			,a.contents
+			,b.file_id as pic_file_id
+			,b.origin_file_nm as pic_origin_file_nm
+			,b.file_path as pic_file_path
+			,b.file_size as pic_file_size
+			,c.file_id as sin_file_id
+			,c.origin_file_nm as sin_origin_file_nm
+			,c.file_path as sin_file_path
+			,c.file_size as sin_file_size
+			,a.pic_attach_id
+			,a.sin_attach_id
+			,a.use_yn
+			,a.del_yn
+			,a.sort
+		FROM
+		TS_MENUcontents a
+		LEFT OUTER JOIN tc_attachfile b
+		ON a.pic_attach_id = b.attach_id
+		LEFT OUTER JOIN tc_attachfile c
+		ON a.sin_attach_id = c.attach_id
+		WHERE
+		1=1
+			AND a.site_id = #{*siteId}
+			AND a.menu_cls_cd = '8'
+			AND a.use_yn = 'Y'
+			AND a.del_yn = 'N'
+
+
+	</select>
+	<select id = "selectMasterVision" parameterType = "Map" resultType = "camelMap">
+	SELECT
+		cont_id as cont_id2
+		,contents as contents2
+	FROM
+	TS_MENUCONTENTS
+	WHERE
+	site_id = '0'
+	and menu_cls_cd = '8'
+	</select>
+
+	<select id = "selectLocalvisionpage2" parameterType = "Map" resultType = "camelMap">
+		SELECT
+			a.cont_id
+			,a.site_id
+			,a.menu_cls_cd
+			,(SELECT d.contents FROM ts_menucontents d WHERE d.menu_cls_cd = '8' AND d.site_id = '0' )+a.contents as contents
+			,b.file_id as pic_file_id
+			,b.origin_file_nm as pic_origin_file_nm
+			,b.file_path as pic_file_path
+			,b.file_size as pic_file_size
+			,c.file_id as sin_file_id
+			,c.origin_file_nm as sin_origin_file_nm
+			,c.file_path as sin_file_path
+			,c.file_size as sin_file_size
+			,a.pic_attach_id
+			,a.sin_attach_id
+			,a.use_yn
+			,a.del_yn
+			,a.sort
+		FROM
+		TS_MENUcontents a
+		LEFT OUTER JOIN tc_attachfile b
+		ON a.pic_attach_id = b.attach_id
+		LEFT OUTER JOIN tc_attachfile c
+		ON a.sin_attach_id = c.attach_id
+		WHERE
+		1=1
+			AND a.site_id = #{*siteId}
+			AND a.menu_cls_cd = '8'
+			AND a.use_yn = 'Y'
+			AND a.del_yn = 'N'
+
+
+	</select>
+
+	<select id="selectLocalvisionpageExist" parameterType="Map" resultType="integer">
+	 /* kr.apfs.local.contents.dao.impl.LocalvisionpageDao.selectLocalvisionpageExist */
+		SELECT
+				  count(*)
+			FROM TS_MENUcontents
+			WHERE 	cont_id = #{contId}
+			AND
+			menu_cls_cd = '8'
+
+	</select>
+
+
+<insert id = "insertMaterVision" parameterType = "Map">
+	/* kr.apfs.local.contents.dao.impl.LocalvisionpageDao.insertLocalvisionpage */
+		INSERT INTO TS_MENUcontents
+		(
+			site_id
+			,menu_cls_cd
+			,contents
+			,reg_user_id
+			,reg_dt
+			,use_yn
+			,del_yn
+		)
+		VALUES
+		(
+		'0'
+		,'8'
+		,#{contents2}
+		,#{*userId}
+		,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		,'Y'
+		,'N'
+		)
+	</insert>
+	<insert id = "insertLocalvisionpage" parameterType = "Map">
+	/* kr.apfs.local.contents.dao.impl.LocalvisionpageDao.insertLocalvisionpage */
+		INSERT INTO TS_MENUcontents
+		(
+			site_id
+			,menu_cls_cd
+			,contents
+			,pic_attach_id
+			,sin_attach_id
+			,reg_user_id
+			,reg_dt
+			,use_yn
+			,del_yn
+		)
+		VALUES
+		(
+		#{*siteId}
+		,'8'
+		,#{contents}
+		,#{picAttachId}
+		,#{sinAttachId}
+		,#{*userId}
+		,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		,'Y'
+		,'N'
+		)
+	</insert>
+
+
+	<update id="updateMaterVision" parameterType = "Map">
+
+		UPDATE TS_MENUcontents
+		SET
+		contents = #{contents2}
+		,upd_user_id = #{*userId}
+		,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE
+		1=1
+		AND cont_id = #{contId2}
+
+	</update>
+
+	<update id="updateLocalvisionpage" parameterType = "Map">
+
+		UPDATE TS_MENUcontents
+		SET
+		contents = #{contents}
+		,pic_attach_id = #{picAttachId}
+		,sin_attach_id = #{sinAttachId}
+		,upd_user_id = #{*userId}
+		,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE
+		1=1
+		AND cont_id = #{contId}
+
+	</update>
+</mapper>

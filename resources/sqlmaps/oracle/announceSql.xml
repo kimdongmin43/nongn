@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AnnounceDao">
+
+<select id="selectAnnouncePageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.announce.dao.impl.AnnounceDao.selectAnnouncePageList */
+	<include refid="CommonSql.pageingTop"/>
+	SELECT
+	    		announc_id
+				,year
+				,seq
+				,contents
+				,act_month
+				,mng_stadt
+				,mng_enddt
+				,to_char(to_date(mng_stadt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI')+'~'+to_char(to_date(mng_enddt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI') as  mng_dt
+				,aply_stadt
+				,aply_enddt
+			    ,to_char(to_date(aply_stadt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI')+'~'+to_char(to_date(aply_enddt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI') as  aply_dt
+				,eval_stadt
+				,eval_enddt
+			    ,to_char(to_date(eval_stadt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI')+'~'+to_char(to_date(eval_enddt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI') as  eval_dt
+				,open_yn
+				,to_char(to_date(rel_dt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI') as rel_dt
+				,reg_user_id
+				,reg_dt
+	  FROM t_announce a
+	 WHERE del_yn = 'N'
+			<if test='year != null and !year.equals("")' >
+			   AND year = #{year}
+			</if>
+			<if test='openYn != null and !openYn.equals("")' >
+			   AND open_yn = #{openYn}
+			</if>
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selectAnnounceList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.AnnounceDao.selectAnnounceList */
+	SELECT ROWNUM AS RNUM,
+	     				announc_id
+				,year
+				,seq
+				,contents
+				,act_month
+				,mng_stadt
+				,mng_enddt
+				,aply_stadt
+				,aply_enddt
+				,eval_stadt
+				,eval_enddt
+				,open_yn
+				,rel_dt
+				,reg_user_id
+				,reg_dt
+	FROM t_announce
+	WHERE 1 = 1
+	  			<if test='announc_id != null and !announc_id.equals("")' >
+			   AND announc_id = #{announcId}
+			</if>
+			<if test='year != null and !year.equals("")' >
+			   AND year = #{year}
+			</if>
+			<if test='seq != null and !seq.equals("")' >
+			   AND seq = #{seq}
+			</if>
+			<if test='contents != null and !contents.equals("")' >
+			   AND contents = #{contents}
+			</if>
+			<if test='actMonth != null and !actMonth.equals("")' >
+			   AND act_month = #{actMonth}
+			</if>
+			<if test='mngStadt != null and !mngStaDt.equals("")' >
+			   AND mng_stadt = #{mngStaDt}
+			</if>
+			<if test='mngEnddt != null and !mngEndDt.equals("")' >
+			   AND mng_enddt = #{mngEndDt}
+			</if>
+			<if test='aplyStadt != null and !aplyStaDt.equals("")' >
+			   AND aply_stadt = #{aplyStaDt}
+			</if>
+			<if test='aplyEnddt != null and !aplyEndDt.equals("")' >
+			   AND aply_enddt = #{aplyEndDt}
+			</if>
+			<if test='evalStadt != null and !evalStaDt.equals("")' >
+			   AND eval_stadt = #{evalStaDt}
+			</if>
+			<if test='evalEndDt != null and !evalEndDt.equals("")' >
+			   AND eval_enddt = #{evalEndDt}
+			</if>
+			<if test='openYn != null and !openYn.equals("")' >
+			   AND open_yn = #{openYn}
+			</if>
+			<if test='relDt != null and !relDt.equals("")' >
+			   AND rel_dt = #{relDt}
+			</if>
+			<if test='s_userId != null and !regUserId.equals("")' >
+			   AND reg_user_id = #{*userId}
+			</if>
+			<if test='regDt != null and !regDt.equals("")' >
+			   AND reg_dt = #{regDt}
+			</if>
+			<if test='s_user_id != null and !s_userId.equals("")' >
+			   AND upd_user_id = #{*userId}
+			</if>
+			<if test='updDt != null and !updDt.equals("")' >
+			   AND upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			</if>
+</select>
+
+<select id="selectAnnounce" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.AnnounceDao.selectAnnounce */
+	SELECT
+	   			 announc_id  announcId
+				,year        year
+				,seq         seq
+				,contents    contents
+				,act_month   actMonth
+				,to_char(to_date(mng_stadt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 	as mngStadt
+				,to_char(to_date(mng_stadt,'YYYYMMDDHH24MISS'),'HH24') 			as mngStaDtHour
+				,to_char(to_date(mng_stadt,'YYYYMMDDHH24MISS'),'MI') 			as mngStaDtMin
+				,to_char(to_date(mng_enddt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 	as mngEndDt
+				,to_char(to_date(mng_enddt,'YYYYMMDDHH24MISS'),'HH24') 			as mngEndDtHour
+				,to_char(to_date(mng_enddt,'YYYYMMDDHH24MISS'),'MI') 			as mngEndDtMin
+				,to_char(to_date(aply_stadt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 	as aplyStadt
+				,to_char(to_date(aply_stadt,'YYYYMMDDHH24MISS'),'HH24') 		as aplyStadtHour
+				,to_char(to_date(aply_stadt,'YYYYMMDDHH24MISS'),'MI') 			as aplyStaDtMin
+				,to_char(to_date(aply_enddt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 	as aply_enddt
+				,to_char(to_date(aply_enddt,'YYYYMMDDHH24MISS'),'HH24') 		as aplyEndDt_Hour
+				,to_char(to_date(aply_enddt,'YYYYMMDDHH24MISS'),'MI') 			as aplyEndDtMin
+				,to_char(to_date(eval_stadt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 	as eval_stadt
+				,to_char(to_date(eval_stadt,'YYYYMMDDHH24MISS'),'HH24') 		as evalStaDtHour
+				,to_char(to_date(eval_stadt,'YYYYMMDDHH24MISS'),'MI') 			as evalStaDtMin
+				,to_char(to_date(eval_enddt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 	as evalEnddt
+				,to_char(to_date(eval_enddt,'YYYYMMDDHH24MISS'),'HH24') 		as evalEndDtHour
+				,to_char(to_date(eval_enddt,'YYYYMMDDHH24MISS'),'MI') 			as evalEndDtMin
+				,open_yn openYn
+				,to_char(to_date(rel_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as relDt
+				,to_char(to_date(rel_dt,'YYYYMMDDHH24MISS'),'HH24') as relDtHour
+				,to_char(to_date(rel_dt,'YYYYMMDDHH24MISS'),'MI') as relDtMin
+				,reg_user_id regUserId
+				,reg_dt regDt
+	FROM t_announce
+	WHERE
+			   announc_id = #{announcId}
+</select>
+
+<select id="selectAnnounceInfo" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.announce.dao.impl.AnnounceDao.selectAnnounceInfo */
+	SELECT
+	    		 announc_id    announcId
+				,year          year
+				,seq           seq
+				,contents      contents
+				,act_month     actMonth
+				,mng_stadt     mngStadt
+				,mng_enddt     mngEnddt
+				,mng_dt        mngDt
+				,aply_stadt    aplyStadt
+				,aply_enddt    aplyEnddt
+			    ,aply_dt       aplyDt
+				,eval_stadt    evalStadt
+				,eval_enddt    evalEnddt
+			    ,eval_dt       evalDt
+				,open_yn       openYn
+				,rel_dt        relDt
+				<![CDATA[
+				,(case
+				        when mng_enddt < to_char(sysdate, 'YYYYMMDDHH24MISS') then 'E'
+				        when (select max(aply_compl_dt) from t_apply where announc_id = a.announc_id and user_id = #{*userId}) IS NOT NULL then 'C'
+				        when aply_stadt > to_char(sysdate, 'YYYYMMDDHH24MISS') then 'B'
+			            when aply_stadt <= to_char(sysdate, 'YYYYMMDDHH24MISS') and aply_enddt >= to_char(sysdate, 'YYYYMMDDHH24MISS') then 'A'
+			            when aply_enddt < to_char(sysdate, 'YYYYMMDDHH24MISS') and rel_dt > to_char(sysdate, 'YYYYMMDDHH24MISS') then 'AE'
+			            when rel_dt <= to_char(sysdate, 'YYYYMMDDHH24MISS') and (mng_stadt <= to_char(sysdate, 'YYYYMMDDHH24MISS') and mng_enddt >= to_char(sysdate, 'YYYYMMDDHH24MISS')) then 'M'
+			            else 'E'
+			       end) as state
+			     ]]>
+			     ,age
+				,reg_user_id regUserId
+				,reg_dt regDt
+				,nvl((select count(x.aply_id) from t_apply x inner join t_orientation y on x.aply_id = y.aply_id where x.user_id = #{*userId} and y.agree_yn = 'Y'),0) as preSubmitCnt
+	FROM (
+		SELECT
+	    		 announc_id  announcId
+				,year        year
+				,seq         seq
+				,contents    contents
+				,act_month   actMonth
+				,mng_stadt   mngStadt
+				,mng_enddt	 mngEnddt
+				,aply_stadt  aplyStadt
+				,aply_enddt	aplyEnddt
+				,eval_stadt  evalStadt
+				,eval_enddt  evalEnddt
+				,open_yn     openYn
+				,reg_user_id regUserId
+				,reg_dt      regDt
+				,to_char(to_date(mng_stadt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI')+'~'+to_char(to_date(mng_enddt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI') as  mngDt
+			    ,to_char(to_date(aply_stadt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI')+'~'+to_char(to_date(aply_enddt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI') as  aplyDt
+			    ,to_char(to_date(eval_stadt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI')+'~'+to_char(to_date(eval_enddt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI') as  evalDt
+				,to_char(to_date(rel_dt,'YYYYMMDDHH24MISS'), 'YYYY-MM-DD HH24:MI') as relDt
+				,(select floor(months_between(to_date(to_char(sysdate,'yyyy')+'0101'), to_date(substr(y.birth,0,4)+'0101','YYYYMMDD'))/12)-1 from t_user y where user_id = #{*userId}) as age
+
+		FROM t_announce x
+		WHERE del_yn = 'N' and open_yn = 'Y' and year = #{year}
+		<![CDATA[
+			 and ( mng_stadt <= to_char(sysdate, 'YYYYMMDDHH24MISS')
+			 and mng_enddt >= to_char(sysdate, 'YYYYMMDDHH24MISS') )
+			   ]]>
+		) a
+    ORDER BY seq desc
+</select>
+
+<select id="selectAnnounceExist" parameterType="Map" resultType="integer">
+	/* kr.apfs.local.announce.dao.impl.AnnounceDao.selectAnnounceExist */
+	SELECT
+			  count(*)
+		FROM t_announce
+		WHERE	announc_id = #{announcId}
+
+</select>
+
+<insert id="insertAnnounce" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.AnnounceDao.insertAnnounce */
+      <selectKey resultType="int" keyProperty="announcId" order="BEFORE">
+        select nvl(max(announc_id),0)+1 from t_announce
+      </selectKey>
+	INSERT INTO
+	t_announce (
+			 announc_id
+			,year
+			,seq
+			,contents
+			,act_month
+			,mng_stadt
+			,mng_enddt
+			,aply_stadt
+			,aply_enddt
+			,eval_stadt
+			,eval_enddt
+			,open_yn
+			,user_cd
+			,rel_dt
+			,reg_user_id
+			,reg_dt
+			,upd_user_id
+			,upd_dt
+	) VALUES (
+			#{announcId}
+			,#{year}
+			,nvl((select max(seq) from  t_announce where year = #{year}),0)+1
+			,#{contents}
+			,#{actMonth}
+			,REPLACE(#{mngStaDt},'-','')
+			,REPLACE(#{mngEndDt},'-','')
+			,REPLACE(#{aplyStaDt},'-','')
+			,REPLACE(#{aplyEndDt},'-','')
+			,REPLACE(#{evalStaDt},'-','')
+			,REPLACE(#{evalEndDt},'-','')
+			,#{openYn}
+			,#{userCd}
+			,REPLACE(#{relDt},'-','')
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</insert>
+
+<update id="updateAnnounce" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.AnnounceDao.updateAnnounce */
+    UPDATE
+ 		t_announce
+	SET
+			contents = #{contents}
+			,mng_stadt = REPLACE(#{mngStaDt},'-','')
+			,mng_enddt =REPLACE(#{mngEndDt},'-','')
+			,aply_stadt = REPLACE(#{aplyStaDt},'-','')
+			,aply_enddt = REPLACE(#{aplyEndDt},'-','')
+			,eval_stadt = REPLACE(#{evalStaDt},'-','')
+			,eval_enddt = REPLACE(#{evalEndDt},'-','')
+			,open_yn = #{openYn}
+			,rel_dt = REPLACE(#{relDt},'-','')
+			,upd_user_id = #{*userId}
+			,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE announc_id = #{announcId}
+</update>
+
+<delete id="deleteAnnounce" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.AnnounceDao.deleteAnnounce */
+ 	UPDATE t_announce
+ 	SET del_yn = 'Y'
+	WHERE announc_id = #{announcId}
+</delete>
+
+<select id="selectActsubmit" parameterType="Map" resultType="camelMap">
+	SELECT /* kr.apfs.local.announce.dao.impl.AnnounceDao.selectActsubmit */
+			 announc_id announcId
+			,act_seq actSeq
+			,to_char(to_date(submit_stadt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 	as submitStadt
+			,to_char(to_date(submit_stadt,'YYYYMMDDHH24MISS'),'HH24') 			as submitStaDtHour
+			,to_char(to_date(submit_stadt,'YYYYMMDDHH24MISS'),'MI') 			as submitStaDtMin
+			,to_char(to_date(submit_enddt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') 	as submitEndDt
+			,to_char(to_date(submit_enddt,'YYYYMMDDHH24MISS'),'HH24') 			as submitEndDtHour
+			,to_char(to_date(submit_enddt,'YYYYMMDDHH24MISS'),'MI') 			as submitEndDtMin
+		FROM t_actsubmit
+		WHERE	announc_id = #{announcId}
+</select>
+
+<update id="insertActsubmit" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.AnnounceDao.insertAnnounce */
+	INSERT INTO
+	t_actsubmit (
+			 announc_id
+			,act_seq
+			,submit_stadt
+			,submit_enddt
+	) VALUES (
+			#{announcId}
+			,#{actSeq}
+			,REPLACE(#{submitStaDt},'-','')
+			,REPLACE(#{submitEndDt},'-','')
+	)
+</update>
+
+<delete id="deleteActsubmit" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.AnnounceDao.deleteActsubmit */
+ 	DELETE FROM
+		t_actsubmit
+	WHERE announc_id = #{announcId}
+</delete>
+
+<select id="selectEvalstd" parameterType="Map" resultType="camelMap">
+	SELECT /* kr.apfs.local.announce.dao.impl.AnnounceDao.selectEvalstd */
+			 announc_id
+			 ,std_gb
+			 ,lvl
+			 ,point
+			 ,eval_from
+			 ,eval_to
+			 ,eval2_from
+			 ,eval2_to
+			 ,reg_user_id
+			 ,reg_dt
+		FROM t_evalstd
+		WHERE	announc_id = #{announcId}
+</select>
+
+<update id="insertEvalstd" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.AnnounceDao.insertEvalstd */
+	INSERT INTO
+	t_evalstd (
+			 announc_id
+			 ,std_gb
+			 ,lvl
+			 ,point
+			 ,eval_from
+			 ,eval_to
+			 ,eval2_from
+			 ,eval2_to
+			 ,reg_user_id
+			 ,reg_dt
+	) VALUES (
+			#{announcId}
+			,#{stdGb}
+			,#{lvl}
+			,#{point}
+			,#{evalFrom}
+			,#{evalTo}
+			,#{eval2From}
+			,#{eval2To}
+			,#{*userId}
+			,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	)
+</update>
+
+<delete id="deleteEvalstd" parameterType="Map" >
+    /* kr.apfs.local.announce.dao.impl.AnnounceDao.deleteEvalstd */
+ 	DELETE FROM
+		t_evalstd
+	WHERE announc_id = #{announcId}
+</delete>
+
+<select id="selectAnnounceSeqCodeList" parameterType="Map" resultType="camelMap">
+	  /* kr.apfs.local.announce.dao.impl.AnnounceDao.selectAnnounceSeqCodeList */
+	  SELECT
+			  seq+''  as code
+			, seq+'차' as codeNm
+		FROM t_announce a
+		WHERE  del_yn = 'N' AND year = #{year}
+		ORDER BY seq desc
+</select>
+
+
+</mapper>

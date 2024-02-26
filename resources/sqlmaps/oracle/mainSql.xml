@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Main">
+
+	<select id="selectMainList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectMainList */
+		SELECT * FROM(
+		SELECT
+				ROW_NUMBER() OVER(ORDER BY PUB_YN DESC, PUB_DT DESC) AS RNUM,
+	     		MAIN_ID,
+				TM.SITE_ID,
+				MAIN_CD,
+				dbo.UF_CODE_NM('MAIN_CD',MAIN_CD) MAIN_CD_NM,
+				ISNULL(MAIN_IMG_CD,'P0') MAIN_IMG_CD,
+				dbo.UF_CODE_NM('MAIN_IMG_CD',ISNULL(MAIN_IMG_CD,'P0')) MAIN_IMG_CD_NM,
+				PUB_YN,
+				dbo.UF_CODE_NM('PUB_YN',PUB_YN) PUB_YN_NM,
+				PUB_DT,
+				PUB_USER_ID,
+				TM.REG_USER_ID,
+				TM.REG_DT ,
+				TM.UPD_USER_ID,
+				TM.UPD_DT,
+				TM.USE_YN,
+				dbo.UF_CODE_NM('USE_YN',TM.USE_YN) USE_YN_NM,
+				TM.DEL_YN,
+				dbo.UF_CODE_NM('DEL_YN',TM.DEL_YN) DEL_YN_NM,
+				TM.SORT,
+                    ADDR,
+                    TEL,
+                    EMAIL
+		FROM 	TS_MAIN TM
+        	INNER JOIN TS_FOOTERINFO TF
+        	ON TM.SITE_ID = TF.SITE_ID
+		WHERE 	1=1
+		<if test='delYn != null and !delYn.equals("")' >
+		AND 		TM.DEL_YN = #{delYn}
+		</if>
+		<if test='useYn != null and !useYn.equals("")' >
+		AND 		TM.USE_YN = #{useYn}
+		</if>
+		<if test='pubYn != null and !pubYn.equals("")' >
+		AND 		PUB_YN = #{pubYn}
+		</if>
+		<!-- 단일건 요청 -->
+		<if test='mainId != null and !mainId.equals("")' >
+		AND 		TM.MAIN_ID = #{mainId}
+		</if>
+		<!-- 목록 요청 -->
+
+		)A
+		WHERE <![CDATA[RNUM <= 10]]>
+		ORDER BY PUB_YN DESC, PUB_DT DESC
+	</select>
+
+	<insert id="insertMain" parameterType="Map"  useGeneratedKeys="false">
+	     /* kr.apfs.local.main.dao.MainDao.insertMain */
+		INSERT INTO
+		TS_MAIN (
+				MAIN_ID,
+				SITE_ID,
+				MAIN_CD,
+				MAIN_IMG_CD,
+				PUB_YN,
+				REG_USER_ID,
+				REG_DT,
+				DEL_YN
+		)
+		VALUES(
+	     		(SELECT ISNULL(MAX(main_id),0)+1 FROM TS_MAIN),
+				'3',
+				#{mainCd},
+				#{mainImgCd},
+				'N',
+				#{*userId},
+				left(convert(varchar, getdate(), 112)+'000000',14),
+				'Y'
+		)
+
+		<selectKey keyProperty="mainId" resultType="String" order="AFTER">
+			SELECT MAX(MAIN_ID) FROM TS_MAIN WHERE SITE_ID =#{*siteId}
+		</selectKey>
+	</insert>
+
+	<update id="updateMain" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.updateMain */
+
+	    <if test='pubYn != null and pubYn.equals("Y")' >
+	    BEGIN
+	    UPDATE
+	 			TS_MAIN
+		SET
+				PUB_YN = 'N'
+		WHERE	SITE_ID	= #{*siteId};
+	    </if>
+
+	    UPDATE
+	 			TS_MAIN
+		SET
+				<choose>
+				<when test='pubYn != null and pubYn.equals("Y")' >
+				PUB_YN = 'Y',
+				PUB_DT = left(convert(varchar, getdate(), 112)+'000000',14),
+				PUB_USER_ID = #{*userId},
+				DEL_YN = 'N',
+				USE_YN = 'Y'
+				</when>
+				<otherwise>
+				<if test='mainCd != null and !mainCd.equals("")' >
+				MAIN_CD = #{mainCd},
+				</if>
+				<if test='delYn != null and !delYn.equals("")' >
+				DEL_YN = #{delYn},
+				</if>
+				UPD_USER_ID = #{*userId},
+				UPD_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				</otherwise>
+				</choose>
+		WHERE	SITE_ID	= #{*siteId}
+		AND		MAIN_ID = #{mainId}
+
+		<if test='pubYn != null and pubYn.equals("Y")' >
+		;END;
+		</if>
+
+	</update>
+
+	<delete id="deleteMain" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.deleteMain */
+	    BEGIN
+
+	    DELETE 	FROM
+						TS_MAINIMAGE
+		WHERE 	SITE_ID= #{*siteId}
+		AND 		MAIN_ID IN ( SELECT MAIN_ID FROM TS_MAIN WHERE SITE_ID= #{*siteId} AND DEL_YN='Y' AND PUB_YN='N' AND MAIN_ID NOT IN (#{mainId}));
+
+	    DELETE 	FROM
+						TS_MAINBOARD
+		WHERE 	SITE_ID= #{*siteId}
+		AND 		MAIN_ID IN ( SELECT MAIN_ID FROM TS_MAIN WHERE SITE_ID= #{*siteId} AND DEL_YN='Y' AND PUB_YN='N' AND MAIN_ID NOT IN (#{mainId}));
+
+	 	DELETE 	FROM
+						TS_MAIN
+		WHERE 	SITE_ID= #{*siteId}
+		AND 		DEL_YN='Y'
+		AND		PUB_YN='N'
+		AND 		MAIN_ID NOT IN (#{mainId});
+
+		END;
+	</delete>
+
+
+	<!-- 게시판 리스트 페이지 -->
+	<select id="selectSearchList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectSearchList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+			tb.cont_id
+			,tb.board_id
+			,tb.title
+			,tb.contents
+			,tb.reg_dt
+			,(select menu_nm_path from tn_site_menu_view where ref_board_id = tb.board_id) as menu_nm_path
+			,(select top 1 menu_id from ts_menu where ref_board_id = tb.board_id) as menu_id
+		FROM (
+			select
+				tbc.cont_id
+				,tbc.board_id
+				,tbc.title
+				,tbc.contents_srch As contents	<!-- 2020.11.04 수정해 봄 - text 형식을 varchar(8000)을 저장하는 관계로 문제가 있음 -->
+				,site_id
+				,use_yn
+				,del_yn
+				,replace(reg_dt,'-','') reg_dt
+			from	ts_boardcontents tbc with (nolock)
+			WHERE tbc.relevel_seq = 0 OR tbc.relevel_seq is null
+				AND board_id not in ('51', '20057', '20075', '20062', '20072')
+			union all
+			select
+				tbe.cont_id
+				,tbe.board_id
+				,tbe.title
+				,tbe.contents
+				,site_id
+				,use_yn
+				,del_yn
+				,replace(reg_dt,'-','') reg_dt
+			from	ts_boardetc tbe with (nolock)
+			) tb, ts_menu tm with (nolock)
+		WHERE 1 = 1
+			AND tm.ref_board_id = tb.board_id
+
+			<if test='searchTxt != null and searchKey.equals("A")' >
+				AND (tb.title LIKE '%' + #{searchTxt} + '%' OR tb.contents LIKE '%' + #{searchTxt} + '%')
+			</if>
+			<if test='searchTxt != null and searchKey.equals("T")' >
+				AND tb.title LIKE '%' + #{searchTxt} + '%'
+			</if>
+			<if test='searchTxt != null and searchKey.equals("C")' >
+				AND tb.contents LIKE '%' + #{searchTxt} + '%'
+			</if>
+			<if test='searchTxt != null and searchKey.equals("U")' >
+				AND tb.reg_mem_nm LIKE '%' + #{searchTxt} +'%'
+			</if>
+			<if test='searchSdt != null and !searchSdt.equals("")' >
+			and convert(int,left(isnull(replace(tb.reg_dt,'-',''),29991010),8)) between ${searchSdt} and ${searchEdt}
+			</if>
+			<if test='searchMenu != null and !searchMenu.equals("")' >
+			and tb.board_id in (select ref_board_id from tn_site_menu_view where menu_sort like '${searchMenu}%')
+			</if>
+			and tb.site_id = '3'
+			and tb.USE_YN = 'Y'
+			and tb.DEL_YN = 'N'
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+
+	<!-- 콘텐츠 리스트 페이지 -->
+	<select id="selectSearchContents" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectSearchContents */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+			tmc.cont_id
+
+			,tmc.title
+			,tmc.contents_srch as contents			<!-- 2020.11.06 수정 - 검색속도 향상 -->
+			,ref_url
+			,tm.menu_nm_path
+			,replace(tmc.reg_dt,'-','') reg_dt
+			,tm.menu_id
+		FROM ts_menucontents tmc with (nolock), tn_site_menu_view tm with (nolock)
+		WHERE tm.ref_cont_id = tmc.cont_id
+
+			<if test='searchTxt != null and searchKey.equals("A")' >
+				AND (tmc.title LIKE '%' + #{searchTxt} + '%' OR tmc.contents_srch LIKE '%' + #{searchTxt} + '%' )			<!-- 2020.11.06 수정 - 검색속도 향상 -->
+			</if>
+			<if test='searchTxt != null and searchKey.equals("T")' >
+				AND tmc.title LIKE '%' + #{searchTxt} + '%'
+			</if>
+			<if test='searchTxt != null and searchKey.equals("C")' >
+				AND tmc.contents_srch LIKE '%' + #{searchTxt} + '%'				<!-- 2020.11.06 수정 - 검색속도 향상 -->
+			</if>
+			<if test='searchSdt != null and !searchSdt.equals("")' >
+			and convert(int,left(isnull(replace(tmc.reg_dt,'-',''),29991010),8)) between ${searchSdt} and ${searchEdt}
+			</if>
+			<if test='searchMenu != null and !searchMenu.equals("")' >
+			and tm.menu_sort like '${searchMenu}%'
+			</if>
+			and tm.site_id = '3'
+			and tm.USE_YN = 'Y'
+			and tm.DEL_YN = 'N'
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+</mapper>

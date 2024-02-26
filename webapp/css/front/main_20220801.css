@@ -1,0 +1,393 @@
+@charset "utf-8";
+@import "nanumgothic.css";
+
+
+/* 화면 해상도 width 640px 이상 Design --------------------------------------*/
+@media screen and (min-width: 1025px){
+	
+	body {overflow-x: auto;}
+	.main_bottom_content {overflow: hidden; background: url('/images/front/main/main_bg.png') repeat-y center 0px;}
+	.main_bottom_content .bottom_content {overflow: hidden; width: 1100px; margin: 0 auto;}
+		
+		.row {overflow: hidden;}
+		.one_line_row {overflow: hidden; margin-bottom: 30px;}
+		.two_line_row {overflow: hidden; margin-bottom: 20px;}
+		.three_line_row {overflow: hidden; margin-bottom: 20px;}
+		
+		.slide_area {overflow: hidden; position: relative; float: left; width: 804px; margin: 20px 21px 0 0;}
+			.slide_area ul {overflow: hidden;}
+			.slide_area ul li {list-style: none;}
+			
+			.slide_area div.arrow_area {overflow: hidden;}
+			.slide_area div.arrow_area a:hover {text-decoration: none;}
+			.slide_area div.arrow_area a.slide_prev {margin-left: 20px; position: absolute; top: 50%; left: 0px; margin-top: -24px;}
+			.slide_area div.arrow_area a.slide_next {margin-right: 20px; position: absolute; top: 50%; right: 0px; margin-top: -24px;}
+			
+			.slide_area div.slide_info_area {text-align: center; position: absolute; top: 93%; width: 100%;}
+			.slide_area div.slide_info_area ul.slide_list_area {overflow: hidden; display: inline-block; vertical-align: middle;}
+			.slide_area div.slide_info_area ul.slide_list_area li {list-style: none; float: left; padding: 0 2px;}
+			.slide_area div.slide_info_area ul.slide_list_area li a span {display: block; width: 13px; height: 13px; font-size: 0; text-indent: -999999px; line-height: 0; background: url('/images/front/main/slide_pageing.png') no-repeat 0px 0px;}
+			.slide_area div.slide_info_area ul.slide_list_area li a.active span {display: block; width: 28px; height: 13px; background: url('/images/front/main/slide_pageing_on.png') no-repeat 0px 0px;}			
+			.slide_area div.slide_info_area div.slide_button_area {display: inline-block; margin-left: 20px; vertical-align: middle;}
+			.slide_area div.slide_info_area div.slide_button_area a {display: inline-block; overflow: hidden;}
+			.slide_area div.slide_info_area div.slide_button_area a:hover {text-decoration: none;}
+			
+		.link_area {overflow: hidden; margin-top: 20px; height: 328px; border: 1px solid #dcdcdc; border-radius: 5px;}
+			.link_area .link_box_area {overflow: hidden;}
+			.link_area .link_box_area ul.link_list {overflow: hidden; margin: 7px; background: url('/images/front/main/link_line_bg.png') no-repeat center center;}
+			.link_area .link_box_area ul.link_list li {float: left; width: 50%; list-style: none; text-align: center;}
+			.link_area .link_box_area ul.link_list li a {display: block; padding: 32px 0 29px 0; color: #4d4d4d;}
+			.link_area .link_box_area ul.link_list li a:hover {text-decoration: none;}
+			.link_area .link_box_area ul.link_list li a span {display: block; margin-top: 10px; font-size: 14px; color: #4d4d4d;}
+			.link_area .link_box_area ul.link_list li a img {display: block; width: 85px; height: 70px; margin: 0 auto;} 
+		
+		.sequence_area {overflow: hidden; margin-bottom: 15px;}
+			.sequence_area .sequence_title {overflow: hidden; margin-bottom: 15px;}
+			.sequence_area .sequence_title strong {font-size: 20px; font-weight: bold; color: #333333;}
+			.sequence_area .sequence_title strong span {color: #eb3348;}
+			.sequence_area .sequence_list_area {overflow: hidden;}
+			.sequence_area .sequence_list_area ul.sequence_list {overflow: hidden; position: relative;}
+			.sequence_area .sequence_list_area ul.sequence_list li {float: left; list-style: none;}
+			.sequence_area .sequence_list_area ul.sequence_list li div {text-align: center;}
+			.sequence_area .sequence_list_area ul.sequence_list li div span {font-size: 15px; color: #555555;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01 {position: relative; width: 250px; z-index: 10; background: url('/images/front/main/sequence_arrow05.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01 div {display: inline-block; width: 215px; height: 80px; line-height: 80px; border-radius: 10px; background-color: #e3e3e3;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01 div span {display: inline-block; width: 215px; height: 80px; padding-left: 25px; background: url('/images/front/main/sequence01_off_bg.png') no-repeat 20px center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02 {position: relative; width: 250px; z-index: 9; margin-left: -29px; background: url('/images/front/main/sequence_arrow05.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02 div {display: inline-block; width: 215px; height: 80px; line-height: 80px; border-radius: 10px; background-color: #e3e3e3;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02 div span {display: inline-block; width: 215px; height: 80px; padding-left: 30px; background: url('/images/front/main/sequence02_off_bg.png') no-repeat 46px center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03 {position: relative; width: 250px; z-index: 8; margin-left: -29px; background: url('/images/front/main/sequence_arrow05.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03 div {display: inline-block; width: 215px; height: 80px; line-height: 80px; border-radius: 10px; background-color: #e3e3e3;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03 div span {display: inline-block; width: 215px; height: 80px; padding-left: 40px; background: url('/images/front/main/sequence03_off_bg.png') no-repeat 41px center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04 {position: relative; width: 250px; z-index: 7; margin-left: -29px; background: url('/images/front/main/sequence_arrow05.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04 div {display: inline-block; width: 215px; height: 80px; line-height: 80px; border-radius: 10px; background-color: #e3e3e3;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04 div span {display: inline-block; width: 215px; height: 80px; padding-left: 30px; background: url('/images/front/main/sequence04_off_bg.png') no-repeat 41px center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05 {position: relative; width: 215px; z-index: 6; margin-left: -29px;}			
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05 div {display: inline-block; width: 215px; height: 80px; line-height: 80px; border-radius: 10px; background-color: #e3e3e3;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05 div span {display: inline-block; width: 215px; height: 80px; padding-left: 30px; background: url('/images/front/main/sequence05_off_bg.png') no-repeat 41px center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on {position: relative; width: 250px; background: url('/images/front/main/sequence_arrow.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on:last-child {position: relative; width: 215px; background: url('/images/front/main/sequence_arrow.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on div {display: inline-block; width: 215px; height: 80px; line-height: 80px; border-radius: 10px; background-color: #0078c9;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on div span {color: #ffffff; font-weight: bold;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01.on div span {display: inline-block; width: 215px; height: 80px; padding-left: 25px; background: url('/images/front/main/sequence01_on_bg.png') no-repeat 20px center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02.on div span {display: inline-block; width: 215px; height: 80px; padding-left: 30px; background: url('/images/front/main/sequence02_on_bg.png') no-repeat 46px center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03.on div span {display: inline-block; width: 215px; height: 80px; padding-left: 40px; background: url('/images/front/main/sequence03_on_bg.png') no-repeat 41px center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04.on div span {display: inline-block; width: 215px; height: 80px; padding-left: 30px; background: url('/images/front/main/sequence04_on_bg.png') no-repeat 41px center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05.on div span {display: inline-block; width: 215px; height: 80px; padding-left: 30px; background: url('/images/front/main/sequence05_on_bg.png') no-repeat 41px center;}
+			
+		.sequence_info_txt {overflow: hidden; width: 100%; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+			.sequence_info_txt div {padding: 20px 30px; text-align: center; border: 3px solid #a0c7dd; background-color: #e5f0f6;}
+			.sequence_info_txt div strong {display: block; margin-bottom: 10px; font-size: 16px; color: #333333; font-weight: bold;}
+			.sequence_info_txt div a {text-decoration: underline; font-size: 15px; color: #333333;}
+			
+		.notice_area {overflow: hidden; float: left; margin-right: 20px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+			.notice_area .notice_layout {position: relative; width: 390px;}
+			.notice_area .notice_layout > div {height: 188px; padding-left: 20px; border:1px solid #dcdcdc; border-radius: 10px;}
+			.notice_area .notice_layout.bg01 {background: url('/images/front/main/notice_area_bg.png') no-repeat 150px top;}
+			.notice_area .notice_layout.bg02 {background: url('/images/front/main/notice_area_bg01.png') no-repeat 190px -10px;}
+			
+			.notice_area .notice_layout .notice_title_area {overflow: hidden; position: relative; margin-bottom: 24px;}
+			.notice_area .notice_layout .notice_title_area strong {display: inline-block; margin-top: 20px; font-size: 16px; font-weight: bold; color: #3f63a7;}
+			.notice_area .notice_layout .notice_contents_area {overflow: hidden;}
+			.notice_area .notice_layout .notice_contents_area a:hover {text-decoration: none;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_img_area {overflow: hidden; float: left; display: inline-block; margin-right: 10px; border:1px solid #dcdcdc;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_img_area img {width: 133px; height: 95px;} 	
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area {overflow: hidden; margin-right: 10px;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area strong {overflow: hidden; display: block; height: 34px; margin-bottom: 10px; font-size: 14px; font-weight: bold; color: #333333;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area p {overflow: hidden; display: block; height: 32px; margin-bottom: 5px; color: #333333; font-size: 12px; line-height: 1.4em; font-family: '돋움', Dotum, Helvetica, 'Apple SD Gothic Neo', Sans-serif; }
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area span {float: right; font-size: 11px; font-family: '돋움', Dotum, Helvetica, 'Apple SD Gothic Neo', Sans-serif; }
+			.notice_area .notice_layout .notice_title_more_area {position: absolute; display: inline-block; float: right; width: 40px; height: 38px; top: 0px; right: 0px; text-align: center; line-height: 38px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc;}
+			
+		
+		.notice_area2 {overflow: hidden; float: left; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}	
+			.notice_area2 .notice_layout2 {width: 274px; position: relative;}
+			.notice_area2 .notice_layout2 > div {height: 188px; padding: 0 0 0 20px; border:1px solid #dcdcdc; border-radius: 10px; background-color: #f1f6fa;} 
+			.notice_area2 .notice_layout2 .notice_title_area2 {overflow: hidden; position: relative; margin-bottom: 24px;}
+			.notice_area2 .notice_layout2 .notice_title_area2 strong {display: inline-block; margin-top: 20px; font-size: 16px; font-weight: bold; color: #3f63a7;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 {overflow: hidden; font-family: 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list {overflow: hidden;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li {margin-bottom: 10px;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li span.num {display: inline-block; width: 20px; height: 20px; color: #ffffff; font-size: 13px; font-weight: bold; text-align: center; line-height: 20px; border-radius: 15px; background-color: #5b98d2;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li a.notice_contents_list_txt {overflow: hidden; display: inline-block; width: 85%; font-size: 13px; font-weight: bold; color: #4d4d4d; line-height: 20px; vertical-align: top; text-overflow: ellipsis; white-space: nowrap;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li a.notice_contents_list_txt:hover {color: #344f99; text-decoration: none;}
+			.notice_area2 .notice_layout2 .notice_title_more_area2 {position: absolute; display: inline-block; float: right; width: 40px; height: 38px; top: 1px; right: 1px; text-align: center; line-height: 38px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc; border-radius: 0 10px 0 0; background-color: #ffffff;}
+		
+		.banner {overflow: hidden; float: left; width: 748px;}
+			.banner .banner_title_area {overflow: hidden; margin: 30px 0 25px 0;}
+			.banner .banner_title_area strong {font-size: 20px; color: #097486; font-weight: bold;}
+			.banner .banner_list_area {overflow: hidden;}
+			.banner .banner_list_area ul li {list-style: none; float: left; margin: 0 25px 20px 0;}
+			.banner .banner_list_area ul li a {display: block; border: 1px solid #dcdcdc;}
+			.banner .banner_list_area ul li a:hover {text-decoration: none;}
+			
+		.youtube_area {overflow: hidden; padding: 0 0 0 30px;}
+			.youtube_area .youtube_title_area {overflow: hidden; margin: 30px 0 25px 0;}
+			.youtube_area .youtube_title_area strong {font-size: 20px; color: #333333; font-weight: bold;}
+			.youtube_area .youtube_movie_area {overflow: hidden; width: 325px; height: 181px;}
+		
+		
+		
+}
+
+
+/* 화면 해상도 width 640px 이상 960px 이하 Design --------------------------------------*/
+@media screen and (max-width: 1024px) and (min-width: 641px) {
+	
+	body {overflow-x: auto;}
+	.main_bottom_content {overflow: hidden;}
+	.main_bottom_content .bottom_content {overflow: hidden; margin: 0 auto;}
+		
+		.row {overflow: hidden;}
+		.one_line_row {overflow: hidden;}
+		.two_line_row {overflow: hidden; margin: 0 10px;}
+		.three_line_row {overflow: hidden; margin: 0 10px;}
+		
+		.slide_area {overflow: hidden; position: relative; width: 100%; margin-bottom: 20px;}
+			.slide_area ul {overflow: hidden;}
+			.slide_area ul li {list-style: none;}
+			.slide_area ul li img {width: 100%;}
+			
+			.slide_area div.arrow_area {overflow: hidden;}
+			.slide_area div.arrow_area a:hover {text-decoration: none;}
+			.slide_area div.arrow_area a.slide_prev {margin-left: 20px; position: absolute; top: 50%; left: 0px; margin-top: -24px;}
+			.slide_area div.arrow_area a.slide_next {margin-right: 20px; position: absolute; top: 50%; right: 0px; margin-top: -24px;}
+			
+			.slide_area div.slide_info_area {text-align: center; position: absolute; top: 90%; width: 100%;}
+			.slide_area div.slide_info_area ul.slide_list_area {overflow: hidden; display: inline-block; vertical-align: middle;}
+			.slide_area div.slide_info_area ul.slide_list_area li {list-style: none; float: left; padding: 0 2px;}
+			.slide_area div.slide_info_area ul.slide_list_area li a span {display: block; width: 13px; height: 13px; font-size: 0; text-indent: -999999px; line-height: 0; background: url('/images/front/main/slide_pageing.png') no-repeat 0px 0px;}
+			.slide_area div.slide_info_area ul.slide_list_area li a.active span {display: block; width: 28px; height: 13px; background: url('/images/front/main/slide_pageing_on.png') no-repeat 0px 0px;}			
+			.slide_area div.slide_info_area div.slide_button_area {display: inline-block; margin-left: 20px; vertical-align: middle;}
+			.slide_area div.slide_info_area div.slide_button_area a {display: inline-block; overflow: hidden;}
+			.slide_area div.slide_info_area div.slide_button_area a:hover {text-decoration: none;}
+		
+		
+		.link_area {overflow: hidden; margin: 0 10px 20px 10px;}
+			.link_area .link_box_area {overflow: hidden; border: 1px solid #dcdcdc; border-radius: 5px;}
+			.link_area .link_box_area ul.link_list {overflow: hidden; margin: 7px;}
+			.link_area .link_box_area ul.link_list li {float: left; width: 25%; list-style: none; text-align: center; background: url('/images/front/main/link_line_m_bg.png') repeat-y left 0px;}
+			.link_area .link_box_area ul.link_list li:first-child {background: none;}
+			.link_area .link_box_area ul.link_list li a {display: block; padding: 32px 0 29px 0; color: #4d4d4d;}
+			.link_area .link_box_area ul.link_list li a:hover {text-decoration: none;}
+			.link_area .link_box_area ul.link_list li a span {display: block; margin-top: 10px; font-size: 16px; color: #4d4d4d;}
+			.link_area .link_box_area ul.link_list li a img {display: block; width: 85px; height: 70px; margin: 0 auto;} 
+		
+		
+		
+		.sequence_area {overflow: hidden; margin-bottom: 15px;}
+			.sequence_area .sequence_title {overflow: hidden; margin-bottom: 15px;}
+			.sequence_area .sequence_title strong {display: block; font-size: 20px; font-weight: bold; color: #333333; text-align: center;}
+			.sequence_area .sequence_title strong span {color: #eb3348;}
+			.sequence_area .sequence_list_area {overflow: hidden;}
+			.sequence_area .sequence_list_area ul.sequence_list {overflow: hidden; position: relative;}
+			.sequence_area .sequence_list_area ul.sequence_list li {float: left; list-style: none; width: 20%; }
+			.sequence_area .sequence_list_area ul.sequence_list li div {text-align: center;}
+			.sequence_area .sequence_list_area ul.sequence_list li div span {font-size: 15px; font-weight: bold; color: #555555;}
+			
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01 {position: relative; z-index: 10; background: url('/images/front/main/sequence_arrow01.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01 div {overflow: hidden; height: 80px; margin-right: 34px; line-height: 80px; border-radius: 10px; background-color: #ededed;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01 div span {display: inline-block; height: 80px;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02 {position: relative;  z-index: 9; background: url('/images/front/main/sequence_arrow02.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02 div {overflow: hidden; height: 80px; margin-right: 34px; line-height: 80px; border-radius: 10px; background-color: #e4e3e3;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02 div span {display: inline-block; height: 80px;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03 {position: relative; z-index: 8; background: url('/images/front/main/sequence_arrow03.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03 div {overflow: hidden; height: 80px; margin-right: 34px; line-height: 80px; border-radius: 10px; background-color: #d3d3d2;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03 div span {display: inline-block; height: 80px;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04 {position: relative; z-index: 7; background: url('/images/front/main/sequence_arrow04.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04 div {overflow: hidden; height: 80px; margin-right: 34px; line-height: 80px; border-radius: 10px; background-color: #c1c1c1;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04 div span {display: inline-block; height: 80px;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05 {position: relative; z-index: 6;}			
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05 div {overflow: hidden; height: 80px; line-height: 80px; border-radius: 10px; background-color: #adadad;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05 div span {display: inline-block; height: 80px;}
+			
+			.sequence_area .sequence_list_area ul.sequence_list li.on {position: relative; background: url('/images/front/main/sequence_arrow.png') no-repeat right center;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on:last-child {position: relative; background: none;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on:last-child div {margin: 0px;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on div {overflow: hidden; height: 80px; margin-right: 34px; line-height: 80px; border-radius: 10px; background-color: #0078c9;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on div span {color: #ffffff;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05.on div span {overflow: hidden; height: 80px;}
+			
+		.sequence_info_txt {overflow: hidden; width: 100%; margin-bottom: 15px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+			.sequence_info_txt div {padding: 20px 30px; text-align: center; border: 3px solid #a0c7dd; background-color: #e5f0f6;}
+			.sequence_info_txt div strong {display: block; margin-bottom: 10px; font-size: 16px; color: #333333; font-weight: bold;}
+			.sequence_info_txt div a {text-decoration: underline; font-size: 15px; color: #333333;}
+				
+		.notice_area {overflow: hidden; margin-bottom: 20px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+			.notice_area .notice_layout {width: 100%; position: relative;}
+			.notice_area .notice_layout > div {height: 188px; padding-left: 20px; border:1px solid #dcdcdc; border-radius: 10px;}
+			.notice_area .notice_layout.bg01 {background: url('/images/front/main/notice_area_bg.png') no-repeat right top;}
+			.notice_area .notice_layout.bg02 {background: url('/images/front/main/notice_area_bg01.png') no-repeat right -10px;}
+			.notice_area .notice_layout .notice_title_area {overflow: hidden; position: relative; margin-bottom: 24px;}
+			.notice_area .notice_layout .notice_title_area strong {display: inline-block; margin-top: 20px; font-size: 16px; font-weight: bold; color: #3f63a7;}
+			.notice_area .notice_layout .notice_contents_area {overflow: hidden;}
+			.notice_area .notice_layout .notice_contents_area a:hover {text-decoration: none;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_img_area {overflow: hidden; float: left; display: inline-block; margin-right: 10px; border:1px solid #dcdcdc;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_img_area img {width: 133px; height: 95px;} 	
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area {overflow: hidden; margin-right: 10px;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area strong {overflow: hidden; display: block; height: 34px; margin-bottom: 10px; font-size: 14px; font-weight: bold; color: #333333;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area p {overflow: hidden; display: block; height: 32px; margin-bottom: 5px; color: #333333; font-size: 12px; line-height: 1.4em; font-family: '돋움', Dotum, Helvetica, 'Apple SD Gothic Neo', Sans-serif; }
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area span {float: right; font-size: 11px; font-family: '돋움', Dotum, Helvetica, 'Apple SD Gothic Neo', Sans-serif; }
+			.notice_area .notice_layout .notice_title_more_area {position: absolute; display: inline-block; float: right; width: 40px; height: 38px; top: 0px; right: 0px; text-align: center; line-height: 38px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc;}		
+		
+		.notice_area2 {overflow: hidden; margin-bottom: 20px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}	
+			.notice_area2 .notice_layout2 {width: 100%; position: relative;}
+			.notice_area2 .notice_layout2 > div {height: 188px; padding: 0 0 0 20px; border:1px solid #dcdcdc; border-radius: 10px; background-color: #f1f6fa;} 
+			.notice_area2 .notice_layout2 .notice_title_area2 {overflow: hidden; position: relative; margin-bottom: 24px;}
+			.notice_area2 .notice_layout2 .notice_title_area2 strong {display: inline-block; margin-top: 20px; font-size: 16px; font-weight: bold; color: #3f63a7;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 {overflow: hidden; font-family: 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list {overflow: hidden;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li {margin-bottom: 10px;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li span.num {display: inline-block; width: 20px; height: 20px; color: #ffffff; font-size: 13px; font-weight: bold; text-align: center; line-height: 20px; border-radius: 15px; background-color: #5b98d2;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li a.notice_contents_list_txt {overflow: hidden; display: inline-block; width: 85%; font-size: 13px; font-weight: bold; color: #4d4d4d; line-height: 20px; vertical-align: top; text-overflow: ellipsis; white-space: nowrap;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li a.notice_contents_list_txt:hover {color: #344f99; text-decoration: none;}
+			.notice_area2 .notice_layout2 .notice_title_more_area2 {position: absolute; display: inline-block; float: right; width: 40px; height: 38px; top: 1px; right: 1px; text-align: center; line-height: 38px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc; border-radius: 0 10px 0 0; background-color: #ffffff;}
+			
+		.banner {overflow: hidden; width: 100%; padding-bottom: 30px; background-color: #e9e9e9;}
+			.banner .banner_title_area {overflow: hidden; margin: 30px 0 25px 10px;}
+			.banner .banner_title_area strong {font-size: 20px; color: #097486; font-weight: bold;}
+			.banner .banner_list_area {overflow: hidden; margin-left: 10px;}
+			.banner .banner_list_area ul {overflow: hidden;}
+			.banner .banner_list_area ul li {list-style: none; float: left; width: 33%; margin-bottom: 10px; text-align: center;}
+			.banner .banner_list_area ul li a {display: inline-block; border: 1px solid #dcdcdc;}
+			.banner .banner_list_area ul li a:hover {text-decoration: none;}
+			
+		.youtube_area {overflow: hidden; padding: 0 0 30px 10px; background-color: #addbda;}
+			.youtube_area .youtube_title_area {overflow: hidden; margin: 30px 0 25px 0;}
+			.youtube_area .youtube_title_area strong {font-size: 20px; color: #333333; font-weight: bold;}
+			.youtube_area .youtube_movie_area {overflow: hidden; width: 325px; height: 181px; margin: 0 auto;}
+}
+
+
+/* 화면 해상도 width 640px 이하 Design --------------------------------------*/
+@media screen and (max-width: 640px){
+	
+	body {overflow-x: auto;}
+	.main_bottom_content {overflow: hidden;}
+	.main_bottom_content .bottom_content {overflow: hidden; margin: 0 auto;}
+		
+		.row {overflow: hidden;}
+		.one_line_row {overflow: hidden;}
+		.two_line_row {overflow: hidden; margin: 0 10px;}
+		.three_line_row {overflow: hidden; margin: 0 10px;}
+		
+		.slide_area {overflow: hidden; position: relative; width: 100%; margin-bottom: 20px;}
+			.slide_area ul {overflow: hidden;}
+			.slide_area ul li {list-style: none;}
+			.slide_area ul li img {width: 100%;}
+		
+		.slide_area div.arrow_area {overflow: hidden;}
+			.slide_area div.arrow_area a:hover {text-decoration: none;}
+			.slide_area div.arrow_area a.slide_prev {margin-left: 20px; position: absolute; top: 50%; left: 0px; margin-top: -24px;}
+			.slide_area div.arrow_area a.slide_next {margin-right: 20px; position: absolute; top: 50%; right: 0px; margin-top: -24px;}
+			
+			.slide_area div.slide_info_area {text-align: center; position: absolute; bottom: 5px; width: 100%;}
+			.slide_area div.slide_info_area ul.slide_list_area {overflow: hidden; display: inline-block; vertical-align: middle;}
+			.slide_area div.slide_info_area ul.slide_list_area li {list-style: none; float: left; padding: 0 2px;}
+			.slide_area div.slide_info_area ul.slide_list_area li a span {display: block; width: 13px; height: 13px; font-size: 0; text-indent: -999999px; line-height: 0; background: url('/images/front/main/slide_pageing.png') no-repeat 0px 0px;}
+			.slide_area div.slide_info_area ul.slide_list_area li a.active span {display: block; width: 28px; height: 13px; background: url('/images/front/main/slide_pageing_on.png') no-repeat 0px 0px;}			
+			.slide_area div.slide_info_area div.slide_button_area {display: inline-block; margin-left: 20px; vertical-align: middle;}
+			.slide_area div.slide_info_area div.slide_button_area a {display: inline-block; overflow: hidden;}
+			.slide_area div.slide_info_area div.slide_button_area a:hover {text-decoration: none;}
+		
+		.link_area {overflow: hidden; margin: 0 10px 20px 10px;}
+			.link_area .link_box_area {overflow: hidden; border: 1px solid #dcdcdc; border-radius: 5px;}
+			.link_area .link_box_area ul.link_list {overflow: hidden; margin: 7px; background: url(/images/main/link_line_bg.png) no-repeat center center;}
+			.link_area .link_box_area ul.link_list li {float: left; width: 50%; list-style: none; text-align: center;}
+			.link_area .link_box_area ul.link_list li:first-child {background: none;}
+			.link_area .link_box_area ul.link_list li a {display: block; padding: 32px 0 29px 0; color: #4d4d4d;}
+			.link_area .link_box_area ul.link_list li a:hover {text-decoration: none;}
+			.link_area .link_box_area ul.link_list li a span {display: block; margin-top: 10px; font-size: 14px; color: #4d4d4d;}
+			.link_area .link_box_area ul.link_list li a img {display: block; width: 85px; height: 70px; margin: 0 auto;} 
+			
+		.sequence_area {overflow: hidden; margin-bottom: 15px;}
+			.sequence_area .sequence_title {overflow: hidden; margin-bottom: 15px;}
+			.sequence_area .sequence_title strong {display: block; font-size: 15px; font-weight: bold; color: #333333; text-align: center;}
+			.sequence_area .sequence_title strong span {color: #eb3348;}
+			.sequence_area .sequence_list_area {overflow: hidden;}
+			.sequence_area .sequence_list_area ul.sequence_list {overflow: hidden; position: relative;}
+			.sequence_area .sequence_list_area ul.sequence_list li {float: left; list-style: none; width: 20%; }
+			.sequence_area .sequence_list_area ul.sequence_list li div {text-align: center;}
+			.sequence_area .sequence_list_area ul.sequence_list li div span {font-size: 12px; font-weight: bold; color: #555555;}
+			
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01 {position: relative; z-index: 10;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01 div {overflow: hidden; height: 80px;  border-radius: 5px; background-color: #ededed;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list01 div span {display: inline-block; padding-top: 25px;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02 {position: relative;  z-index: 9;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02 div {overflow: hidden; height: 80px; border-radius: 5px; background-color: #e4e3e3;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list02 div span {display: inline-block; padding-top: 25px;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03 {position: relative; z-index: 8;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03 div {overflow: hidden; height: 80px; border-radius: 5px; background-color: #d3d3d2;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list03 div span {display: inline-block; padding-top: 25px;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04 {position: relative; z-index: 7;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04 div {overflow: hidden; height: 80px; border-radius: 5px; background-color: #c1c1c1;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list04 div span {display: inline-block; padding-top: 25px;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05 {position: relative; z-index: 6;}			
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05 div {overflow: hidden; height: 80px; border-radius: 5px; background-color: #adadad;}
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05 div span {display: inline-block; padding-top: 25px;}
+			
+			.sequence_area .sequence_list_area ul.sequence_list li.on {position: relative;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on:last-child {position: relative; background: none;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on:last-child div {margin: 0px;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on div {overflow: hidden; height: 80px; border-radius: 5px; background-color: #0078c9;}
+			.sequence_area .sequence_list_area ul.sequence_list li.on div span {color: #ffffff;}
+		
+			.sequence_area .sequence_list_area ul.sequence_list li.sequence_list05.on div span {overflow: hidden; height: 80px; padding-top: 25px;}
+			
+		.sequence_info_txt {overflow: hidden; width: 100%; margin-bottom: 15px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+			.sequence_info_txt div {padding: 20px 30px; text-align: center; border: 3px solid #a0c7dd; background-color: #e5f0f6;}
+			.sequence_info_txt div strong {display: block; margin-bottom: 10px; font-size: 16px; color: #333333; font-weight: bold;}
+			.sequence_info_txt div a {text-decoration: underline; font-size: 15px; color: #333333;}	
+			
+		.notice_area {overflow: hidden; margin-bottom: 20px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+			.notice_area .notice_layout {width: 100%; position: relative;}
+			.notice_area .notice_layout > div {height: 188px; padding-left: 20px; border:1px solid #dcdcdc; border-radius: 10px;}
+			.notice_area .notice_layout .notice_title_area {overflow: hidden; position: relative; margin-bottom: 24px;}
+			.notice_area .notice_layout .notice_title_area strong {display: inline-block; margin-top: 20px; font-size: 16px; font-weight: bold; color: #3f63a7;}
+			.notice_area .notice_layout .notice_contents_area {overflow: hidden;}
+			.notice_area .notice_layout .notice_contents_area a:hover {text-decoration: none;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_img_area {overflow: hidden; float: left; display: inline-block; margin-right: 10px; border:1px solid #dcdcdc;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_img_area img {width: 133px; height: 95px;} 	
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area {overflow: hidden; margin-right: 10px;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area strong {overflow: hidden; display: block; height: 34px; margin-bottom: 10px; font-size: 14px; font-weight: bold; color: #333333;}
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area p {overflow: hidden; display: block; height: 32px; margin-bottom: 5px; color: #333333; font-size: 12px; line-height: 1.4em; font-family: '돋움', Dotum, Helvetica, 'Apple SD Gothic Neo', Sans-serif; }
+			.notice_area .notice_layout .notice_contents_area .notice_contents_txt_area span {float: right; font-size: 11px; font-family: '돋움', Dotum, Helvetica, 'Apple SD Gothic Neo', Sans-serif; }
+			.notice_area .notice_layout .notice_title_more_area {position: absolute; display: inline-block; float: right; width: 40px; height: 38px; top: 0px; right: 0px; text-align: center; line-height: 38px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc;}
+		
+		.notice_area2 {overflow: hidden; margin-bottom: 20px; font-family: 'Nanum Square', 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}	
+			.notice_area2 .notice_layout2 {width: 100%; position: relative;}
+			.notice_area2 .notice_layout2 > div {height: 188px; padding: 0 0 0 20px; border:1px solid #dcdcdc; border-radius: 10px; background-color: #f1f6fa;} 
+			.notice_area2 .notice_layout2 .notice_title_area2 {overflow: hidden; position: relative; margin-bottom: 24px;}
+			.notice_area2 .notice_layout2 .notice_title_area2 strong {display: inline-block; margin-top: 20px; font-size: 16px; font-weight: bold; color: #3f63a7;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 {overflow: hidden; font-family: 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list {overflow: hidden;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li {margin-bottom: 10px;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li span.num {display: inline-block; width: 20px; height: 20px; color: #ffffff; font-size: 13px; font-weight: bold; text-align: center; line-height: 20px; border-radius: 15px; background-color: #5b98d2;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li a.notice_contents_list_txt {overflow: hidden; display: inline-block; width: 85%; font-size: 13px; font-weight: bold; color: #4d4d4d; line-height: 20px; vertical-align: top; text-overflow: ellipsis; white-space: nowrap;}
+			.notice_area2 .notice_layout2 .notice_contents_area2 ol.notice_contents_list li a.notice_contents_list_txt:hover {color: #344f99; text-decoration: none;}
+			.notice_area2 .notice_layout2 .notice_title_more_area2 {position: absolute; display: inline-block; float: right; width: 40px; height: 38px; top: 1px; right: 1px; text-align: center; line-height: 38px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc; border-radius: 0 10px 0 0; background-color: #ffffff;}
+		.banner {overflow: hidden; width: 100%; padding-bottom: 30px; background-color: #e9e9e9;}
+			.banner .banner_title_area {overflow: hidden; margin: 30px 0 25px 10px;}
+			.banner .banner_title_area strong {font-size: 15px; color: #097486; font-weight: bold;}
+			.banner .banner_list_area {overflow: hidden; }
+			.banner .banner_list_area ul {overflow: hidden;}
+			.banner .banner_list_area ul li {list-style: none; float: left; width: 48%; margin: 1%; text-align: center;}
+			.banner .banner_list_area ul li a {display: inline-block; border: 1px solid #dcdcdc;}
+			.banner .banner_list_area ul li a img {width: 100%;}
+			.banner .banner_list_area ul li a:hover {text-decoration: none;}
+			
+		.youtube_area {overflow: hidden; padding: 0 0 30px 10px; background-color: #addbda;}
+			.youtube_area .youtube_title_area {overflow: hidden; margin: 30px 0 25px 0;}
+			.youtube_area .youtube_title_area strong {font-size: 15px; color: #333333; font-weight: bold;}
+			.youtube_area .youtube_movie_area {overflow: hidden; height: 181px; margin: 0 auto;}
+
+}
+

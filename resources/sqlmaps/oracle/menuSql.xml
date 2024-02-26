@@ -1,0 +1,788 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MenuDao">
+
+	<select id="selectMenuList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectMenuList */
+		SELECT
+				B.MENU_ID
+	     		,B.SITE_ID
+				,UP_MENU_ID
+				,SORT
+				,SITE_CD
+				,B.MENU_NM
+				,B.REF_CD
+				,MENU_DESC
+				,REF_CD
+				,dbo.UF_CODE_NM('REF_CD',REF_CD) AS REF_CD_NM
+				,REF_MENU_ID
+				,(SELECT MENU_NM FROM TS_ALL_MENU_VIEW WHERE MENU_ID = B.REF_MENU_ID) AS REF_MENU_NM
+				,REF_CONT_ID
+				,(SELECT TITLE  FROM TS_MENUCONTENTS WHERE CONT_ID = B.REF_CONT_ID) AS REF_CONT_NM
+				,REF_BOARD_ID
+				,(SELECT TITLE  FROM TS_BOARD WHERE BOARD_ID = B.REF_BOARD_ID) AS REF_BOARD_NM
+				,REF_URL
+				,GNB_YN
+				,FOOTER_YN
+				,SITEMAP_YN
+				,TARGET_CD
+				,WIDTH
+				,HEIGHT
+				,[TOP]
+				,[LEFT]
+				,LOGIN_YN
+				,USE_YN
+				,REG_USER_ID
+				,REG_DT
+				,MENU_NM_PATH MENU_NAVI
+		FROM 	TS_ALL_MENU_VIEW B
+		WHERE 	1=1
+		<choose>
+		<when test='siteId != null and !siteId.equals("")' >
+		AND 	SITE_ID = #{siteId}
+		</when>
+		<otherwise>
+		AND 	SITE_ID = #{*siteId}
+		</otherwise>
+		</choose>
+		<choose>
+		<when test='siteCd != null and !siteCd.equals("")' >
+		AND 	SITE_CD = #{siteCd}
+		</when>
+		<otherwise>
+		AND 	SITE_CD = #{*siteCd}
+		</otherwise>
+		</choose>
+		AND  DEL_YN='N'
+		AND ISNULL(UP_MENU_ID,'0') = ISNULL(#{upMenuId},'0')
+	     ORDER BY USE_YN DESC,SORT ASC
+	</select>
+
+	<select id="selectMenuTreeList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectMenuTreeList */
+	    SELECT ID, PARENT, TEXT, TYPE
+	    FROM (
+	         SELECT
+	         	  '0'  		AS ID
+	         	, '#' 		AS PARENT
+	         	, ISNULL((
+                    SELECT CASE WHEN CODE_ID= 'F' THEN 'HOME' ELSE CODE_NM END
+                    FROM 	TC_CODE
+                    WHERE 	MST_ID = 'SITE_CD'
+                    AND CODE_ID = ISNULL(#{siteCd},'F')
+                ),'ROOT')	AS TEXT
+	         	, 0 		AS SORT
+	         	, 0 		AS LVL
+	         	, 'default' AS TYPE
+	         UNION
+	         SELECT
+	         	  CAST(ID AS VARCHAR)
+	         	, CAST(PARENT AS VARCHAR)
+	         	, TEXT
+	         	, SORT
+	         	, LVL
+	         	,(CASE WHEN (SELECT COUNT(MENU_ID) FROM TS_ALL_MENU_VIEW WHERE SITE_CD=
+	         		ISNULL(
+	         		<choose>
+				<when test='siteCd != null and !siteCd.equals("")' >
+				#{siteCd}
+				</when>
+				<otherwise>
+				#{*siteCd}
+				</otherwise>
+				</choose>
+	         		,'F') AND SITE_ID =  #{*siteId} AND UP_MENU_ID = X.ID AND UP_MENU_ID = X.ID AND USE_YN='Y' AND DEL_YN='N') > 0  OR REF_CD='F'  THEN 'default' ELSE 'file' END)+ CASE WHEN X.USE_YN = 'N' THEN '-x' ELSE '' END AS TYPE
+	         FROM (
+	             SELECT
+	              A.MENU_ID 				AS ID,
+	              ISNULL(UP_MENU_ID,0) 	AS PARENT,
+	              MENU_NM 				AS TEXT,
+	              SORT 					AS SORT,
+	              REF_CD,
+	              LEVEL 				AS LVL,
+	              CASE WHEN (select USE_YN from ts_menu where menu_id = A.UP_MENU_ID) = 'N'  AND USE_YN='N' THEN 'N' ELSE 'Y' END USE_YN,
+	              CASE WHEN (select DEL_YN from ts_menu where menu_id = A.UP_MENU_ID) = 'Y'  AND DEL_YN='Y' THEN 'Y' ELSE 'N' END DEL_YN
+	            FROM TS_ALL_MENU_VIEW A INNER JOIN (SELECT MENU_ID FROM TS_ALL_MENU_VIEW WHERE SITE_CD = ISNULL(
+	            <choose>
+				<when test='siteCd != null and !siteCd.equals("")' >
+				#{siteCd}
+				</when>
+				<otherwise>
+				#{*siteCd}
+				</otherwise>
+			  </choose>
+	            ,'F')  AND SITE_ID =  #{*siteId}) B
+	            ON A.MENU_ID=B.MENU_ID
+	          ) X
+	          WHERE 1=1
+	          <if test='useYn != null and !useYn.equals("")' >
+	          AND X.USE_YN = #{useYn}
+	          </if>
+	          AND X.DEL_YN = 'N'
+	      ) Y
+	      ORDER BY LVL ASC, SORT ASC
+	</select>
+
+	<select id="selectHomepageMenuList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectHomepageMenuList */
+	   SELECT
+	                CASE
+                    WHEN A.SUB_CNT > 0 THEN
+                    (SELECT TOP 1 C.MENU_ID FROM TS_ALL_MENU_VIEW C WHERE C.SITE_CD = A.SITE_CD AND C.UP_MENU_ID = A.MENU_ID order by SORT)
+                    ELSE
+                    A.MENU_ID
+                    END AS MENU_ID
+	                ,ISNULL(A.UP_MENU_ID,A.MENU_ID)  UP_MENU_ID
+	                ,A.SUB_CNT
+	                ,B.MENU_NM
+	                ,LEVEL
+	                ,A.SORT
+	                ,A.SITE_CD
+	                ,MENU_DESC
+	                ,REF_CD
+	                ,REF_MENU_ID
+	                ,REF_URL
+	                ,REF_CONT_ID
+	                ,REF_BOARD_ID
+	                ,REF_URL
+	                ,GNB_YN
+	                ,FOOTER_YN
+	                ,SITEMAP_YN
+	                ,TARGET_CD
+	                ,WIDTH
+	                ,HEIGHT
+	                ,[TOP]
+	                ,[LEFT]
+	         FROM (
+	             SELECT
+	             		  MENU_ID
+	             		, UP_MENU_ID
+	             		, SORT
+	             		, SITE_ID
+	             		, SITE_CD
+						,(SELECT COUNT(MENU_ID) FROM TS_ALL_MENU_VIEW WHERE SITE_CD='F' AND UP_MENU_ID = G.MENU_ID AND DEL_YN='N' AND USE_YN='Y') AS SUB_CNT
+	             FROM 	TS_ALL_MENU_VIEW G
+	             WHERE 	SITE_CD = 'F'
+	             AND 	USE_YN = 'Y'
+	             AND 	GNB_YN = 'Y'
+	             AND 	DEL_YN = 'N'
+	         ) A
+	         INNER JOIN TS_ALL_MENU_VIEW B
+	         ON A.MENU_ID = B.MENU_ID
+	         AND B.SITE_ID=A.SITE_ID
+	         AND A.SITE_ID = #{*siteId}
+	         WHERE 4 > LEVEL
+	         ORDER BY B.menu_sort
+	</select>
+
+	<select id="selectFrontSiteMapList" parameterType="Map" resultType="caseMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectFrontSiteMapList */
+	   SELECT
+	                MENU_ID
+	                ,ISNULL(A.UP_MENU_ID,A.MENU_ID)  UP_MENU_ID
+	                ,(SELECT COUNT(MENU_ID) FROM TS_ALL_MENU_VIEW WHERE SITE_ID = A.SITE_ID AND SITE_CD='F' AND UP_MENU_ID = A.MENU_ID) AS SUB_CNT
+	                ,B.MENU_NM
+	                ,LEVEL
+	                ,A.SORT
+	                ,A.SITE_CD
+	                ,MENU_DESC
+	                ,REF_CD
+	                ,REF_MENU_ID
+	                ,REF_URL
+	                ,REF_CONT_ID
+	                ,REF_BOARD_ID
+	                ,REF_URL
+	                ,GNB_YN
+	                ,FOOTER_YN
+	                ,SITEMAP_YN
+	                ,TARGET_CD
+	                ,WIDTH
+	                ,HEIGHT
+	                ,[TOP]
+	                ,[LEFT]
+	         FROM 	TS_ALL_MENU_VIEW
+	             WHERE 	SITE_CD = 'F'
+	             AND 	USE_YN = 'Y'
+	             AND 	GNB_YN = 'Y'
+	             AND 	DEL_YN = 'N'
+	             AND SITE_ID = #{*siteId}
+	         	 AND 4 > [LEVEL]
+	         ORDER BY MENU_SORT
+	</select>
+
+	<select id="selectMenu" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectMenu */
+		SELECT
+		   		 A.MENU_ID
+				,UP_MENU_ID
+				,SORT
+				,SITE_CD
+				,A.MENU_NM
+				,MENU_DESC
+				,REF_CD
+				,REF_MENU_ID
+				,(SELECT MENU_NM FROM TS_ALL_MENU_VIEW WHERE MENU_ID = A.REF_MENU_ID) AS REF_MENU_NM
+				,REF_CONT_ID
+				,(SELECT TITLE  FROM TS_MENUCONTENTS WHERE CONT_ID = A.REF_CONT_ID) AS REF_CONT_NM
+				,REF_BOARD_ID
+				,(SELECT TITLE  FROM TS_BOARD WHERE BOARD_ID = A.REF_BOARD_ID) AS REF_BOARD_NM
+				,REF_URL
+				,GNB_YN
+				,FOOTER_YN
+				,SITEMAP_YN
+				,TARGET_CD
+				,WIDTH
+				,HEIGHT
+				,[TOP]
+				,[LEFT]
+				,LOGIN_YN
+				,A.USE_YN
+				,REG_USER_ID
+				,REG_DT
+				,CONVERT(int,left(MENU_PATH,6)) AS TOP_MENU_ID
+				,CASE WHEN CHARINDEX('>', menu_nm_path) > 0 THEN
+						LEFT(menu_nm_path, CHARINDEX('>', menu_nm_path)-1)
+					ELSE
+						menu_nm_path
+					END
+				 AS TOP_MENU_NM
+				,MENU_PATH AS NAVI
+				,MENU_NM_PATH AS MENU_NAVI
+				,'HOME>' + MENU_NM_PATH AS MENU_NAVI2
+
+		FROM TS_ALL_MENU_VIEW A
+		WHERE 1=1
+		AND A.SITE_ID = #{*siteId}
+		<choose>
+		<when test='menuId != null and !menuId.equals("")' >
+		AND A.MENU_ID = #{menuId}
+		</when>
+		<otherwise>
+		AND A.MENU_ID = #{*menuId}
+		</otherwise>
+		</choose>
+		AND DEL_YN = 'N'
+		ORDER BY MENU_SORT
+	</select>
+
+	<select id="selectMenuExist" parameterType="Map" resultType="integer">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectMenuExist */
+		SELECT
+				  COUNT(*)
+			FROM TS_ALL_MENU_VIEW
+			WHERE MENU_ID = #{menuId}
+			AND A.SITE_ID = #{*siteId}
+	</select>
+
+	<insert id="insertMenu" parameterType="Map" keyProperty="menuId" useGeneratedKeys="true">
+	    /* kr.apfs.local.menu.dao.impl.MenuDao.insertMenu */
+		INSERT INTO
+		TS_MENU (
+				MENU_ID
+				,UP_MENU_ID
+				,SORT
+				,SITE_ID
+				,SITE_CD
+				,MENU_NM
+				,MENU_DESC
+				,REF_CD
+				,REF_MENU_ID
+				,REF_CONT_ID
+				,REF_BOARD_ID
+				,REF_URL
+				,GNB_YN
+				,FOOTER_YN
+				,SITEMAP_YN
+				,HTTPS_YN
+				,TARGET_CD
+				,WIDTH
+				,HEIGHT
+				,[TOP]
+				,[LEFT]
+				,LOGIN_YN
+				,USE_YN
+				,DEL_YN
+				,REG_USER_ID
+				,REG_DT
+		) SELECT TOP 1
+				(SELECT MAX(MENU_ID)+1 FROM TS_MENU)
+				,CASE WHEN #{upMenuId} = '0' THEN NULL ELSE #{upMenuId} END
+				,#{sort}
+				,#{*siteId}
+				<choose>
+				<when test='siteCd != null and !siteCd.equals("")' >
+				,#{siteCd}
+				</when>
+				<otherwise>
+				,#{*siteCd}
+				</otherwise>
+				</choose>
+				,#{menuNm}
+				,#{menuDesc}
+				,#{refCd}
+				,#{refMenuId}
+				,#{refContId}
+				,#{refBoardId}
+				<choose>
+				<when test='refUrl == null and refUrl == "" ' >
+				,'#'
+				</when>
+				<otherwise>
+				,#{refUrl}
+				</otherwise>
+				</choose>
+				,#{gnbYn}
+				,'Y'
+				,#{sitemapYn}
+				,'N'
+				,#{targetCd}
+				,#{width}
+				,#{height}
+				,#{top}
+				,#{left}
+				,#{loginYn}
+				,#{useYn}
+				,'N'
+				,#{*userId}
+				,left(convert(varchar, getdate(), 112)+'000000',14)
+		FROM TS_MENU
+		WHERE 1=1
+	</insert>
+
+	<update id="updateMenu" parameterType="Map" >
+	    /* kr.apfs.local.menu.dao.impl.MenuDao.updateMenu */
+	    UPDATE
+	 		TS_MENU
+		SET
+				 MENU_NM 		= #{menuNm}
+				,MENU_DESC 		= #{menuDesc}
+				,REF_CD 		= #{refCd}
+				,REF_MENU_ID 		= #{refMenuId}
+				,REF_CONT_ID 	= #{refContId}
+				,REF_BOARD_ID 	= #{refBoardId}
+				,REF_URL 		= #{refUrl}
+				,GNB_YN 		= #{gnbYn}
+				,FOOTER_YN 		= #{footerYn}
+				,SITEMAP_YN 	= #{sitemapYn}
+				,TARGET_CD 		= #{targetCd}
+				,WIDTH 			= #{width}
+				,HEIGHT 		= #{height}
+				,[TOP] 			= #{top}
+				,[LEFT] 			= #{left}
+				,LOGIN_YN 		= #{loginYn}
+				,USE_YN 		= #{useYn}
+				,UPD_USER_ID 	= #{*userId}
+				,UPD_DT 		= left(convert(varchar, getdate(), 112)+'000000',14)
+				,SORT = #{sort}
+		WHERE	MENU_ID 		= #{menuId}
+	</update>
+
+	<update id="deleteMenu" parameterType="Map" >
+	    /* kr.apfs.local.menu.dao.impl.MenuDao.deleteMenu */
+
+	 	UPDATE TS_MENU
+	 	SET
+	 	del_yn = 'Y'
+	 	,use_yn = 'N'
+	 	WHERE
+	 	1=1
+	 	AND menu_id IN(
+	 				SELECT
+	 					menu_id
+	 				FROM TS_ALL_MENU_VIEW
+	 				WHERE up_menu_id IN
+	 						  (
+	 						  		SELECT a.menu_id
+	 						  		FROM TS_ALL_MENU_VIEW a
+	 						  		WHERE (
+	 						  				up_menu_id = #{menuId}
+	 						  				OR menu_id = #{menuId})
+	 						  					) OR menu_id = #{menuId})
+	 	AND site_cd = #{siteCd}
+
+	</update>
+
+	<delete id="deleteMenuSub" parameterType="Map" >
+	    /* kr.apfs.local.menu.dao.impl.MenuDao.deleteMenuSub */
+	 	DELETE FROM
+			TS_MENU
+		WHERE MENU_ID = #{menuId}
+	</delete>
+
+	<update id="updateMenuSort" parameterType="Map" >
+	    /* kr.apfs.local.menu.dao.impl.MenuDao.updateMenuSort */
+	    UPDATE TS_MENU
+	    SET sort = #{sort}
+	    WHERE MENU_ID = #{menuId}
+	</update>
+
+	<update id="deleteMenuReorder" parameterType="Map" >
+	    /* kr.apfs.local.menu.dao.impl.MenuDao.deleteMenuReorder */
+	    UPDATE
+	 		TS_MENU
+		SET
+		        SORT = SORT - 1
+		WHERE	UP_MENU_ID = #{upMenuId} AND SORT > (SELECT SORT FROM TS_ALL_MENU_VIEW WHERE MENU_ID =  #{menuId} )
+	</update>
+
+	<select id="selectManagerMenuTreeList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectManagerMenuTreeList */
+		SELECT TOP 1
+	         '0' 	AS ID
+	        , 0 	AS PARENT
+	        , '지역상공회의소 온라인플랫폼' AS TEXT
+	        , 0 	AS SORT
+	        , 'N' 	AS AUTH_YN
+	        , 0 	AS LVL
+	     FROM TS_ALL_MENU_VIEW B
+
+	</select>
+
+	<update id="insertAuthMenu" parameterType="Map" >
+	    /* kr.apfs.local.menu.dao.impl.AuthDao.insertAuthMenu */
+
+	    UPDATE TS_MENU
+	    SET
+	    		 LIMIT_USER_CD = #{limitUserCd}
+	    		,UPD_USER_ID = #{*userId}
+	    		,UPD_DT = left(convert(varchar, getdate(), 112)+'000000',14)
+	    WHERE 	MENU_ID = #{menuId}
+	</update>
+
+	<delete id="deleteAuthMenu" parameterType="Map" >
+	    /* kr.apfs.local.menu.dao.impl.AuthDao.deleteAuthMenu */
+	    UPDATE TS_MENU
+	    SET
+	    		 LIMIT_USER_CD = '999'
+	    		,UPD_USER_ID = #{*userId}
+	    		,UPD_DT = left(convert(varchar, getdate(), 112)+'000000',14)
+	    WHERE MENU_ID = #{menuId}
+	</delete>
+
+	<select id="selectAuthTopMenuList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectAuthTopMenuList */
+	     SELECT
+	             MENU_ID
+				,UP_MENU_ID
+				,SORT
+				,SITE_CD
+				,MENU_NM
+				,MENU_DESC
+				,REF_CD
+				,REF_MENU_ID
+				,(SELECT MENU_NM FROM TS_ALL_MENU_VIEW WHERE MENU_ID = B.REF_MENU_ID) AS REF_NM
+				,REF_CONT_ID
+				,(SELECT TITLE  FROM TS_MENUCONTENTS WHERE CONT_ID = B.REF_CONT_ID) AS REF_CONT_NM
+				,REF_BOARD_ID
+				,(SELECT TITLE  FROM TS_BOARD WHERE BOARD_ID = B.REF_BOARD_ID) AS REF_BOARD_NM
+				,REF_URL
+				,GNB_YN
+				,FOOTER_YN
+				,SITEMAP_YN
+				,TARGET_CD
+				,WIDTH
+				,HEIGHT
+				,[TOP]
+				,[LEFT]
+				,LOGIN_YN
+				,USE_YN
+				,REG_USER_ID
+				,REG_DT
+
+	      FROM TS_ALL_MENU_VIEW B
+	      WHERE 1=1
+	      AND 	UP_MENU_ID  IS NULL
+	      AND 	SITE_CD = 'B'
+	      AND 	USE_YN = 'Y'
+	      AND 	GNB_YN = 'Y'
+	      AND 	DEL_YN = 'N'
+	      AND B.SITE_ID = #{*siteId}
+	      <![CDATA[  AND ISNULL(LIMIT_USER_CD,9) <= #{*userCd} ]]>
+
+	      ORDER BY MENU_SORT
+	</select>
+
+	<select id="selectAuthSubMenuList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectAuthSubMenuList */
+
+		SELECT
+				A.MENU_ID
+				,UP_MENU_ID
+				,SORT
+				,SITE_CD
+				,MENU_NM
+				,MENU_DESC
+				,REF_CD
+				,REF_MENU_ID
+				,(SELECT MENU_NM FROM TS_ALL_MENU_VIEW WHERE MENU_ID = A.REF_MENU_ID) AS REF_MENU_NM
+				,REF_CONT_ID
+				,(SELECT TITLE  FROM TS_MENUCONTENTS WHERE  CONT_ID = A.REF_CONT_ID) AS REF_CONT_NM
+				,REF_BOARD_ID
+				,(SELECT TITLE  FROM TS_BOARD WHERE  BOARD_ID = A.REF_BOARD_ID) AS REF_BOARD_NM
+				,REF_URL
+				,GNB_YN
+				,FOOTER_YN
+				,SITEMAP_YN
+				,TARGET_CD
+				,WIDTH
+				,HEIGHT
+				,[TOP]
+				,[LEFT]
+				,LOGIN_YN
+				,USE_YN
+				,REG_USER_ID
+				,REG_DT
+				,(LEVEL-1) AS LVL
+		FROM TS_ALL_MENU_VIEW A
+		WHERE 1=1
+		AND A.SITE_ID = #{*siteId}
+		AND SITE_CD 	= 'B'
+		AND USE_YN  	= 'Y'
+		AND GNB_YN 	= 'Y'
+		AND DEL_YN 	= 'N'
+		<choose>
+		<when test='topMenuId != null and !topMenuId.equals("")' >
+		AND CONVERT(int,left(menu_path,6)) = #{topMenuId}
+		AND MENU_ID != #{topMenuId}
+		</when>
+		<when test='upMenuId != null and !upMenuId.equals("")' >
+		AND CONVERT(int,left(menu_path,6)) = (select top 1 CONVERT(int,left(menu_path,6)) from TS_ALL_MENU_VIEW where menu_path like '%' + #{upMenuId} + ')
+		AND MENU_ID != (select top 1 CONVERT(int,left(menu_path,6)) from TS_ALL_MENU_VIEW where menu_path like '%' + {upMenuId} + ')
+		</when>
+		<otherwise>
+		AND CONVERT(int,left(menu_path,6)) = (select top 1 CONVERT(int,left(menu_path,6)) from TS_ALL_MENU_VIEW where menu_path like '%' + #{*menuId} +')
+		AND MENU_ID != (select top 1 CONVERT(int,left(menu_path,6)) from TS_ALL_MENU_VIEW where menu_path like '%' + #{*menuId} + ')
+		</otherwise>
+	   </choose>
+		<![CDATA[  AND ISNULL(LIMIT_USER_CD,9) <= #{*userCd} ]]>
+		ORDER BY MENU_SORT
+	</select>
+
+	<select id="selectMenuSearchList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectMenuSearchList */
+		SELECT
+				B.MENU_ID
+				,B.UP_MENU_ID
+				,(SELECT MENU_NM FROM TS_MENU WHERE MENU_ID = B.UP_MENU_ID) AS UP_MENU_NM
+				,B.SORT
+				,B.SITE_CD
+				,B.MENU_NM
+				,B.MENU_DESC
+				,B.REF_CD
+				,dbo.UF_CODE_NM('REF_CD',B.REF_CD) AS REF_CD_NM
+				,B.REF_MENU_ID
+				,(SELECT MENU_NM FROM TS_ALL_MENU_VIEW WHERE MENU_ID = B.REF_MENU_ID) AS REF_MENU_NM
+				,B.REF_CONT_ID
+				,(SELECT TITLE  FROM TS_MENUCONTENTS WHERE  CONT_ID = B.REF_CONT_ID) AS REF_CONT_NM
+				,B.REF_BOARD_ID
+				,(SELECT TITLE  FROM TS_BOARD WHERE  BOARD_ID = B.REF_BOARD_ID) AS REF_BOARD_NM
+				,B.REF_URL
+				,B.GNB_YN
+				,B.FOOTER_YN
+				,B.SITEMAP_YN
+				,B.TARGET_CD
+				,B.WIDTH
+				,B.HEIGHT
+				,B.[TOP]
+				,B.[LEFT]
+				,B.LOGIN_YN
+				,B.USE_YN
+				,B.REG_USER_ID
+				,B.REG_DT
+				,LEVEL LVL
+				,MENU_NM_PATH 	AS MENU_NAVI
+	            ,MENU_PATH 	AS NAVI
+	            ,ISNULL((SELECT	TOP 1 CASE WHEN COUNT(REF_MENU_ID)  > 0 THEN 'Y' ELSE 'N' END REF_YN
+										FROM TS_ALL_MENU_VIEW
+										WHERE 1=1
+										AND DEL_YN = 'N'
+										GROUP BY REF_MENU_ID),'N') AS REF_YN
+		FROM TS_ALL_MENU_VIEW B
+	    WHERE 1=1
+	    	AND B.SITE_ID = #{*siteId}
+           	AND 	USE_YN='Y'
+           	AND   DEL_YN = 'N'
+			AND B.REF_CD NOT IN ('F','L')
+		<choose>
+		<when test='mainMenuId != null and !mainMenuId.equals("")' >
+		AND (CONVERT(int,left(menu_path,6)) = #{mainMenuId} or  CONVERT(int,SUBSTRING(menu_path,8,6)) = #{mainMenuId} or CONVERT(int,SUBSTRING(menu_path,15,6)) = #{mainMenuId})
+		AND MENU_ID != #{mainMenuId}
+		</when>
+		<otherwise>
+		AND UP_MENU_ID IS NOT NULL
+		</otherwise>
+		</choose>
+	     ORDER BY REF_YN ,LEVEL,B.UP_MENU_ID,B.MENU_NM ASC
+	</select>
+
+	<select id="selectSitemapList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectSitemapList */
+	       SELECT
+	                 A.MENU_ID
+	                ,A.UP_MENU_ID
+	                ,CONVERT(int,left(menu_path,6)) AS TOP_MENU_ID
+	                ,ISNULL((SELECT	COUNT(MENU_ID) SUB_CNT FROM TS_ALL_MENU_VIEW WHERE 1=1 AND UP_MENU_ID = A.MENU_ID GROUP BY UP_MENU_ID),0) SUB_CNT
+	                ,MENU_NM
+	                ,SORT
+	                ,SITE_CD
+	                ,REF_CD
+	                ,REF_MENU_ID
+	                ,REF_URL
+	                ,REF_CONT_ID
+	                ,REF_BOARD_ID
+	                ,REF_URL
+	                ,GNB_YN
+	                ,FOOTER_YN
+	                ,SITEMAP_YN
+	                ,TARGET_CD
+	                ,WIDTH
+	                ,HEIGHT
+	                ,[TOP]
+	                ,[LEFT]
+	                ,LEVEL AS LVL
+	         FROM  TN_BACK_MENU_VIEW A
+       		WHERE
+       		 <![CDATA[(A.LIMIT_USER_CD IS NULL OR A.LIMIT_USER_CD <= #{*userCd}) ]]>
+			AND A.SITE_ID = #{*siteId}
+			ORDER BY MENU_SORT
+	</select>
+
+	<select id="selectNaviMenuList_OLD" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectNaviMenuList */
+		SELECT
+				 MENU_ID
+				,UP_MENU_ID
+				,SORT
+				,SITE_CD
+				,MENU_NM
+				,MENU_DESC
+				,REF_CD
+				,REF_MENU_ID
+				,(SELECT MENU_NM FROM TS_ALL_MENU_VIEW WHERE MENU_ID = B.REF_MENU_ID) AS REF_MENU_NM
+				,REF_CONT_ID
+				,(SELECT TITLE  FROM TS_MENUCONTENTS WHERE CONT_ID = B.REF_CONT_ID) AS REF_CONT_NM
+				,REF_BOARD_ID
+				,(SELECT TITLE  FROM TS_BOARD WHERE BOARD_ID = B.REF_BOARD_ID) AS REF_BOARD_NM
+				,REF_URL
+				,GNB_YN
+				,FOOTER_YN
+				,SITEMAP_YN
+				,TARGET_CD
+				,WIDTH
+				,HEIGHT
+				,[TOP]
+				,[LEFT]
+				,LOGIN_YN
+				,USE_YN
+				,REG_USER_ID
+				,REG_DT
+		FROM 	TS_ALL_MENU_VIEW B
+		WHERE 	SITE_CD = #{*siteCd}
+		AND B.SITE_ID = #{*siteId}
+		AND 	DEL_YN = 'N'
+		AND 	GNB_YN = 'Y'
+		AND 	ISNULL(UP_MENU_ID,'0') = ISNULL(#{upMenuId},'0')
+	    ORDER BY
+	    		SORT ASC
+	</select>
+
+	<select id="selectNaviMenuList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectNaviMenuList */
+		SELECT
+				 A.MENU_ID
+				,UP_MENU_ID
+				,SORT
+				,SITE_CD
+				,MENU_NM
+				,MENU_DESC
+				,REF_CD
+				,REF_URL
+               	,LTRIM(REPLACE(A.MENU_PATH, '>','/')) NAVI
+               	,LEVEL LVL
+               	,(SELECT COUNT(UP_MENU_ID) FROM TS_ALL_MENU_VIEW WHERE UP_MENU_ID=A.MENU_ID AND DEL_YN='N' AND USE_YN='Y') as SUB_CNT
+		FROM 	TS_ALL_MENU_VIEW A
+		WHERE 1=1
+		<choose>
+		<when test='siteCd != null and !siteCd.equals("")' >
+		AND 	SITE_CD = #{siteCd}
+		</when>
+		<otherwise>
+		AND 	SITE_CD = #{*siteCd}
+		</otherwise>
+		</choose>
+		AND		A.SITE_ID = #{*siteId}
+		AND 	USE_YN = 'Y'
+		AND 	DEL_YN = 'N'
+		AND     MENU_ID != '32'
+		ORDER BY MENU_SORT
+	</select>
+	<select id="selectBoardMenuList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectBoardMenuList */
+		SELECT X.*
+					<!-- ,(
+						CASE WHEN X.REF_BOARD_ID IS NULL THEN (
+																								SELECT MIN(C.REF_BOARD_ID )
+																								FROM TS_ALL_MENU_VIEW C
+																								WHERE C.UP_MENU_ID = X.MENU_ID
+																									AND C.SORT = (
+																																SELECT MIN(SORT)
+																																FROM TS_ALL_MENU_VIEW D
+																																WHERE D.UP_MENU_ID = X.MENU_ID
+																																	AND D.USE_YN = 'Y'
+																																	AND D.DEL_YN = 'N'
+																																	AND D.REF_CD = 'B'
+																															)
+																								)
+							ELSE X.REF_BOARD_ID
+						END
+					) AS FIRST_BOARD_ID -->
+		FROM (
+					SELECT
+							 MENU_ID
+							,UP_MENU_ID
+							,SORT
+							,SITE_CD
+							,MENU_NM
+							,MENU_DESC
+							,REF_CD
+							,REF_BOARD_ID
+							,REF_URL
+			               	,LTRIM(MENU_PATH) NAVI
+			               	,LEVEL LVL
+			               	,SITE_ID
+			                ,MENU_SORT
+			                <!-- ,(SELECT COUNT(MENU_ID) FROM TS_ALL_MENU_VIEW WHERE SITE_ID = A.SITE_ID AND SITE_CD='F' AND 	USE_YN = 'Y' AND DEL_YN = 'N' AND REF_CD='B' AND UP_MENU_ID = A.MENU_ID) AS SUBBOARD_CNT -->
+			               	<!-- ,(SELECT COUNT(UP_MENU_ID) FROM TS_ALL_MENU_VIEW WHERE UP_MENU_ID=A.MENU_ID AND DEL_YN='N' AND USE_YN='Y') as SUB_CNT -->
+			               	<!-- ,(SELECT REF_BOARD_ID FROM (SELECT SITE_ID,UP_MENU_ID,REF_BOARD_ID,ROW_NUMBER() OVER(PARTITION BY UP_MENU_ID,SITE_ID,SITE_CD ORDER BY SORT) AS RNUM FROM TS_ALL_MENU_VIEW WHERE USE_YN = 'Y' AND DEL_YN = 'N' AND REF_CD='B' AND SITE_CD='F') Z WHERE Z.SITE_ID = A.SITE_ID  AND Z.UP_MENU_ID = A.MENU_ID AND Z.RNUM=1) AS FIRST_BOARD_ID -->
+					FROM 	TS_ALL_MENU_VIEW A
+					WHERE 	SITE_CD = 'F'
+					AND 	A.SITE_ID = #{*siteId}
+					AND 	USE_YN = 'Y'
+					AND 	DEL_YN = 'N'
+					AND (LEVEL=1 OR (LEVEL>1 AND REF_CD='B'))
+				) X
+		LEFT OUTER JOIN TS_BOARD Y
+		ON X.REF_BOARD_ID=Y.BOARD_ID
+		ORDER BY MENU_SORT
+	</select>
+	<select id="selectNotBoardMenuList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.menu.dao.impl.MenuDao.selectNotBoardMenuList */
+		SELECT X.board_id
+				    ,X.title
+
+		FROM TS_BOARD X
+		LEFT OUTER JOIN (
+				                    SELECT *
+				                    FROM TS_ALL_MENU_VIEW
+				                    WHERE SITE_CD = 'F'
+				                        AND USE_YN = 'Y'
+				                        AND DEL_YN = 'N'
+				                ) Y
+		ON X.BOARD_ID=Y.REF_BOARD_ID
+		WHERE 1=1
+			AND X.SITE_ID = #{*siteId}
+			AND X.DEL_YN = 'N'
+			AND X.USE_YN='Y'
+			AND Y.REF_BOARD_ID IS NULL
+	</select>
+</mapper>

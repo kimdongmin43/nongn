@@ -1,0 +1,305 @@
+@charset "UTF-8";
+
+
+
+html {width:100%; height:100%;}
+body { width:100%; height:100%; color:#535353; font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif;  line-height: 1.4em; letter-spacing: -0.1px; font-size:14px; -webkit-text-size-adjust: 100%;} /*수정2018.01.23*/
+
+/* 링크 된 폰트 세팅 */
+a {color:#535353; text-decoration:none;}
+a:link {color: #535353; text-decoration:none;}
+a:visited {color:#535353; text-decoration:none;}
+a:active {color:#535353; text-decoration:none;}
+a:hover {color:#333;text-decoration:underline;}
+
+:before, :after{background-repeat:no-repeat;}
+
+/* focus outline 
+input[type="text"]:focus, input[type="password"]:focus, select:focus {#outline:#0099ff solid 2px; background-color: #f3f9ff;border-color:#0099ff;}
+input[type="radio"]:focus, input[type="checkbox"]:focus {#outline:#0099ff solid 2px;}*/
+
+
+/* table reset */
+table {border-collapse: collapse;border-spacing: 0;}
+table caption { overflow: hidden; width: 0; height: 0; font-size: 0; line-height: 0; text-indent: -9999px;}
+
+/* button reset */
+button {
+	display:inline-block; overflow:visible; padding:0; border:0; background:transparent; text-align:center; vertical-align:middle; cursor:pointer;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+ 	}
+button::-moz-focus-inner,
+input::-moz-focus-inner {border:0;padding:0}/*  Firefox에서 <button>과 <input> 태그의 내부 여백을 없애줍니다. 호환성과 관련된 부분이니 꼭 정의해 줍니다. */
+
+/* input box reset */
+input {
+	box-sizing:border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing:border-box;
+	cursor:pointer;
+	}
+input:-ms-input-placeholder {color:#ababab}
+input:-moz-placeholder {color:#ababab}
+input::-moz-placeholder {color:#ababab}
+input::-webkit-input-placeholder {color:#ababab}
+input[type="button"], input[type="submit"]{border:0}
+input[type="text"], input[type="password"] {
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	border-radius:0;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	-o-border-radius:0;
+	}
+ input[type="number"]{
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	border-radius:0;
+	-webkit-border-radius:0;
+	-moz-border-radius:0;
+	-o-border-radius:0;
+	}
+input[type="text"]:disabled {background-color: #eee;}
+input[type="checkbox"], input[type="radio"] {margin:0;}
+input[type="checkbox"] {width:15px;height:15px;}
+input[type="checkbox"]:checked {box-shadow:none;}
+input[type="checkbox"] + label {margin-left:5px;}
+input[type="radio"] {width:15px;height:15px;#box-shadow:none;#background-color: #fff;}
+input[type="radio"]:checked {box-shadow:none;}
+
+input[type=file]{margin:0;padding:0;border:0; border:1px solid #d9d9d9; height:34px;}
+input[type=file]::-webkit-file-upload-button {margin:0; padding:0 10px; border:1px solid #d9d9d9; background-color:#fff; height:34px; line-height:1.4em;}
+input[type=file]::-ms-value {border:1px solid #d9d9d9; background-color:#fff;}
+input[type=file]::-ms-browse {border:1px solid #d9d9d9; background-color:#393d4a; color:#fff;}
+
+select {border-radius:0;-webkit-border-radius:0;-moz-border-radius:0;-o-border-radius:0;}
+select:disabled {background-color: #eee;}
+
+
+input, button, select, textarea {font-family: 'Nanum Gothic', 'NanumGothic', '나눔고딕', Helvetica, 'Apple SD Gothic Neo', Sans-serif; }
+
+.clearfix:after {display:block; visibility:hidden; clear:both; content:"."; overflow:hidden; width:0; height:0; font-size:0; line-height:0; text-indent:-9999px;}
+.clearfix {display: inline-block;}
+/*.clearfix {display: block;}*/
+.clear {clear:both;}
+.hide {display:none;}
+.skip { visibility:hidden; overflow:hidden; position:absolute; height:0; width:0; background:transparent; font-size:0;}
+.over_h { overflow:hidden}
+.over_a { overflow: auto}
+.w100{width:100%}
+
+
+/* btn Type */
+.btn_area {margin:20px 0; }
+.btn_area a {display:inline-block; padding:8px 25px; border:0; color:#fff; font-weight:600; font-size:14px;}
+
+.btn_list {color:#fff; background:#07a7e3; border-color:#07a7e3;}
+.btn_apply {color:#fff; background:#365a99; border-color:#365a99;}
+.btn_cancel {color:#fff; background:#4e535a; border-color:#4e535a;}
+.btn_reply {color:#fff; background:#4e535a; border-color:#4e535a;}
+.btn_modify {color:#fff; background:#4e535a; border-color:#4e535a;}
+.btn_submit {color:#fff; background:#07a7e3; border-color:#07a7e3;}
+.btn_fileView {display:inline-block; margin-left:5px; padding:0 8px; height:21px; font-size:0.9em; color:#333; line-height:21px; background:#fff url(/images/smba/bg_btn.png) repeat-x;border:1px solid #b8b8b8; vertical-align:middle;}
+.btn_down {display:inline-block; padding:0 20px; height:24px; font-size:14px; color:#fff; line-height:24px; background-color:#07a7e3; background:url('../images/btn/bg_icon_down.png') no-repeat 95% 6px;border:1px solid #07a7e3; text-indent:0px; vertical-align:middle;}
+.btn_view {display:inline-block; float:right; padding:8px 25px; background:#365a99; border:0; color:white; font-weight:bold; font-size:14px;}
+
+a.btn_download {display:inline-block; padding:8px 40px; color:#fff; font-weight:600; border-radius:5px;  background:#07a7e3; background:#07a7e3 url('../images/btn/bg_icon_down.png') no-repeat 10% 8px;}
+a:hover.btn_download { text-decoration:none}
+
+button.table_btn {padding: 0 14px; height: 29px; font-size: 12px; font-weight: bold; border: 1px solid #c7c7c7; color: #4d4d4d; text-align: center; background-color: #e1e1e1;} 
+
+button.btn_add {padding: 0 12px; height: 26px; font-size: 12px; font-weight: 500; border: 1px solid #797f8d; color: #fff; text-align: center; background-color: #797f8d;} /* 추가*/
+button.btn_del {padding: 0 12px; height: 26px; font-size: 12px; font-weight: 500; border: 1px solid #797f8d; color: #484f60; text-align: center; background-color: #fff;} /* 삭제*/
+
+.state_on { display:inline-table; width:48px; font-size: 11px; font-weight: 600; color: #fff; text-align: center; background-color: #c97434;} /* 상태표시_미완료*/
+.state_off { display:inline-table; width:48px;  font-size: 11px; font-weight: 600; color: #fff; text-align: center; background-color: #5a6273;} /* 상태표시_완료*/
+
+/* input & Select Type */
+textarea {text-align: left; /*text-indent: 3px;*/ line-height: 1.4em; font-size:14px; padding:10px}
+p {/* line-height: 1.5em; text-align: left; */}
+select {height: 30px; border: 1px solid #d9d9d9; line-height: 29px; text-align: left; text-indent: 1px;}
+input {display: inline-block; display: inline; vertical-align: middle;}
+input[type=text] {height: 28px; font-size: 100%; text-indent: 1px; line-height: 26px; text-align: left;}
+input {border: expression((this.type=='text')?'0px':''); height: 28px; font-size: 100%; text-indent: 1px; line-height: 28px; text-align: left;}
+input[type=text].alignc {text-align: center;}
+    .in_wp40 {width: 40px; border: 1px solid #d9d9d9;}
+    .in_wp50 {width: 50px; border: 1px solid #d9d9d9;}
+    .in_wp60 {width: 60px; border: 1px solid #d9d9d9;}
+    .in_wp70 {width: 70px; border: 1px solid #d9d9d9;}
+    .in_wp80 {width: 80px; border: 1px solid #d9d9d9;}
+    .in_wp90 {width: 90px; border: 1px solid #d9d9d9;}
+    .in_wp100 {width: 100px; border: 1px solid #d9d9d9;}
+    .in_wp110 {width: 110px; border: 1px solid #d9d9d9;}
+    .in_wp120 {width: 120px; border: 1px solid #d9d9d9;}
+    .in_wp130 {width: 130px; border: 1px solid #d9d9d9;}
+    .in_wp140 {width: 140px; border: 1px solid #d9d9d9;}
+    .in_wp150 {width: 150px; border: 1px solid #d9d9d9;}
+    .in_wp160 {width: 160px; border: 1px solid #d9d9d9;}
+    .in_wp170 {width: 170px; border: 1px solid #d9d9d9;}
+    .in_wp180 {width: 180px; border: 1px solid #d9d9d9;}
+    .in_wp190 {width: 190px; border: 1px solid #d9d9d9;}
+    .in_wp200 {width: 200px; border: 1px solid #d9d9d9;}
+    .in_wp250 {width: 250px; border: 1px solid #d9d9d9;}
+    .in_wp300 {width: 300px; border: 1px solid #d9d9d9;}
+    .in_wp400 {width: 400px; border: 1px solid #d9d9d9;}
+    .in_w15 {width: 15%; border: 1px solid #d9d9d9;}
+    .in_w20 {width: 20%; border: 1px solid #d9d9d9;}
+    .in_w25 {width: 25%; border: 1px solid #d9d9d9;}
+    .in_w30 {width: 30%; border: 1px solid #d9d9d9;}
+    .in_w33 {width: 33%; border: 1px solid #d9d9d9;}
+    .in_w35 {width: 35%; border: 1px solid #d9d9d9;}
+    .in_w39 {width: 39%; border: 1px solid #d9d9d9;}
+    .in_w40 {width: 40%; border: 1px solid #d9d9d9;}
+    .in_w45 {width: 45%; border: 1px solid #d9d9d9;}
+    .in_w50 {width: 50%; border: 1px solid #d9d9d9;}
+    .in_w60 {width: 60%; border: 1px solid #d9d9d9;}
+    .in_w70 {width: 70%; border: 1px solid #d9d9d9;}
+    .in_w80 {width: 80%; border: 1px solid #d9d9d9;}
+    .in_w90 {width: 90%; border: 1px solid #d9d9d9;}
+    .in_w93 {width: 93%; border: 1px solid #d9d9d9;}
+    .in_w95 {width: 95%; border: 1px solid #d9d9d9;}
+    .in_w96 {width: 96%; border: 1px solid #d9d9d9;}
+    .in_w98 {width: 98%; border: 1px solid #d9d9d9;}
+    .in_w100 {width: 99.4%; border: 1px solid #d9d9d9;}
+    .in_bg { background:#d9d9d9}
+
+ /* Margin Set */
+.ml5	{margin-left:5px;}	
+.ml10	{margin-left:10px;}		
+.ml15	{margin-left:15px;}		
+.ml20	{margin-left:20px;}		
+.ml25	{margin-left:25px;}		
+.ml30	{margin-left:30px;}		
+.ml33	{margin-left:33px;}		
+.ml35	{margin-left:35px;}		
+.ml40	{margin-left:40px;}		
+.ml45	{margin-left:45px;}		
+.ml50	{margin-left:50px;}		
+.mr5	{margin-right:5px;}	
+.mr10	{margin-right:10px;}	
+.mr15	{margin-right:15px;}	
+.mr20	{margin-right:20px;}	
+.mr25	{margin-right:25px;}	
+.mr30	{margin-right:30px;}	
+.mr35	{margin-right:35px;}	
+.mr40	{margin-right:40px;}	
+.mr45	{margin-right:45px;}	
+.mr50	{margin-right:50px;}		
+.mb5	{margin-bottom:5px;}	
+.mb10	{margin-bottom:10px;}	
+.mb15	{margin-bottom:15px;}	
+.mb20	{margin-bottom:20px;}	
+.mb25	{margin-bottom:25px;}	
+.mb30	{margin-bottom:30px;}	
+.mb35	{margin-bottom:35px;}	
+.mb40	{margin-bottom:40px;}	
+.mb45	{margin-bottom:45px;}	
+.mb50	{margin-bottom:50px;}		
+.mt5	{margin-top:5px;}	
+.mt10	{margin-top:10px;}		
+.mt15	{margin-top:15px;}		
+.mt20	{margin-top:20px;}		
+.mt25	{margin-top:25px;}		
+.mt30	{margin-top:30px;}		
+.mt35	{margin-top:35px;}		
+.mt40	{margin-top:40px;}		
+.mt45	{margin-top:45px;}		
+.mt50	{margin-top:50px;}
+
+/* Padding Set */
+.pl1	{padding-left:1px;}  
+.pl5	{padding-left:5px;}		
+.pl10	{padding-left:10px;}	
+.pl15	{padding-left:15px;}	
+.pl20	{padding-left:20px;}	
+.pl25	{padding-left:25px;}	
+.pl30	{padding-left:30px;}	
+.pl35	{padding-left:35px;}	
+.pl40	{padding-left:40px;}	
+.pl45	{padding-left:45px;}	
+.pl50	{padding-left:50px;}	
+.pr5	{padding-right:5px;}	
+.pr10	{padding-right:10px;}	
+.pr15	{padding-right:15px;}	
+.pr20	{padding-right:20px;}	
+.pr25	{padding-right:25px;}	
+.pr30	{padding-right:30px;}	
+.pr35	{padding-right:35px;}	
+.pr40	{padding-right:40px;}	
+.pr45	{padding-right:45px;}	
+.pr50	{padding-right:50px;}
+.pb5	{padding-bottom:5px;}	
+.pb10	{padding-bottom:10px;}	
+.pb15	{padding-bottom:15px;}	
+.pb20	{padding-bottom:20px;}	
+.pb25	{padding-bottom:25px;}	
+.pb30	{padding-bottom:30px;}	
+.pb35	{padding-bottom:35px;}	
+.pb40	{padding-bottom:40px;}	
+.pb45	{padding-bottom:45px;}	
+.pb50	{padding-bottom:50px;}
+.pt5	{padding-top:5px;}		
+.pt10	{padding-top:10px;}		
+.pt15	{padding-top:15px;}		
+.pt20	{padding-top:20px;}		
+.pt25	{padding-top:25px;}		
+.pt30	{padding-top:30px;}		
+.pt35	{padding-top:35px;}		
+.pt40	{padding-top:40px;}		
+.pt45	{padding-top:45px;}		
+.pt50	{padding-top:50px;}
+
+/* width Set */
+.wi10 {width:10%;}
+.wi15 {width:15%;}
+.wi20 {width:20%;}
+.wi25 {width:25%;}
+.wi30 {width:30%;}
+.wi35 {width:35%;}
+.wi40 {width:40%;}
+.wi45 {width:45%;}
+.wi50 {width:50%;}
+.wi55 {width:55%;}
+.wi60 {width:60%;}
+.wi65 {width:65%;}
+.wi70 {width:70%;}
+.wi75 {width:75%;}
+.wi80 {width:80%;}
+.wi85 {width:85%;}
+.wi90 {width:90%;}
+.wi95 {width:95%;}
+.wi100 {width:100%;}
+
+
+/* 정렬 */
+.fl_left {float:left !important}
+.fl_right {float:right !important}
+.fl_clear {clear:both; height:0; font-size:0; line-height:0}
+
+.clfix:after {content: ""; display: block; height:0; clear:both; visibility:hidden}
+.clfix {display: block}
+
+/* 텍스트 정렬 */
+.tal { text-align: left!important}
+.tac { text-align: center!important }
+.tar { text-align: right!important}
+
+/* 텍스트 기본 색상 */
+.fc_blue {color:#0057b9 !important; font-weight:600}
+.fc_red {color:#c90000 !important; font-weight:600}
+.fc_skyblue {color:#07a7e3 !important; font-weight:600}
+.fc_green {color:#2e9622 !important; font-weight:600}
+
+/* 텍스트 크기 */
+.fs_11 { font-size:11px}
+.fs_12 { font-size:12px}
+.fs_13 { font-size:13px}
+.fs_15 { font-size:15px}
+.fs_16 { font-size:16px}
+
+/* 라인 */
+.border_b { border-bottom:1px solid #ddd}

@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MainBoard">
+
+	<select id="selectBoardList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectBoardList */
+		SELECT BOARD_ID
+					,TITLE
+					,BOARD_CD
+					,dbo.UF_CODE_NM('BOARD_TYPE',BOARD_CD) BOARD_CD_NM
+		FROM TS_BOARD A
+
+		LEFT OUTER JOIN (
+		        							SELECT REF_BOARD_ID,MIN(MENU_ID) MENU_ID,REF_URL
+										FROM TS_MENU
+										WHERE SITE_ID 	IN(#{*siteId},'0')
+										AND SITE_CD='F'
+										AND DEL_YN = 'N'
+										AND USE_YN='Y'
+
+										GROUP BY
+												REF_BOARD_ID,REF_URL
+									) MN
+        	ON A.BOARD_ID = MN.REF_BOARD_ID
+
+		WHERE 1 = 1
+		AND SITE_ID 	IN(#{*siteId},'0')
+		AND DEL_YN 	!= 'Y'
+		AND USE_YN 	= 'Y'
+		AND (MENU_ID IS NOT NULL OR BOARD_ID in ('1','2','3','4') )
+
+
+	</select>
+
+	<select id="selectMainBoardList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectMainBoardList */
+
+		SELECT
+
+			TM.BOARD_ID,
+			TB.TITLE,
+			TB.BOARD_CD,
+			TM.MAIN_ID,
+			TM.SITE_ID,
+			TM.SECTION_CD,
+			dbo.UF_CODE_NM('SECTION_CD',TM.SECTION_CD) SECTION_CD_NM,
+			TM.TAB_SEQ,
+			TM.REG_USER_ID,
+			TM.REG_DT,
+			TM.UPD_USER_ID,
+			TM.UPD_DT,
+			TM.USE_YN,
+			dbo.UF_CODE_NM('USE_YN',TM.USE_YN) USE_YN_NM,
+			TM.DEL_YN,
+			dbo.UF_CODE_NM('DEL_YN',TM.DEL_YN) DEL_YN_NM,
+			TM.SORT,
+			'/front/board/boardContentsListPage.do?boardId='+ convert(varchar,TM.BOARD_ID) + '&#38;menuId=' + convert(varchar,MN.MENU_ID) REF_URL,
+               MN.MENU_ID
+		FROM TS_MAINBOARD TM
+
+		LEFT OUTER JOIN TS_BOARD TB
+		ON TB.BOARD_ID = TM.BOARD_ID
+
+        	LEFT OUTER JOIN (
+		        							SELECT REF_BOARD_ID,MIN(MENU_ID) MENU_ID,REF_URL
+										FROM TS_MENU
+										WHERE SITE_ID = #{*siteId}
+										AND SITE_CD='F'
+										AND DEL_YN = 'N'
+										AND USE_YN='Y'
+
+										GROUP BY
+												REF_BOARD_ID,REF_URL
+									) MN
+        	ON TM.BOARD_ID = MN.REF_BOARD_ID
+
+		WHERE 1=1
+
+		AND TM.SITE_ID  = #{*siteId}
+		AND TM.MAIN_ID = #{mainId}
+		<!-- OR   (TM.MAIN_ID = #{mainId} AND 20 >TM.BOARD_ID ) -->
+
+		<!-- 목록 요청 -->
+		<if test='boardId == null or boardId.equals("")' >
+		ORDER BY TM.SECTION_CD,TM.TAB_SEQ ASC
+		</if>
+	</select>
+
+	<select id="selectMainPhotoList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectMainPhotoList*/
+
+		SELECT
+				'IMG' AS MAIN_DIV,
+<!-- 				IMG.TITLE , -->		<!-- 240215 김동민 : 팝업존 alt 설명을 위해 제목이 아닌 설명 칼럼으로 변경하면서 데이터길이를 늘림 -->
+				IMG.IMG_DESC as TITLE,
+				FILE_PATH,
+				ATT.FILE_NM,
+				IMG.REG_DT,
+				TM.MAIN_IMG_CD,
+				ROW_NUMBER() OVER (ORDER BY IMG.IMG_ID DESC) R_NUM,
+				URL AS REF_URL
+		FROM TS_MAINIMAGE IMG
+		LEFT OUTER JOIN TC_ATTACHFILE ATT
+		ON IMG.ATTACH_ID = ATT.ATTACH_ID
+		LEFT OUTER JOIN TS_MAIN TM
+		ON IMG.SITE_ID = TM.SITE_ID
+          AND IMG.MAIN_ID = TM.MAIN_ID
+		WHERE 1=1
+		AND IMG.MAIN_ID = #{mainId}
+		AND IMG.USE_YN = 'Y'
+		AND IMG.DEL_YN 	!= 'Y'
+		AND ATT.FILE_PATH IS NOT NULL
+
+
+	</select>
+
+	<select id="selectMainEventList" parameterType="Map" resultType="camelMap">
+
+		SELECT
+	     		EVENT_ID,
+				EVENT_CD,
+				dbo.UF_CODE_NM('EVENT_CD',EVENT_CD) EVENT_CD_NM,
+				PROJECT_ID,
+				PROJECT_NM,
+				TITLE,
+				CONTENTS,
+				ONLINE_YN,
+				CASE WHEN END_DY = START_DY THEN
+					START_DY
+				ELSE
+					NVL2(END_DY,START_DY +'~'+END_DY ,START_DY)
+				END AS SE_DT,
+				TO_CHAR(TO_DATE(REG_DT,'YYYYMMDDHH24MISS'),'YYYY.MM.DD  HH24:MI:SS') REG_DT,
+				REG_DT AS  REG_DY
+
+		FROM TS_EVENT
+
+		WHERE  DEL_YN = 'N'
+		AND SITE_ID = #{*siteId}
+
+		ORDER BY EVENT_ID DESC
+
+	</select>
+
+	<select id="selectMainBoardContentsList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectMainBoardContentsList*/
+		SELECT
+
+				MB.BOARD_ID,
+				MB.MAIN_ID,
+				MB.SITE_ID,
+				MB.SECTION_CD,
+				dbo.UF_CODE_NM('SECTION_CD',MB.SECTION_CD) SECTION_CD_NM,
+				MB.TAB_SEQ,
+				BC.R_NUM BOARD_NUM,
+				BC.CONT_ID,
+				BC.CATE_ID,
+				BC.TITLE,
+				BC.TITLE_LINK,
+				BC.REG_MEM_NM,
+				BC.URL_NM,
+				BC.URL_LINK,
+				BC.REF_URL,
+				BC.REG_DT,
+				BC.ATTACH_ID,
+				ATT.FILE_ID,
+				ATT.FILE_NM,
+				ATT.FILE_TYPE,
+				ATT.FILE_SIZE,
+				ATT.ORIGIN_FILE_NM,
+				ATT.FILE_PATH
+
+		FROM TS_MAINBOARD MB
+		LEFT OUTER JOIN (
+							SELECT
+									ROW_NUMBER() OVER (PARTITION BY BOARD_ID ORDER BY reg_dt DESC, CONT_ID DESC) R_NUM,
+									CONT_ID,
+									BOARD_ID,
+									SITE_ID,
+									CATE_ID AS CATE_ID,
+									TITLE,
+									TITLE_LINK,
+									REG_MEM_NM,
+									URL_NM,
+									URL_LINK,
+                                    		REG_DT,
+                                    		ATTACH_ID,
+                                    		 '/front/board/boardContentsView.do?boardId='+ convert(varchar,BOARD_ID) + '&#38;contId=' + convert(varchar,CONT_ID) AS REF_URL
+						 	FROM 	TS_BOARDCONTENTS
+						 	WHERE DEL_YN = 'N'
+						 	UNION ALL
+                            		SELECT
+									ROW_NUMBER() OVER (PARTITION BY BOARD_ID ORDER BY reg_dt DESC, CONT_ID DESC) R_NUM,
+									CONT_ID,
+									BOARD_ID,
+									SITE_ID,
+									CATE_ID,
+									TITLE,
+									NULL,
+									NULL,
+									NULL,
+									NULL,
+                                   		 REG_DT,
+                                    		ATTACH_ID,
+                                    		NULL
+						 	FROM 	TS_BOARDETC
+						 	WHERE DEL_YN = 'N'
+						 	UNION ALL
+						 	SELECT
+						 			ROW_NUMBER() OVER ( ORDER BY EVENT_ID DESC) R_NUM,
+									EVENT_ID,
+									4,
+									SITE_ID,
+									EVENT_CD,
+									TITLE,
+									NULL,
+									dbo.UF_USER_NM(REG_USER_ID) ,
+									NULL,
+									NULL,
+                                    		REG_DT,
+                                    		ATTACH_ID,
+                                    		NULL
+						 	FROM TS_EVENT
+						 	WHERE USE_YN = 'Y'
+						 	AND DEL_YN = 'N'
+
+
+						  	) BC
+		ON  MB.BOARD_ID = BC.BOARD_ID
+
+		 LEFT OUTER JOIN (
+
+	            SELECT
+	                ATTACH_ID
+	                , FILE_ID
+                    , FILE_PATH
+	                , FILE_NM
+	                , ORIGIN_FILE_NM
+	                , FILE_SIZE
+	                , FILE_TYPE
+	            FROM TC_ATTACHFILE
+                WHERE LOWER(FILE_TYPE) IN ('jpg','png','gif')
+
+	     ) ATT
+		ON BC.ATTACH_ID = ATT.ATTACH_ID
+
+		WHERE 1=1
+		AND MB.MAIN_ID = #{mainId}
+		AND  7 > BC.R_NUM
+
+		ORDER BY reg_dt DESC, SECTION_CD,SORT ASC, BOARD_NUM ASC
+	</select>
+	
+	
+	<select id="selectMainBoardContentsList2" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectMainBoardContentsList2*/
+		SELECT
+
+				MB.BOARD_ID,
+				MB.MAIN_ID,
+				MB.SITE_ID,
+				MB.SECTION_CD,
+				dbo.UF_CODE_NM('SECTION_CD',MB.SECTION_CD) SECTION_CD_NM,
+				MB.TAB_SEQ,
+				BC.R_NUM BOARD_NUM,
+				BC.CONT_ID,
+				BC.CATE_ID,
+				BC.TITLE,
+				BC.TITLE_LINK,
+				BC.REG_MEM_NM,
+				BC.URL_NM,
+				BC.URL_LINK,
+				BC.REF_URL,
+				BC.REG_DT,
+				BC.ATTACH_ID,
+				ATT.FILE_ID,
+				ATT.FILE_NM,
+				ATT.FILE_TYPE,
+				ATT.FILE_SIZE,
+				ATT.ORIGIN_FILE_NM,
+				ATT.FILE_PATH
+
+		FROM TS_MAINBOARD MB
+		LEFT OUTER JOIN (
+							SELECT
+									ROW_NUMBER() OVER (PARTITION BY BOARD_ID ORDER BY reg_dt DESC, CONT_ID DESC) R_NUM,
+									CONT_ID,
+									BOARD_ID,
+									SITE_ID,
+									CATE_ID AS CATE_ID,
+									TITLE,
+									TITLE_LINK,
+									REG_MEM_NM,
+									URL_NM,
+									URL_LINK,
+                                    		REG_DT,
+                                    		ATTACH_ID,
+                                    		 '/front/board/boardContentsView.do?boardId='+ convert(varchar,BOARD_ID) + '&#38;contId=' + convert(varchar,CONT_ID) AS REF_URL
+						 	FROM 	TS_BOARDCONTENTS
+						 	WHERE DEL_YN = 'N'
+						 	UNION ALL
+                            		SELECT
+									ROW_NUMBER() OVER (PARTITION BY BOARD_ID ORDER BY reg_dt DESC, CONT_ID DESC) R_NUM,
+									CONT_ID,
+									BOARD_ID,
+									SITE_ID,
+									CATE_ID,
+									TITLE,
+									NULL,
+									NULL,
+									NULL,
+									NULL,
+                                   		 REG_DT,
+                                    		ATTACH_ID,
+                                    		NULL
+						 	FROM 	TS_BOARDETC
+						 	WHERE DEL_YN = 'N'
+						 	UNION ALL
+						 	SELECT
+						 			ROW_NUMBER() OVER ( ORDER BY EVENT_ID DESC) R_NUM,
+									EVENT_ID,
+									4,
+									SITE_ID,
+									EVENT_CD,
+									TITLE,
+									NULL,
+									dbo.UF_USER_NM(REG_USER_ID) ,
+									NULL,
+									NULL,
+                                    		REG_DT,
+                                    		ATTACH_ID,
+                                    		NULL
+						 	FROM TS_EVENT
+						 	WHERE USE_YN = 'Y'
+						 	AND DEL_YN = 'N'
+
+
+						  	) BC
+		ON  MB.BOARD_ID = BC.BOARD_ID
+
+		 LEFT OUTER JOIN (
+
+	            SELECT TOP 1
+	                ATTACH_ID
+	                , FILE_ID
+                    , FILE_PATH
+	                , FILE_NM
+	                , ORIGIN_FILE_NM
+	                , FILE_SIZE
+	                , FILE_TYPE
+	            FROM TC_ATTACHFILE
+                WHERE LOWER(FILE_TYPE) IN ('jpg','png','gif')
+
+	     ) ATT
+		ON BC.ATTACH_ID = ATT.ATTACH_ID
+
+		WHERE 1=1
+		AND MB.MAIN_ID = #{mainId}
+		AND  7 > BC.R_NUM
+
+		ORDER BY reg_dt DESC, SECTION_CD,SORT ASC, BOARD_NUM ASC
+	</select>
+	
+
+	<update id="insertMainBoard" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.insertMainBoard */
+	    <if test='mainBoardList != null' >
+	    BEGIN
+		<foreach collection="mainBoardList" item="item" index="index">
+		INSERT INTO
+		TS_MAINBOARD (
+				BOARD_ID,
+				MAIN_ID,
+				SITE_ID,
+				SECTION_CD,
+				TAB_SEQ,
+				REG_USER_ID,
+				REG_DT
+		)VALUES(
+				#{item.boardId},
+				#{mainId},
+				#{*siteId},
+				#{item.sectionCd},
+				#{item.tabSeq},
+				#{*userId},
+				TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		);
+		</foreach>
+		END;
+		</if>
+	</update>
+
+	<update id="updateMainBoard" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.updateMainBoard */
+	    <!-- List<Map> -->
+	    <if test='mainBoardList != null' >
+	    BEGIN
+		<foreach collection="mainBoardList" item="item" index="index">
+	    UPDATE
+	 			TS_MAINBOARD
+		SET
+				BOARD_ID = #{item.boardId},
+				UPD_USER_ID = #{updUserId},
+				UPD_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+
+		WHERE	SITE_ID	= #{*siteId}
+		AND		MAIN_ID = #{mainId}
+		AND		SECTION_CD  = #{item.sectionCd}
+		AND		TAB_SEQ  = #{item.tabSeq};
+		</foreach>
+		END;
+		</if>
+	</update>
+
+	<delete id="deleteMainBoard" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.deleteMainBoard */
+	 	DELETE 	FROM
+				TS_MAINBOARD
+		WHERE 	SITE_ID= #{*siteId}
+		AND 	MAIN_ID = #{mainId}
+		<if test='sectionCd != null and !sectionCd.equals("")' >
+		AND 	SECTION_CD = #{sectionCd}
+		</if>
+		<if test='tabSeq != null and !tabSeq.equals("")' >
+		AND		TAB_SEQ = #{tabSeq}
+		</if>
+		<!-- List<String> sectionCdList-->
+		<if test='sectionCdList != null' >
+		<foreach collection="sectionCdList" item="item" index="index" open="AND SECTION_CD IN (" close=")" separator="," >
+		#{item}
+		</foreach>
+		</if>
+		<!-- List<String> tabSeqList-->
+		<if test='tabSeqList != null' >
+		<foreach collection="tabSeqList" item="item" index="index" open="AND TAB_SEQ IN (" close=")" separator="," >
+		#{item}
+		</foreach>
+		</if>
+		<if test='mainBoardList != null' >
+		<foreach collection="mainBoardList" item="item" index="index">
+		AND		SECTION_CD  = #{item.sectionCd}
+		AND		TAB_SEQ  = #{item.tabSeq}
+		</foreach>
+		</if>
+	</delete>
+</mapper>

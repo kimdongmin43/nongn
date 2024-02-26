@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IntropageDao">
+
+<select id="selectIntropagePageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectIntropagePageList */
+	<include refid="CommonSql.pageingTop"/>
+	SELECT
+	    	    CONT_ID
+				,TITLE
+				,REG_USER_ID
+				,(SELECT USER_NM FROM TC_USER WHERE USER_ID = a.REG_USER_ID) as REG_USER_NM
+				,REG_DT
+	  FROM TS_MENUcontents a
+	 WHERE 1 = 1
+	 		<if test='searchkey == "title" '>
+			<if test='searchtxt != null and !searchtxt.equals("")' >
+			   <!-- AND (UPPER(title) LIKE '%'+UPPER(#{searchTxt})+'%' OR INSTR(contents, UPPER(#{searchTxt})) > 0 OR INSTR(contents, LOWER(#{searchTxt})) > 0 ) -->
+			   AND (UPPER(title) LIKE '%' + UPPER(#{searchtxt}) + '%' )
+			</if>
+			</if>
+			<if test='searchKey == "code" '>
+			<if test='searchtxt != null and !searchtxt.equals("")' >
+			   <!-- AND (UPPER(title) LIKE '%'+UPPER(#{searchTxt})+'%' OR INSTR(contents, UPPER(#{searchTxt})) > 0 OR INSTR(contents, LOWER(#{searchTxt})) > 0 ) -->
+			   AND (UPPER(cont_id) LIKE '%' + UPPER(#{searchtxt}) + '%' )
+			</if>
+			</if>
+	  AND
+	  MENU_CLS_CD = '13'
+	  AND SITE_ID =  #{*siteId}
+	  AND 	DEL_YN = 'N'
+
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selectIntropageList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectIntropageList */
+
+	SELECT
+		b.*
+		,	(
+				CASE
+					WHEN (SELECT COUNT(*) FROM ts_menu c WHERE c.ref_cont_id = b.cont_id AND DEL_YN = 'N' )  > 0
+				THEN
+					'Y'
+				ELSE
+				    'N'
+				END
+				)  as ref_yn
+		 FROM
+	(
+	SELECT
+	     		cont_id
+				,title
+				,meta_keyword
+				,reg_user_id
+				,(select user_nm from tc_user where user_id = a.reg_user_id) as reg_user_nm
+				,reg_dt
+				,'/front/contents/sub.do?contId='+convert(varchar,cont_id) as ref_url
+	FROM TS_MENUcontents a
+	WHERE 1 = 1
+			<if test='title != null and !title.equals("")' >
+			  AND title = #{title}
+			</if>
+			<if test='content != null and !content.equals("")' >
+			  AND content = #{contents}
+			</if>
+			 AND SITE_ID =  #{*siteId}
+			 AND    menu_cls_cd = '13'
+	)b
+	ORDER BY ref_yn ASC ,title ASC
+</select>
+
+<select id="selectIntropage" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectIntropage */
+	SELECT
+	   			cont_id
+				,title
+				,contents
+				,reg_user_id
+				,(select user_nm from tc_user where user_id = a.reg_user_id) as reg_user_nm
+				,(reg_dt) as reg_dt
+	FROM TS_MENUcontents a
+	WHERE cont_id = #{contId}
+</select>
+
+<select id="selectIntropage2" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectIntropage */
+	SELECT
+	   			cont_id
+				,title
+				,contents
+				,reg_user_id
+				,(select user_nm from tc_user where user_id = a.reg_user_id) as reg_user_nm
+				,(reg_dt) as regDt
+	FROM TS_MENUcontents a
+	WHERE cont_id = #{contId}
+</select>
+
+
+<select id="selectIntropageExist" parameterType="Map" resultType="integer">
+	SELECT  /* kr.apfs.local.contents.dao.impl.IntropageDao.selectIntropageExist */
+			  count(*)
+		FROM TS_MENUcontents
+		WHERE 	cont_id = #{contId}
+
+</select>
+
+<update id="insertIntropage" parameterType="Map" >
+    /* kr.apfs.local.intropage.dao.impl.IntropageDao.insertIntropage */
+	INSERT INTO
+	TS_MENUcontents (
+			menu_cls_cd
+			,site_id
+			,title
+			,contents
+		<!-- 	,satis_yn
+			,meta_keyword -->
+			,reg_user_id
+			,reg_dt
+			,sort
+			,use_yn
+			,del_yn
+			,contents_srch
+	) VALUES (
+			'13'
+			,#{*siteId}
+			,#{title}
+			,#{contents}
+		<!-- 	,#{satisYn}
+			,#{metaKeyword} -->
+			,#{*userId}
+			,(SELECT CONVERT(CHAR(8),GETDATE(),112)+REPLACE(CONVERT(CHAR(8),GETDATE(),108),':',''))
+			,(SELECT ISNULL(MAX(sort),100)+1 FROM TS_MENUcontents WHERE  menu_cls_cd = '13' )
+			,'Y'
+			,'N'
+			,#{contentsSrch}
+	)
+</update>
+
+<update id="updateIntropage" parameterType="Map" >
+    /* kr.apfs.local.intropage.dao.impl.IntropageDao.updateIntropage */
+    UPDATE
+ 		TS_MENUcontents
+	SET
+			title = #{title}
+			,contents = #{contents}
+			,upd_user_id = #{*userId}
+			,upd_dt = (SELECT CONVERT(CHAR(8),GETDATE(),112)+REPLACE(CONVERT(CHAR(8),GETDATE(),108),':',''))
+			,contents_srch = #{contentsSrch}
+	WHERE 	cont_id = #{contId}
+
+</update>
+
+<delete id="deleteIntropage" parameterType="Map" >
+    /* kr.apfs.local.intropage.dao.impl.IntropageDao.deleteIntropage */
+ 	UPDATE
+		TS_MENUcontents
+		SET
+		del_yn = 'Y'
+	WHERE cont_id = #{contId}
+
+</delete>
+
+
+<!--  FRONT -->
+<select id = "selectIntropageFront" parameterType = "Map" resultType = "camelMap">
+	SELECT
+		title
+		,contents
+	FROM
+	ts_menucontents
+	WHERE
+	1=1
+	AND menu_cls_cd = '13'
+	AND cont_id = #{contId}
+
+</select>
+
+<select id = "selectNormalContentsMeunList" parameterType= "Map" resultType="camelMap">
+	SELECT
+		ROW_NUMBER() over (order by sort ) rnum
+		,menu_id
+		,menu_nm
+		,ref_url
+		,target_cd
+		,reg_user_nm
+		,regDt
+        ,sort
+	FROM
+	(
+	SELECT
+		menu_id
+		,menu_nm
+		,ref_url
+		,target_cd
+        ,sort
+		,(select user_nm from tc_user where user_id = a.reg_user_id) as reg_user_nm
+		,(reg_dt) as regDt
+	FROM
+	ts_menu a
+	WHERE
+	1=1
+	AND del_yn = 'N'
+	AND menu_cls_cd = 'N'
+	AND site_cd = 'B'
+	)b
+
+</select>
+
+
+<!-- 투자조합 결성 그리드 데이터 가저온다  -->
+<select id="selectInvesGridData" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectInvesGridData */
+	<include refid="CommonSql.pageingTop"/>
+	SELECT
+		invest_id
+		,depart_cd
+		,invest_year
+		,company
+		,copart
+		,addr
+		,phone
+		,homepage
+		,scale
+		,invest_sdt
+		,invest_edt
+		,invest_sdt + ' ~ ' + invest_edt as seDy
+	FROM TS_INVEST
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+<select id="selectInvestWritePage" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectInvestWritePage */
+	SELECT
+		invest_id
+		,depart_cd
+		,invest_year
+		,company
+		,copart
+		,addr
+		,phone
+		,homepage
+		,scale
+		,invest_sdt
+		,invest_edt
+
+		
+	FROM TS_INVEST
+	WHERE 1=1
+	AND invest_id = #{investId}
+</select>
+<insert id="investInsert" parameterType="Map" >
+	INSERT INTO TS_INVEST
+	(
+		invest_id
+		,depart_cd
+		,invest_year
+		,company
+		,copart
+		,phone
+		,addr
+		,homepage
+		,scale
+		,invest_sdt
+		,invest_edt
+
+	)
+	VALUES
+	(
+		(select max(invest_id)+1 from ts_invest)
+		,#{departCd}
+		,#{investYear}
+		,#{company}
+		,#{copart}
+		,#{phone}
+		,#{addr}
+		,#{homepage}
+		,#{scale}
+		,#{startDy}
+		,#{endDy}
+	)
+
+</insert>
+
+
+<update id="investUpdate" parameterType="Map" >
+	UPDATE  TS_INVEST
+	SET
+		depart_cd = #{departCd}
+		,invest_year = #{investYear}
+		,company = #{company}
+		,copart = #{copart}
+		,phone = #{phone}
+		,addr = #{addr}
+		,homepage = #{homepage}
+		,scale = #{scale}
+		,invest_sdt = #{startDy}
+		,invest_edt = #{endDy}
+	WHERE
+		invest_id = #{investId}
+</update>
+
+<delete id="investDelete" parameterType="Map" >
+	DELETE  TS_INVEST	WHERE invest_id = #{investId}
+</delete>
+
+
+
+<select id="selectDisclosurePage" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectDisclosurePage
+	   수정일 : `23.04.12
+	   수정자 : 김동민 대리
+	   내  용 : 가격공시정보를 자체 하나의 테이블로 처리
+	*/
+	
+	SELECT 
+		A.SEQ
+	  , A.DIS_DT
+	  , B.DIS_SECTION_NM
+	  , B.DIS_ITEM_NM
+	  , B.DIS_SECTION_CD
+	  , A.DIS_UNIT
+	  , REPLACE(CONVERT(VARCHAR, cast([DIS_PRICE] as money), 1), '.00', '') as DIS_PRICE
+	  , A.CROP_ITEM_CALC_GBN_CD
+	FROM apfs.dbo.INT_PRICE_DISCLOSURE A
+	INNER JOIN apfs.dbo.INT_DIS_ITEM B
+	   ON A.DIS_ITEM = B.DIS_ITEM
+	
+	WHERE A.SEQ > 0
+	<if test='searchTxt != null and !searchTxt.equals("")'>
+		AND LEFT(A.DIS_DT, 4 ) = #{searchTxt}
+	</if>
+	
+	<if test='searchTxt2 != null and !searchTxt2.equals("")'>
+		AND A.DIS_ITEM = #{searchTxt2}
+	</if>
+	
+	<if test='searchTxt3 != null and !searchTxt3.equals("")'>
+		AND A.CROP_ITEM_CALC_GBN_CD = #{searchTxt3}
+	</if>
+	
+	<if test='searchTxt4 != null and !searchTxt4.equals("")'>
+		AND B.DIS_SECTION_CD = #{searchTxt4}
+	</if>
+	
+	ORDER BY A.DIS_DT DESC, B.DIS_ITEM_NM
+</select>
+
+
+<select id="selectDisclosurePage_section" parameterType="Map" resultType="camelMap">
+SELECT DIS_SECTION_CD, DIS_SECTION_NM
+  FROM apfs.dbo.INT_DIS_ITEM
+ GROUP BY DIS_SECTION_CD, DIS_SECTION_NM
+</select>
+
+<select id="selectDisclosurePage_sectionNm" parameterType="Map" resultType="camelMap">
+SELECT DIS_ITEM, DIS_ITEM_NM
+  FROM apfs.dbo.INT_DIS_ITEM
+  WHERE DIS_ITEM > 0 
+ <if test='searchTxt4 != null and !searchTxt4.equals("")'>
+		AND DIS_SECTION_CD = #{searchTxt4}
+	</if>  
+</select>
+
+
+	<select id="selectDisclosureCodeList" parameterType="Map" resultType="hashmap">
+		/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectDisclosureCodeList */
+			SELECT DIS_SECTION_CD, DIS_ITEM, DIS_ITEM_NM  FROM INT_DIS_ITEM WHERE DIS_SECTION_CD = #{searchTxt4}
+	</select>
+
+
+<select id="selectDisclosurePage_230417_bak" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectDisclosurePage
+	   수정일 : `23.04.12
+	   수정자 : 김동민 대리
+	   내  용 : 가격공시정보를 자체 하나의 테이블로 처리
+	*/
+	
+	SELECT 
+		  DIS_DT
+		, DIS_ITEM
+		, DIS_UNIT
+		, FORMAT(DIS_PRICE, '#,#') AS DIS_PRICE
+		, CASE WHEN CROP_ITEM_CALC_GBN_CD = 1 THEN '기준가격'
+		       WHEN CROP_ITEM_CALC_GBN_CD = 2 THEN '수확기가격'
+			   ELSE ''
+		  END AS GUBUN
+	FROM APFS.DBO.INT_PRICE_DISCLOSURE
+	WHERE SEQ > 0
+	
+	<if test='searchTxt != null and !searchTxt.equals("")'>
+		AND LEFT(DIS_DT, 4 ) = #{searchTxt}
+	</if>
+	
+	<if test='searchTxt2 != null and !searchTxt2.equals("")'>
+		AND DIS_ITEM = #{searchTxt2}
+	</if>
+	
+	<if test='searchTxt3 != null and !searchTxt3.equals("")'>
+		AND CROP_ITEM_CALC_GBN_CD = #{searchTxt3}
+	</if>
+
+ORDER BY DIS_DT DESC
+		, DIS_ITEM
+		, DIS_UNIT
+		, CROP_ITEM_CALC_GBN_CD
+		, DIS_PRICE
+	
+
+
+</select>
+<select id="selectDisclosurePage_230412_bak" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.intropage.dao.impl.IntropageDao.selectDisclosurePage
+	   수정일 : `18.05.16
+	   수정자 : 김현준 과장
+	   내  용 : 업무부서 요청(공시일자 기준 내림차순 정렬)
+	*/
+	
+	
+	SELECT
+	[농작물가격공시일자] as DIS_DT,
+	[농작물공시단위코드],
+	/*
+	CONCAT(RTRIM([농작물공시중량]), ' ', (SELECT [농작물분류코드명] FROM
+	INTCROPITEMINFOLST WHERE [농작물품목코드] =
+	CROP.[농작물품목코드] AND [농작물시장구분코드] = CROP.[농작물시장구분코드] AND [농작물분류코드] =
+	[농작물공시단위코드] AND [농작물타입분류코드] = 'UNIT_CD')) AS DIS_UNIT, */
+	ISNULL(RTRIM([농작물공시중량]),'') + ' ' + ISNULL((SELECT [농작물분류코드명] 
+	                                                     FROM INTCROPITEMINFOLST 
+	                                                    WHERE [농작물품목코드] = CROP.[농작물품목코드] 
+	                                                      AND [농작물시장구분코드] = CROP.[농작물시장구분코드] 
+	                                                      AND [농작물분류코드] = [농작물공시단위코드] 
+	                                                      AND [농작물타입분류코드] = 'UNIT_CD'),'')
+	AS DIS_UNIT,
+	REPLACE(CONVERT(VARCHAR, cast([농작물공시산출가격] as money), 1), '.00', '') as
+	DIS_PRICE,
+	[농작물산출가격구분코드],
+	GUBUNCD.cd_nm AS GUBUN,
+	CROP.[농작물품목코드],
+	CROPCD.[농작물품목코드명] as DIS_ITEM
+	
+	FROM
+	INTCROPVALUESDISLST AS CROP
+	LEFT OUTER JOIN INTCROPITEMLST AS CROPCD
+	ON CROP.[농작물품목코드] = CROPCD.[농작물품목코드]
+	AND CROP.[농작물시장구분코드] = CROPCD.[농작물시장구분코드]
+	LEFT OUTER JOIN FITComCd AS GUBUNCD
+	ON CROP.[농작물산출가격구분코드] = GUBUNCD.cd
+	AND GUBUNCD.cd_tp = 80370
+	LEFT OUTER JOIN FITComCd AS FLAGCD
+	ON CROP.[농작물가격공시상태코드] = FLAGCD.cd
+	AND FLAGCD.cd_tp = 80400
+	WHERE CROP.[농작물가격공시상태코드] = 1
+	
+	<if test='searchTxt != null and !searchTxt.equals("")'>
+		AND LEFT(CROP.[농작물가격공시일자], 4 ) = #{searchTxt}
+	</if>
+	
+	<if test='searchTxt2 != null and !searchTxt2.equals("")'>
+		AND CROP.[농작물품목코드] = #{searchTxt2}
+	</if>
+	
+	<if test='searchTxt3 != null and !searchTxt3.equals("")'>
+		AND [농작물산출가격구분코드] = #{searchTxt3}
+	</if>
+	ORDER BY DIS_DT DESC
+
+
+</select>
+
+	<select id="selectDisclosurePageback" parameterType="Map" resultType="camelMap">
+	/*
+	kr.apfs.local.contents.dao.impl.OrgchartpageDao.selectDisclosurePageback
+	*/
+
+	SELECT
+	DIS_ID,
+	YEAR,
+	DIS_DT,
+	DIS_ITEM,
+	DIS_UNIT,
+	GUBUN,
+	DIS_PRICE
+	FROM
+	TS_DISCLOSUER
+	WHERE 1=1
+	<if test='disId != null and !disId.equals("")'>
+		AND DIS_ID = #{disId}
+	</if>
+
+
+
+</select>
+
+
+	<insert id="insertDisclosure" parameterType="Map">
+	/* kr.apfs.local.contents.dao.impl.OrgchartpageDao.insertIndicators */
+	INSERT INTO TS_DISCLOSUER
+	(
+	DIS_ID,
+	YEAR,
+	DIS_DT,
+	DIS_ITEM,
+	DIS_UNIT,
+	GUBUN,
+	DIS_PRICE
+	)
+	VALUES
+	(
+	(SELECT ISNULL(MAX(DIS_ID),0)+1 FROM TS_DISCLOSUER)
+	,#{year}
+	,#{disDt}
+	,#{disItem}
+	,#{disUnit}
+	,#{gubun}
+	,#{disPrice}
+	)
+	</insert>
+
+	<update id="updateDisclosure" parameterType="Map">
+
+	UPDATE TS_DISCLOSUER
+	SET
+	GUBUN = #{gubun}
+	,DIS_DT = #{disDt}
+	,DIS_ITEM = #{disItem}
+	,DIS_UNIT = #{disUnit}
+	,YEAR = #{year}
+	,DIS_PRICE = #{disPrice}
+
+
+	WHERE
+	1=1
+	AND DIS_ID = #{disId}
+
+</update>
+
+
+
+
+
+</mapper>

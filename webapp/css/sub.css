@@ -1,0 +1,597 @@
+@charset "utf-8";
+
+/* location */
+	.location_area { overflow: hidden; margin:0; }
+	.location { margin:22px 0 16px; overflow:hidden; }
+
+/* Breadcrumb 추가 CSS   20.10.21 */
+	.lineMap { float:left; font-size: 13px; color: #575757; margin: 0; padding: 0px; }
+	.lineMap a {padding: 17px; outline-offset:-15px;}
+	.lineMap img { margin-top:-3px; vertical-align: middle; padding: 5px; }	/*2024 웹 접근성 */
+/* 	.lineMap #lnb { margin-left: 3px; } */
+	.hidden { line-height: 0; position: absolute; width: 0; height: 0; overflow: hidden; }	/*   숨김 텍스트를 위한 것으로 판단됨    20.10.21  */
+
+/* 메인 타이틀 */
+	.content_tit { border-bottom:2px solid #999; }
+	.content_tit h3 { font-size:26px; line-height:1; font-weight:700; color:#333; padding:0 0 18px;	}
+
+/* 탭스타일_기본 */
+	/* 1. 정보공개:정보공개안내, 사전공개정보 / 3.자료실:농업정책보험 실적집계_주요지표 / 6.농금원소개:농금원개요_농금원개요, 농금원개요_연혁 */
+	.tab_style { width:100%; margin:30px 0 15px; }
+	.tab_style ul { width:100%; height:61px; border-bottom:1px solid #c6c6c6; /* overflow:hidden; */ }
+	.tab_style ul li { display:table; float:left; margin:0; padding:0 2px; vertical-align:middle; box-sizing:border-box; }
+	.tab_style ul li:first-child { padding-left:0; }
+	.tab_style ul li:last-child { padding-right:0; }
+	.tab_style ul li.w2 { width:50%; }
+	.tab_style ul li.w3 { width:33.333%; }
+	.tab_style ul li.w4 { width:25%; }
+	.tab_style ul li.w5 { width:20%; }
+	.tab_style ul li.w6 { width:16.6667%; }
+	.tab_style ul li.w7 { width:14.28%; }
+	.tab_style ul li a { display:table-cell; vertical-align:middle; height:60px; text-decoration:none; background:#f9f9f9; color:#7A7A7A !important; /*color:#919191 !important;*/ font-weight:700; padding:8px 15px 5px; border-top:1px solid #f9f9f9; border-left:1px solid #f9f9f9; border-right:1px solid #f9f9f9; border-radius:15px 15px 0 0; text-align:center; box-sizing:border-box; } /*2024 웹 접근성*/
+	.tab_style ul li a.active { display:table-cell; height:61px; color:#222 !important; font-weight:700; border-top:1px solid #c6c6c6; border-left:1px solid #c6c6c6; border-right:1px solid #c6c6c6; background:#fff; box-sizing:border-box; text-decoration:underline; text-decoration-thickness:3px; text-decoration-color:#0b63ae}	/*23년 웹접근성*/
+
+	/* 2. 주요업무:농림수산식품모태펀드_농림수산식품투자조합 */
+	.tab_style2 { width:100%; margin-bottom:20px; }
+	.tab_style2 ul { display:flex; flex-wrap:wrap; width:calc(100% + 10px); margin-left:-5px; overflow:hidden; }
+	.tab_style2 ul li { padding:0 5px; vertical-align:middle; box-sizing:border-box; }
+	.tab_style2 ul li.w2 { width:50%; }
+	.tab_style2 ul li.w3 { width:33.333%; }
+	.tab_style2 ul li.w3:nth-child(3n) { padding-right:0; }
+	.tab_style2 ul li.w4 { width:25%; }
+	.tab_style2 ul li.w5 { width:20%; }
+	.tab_style2 ul li.w6 { width:16.6667%; }
+	.tab_style2 ul li a { display:block; padding:18px 0 16px; border-bottom:1px solid #c9c9c9; text-decoration:none; color:#919191; font-weight:700; text-align:center; }
+	.tab_style2 ul li a.active { color:#222 !important; background:#ebf9d8; text-decoration:underline; text-decoration-thickness:3px; text-decoration-color:#0b63ae}	/*23년 웹접근성 파란밑줄 추가*/
+	.tab_style2 ul li a:focus-visible { /*웹 접근성 2차*/ outline-style:dashed; outline-width:3px; margin:2px; }
+	
+	/* 2.주요업무:농업정책보험_업무소개, 농업정책보험_상품소개, 양식수산물재해보험_업무소개, 양식수산물재해보험_상품소개 */
+	.tab_style3 { width:100%; margin-bottom:20px; }
+	.tab_style3 ul { overflow:hidden; }
+	.tab_style3 ul li { display:table; float:left; padding-right:8px; vertical-align:middle; box-sizing:border-box; }
+	.tab_style3 ul li.w2 { width:45%; margin:22px;}	/*23년 웹접근성 width:50% > 45% margin 추가*/
+	.tab_style3 ul li.w3 { width:32.333%; margin:3px;}	/*23년 웹접근성 margin 추가*/
+	.tab_style3 ul li.w3:nth-child(3n) { padding-right:0; }
+	.tab_style3 ul li.w4 { width:25%; }
+	.tab_style3 ul li.w5 { width:20%; }
+	.tab_style3 ul li.w6 { width:16.6667%; }
+	.tab_style3 ul li a { display:table-cell; padding:18px 0 16px; border:1px solid #e2e2e2; background:#fdfdfd; border-radius:5px; text-decoration:none; color:#919191; font-weight:700; text-align:center; }
+	.tab_style3 ul li a.active { display:table-cell; color:#222 !important; border:1px solid #b6b6b6; background:#fff; text-decoration:underline; text-decoration-thickness:3px; text-decoration-color:#0b63ae;}	/*23년 웹접근성 txet-decoration 추가*/
+	.tab_style3 ul li a:focus-visible { /*웹 접근성 2차*/ outline-style:dashed; outline-width:3px; margin:2px;}
+	
+	/* 2.주요업무:농림수산식품모태펀드_업무소개, 농식품전문크라우드펀딩_업무소개, 농업정책보험_업무소개, 농업정책보험_상품소개, 양식수산물재해보험_업무소개, 손해평가사_손해평가사 안내, 농어업재해재보험기금_기금공시 / 6. 농금원소개:열린경영_윤리경영 */
+	.tab_menu { width:100%; margin:30px 0; }
+	.tab_menu ul { width:100%; height:61px; border-bottom:1px solid #c6c6c6; /* overflow:hidden; */ }
+	.tab_menu ul li { display:table; float:left; margin:0; padding:0 2px; vertical-align:middle; box-sizing:border-box; }
+	.tab_menu ul li:first-child { padding-left:0; }
+	.tab_menu ul li:last-child { padding-right:0; }
+	.tab_menu ul li.w2 { width:50%; }
+	.tab_menu ul li.w3 { width:33.333%; }
+	.tab_menu ul li.w4 { width:25%; }
+	.tab_menu ul li.w5 { width:20%; }
+	.tab_menu ul li.w6 { width:16.6667%; }
+	.tab_menu ul li.w7 { width:14.28%; }
+	.tab_menu ul li a { display:table-cell; vertical-align:middle; height:60px; text-decoration:none; background:#f9f9f9; /* color:#919191 !important; */ color:#000000 !important; font-weight:700; padding:8px 15px 5px; border-top:1px solid #f9f9f9; border-left:1px solid #f9f9f9; border-right:1px solid #f9f9f9; border-radius:15px 15px 0 0; text-align:center; box-sizing:border-box; }	/*23년 웹접근성 명도대비 color 수정*/
+	.tab_menu ul li a.active { display:table-cell; height:61px; color:#000000 !important; font-weight:700; /* padding:7px 15px 5px; */ border-top:1px solid #c6c6c6; border-left:1px solid #c6c6c6; border-right:1px solid #c6c6c6; background:#fff; box-sizing:border-box; text-decoration:underline; text-decoration-thickness:3px; text-decoration-color:#0b63ae}	/*23년 웹접근성*/
+
+/* note_box_area */
+	.note_box_area { margin:30px 0; padding:30px; background:#f9f9f9; border-radius:15px; overflow:hidden; }
+	.note_box { position:relative; padding:3px 0 0 40px; font-size:15px; }
+	.note_box::before { content:''; display:block; position:absolute; top:0; left:0; margin:0; width:28px; height:28px; background:url('/images/sub/bg_note_box.png') center center no-repeat; }
+
+/* title */
+	.title_h4 { margin:40px 0 15px; font-size:20px; color:#333; font-weight:700; line-height:1.4; }
+	.title_h5 { margin:40px 0 10px; font-size:18px; font-weight:700; }
+	.title_h5_2 { margin:30px 0 10px; font-size:17px; font-weight:700; }
+	.title_h5.green { color:#4e9101; }
+	.title_h5.blue { color:#00809c; }
+	.title_h5.blue2 { color:#3c78ae; }
+	.title_h5_2.green { color:#519800; }
+	.title_h6 { margin:15px 0 10px; font-size:16px; font-weight:700; }
+
+/* list_type */
+	/* .list_type {
+		margin-top:10px;
+		margin-left:10px;
+		list-style-position: inside;
+		padding-left:15px;}
+	.list_type {
+		margin-top:7px;
+		margin-left:10px;
+		list-style-position: inside;
+		padding-left:15px;
+	} */
+	.list_type22 {
+		margin-top:7px;
+		margin-left:10px;
+		list-style-position: inside;
+		padding-left:15px;
+	} /* 국민제안 게시판용 추가 2022.08.01 김동민 대리 */
+
+	/* .list_type>li {
+		background: url('../images/sub/bg_bul_rect.png') no-repeat 0 8px;
+		padding-left:10px;
+		padding-bottom:5px;
+	}*/
+	.list_type22>li {
+		background: url('../images/sub/bg_bul_rect.png') no-repeat 0 8px;
+		padding-left:10px;
+		padding-bottom:5px;
+		font-size:small;
+	} /* 국민제안 게시판용 추가 2022.08.01 김동민 대리 */
+
+	/* .list_type2 {
+		margin-top:10px;
+		margin-left:10px;
+	}
+	.list_type2>li {
+		background: url('../images/sub/bg_bul_rhombus.png') no-repeat 0 5px;
+		padding-left:18px;
+		padding-bottom:7px;
+		font-size:15px;
+	} */
+
+	/*추가 2018.01.04*/
+	/* .list_type3 {
+		margin-top:10px;
+		margin-left:10px;
+	}
+	.list_type3>li {
+		background: url('../images/sub/bg_bul_line.png') no-repeat 4px 9px;
+		padding-left:15px;
+		padding-bottom:7px;
+		font-size:14px;
+	} */
+
+/* title_box */
+	.title_box {
+		position:relative;
+		margin-bottom:25px;
+		padding: 0 30px 0 160px;
+		height:140px;
+		background:#eff1f3;
+	}
+	.title_box.bg_icon1 {
+		background:#eff1f3 url('../images/common/bg_title_box.png') no-repeat 30px center;
+	}
+	.title_box h5 {
+		display:block;
+		padding-top:30px;
+		font-size:16px;
+		color:#333;
+		font-weight:600;
+	}
+	.title_box p {
+		padding-top:10px;
+	}
+
+/* 테이블 공통 */
+	.table_wrap { width:100%; overflow:hidden; position:relative; margin-top:0; padding-top:0; }
+
+/* 콘텐츠 table */
+	.scroll { overflow-x:auto; position:relative; }
+	.scroll > table,
+	.scroll > div { min-width:768px; }
+	@media all and (max-width:768px){
+		.scroll::before { content:''; display:block; margin:0 auto 5px auto; width:250px; height:30px; background:url('/images/sub/img_table_scroll.png'); }
+		.scroll::after { content:''; }
+	}
+
+/* 버튼 */
+	.btn_down,
+	.btn_go,
+	.btn_blank { position:relative; display:inline-block; font-size:18px; text-align:center; padding:15px 70px 13px 25px; background:#fff; border-radius:7px; border:1px solid #3c78ae; }
+	.btn_down::after { content:''; position:absolute; top:calc(50% - 13px); right:28px; width:27px; height:26px; background: url('/images/sub/ico_down.png') center center no-repeat; }
+	.btn_go::after { content:''; position:absolute; top:calc(50% - 12px); right:28px; width:27px; height:24px; background: url('/images/sub/ico_go.png') center center no-repeat; }
+	.btn_blank::after { content:''; position:absolute; top:calc(50% - 12.5px); right:28px; width:25px; height:25px; background: url('/images/sub/ico_blank.png') center center no-repeat; }
+	.btn_down.big,
+	.btn_go.big,
+	.btn_blank.big { padding:22px 105px 18px 55px; }
+	.btn_down.big::after { right:30px; }
+	.btn_go.big::after { right:30px; }
+	.btn_blank.big::after { right:30px; }
+	.down span { margin-left:20px; }
+	.btn_area.area_center { margin:30px 0; text-align:center; }
+	
+	/*230822 이의신청 버튼*/
+	.btn_dental { position:relative; display:inline-block; font-size:28px; text-align:center; padding:15px 70px 13px 25px; background:#fff; border-radius:7px; border:1px solid #3c78ae; }
+	.btn_dental.big { padding:140px 62px 18px 55px; top:150px; left:130px; width:300px; height:300px; background:linear-gradient(#e3e3e3, #fcfcfc); color:black; border-radius:10px;}
+	.btn_dental.big:hover{background:linear-gradient(#fcfcfc, #e3e3e3); color:black; border-radius:10px;}
+	.btn_dental.big2 { padding:140px 62px 18px 55px; bottom:150px; left:625px; width:300px; height:300px; background:linear-gradient(#e3e3e3, #fcfcfc); color:black; border-radius:10px;}
+	.btn_dental.big2:hover{background:linear-gradient(#fcfcfc, #e3e3e3); color:black; border-radius:10px;}
+	.btn_dental.big::after { right:30px; }
+	.btn_dentaloff::after { content:''; position:absolute; top:calc(50% - 13px); right:28px; width:27px; height:26px; background: url('/images/sub/ico_down.png') center center no-repeat; }
+	.btn_dentalon::after { content:''; position:absolute; top:calc(50% - 13px); right:28px; width:27px; height:26px; background: url('/images/sub/ico_blank.png') center center no-repeat; }
+
+/* 리스트 스타일 */
+	.list_style1 > li { position:relative; padding-left:10px; line-height:1.5; word-break:keep-all; }
+	.list_style1 > li::before { content:''; width:2px; height:2px; position:absolute; left:0; top:10px; background:#222; border-radius:100%; }
+	.list_style1 .list_style1_1 { margin:5px 0; }
+	.list_style1 .list_style1_1 li { position:relative; padding-left:10px; line-height:1.5; }
+	.list_style1 .list_style1_1 li::before { content:''; width:6px; height:1px; position:absolute; left:0; top:10px; background:#a1a1a1; }
+	.list_style1.ol_list li { padding-left:20px; text-indent:-18px; }
+	.list_style1.ol_list li::before { display:none; }
+
+	.list_style2 {  }
+	.list_style2 > li { position:relative; padding-left:10px; line-height:1.8; }
+	.list_style2 > li::before { content:''; width:6px; height:1px; position:absolute; left:0; top:10px; background:#a1a1a1; }
+
+/*이의신청*/
+	.list_style3 > li { position:relative; padding-left:14px; padding-top:15px; line-height:1.5; word-break:keep-all; }
+	.list_style3 > li::before { content:''; width:5px; height:5px; position:absolute; left:0; top:25px; background:#5cad00; border-radius:100%; }
+	.list_style3 .list_style1_1 { margin:5px 0; }
+	.list_style3 .list_style1_1 li { position:relative; padding-left:10px; line-height:1.5; }
+	.list_style3 .list_style1_1 li::before { content:''; width:6px; height:1px; position:absolute; left:0; top:10px; background:#a1a1a1; }
+
+/* top_infobox */
+	.top_infobox { width:100%; margin:30px 0 30px; padding:35px 50px; background:#f5f8f9; border-radius:15px; }
+	.top_infobox .infobox.icon { position:relative; padding-left:145px; min-height:75px; }
+	.top_infobox .infobox.icon::before { content:''; display:block; width:110px; height:110px; /* box-shadow:0 0 10px rgba(0,0,0,0.1);*/ background-color:#fff; background-repeat:no-repeat; background-position:center; position:absolute; top:50%; left:0px; transform:translateY(-50%); border-radius:100%; }
+	.top_infobox .infobox.icon.bgNone::before { background:0 none; }
+	.top_infobox .infobox.icon.borderNone::before { border-radius:0; }
+	.top_infobox .infobox.icon::before { background-image:url('/images/sub/icon_infobox_1.png'); }
+	.top_infobox .infobox.icon.type2::before { background-image:url('/images/sub/icon_infobox_2.png'); }
+	.top_infobox .tit { margin-bottom:8px; font-weight:700; }
+	.top_infobox .txt { font-size:15px; word-break:keep-all; }
+
+/* con_box */ /* ex)고객참여-고객헌장-전문 */
+	.con_box { width:100%; margin:30px 0; padding:35px 50px; background:#f5f8f9; border-radius:15px; }
+	.con_box.gray { padding:35px 40px; background:#f9f9f9; }
+	.con_box .conbox.icon { position:relative; padding-left:140px; min-height:75px; }
+	.con_box .conbox.icon::before { content:''; display:block; background-repeat:no-repeat; background-position:center; position:absolute; top:50%; left:0px; transform:translateY(-50%); }
+	.con_box .conbox.icon::before { width:83px; height:112px; background-image:url('/images/sub/icon_conbox_1.png'); }
+	.con_box .conbox.icon.type2::before { width:80px; height:87px; background-image:url('/images/sub/icon_conbox_2.png'); }
+	.con_box .conbox.icon.type2 { padding-left:120px; }
+	.con_box .tit { margin-bottom:8px; font-weight:700; }
+	.con_box .txt { font-size:15px; word-break:keep-all; }
+
+/* con_box2 */ /* ex)고객참여-국민제안 */
+	.con_box2 { width:100%; margin-bottom:0; padding:25px 40px; background:#fff; border-radius:0; }
+	.con_box2 .conbox2.icon { position:relative; padding-left:212px; min-height:75px; }
+	.con_box2 .conbox2.icon::before { content:''; display:block; background-repeat:no-repeat; background-position:center; position:absolute; top:50%; left:0px; transform:translateY(-50%); }
+	.con_box2 .conbox2.icon::before { width:156px; height:156px; background-image:url('/images/sub/icon_conbox_3.png'); }
+	.con_box2 .tit { margin-bottom:8px; font-weight:700; }
+	.con_box2 .txt { font-size:15px; word-break:keep-all; }
+	
+/* bot_infobox */
+	.bot_infobox { width:100%; margin:25px 0; padding:20px 25px; border-radius:15px; font-size:15px; }
+	.bot_infobox p { margin-bottom:5px; line-height:1.4; }
+	.bot_infobox.gray { background:#f9f9f9; }
+
+/* step_style */
+/* 화살표 있음, 타이틀 기본 ex)정보공개-공공데이터개방 */
+	.step_style01 { overflow:hidden; }
+	.step_style01::after { content:''; display:block; clear:both; }
+	.step_style01 > ul { display:flex; flex-wrap:wrap; width:calc(100% + 80px); margin-left:-40px; }
+	.step_style01 > ul > li { display:flex; align-items:flex-start; justify-content:center; flex-wrap:wrap; position:relative; margin:0 40px 25px 40px; padding:25px; border:1px solid #c8c8c8; border-radius:15px; background:#fff; }
+	.step_style01 > ul > li::after { content:''; position:absolute; top:50%; right:-45px; transform:translate(50%, -50%); width:20px; height:18px; background:url("/images/sub/bg_step_arrow.png") center center no-repeat; }
+	.step_style01 > ul > li:last-child:after { display: none; }
+	.step_style01 > ul > li .title { position:relative; width:100%; margin:0; padding:0 0 15px 0; font-weight:700; text-align:center; font-size:17px; }
+	.step_style01 > ul > li .title + p { display:flex; justify-content:center; align-items:center; position:relative; text-align:left; padding-top:15px; }
+	.step_style01.icon > ul > li .title { border-bottom:1px solid #c8c8c8; }
+	.step_style01.step_count01 > ul > li { width:calc(100% - 80px); }
+	.step_style01.step_count02 > ul > li { width:calc(50% - 80px); }
+	.step_style01.step_count03 > ul > li { width:calc(33.33% - 80px); }
+	.step_style01.step_count04 > ul > li { width:calc(25% - 80px); }
+	.step_style01.step_count05 > ul > li { width:calc(20% - 80px); }
+	.step_style01.step_count06 > ul > li { width:calc(16.66% - 80px); }
+/* 화살표 없음, 타이틀 연두색 ex)농금원소개-농금원개요 */
+	.step_style02 { overflow:hidden; }
+	.step_style02::after { content:''; display:block; clear:both; }
+	.step_style02 > ul { display:flex; flex-wrap:wrap; width:calc(100% + 30px); margin-left:-15px; }
+	.step_style02 > ul > li { display:flex; align-items:flex-start; justify-content:flex-start; flex-wrap:wrap; position:relative; margin:0 16px 15px; padding:25px 20px; border:1px solid #c8c8c8; border-radius:15px; background:#fff; } /*2024 웹 접근성*/
+	.step_style02 > ul > li .title { position:relative; width:100%; margin:0; padding:0 0 15px 0; font-weight:700; color:#549e00; text-align:center; font-size:17px; }
+	.step_style02 > ul > li .title span { color:#575757; }
+	.step_style02 > ul > li .title + p { display:flex; justify-content:center; align-items:center; position:relative; text-align:left; padding-top:15px; }
+	.step_style02.icon > ul > li .title { border-bottom:1px solid #c8c8c8; }
+	.step_style02.step_count01 > ul > li { width:calc(100% - 30px); }
+	.step_style02.step_count02 > ul > li { width:calc(50% - 30px); }
+	.step_style02.step_count03 > ul > li { width:calc(33.33% - 35px); }
+	.step_style02.step_count04 > ul > li { width:calc(25% - 30px); }
+	.step_style02.step_count05 > ul > li { width:calc(20% - 30px); }
+	.step_style02.step_count06 > ul > li { width:calc(16.66% - 30px); }
+	.step_style02 .list_style1 { margin:20px 0 0 15px; }
+/* .step_style03은 농식품전문크라우드펀딩-업무소개-신청절차에서 씀 */
+/* 화살표 있음, 기본텍스트만 ex)주요업무-농업정책보험-상품소개-농기계종합보험 */
+	.step_style04 { overflow:hidden; }
+	.step_style04::after { content:''; display:block; clear:both; }
+	.step_style04 > ul { display:flex; flex-wrap:wrap; width:calc(100% + 30px); margin-left:-15px; }
+	.step_style04 > ul > li { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; position:relative; margin:0 15px 15px; padding:20px 10px; border:6px solid #f8f8f8; border-radius:5px; background:#fff; }
+	.step_style04 > ul > li::after { content:''; position:absolute; top:50%; right:-22px; transform:translate(50%, -50%); width:20px; height:18px; background:url("/images/sub/bg_step_arrow.png") center center no-repeat; }
+	.step_style04 > ul > li:last-child:after { display:none; }
+	.step_style04 > ul > li p { position:relative; text-align:center; }
+	.step_style04.icon > ul > li .title { border-bottom:1px solid #c8c8c8; }
+	.step_style04.step_count01 > ul > li { width:calc(100% - 30px); }
+	.step_style04.step_count02 > ul > li { width:calc(50% - 30px); }
+	.step_style04.step_count03 > ul > li { width:calc(33.33% - 30px); }
+	.step_style04.step_count04 > ul > li { width:calc(25% - 30px); }
+	.step_style04.step_count05 > ul > li { width:calc(20% - 30px); }
+	.step_style04.step_count06 > ul > li { width:calc(16.66% - 30px); }
+	
+/* comment_txt */
+	.comment_txt { margin:25px 0 10px; padding:25px 20px; border-top:1px solid #dedede; }
+	
+/* 알림마당 - 입찰정보 */
+	.tender_title_box { display:flex; width:100%; height:100%; margin:35px 0; padding:35px 40px; border:1px solid #ccc; border-radius:15px; }
+	.tender_title_box .tit { position:relative; width:315px; color:#333; font-size:20px; font-weight:700; line-height:1.4; text-align:center; }
+	.tender_title_box .tit::after { content:''; display:block; margin:30px auto 0; }
+	.tender_title_box .tit.n1::after { width:87px; height:113px; background: url('/images/sub/bg_tender_title_box.png') center center no-repeat; }
+	.tender_title_box .con_box_wrap { width:calc(100% - 315px); margin-left:45px; }
+	.tender_title_box .con_box_wrap .txt { margin-bottom:20px; }
+	.tender_title_box .con_box_wrap .txt2 { margin-bottom:20px; font-size:15px; }
+	.tender_title_box .con_box_wrap .btn a { line-height:1.4; font-size:15px; word-break:keep-all; }
+	
+@media screen and (max-width: 1290px){
+	/* 탭스타일_기본 */
+		.tab_style {  }
+}
+
+@media screen and (max-width: 1024px){
+	/* 메인 타이틀 */
+		.content_tit h3 { font-size:22px; }
+
+	/* 탭스타일_기본 */
+		.tab_style ul { height:auto; border:1px solid #c6c6c6; border-radius:15px; overflow:hidden; }
+		.tab_style ul li a { height:50px; padding:15px 10px 13px; border:0 none; border-right:1px solid #c6c6c6; border-bottom:1px solid #c6c6c6; border-radius:0; }
+		.tab_style ul li a.active { height:50px; border-top:0 none; border-left:0 none; }
+		.tab_style ul li a br { display:none; }
+		.tab_style ul li:nth-child(3n) a { border-right:0 none; }
+		.tab_style ul li:nth-last-child(-n+3) a { border-bottom:0 none; }
+		.tab_style ul li.w2 { padding:0; }
+		.tab_style ul li.w3 { padding:0; }
+		.tab_style ul li.w4 { padding:0; }
+		.tab_style ul li.w5 { padding:0; }
+		.tab_style ul li.w6 { width:33.333%; padding:0; }
+		.tab_style ul li.w7 { width:33.333%; padding:0; }
+		
+		.tab_style ul li.w2:last-child a { border-right:0 none; }
+		
+		.tab_style ul li.w4 a { border-right:1px solid #c6c6c6; border-bottom:0 none; }
+		.tab_style ul li.w4:last-child a { border-right:0 none; }
+		
+		.tab_style ul li.w5 a { letter-spacing:-1px; border-right:1px solid #c6c6c6; border-bottom:0 none; }
+		.tab_style ul li.w5:last-child a { border-right:0 none; }
+		
+		.tab_style ul li.w7 a { letter-spacing:-1px; }
+		.tab_style ul li.w7:nth-child(-n+4) { width:25%; }
+		.tab_style ul li.w7:nth-child(n+5):nth-child(-n+7) { width:33.333%; }
+		.tab_style ul li.w7:nth-child(3n) a { border-right:1px solid #c6c6c6; }
+		.tab_style ul li.w7:nth-child(4) a,
+		.tab_style ul li.w7:nth-child(7) a { border-right:0 none; }
+		
+		.tab_style3 { /* margin-bottom:0px; */ }
+		.tab_style3 ul li a { padding:15px 0 13px; }
+		
+		.tab_menu { }
+		.tab_menu ul { height:auto; border:1px solid #c6c6c6; border-radius:15px; overflow:hidden; }
+		.tab_menu ul li { display:table; float:left; margin:0; padding:0 2px; vertical-align:middle; box-sizing:border-box; }
+		.tab_menu ul li.w2 { padding:0; }
+		.tab_menu ul li.w3 { padding:0; }
+		.tab_menu ul li.w4 { padding:0; }
+		.tab_menu ul li.w5 { padding:0; }
+		.tab_menu ul li.w6 { padding:0; }
+		.tab_menu ul li.w7 { padding:0; }
+		.tab_menu ul li:last-child a { border-right:0 none; }
+		.tab_menu ul li a { height:50px; padding:15px 10px 13px; border:0 none; border-right:1px solid #c6c6c6; border-bottom:0 none; border-radius:0; }
+		.tab_menu ul li a.active { height:50px; /* padding:6px 15px 5px; */ border-top:0 none; border-left:0 none; }
+	
+	/* step_style */
+		.step_style01 > ul {width:calc(100% + 60px);margin-left:-30px;}
+		.step_style01 > ul > li {margin:0 30px 30px 30px;}
+		.step_style01 > ul > li::after {right:-30px;}
+		.step_style01.step_count03 > ul > li {width:calc(33.33% - 60px);}
+}
+
+@media screen and (max-width: 840px){
+	/* step_style */
+	/* 화살표 없음, 타이틀 연두색 ex)농금원소개-농금원개요 */
+		.step_style02 { }
+		.step_style02::after { }
+		.step_style02 > ul { display:block; width:100%; margin-left:0; }
+		.step_style02 > ul > li { display:block; width:100%; margin:0 0 15px; padding:25px 20px; }
+		.step_style02 > ul > li .title { font-size:16px; }
+		.step_style02 > ul > li .title span { }
+		.step_style02 > ul > li .title + p { }
+		.step_style02.icon > ul > li .title { }
+		.step_style02.step_count01 > ul > li { }
+		.step_style02.step_count02 > ul > li { }
+		.step_style02.step_count03 > ul > li { width:100%; }
+		.step_style02.step_count04 > ul > li { width:100%; }
+		.step_style02.step_count05 > ul > li { width:100%; }
+		.step_style02.step_count06 > ul > li { width:100%; }
+		.step_style02 .list_style1 { }	
+		
+	/* 알림마당 - 입찰정보 */
+		.tender_title_box { padding:30px; }
+		.tender_title_box .tit { width:280px; font-size:18px; }
+		.tender_title_box .con_box_wrap { width:calc(100% - 280px); margin-left:30px; }
+		.tender_title_box .con_box_wrap .btn a { padding:16px 75px 14px 25px; }
+}
+
+@media screen and (max-width: 768px){
+	/* 탭스타일_기본 */
+		.tab_style2 ul li.w4 { width:33.3333%; }
+		.tab_style2 ul li a { padding:14px 0 12px; font-size:15px; }
+		
+		.tab_style3 ul li.w4 { width:50%; margin-bottom:8px; }
+		.tab_style3 ul li.w4:nth-child(n+3) { margin-bottom:0; }
+		.tab_style3 ul li.w6 { width:33.333%; margin-bottom:8px; }
+		.tab_style3 ul li.w6:nth-child(n+4) { margin-bottom:0; }
+		
+		.tab_menu ul li.w4 { width:50%; }
+		.tab_menu ul li.w4 a { border-bottom:1px solid #c6c6c6; }
+		.tab_menu ul li.w4:nth-child(2n) a { border-right:0 none; }
+		.tab_menu ul li.w4:nth-child(n+3) a { border-bottom:0 none; }
+	
+	/* top_infobox */
+		.top_infobox { padding:20px 30px; }
+		.top_infobox .infobox.icon { padding:0; }
+		.top_infobox .infobox.icon::before { position:static; margin:0 auto 15px auto; transform:none; }
+	
+	/* con_box2 */ /* ex)고객참여-국민제안 */
+		.con_box2 { margin:10px 0; padding:20px; border:1px solid #ddd; border-radius:10px; }
+		.con_box2 .conbox2.icon { padding:0; }
+		.con_box2 .conbox2.icon::before { display:none; }
+		.con_box2 .tit { margin-bottom:8px; font-weight:700; }
+		.con_box2 .txt { font-size:15px; word-break:keep-all; }
+		
+	/* comment_txt */
+		.comment_txt { margin:25px 0 0; }
+		
+	/* note_box_area */
+		.note_box_area { margin:25px 0; padding:20px; }
+	
+	/* step_style */
+		.step_style04 > ul { width:100%; margin:0; }
+		.step_style04 > ul > li { margin:0 0 35px; padding:15px 10px; }
+		.step_style04 > ul > li:last-child { margin-bottom:10px; }
+		.step_style04 > ul > li::after { right:auto; left:auto; top:auto; bottom:-35px; margin-left:-15px; transform:rotate(90deg); }
+		.step_style04 > ul > li br { display:none; }
+		.step_style04 > ul > li span { display:block; }
+		.step_style04.step_count01 > ul > li { width:calc(100% - 30px); }
+		.step_style04.step_count02 > ul > li { width:calc(50% - 30px); }
+		.step_style04.step_count03 > ul > li,
+		.step_style04.step_count04 > ul > li,
+		.step_style04.step_count05 > ul > li,
+		.step_style04.step_count06 > ul > li { width:100%; }
+	
+	/* 알림마당 - 입찰정보 */
+		.tender_title_box { margin:20px 0; }
+		.tender_title_box .tit { width:220px; word-break:keep-all; }
+		.tender_title_box .con_box_wrap { width:calc(100% - 220px); margin-left:25px; }
+}
+
+@media screen and (max-width: 700px){
+	/* 탭스타일_기본 */
+		.tab_style ul li.w7:nth-child(-n+4) { width:50%; }
+		.tab_style ul li.w7:nth-child(2) a { border-right:0 none; }
+}
+
+@media screen and (max-width: 640px){
+	/* title */
+		.title_h4 { margin:20px 0 10px; font-size:17px; }
+		.title_h5 { margin:20px 0 10px; font-size:16px; }
+		.title_h5_2 { margin:20px 0 10px; font-size:16px; }
+		.title_h6 { margin:15px 0 10px; font-size:15px; }
+		
+	/* 버튼 */
+		.btn_down,
+		.btn_go,
+		.btn_blank { font-size:14px; }
+		.btn_down::after { top:calc(50% - 13px); right:28px; width:27px; height:26px; }
+		.btn_go::after { top:calc(50% - 12px); right:28px; width:27px; height:24px; }
+		.btn_blank::after { top:calc(50% - 12.5px); right:28px; width:25px; height:25px; }
+		.btn_down.big,
+		.btn_go.big,
+		.btn_blank.big { padding:15px 65px 10px 30px; }
+		.btn_down.big::after { right:30px; }
+		.btn_go.big::after { right:30px; }
+		.btn_blank.big::after { right:30px; }
+		.down span { margin-left:20px; }
+		.btn_area.area_center { margin:30px 0; }
+		
+	/* 탭스타일_기본 */
+		.tab_style { margin:20px 0; }
+		.tab_style ul li a { height:50px; padding:10px 10px 8px; }
+		.tab_style ul li a.active { height:50px; }
+		
+		.tab_style ul li.w5:nth-child(-n+2) { width:50%; }
+		.tab_style ul li.w5:nth-child(n+3):nth-child(-n+5) { width:33.333%; }
+		.tab_style ul li.w5:nth-child(-n+2) a { border-bottom:1px solid #c6c6c6; }
+		.tab_style ul li.w5:nth-child(2) a { border-right:0 none; }
+		
+		.tab_style2 ul li.w3 { width:50%; }
+		.tab_style2 ul li.w4 { width:50%; }
+		.tab_style2 ul li a { font-size:14px; }
+		
+		.tab_menu ul li a { padding:10px 10px 7px; }
+		.tab_menu ul li a.active { }
+		.tab_menu ul li.w5 { width:50%; }
+		.tab_menu ul li.w5 a { border-bottom:1px solid #c6c6c6; }
+		.tab_menu ul li.w5:nth-child(2n) a { border-right:0 none; }
+		.tab_menu ul li.w5:last-child a { border-right:1px solid #c6c6c6; border-bottom:0 none; }
+	
+	/* top_infobox */
+		.top_infobox .txt { font-size:14px; }
+	
+	/* con_box */ /* ex)고객참여-고객헌장-전문 */
+		.con_box { padding:25px 30px; }
+		.con_box.gray { padding:25px; }
+		.con_box .conbox.icon { padding:0; min-height:75px; }
+		.con_box .conbox.icon::before { position:static; margin:0 auto 30px; transform:none; }
+		.con_box .conbox.icon.type2 { padding:0; }
+		
+	/* comment_txt */
+		.comment_txt { margin:15px 0 0; padding:15px 10px; }
+		
+	/* note_box_area */
+		.note_box_area { margin:20px 0; padding:15px; }
+		.note_box { font-size:14px; }
+		
+	/* 알림마당 - 입찰정보 */
+		.tender_title_box { display:block; padding:20px; }
+		.tender_title_box .tit { width:100%; margin:0 0 15px 0; text-align:left; font-size:16px; }
+		.tender_title_box .tit::after { display:none; }
+		.tender_title_box .con_box_wrap { width:100%; margin:0; }
+		.tender_title_box .con_box_wrap .btn a { }
+}
+
+@media screen and (max-width: 600px){
+	/* 탭스타일_기본 */
+	
+	/* step_style */
+		.step_style01.step_count03 > ul { width:100%; margin:0; }
+		.step_style01.step_count03 > ul > li { width:100%; margin:0 0px 50px 0px; }
+		.step_style01.step_count03 > ul > li:last-child { margin-bottom:15px; }
+		.step_style01.step_count03 > ul > li::after { right:auto; left:auto; bottom:-25%; top:auto; transform:rotate(90deg); }
+}
+
+@media screen and (max-width: 500px){
+}
+
+@media screen and (max-width: 468px){
+	/* title */
+		.title_h4 { font-size:16px; }
+		.title_h5 { margin:20px 0 10px; font-size:16px; }
+		.title_h5_2 { margin:20px 0 10px; font-size:15px; }
+		.title_h6 { margin:15px 0 10px; font-size:15px; }
+	
+	/* 탭스타일_기본 */
+		.tab_style ul li a { height:45px; }
+		.tab_style ul li a.active { height:45px; }
+		
+		.tab_style2 ul li.w3 { width:100%; }
+		.tab_style2 ul li.w4 { width:100%; }
+		
+		.tab_style3 ul li a { padding:12px 0 11px; }
+		
+		.tab_menu { margin:30px 0 20px; }
+		.tab_menu ul li a { height:45px; }
+		.tab_menu ul li a.active { height:45px; }
+	
+	/* 버튼 */
+		.btn_area.area_center a { width:210px; margin:0 0 10px 0; }
+		
+	/*230822 이의신청 버튼*/
+	.btn_dental.big {padding:40px 62px 18px 55px; bottom:100px; left:25px; width:330px; height:150px; }
+	.btn_dental.big2 { padding:40px 62px 18px 55px;top:200px; left:25px; width:330px; height:150px;}
+
+}
+
+@media screen and (max-width: 400px){
+	/* 탭스타일_기본 */
+		.tab_style ul li:nth-last-child(3n) a { border-bottom:1px solid #c6c6c6; }
+		.tab_style ul li:nth-last-child(-n+2) a { border-bottom:0 none; }
+		.tab_style ul li:last-child a { border-right:0 none !important; }
+		
+		.tab_style ul li.w3 a { border-bottom:0 none; }	
+		.tab_style ul li.w4 { width:50%; }
+		.tab_style ul li.w4:first-child a { border-bottom:1px solid #c6c6c6; }
+		.tab_style ul li.w4:nth-child(2) a { border-right:0 none; }
+		.tab_style ul li.w5:nth-child(3) a { border-bottom:0 none; }		
+		.tab_style ul li.w6 { width:50%; }
+		.tab_style ul li.w6 a { }
+		.tab_style ul li.w6:nth-child(2n) a { border-right:0 none; }
+		.tab_style ul li.w6:nth-child(3n) a { border-right:1px solid #c6c6c6; }
+		.tab_style ul li.w7:nth-child(5) a { border-bottom:0 none; }
+}

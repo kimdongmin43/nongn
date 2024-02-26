@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EventApplyEmp">
+
+	<select id="selectEventApplyEmpList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.event.dao.EventDao.selectEventApplyEmpList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT T.* FROM (
+		SELECT
+		     		EVENT_ID,
+					SITE_ID,
+					APPLY_SEQ,
+					EMP_SEQ,
+					(SELECT MANAGER_NM FROM TS_EVENTAPPLY WHERE APPLY_SEQ = EAL.APPLY_SEQ) MANAGER_NM,
+					(SELECT REG_DT FROM TS_EVENTAPPLY WHERE APPLY_SEQ = EAL.APPLY_SEQ) MANAGER_REG_DT,
+					EMP_NM,
+					DEPT_NM,
+					RANK_NM,
+					TEL,
+					FAX,
+					MOBILE,
+					EMAIL,
+					REG_USER_ID,
+					REG_DT,
+					UPD_USER_ID,
+					UPD_DT,
+					USE_YN,
+					UF_CODE_NM('USE_YN',USE_YN) useYnNm,
+					DEL_YN,
+					UF_CODE_NM('DEL_YN',DEL_YN) delYnNm,
+					SORT,
+					ATTEND_YN,
+					UF_CODE_NM('ATTEND_YN',ATTEND_YN) attend_yn_nm
+		FROM TS_EVENTAPPLYLIST EAL
+		WHERE 1=1
+		AND SITE_ID = #{*siteId}
+		AND EVENT_ID = #{eventId}
+		<!-- 단일건 요청 -->
+		<if test='empSeq != null and !empSeq.equals("")' >
+		AND APPLY_SEQ = #{applySeq}
+		</if>
+		<!-- 목록 요청 -->
+		<if test='empSeq == null or empSeq.equals("")' >
+		ORDER BY MANAGER_REG_DT DESC
+		</if>
+		) T
+		WHERE 1=1
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+
+	<select id="selectEventApplyEmpListAll" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.event.dao.EventDao.selectEventApplyEmpListAll */
+		SELECT
+		     		EVENT_ID,
+					SITE_ID,
+					APPLY_SEQ,
+					EMP_SEQ,
+					EMP_NM,
+					DEPT_NM,
+					RANK_NM,
+					TEL,
+					FAX,
+					MOBILE,
+					EMAIL,
+					REG_USER_ID,
+					REG_DT,
+					UPD_USER_ID,
+					UPD_DT,
+					USE_YN,
+					UF_CODE_NM('USE_YN',USE_YN) useYnNm,
+					DEL_YN,
+					UF_CODE_NM('DEL_YN',DEL_YN) delYnNm,
+					SORT
+		FROM TS_EVENTAPPLYLIST EAL
+		WHERE 1=1
+		AND SITE_ID = #{*siteId}
+		AND EVENT_ID = #{eventId}
+		AND APPLY_SEQ = #{applySeq}
+	</select>
+
+
+	<select id="selectEventApplyLimit" parameterType="Map" resultType="camelMap">
+	    /* kr.apfs.local.event.dao.EventDao.selectEventApplyLimit */
+	    SELECT
+	    	LIMIT - (SELECT COUNT(EMP_SEQ) FROM TS_EVENTAPPLYLIST WHERE SITE_ID	= #{*siteId} AND EVENT_ID= #{eventId}) as LIMIT_CNT
+		FROM TS_EVENT
+		WHERE	SITE_ID			= #{*siteId}
+		AND		EVENT_ID 		= #{eventId}
+	</select>
+
+
+	<insert id="insertEventApplyEmp" parameterType="Map" >
+	    /* kr.apfs.local.event.dao.EventDao.insertEventApplyEmp */
+
+		<selectKey resultType="String" keyProperty="mkApplySeq" order="BEFORE">
+		SELECT
+		<if test='mode.equals("W")' >
+			NVL(MAX(APPLY_SEQ),0)+1 mkApplySeq
+		</if>
+		<if test='mode.equals("E")' >
+			APPLY_SEQ as mkApplySeq
+		</if>
+		FROM 	TS_EVENTAPPLY
+		WHERE 	1=1
+		<if test='mode.equals("E")' >
+		AND APPLY_SEQ = #{applySeq}
+		</if>
+		</selectKey>
+
+
+		BEGIN
+
+		<if test='mode.equals("W")' >
+			INSERT INTO
+			TS_EVENTAPPLY (
+					APPLY_SEQ,
+					EVENT_ID,
+					SITE_ID,
+					DEL_YN
+			) VALUES (
+					#{mkApplySeq},
+		     		#{eventId},
+					#{*siteId},
+					'Y'
+			);
+		</if>
+
+	    UPDATE
+			TS_EVENTAPPLY
+		SET
+				COMPANY_NO = #{companyNo},
+				COMPANY_NM = #{companyNm},
+				BIZ_TYPE = #{bizType},
+				BIZ_FORM = #{bizForm},
+				MANAGER_NM = #{managerNm},
+				DEPT_NM = #{managerDept},
+				RANK_NM = #{managerRank},
+				TEL = #{managerTel},
+				FAX = #{managerFax},
+				MOBILE = #{managerMobile},
+				EMAIL = #{managerEmail},
+				EMAIL_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+				REG_USER_ID = #{*userId},
+				REG_DT = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+				USE_YN = 'Y',
+				DEL_YN = 'N'
+		WHERE
+			APPLY_SEQ = #{mkApplySeq};
+
+
+		DELETE FROM TS_EVENTAPPLYLIST WHERE APPLY_SEQ = #{mkApplySeq};
+
+		INSERT INTO
+		TS_EVENTAPPLYLIST (
+				EMP_SEQ,
+				APPLY_SEQ,
+				EVENT_ID,
+				SITE_ID,
+				EMP_NM,
+				DEPT_NM,
+				RANK_NM,
+				TEL,
+				FAX,
+				MOBILE,
+				EMAIL,
+				REG_USER_ID,
+				REG_DT,
+				USE_YN,
+				DEL_YN,
+				SORT
+		)
+		SELECT
+	     		(SELECT NVL(MAX(EMP_SEQ),0)+A.NO FROM TS_EVENTAPPLYLIST),
+	     		#{mkApplySeq},
+	     		#{eventId},
+				#{*siteId},
+        		A.NM,
+        		A.DEPT,
+				A.RANK,
+				A.TEL,
+				A.FAX,
+				A.MOBILE,
+				A.EMAIL,
+		        #{*userId},
+				TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+				'Y',
+				'N',
+				(SELECT NVL(MAX(APPLY_SEQ),0)+A.NO FROM TS_EVENTAPPLYLIST WHERE APPLY_SEQ = #{mkApplySeq})
+        FROM (
+            WITH TEMP_TABLE AS (
+                SELECT ROWNUM NO,'aNm' COL, COLUMN_VALUE VAL FROM TABLE(UF_SPLIT('<foreach collection="aNm" item="item" separator="," >#{item}</foreach>',',')) UNION ALL
+                SELECT ROWNUM NO,'aDept' COL, COLUMN_VALUE VAL FROM TABLE(UF_SPLIT('<foreach collection="aDept" item="item" separator="," >#{item}</foreach>',',')) UNION ALL
+                SELECT ROWNUM NO,'aRank' COL, COLUMN_VALUE VAL FROM TABLE(UF_SPLIT('<foreach collection="aRank" item="item" separator="," >#{item}</foreach>',',')) UNION ALL
+                SELECT ROWNUM NO,'aTel' COL, COLUMN_VALUE VAL FROM TABLE(UF_SPLIT('<foreach collection="aTel" item="item" separator="," >#{item}</foreach>',',')) UNION ALL
+                SELECT ROWNUM NO,'aMobile' COL, COLUMN_VALUE VAL FROM TABLE(UF_SPLIT('<foreach collection="aMobile" item="item" separator="," >#{item}</foreach>',',')) UNION ALL
+                SELECT ROWNUM NO,'aFax' COL, COLUMN_VALUE VAL FROM TABLE(UF_SPLIT('<foreach collection="aFax" item="item" separator="," >#{item}</foreach>',',')) UNION ALL
+                SELECT ROWNUM NO,'aEmail' COL, COLUMN_VALUE VAL FROM TABLE(UF_SPLIT('<foreach collection="aEmail" item="item" separator="," >#{item}</foreach>',','))
+            )
+            SELECT NO.NO,
+            ORI.VAL NM,
+            UPL.VAL DEPT,
+            S.VAL RANK,
+            P.VAL TEL,
+            E.VAL MOBILE,
+            T.VAL FAX,
+            O.VAL EMAIL
+            FROM TEMP_TABLE NO
+            INNER JOIN TEMP_TABLE ORI
+            ON NO.NO = ORI.NO AND NO.COL = ORI.COL AND ORI.COL = 'aNm'
+            LEFT OUTER JOIN TEMP_TABLE UPL
+            ON NO.NO = UPL.NO AND UPL.COL = 'aDept'
+            LEFT OUTER JOIN TEMP_TABLE S
+            ON NO.NO = S.NO AND S.COL = 'aRank'
+            LEFT OUTER JOIN TEMP_TABLE P
+            ON NO.NO = P.NO AND P.COL = 'aTel'
+            LEFT OUTER JOIN TEMP_TABLE E
+            ON NO.NO = E.NO AND E.COL = 'aMobile'
+            LEFT OUTER JOIN TEMP_TABLE T
+            ON NO.NO = T.NO AND T.COL = 'aFax'
+            LEFT OUTER JOIN TEMP_TABLE O
+            ON NO.NO = O.NO AND O.COL = 'aEmail'
+        )A;
+
+
+
+
+		END;
+
+
+
+	</insert>
+
+	<update id="updateEventApplyEmp" parameterType="Map" >
+	    /* kr.apfs.local.event.dao.EventDao.updateEventApplyEmp */
+	    UPDATE
+	 			TS_EVENTAPPLYLIST
+		SET
+
+				UPD_USER_ID 	= #{*userId},
+				UPD_DT 			= TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
+				ATTEND_YN = #{attendYn}
+
+		WHERE	SITE_ID			= #{*siteId}
+		AND		EVENT_ID 		= #{eventId}
+		AND 	EMP_SEQ 			in (#{empSeq})
+	</update>
+
+	<delete id="deleteEventApplyEmp" parameterType="Map" >
+	    /* kr.apfs.local.event.dao.EventDao.deleteEventApplyEmp */
+	 	DELETE 	FROM
+				TS_EVENTAPPLYEMP
+		WHERE 	SITE_ID= #{*siteId}
+		AND 	EVENT_ID = #{eventId}
+		AND 	APPLY_SEQ = #{applySeq}
+		<if test='empSeq != null and !empSeq.equals("")' >
+		AND 	EMP_SEQ = #{empSeq}
+		</if>
+		<if test='empSeqList != null' >
+		<foreach collection="empSeqList" item="item" index="index" open="AND EMP_SEQ IN (" close=")" separator="," >
+		#{item}
+		</foreach>
+		</if>
+	</delete>
+</mapper>

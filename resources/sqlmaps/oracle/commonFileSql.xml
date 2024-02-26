@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommonFileDao">
+
+    <select id="getCommonFile" parameterType="Map" resultType="camelMap" >
+        SELECT
+        	FILE_ID, FILE_NM, FILE_TYPE, FILE_SIZE, ORIGIN_FILE_NM, ATTACH_ID, FILE_PATH
+        FROM
+        	TC_ATTACHFILE
+		WHERE 1 = 1
+		<if test='fileId != null and !fileId.equals("")'>
+		   AND file_id = #{fileId}
+		</if>
+		<if test='attachId != null and !attachId.equals("")'>
+		   AND attach_Id = #{attachId}
+		</if>
+    </select>
+
+    <select id="getCommonFileList" parameterType="Map" resultType="camelMap" >
+        SELECT
+        	FILE_ID, FILE_NM, FILE_TYPE, FILE_SIZE, ORIGIN_FILE_NM, ATTACH_ID, FILE_PATH
+        FROM
+        	TC_ATTACHFILE
+		WHERE 1 = 1
+		<if test='attachId != null and !attachId.equals("")'>
+		   AND ATTACH_ID = #{attachId}
+		</if>
+		<if test='fileId != null and !fileId.equals("")'>
+		   AND file_id = #{fileId}
+		</if>
+		<if test='fileNm != null and !fileNm.equals("")'>
+		   AND fileNm like '%'+#{fileNm}+'%'
+		</if>
+		<if test='attachId == null and fileNm == null and fileId==null'>
+			AND ATTACH_ID = '0'
+		</if>
+    </select>
+
+    <insert id="insertCommonFile" parameterType="commonFileVO">
+         INSERT
+        	INTO TC_ATTACHFILE
+        	(
+        	FILE_ID
+			,ATTACH_ID
+			,FILE_NM
+			,FILE_TYPE
+			,FILE_SIZE
+			,ORIGIN_FILE_NM
+			,FILE_PATH
+			,REG_USER_ID
+			,REG_DT
+        	)
+        	values
+        	(
+        	(SELECT ISNULL(MAX(FILE_ID),0)+1 FROM TC_ATTACHFILE)
+        	, #{attachId}
+        	, #{fileNm}
+        	, #{fileType}
+        	, #{fileSize}
+        	, #{originFileNm}
+        	, #{filePath}
+        	, #{*userId}
+        	,(SELECT CONVERT(CHAR(8),GETDATE(),112)+REPLACE(CONVERT(CHAR(8),GETDATE(),108),':',''))
+        	)
+
+    </insert>
+
+    <update id="updateCommonFile" parameterType="commonFileVO">
+        UPDATE T_COMMONFILE
+        SET
+         FILE_NM= #{file_nm},
+         FILE_TYPE= #{file_type},
+         FILE_SIZE= #{file_size},
+         ORIGIN_FILE_NM= #{origin_file_nm},
+         FILE_PATH = #{file_path},
+         UPD_USERNO = #{s_user_no},
+         UPD_DATE = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+       	WHERE
+       		FILE_ID = #{file_id}
+    </update>
+
+    <delete id="deleteCommonFile" parameterType="String" >
+        DELETE FROM TC_ATTACHFILE
+        WHERE FILE_ID = #{fileId}
+    </delete>
+
+    <delete id="deleteCommonFileAll" parameterType="Map">
+        DELETE FROM T_COMMONFILE
+        WHERE GROUP_ID = #{group_id}
+    </delete>
+
+     <select id="getCommonFilePageList" parameterType="Map" resultType="commonFileVO" >
+       <include refid="CommonSql.pageingTop"/>
+        SELECT
+        	FILE_ID, FILE_NM, FILE_TYPE, FILE_SIZE, ORIGIN_FILE_NM, GROUP_ID, FILE_PATH
+        FROM
+        	T_COMMONFILE
+		WHERE 1 = 1
+		<if test='group_id != null and !group_id.equals("")'>
+		   AND group_id = #{group_id}
+		</if>
+		<if test='file_id != null and !file_id.equals("")'>
+		   AND file_id = #{file_id}
+		</if>
+		<if test='file_nm != null and !file_nm.equals("")'>
+		   AND file_nm like '%'+#{file_nm}+'%'
+		</if>
+		<include refid="CommonSql.pageingBottom"/>
+    </select>
+
+    <select id="getCommonFileCodeList" parameterType="Map" resultType="caseMap" >
+        SELECT
+        	FILE_ID as code, FILE_NM as codeNm
+        FROM
+        	T_COMMONFILE
+    </select>
+
+</mapper>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CodeDao">
+
+ <select id="selectCodemasterPageList" parameterType="Map" resultType="camelMap">
+/* kr.apfs.local.code.dao.impl.CodeDao.selectCodegubunPageList */
+	<include refid="CommonSql.pageingTop"/>
+	SELECT
+	    		mst_id
+				,mst_nm
+				,reg_user_id
+				,(select user_nm from tc_user where user_id = a.reg_user_id) as reg_user_nm
+				,reg_dt
+				,use_yn
+				,mst_desc
+				,(SELECT COUNT(code_id) FROM tc_code WHERE mst_id = a.mst_id) as code_cnt
+	  FROM tc_codemaster a
+	 WHERE 1=1
+			<if test='mstNm != null and !mstNm.equals("")' >
+			   AND mst_nm LIKE '%'+#{mstNm}+'%'
+			</if>
+			<if test='useYn != null and !useYn.equals("")' >
+			   AND use_yn = #{useYn}
+			</if>
+
+	<include refid="CommonSql.pageingBottom"/>
+</select>
+
+<select id="selectCodemasterList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.code.dao.impl.CodeDao.selectCodegubunList */
+	SELECT
+	     		mst_id
+				,mst_nm
+				,use_yn
+				,reg_user_id
+				,(select user_nm from tc_user where user_id = a.reg_user_id) as reg_user_nm
+				,reg_dt
+				,upd_user_id
+				,upd_dt
+	FROM tc_codemaster a
+	WHERE 1 = 1
+	  			<if test='mst_id != null and !mst_id.equals("")' >
+			   AND mst_id = #{mstId}
+			</if>
+			<if test='mst_nm != null and mst_nm.equals("")' >
+			   AND mst_nm = #{mstNm}
+			</if>
+			<if test='reg_user_id != null and !reg_userId.equals("")' >
+			   AND reg_user_id = #{*userId}
+			</if>
+			<if test='regDt != null and !regDt.equals("")' >
+			   AND reg_dt = #{regDt}
+			</if>
+			<if test='s_user_id != null and !s_userId.equals("")' >
+			   AND upd_user_id = #{*userId}
+			</if>
+			<if test='updDt != null and !updDt.equals("")' >
+			   AND upd_dt = #{updDt}
+			</if>
+			<if test='useYn != null and !useYn.equals("")' >
+			   AND use_yn = #{useYn}
+			</if>
+
+</select>
+
+<select id="selectCodemaster" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.code.dao.impl.CodeDao.selectCodegubun */
+	SELECT
+	   			 mst_id
+				,mst_nm 
+				,use_yn
+				,mst_desc
+				,reg_user_id
+				,(select user_nm from tc_user where user_id = a.reg_user_id) as reg_user_nm
+				,reg_dt as reg_dt
+				,sort
+	FROM tc_codemaster a
+	WHERE mst_id = #{mstId}
+			<if test='useYn != null and !useYn.equals("")' >
+			   AND use_yn = #{useYn}
+			</if>
+
+</select>
+
+<select id="selectCodemasterExist" parameterType="Map" resultType="integer">
+	SELECT /* kr.apfs.local.code.dao.impl.CodeDao.selectCodegubunExist */
+			  count(*)
+		FROM tc_codemaster
+		WHERE mst_id = #{mstId}
+
+</select>
+
+<update id="insertCodemaster" parameterType="Map" >
+    /* kr.apfs.local.code.dao.impl.CodeDao.insertCodegubun */
+	INSERT INTO
+	tc_codemaster (
+			mst_id
+			,mst_nm
+			,use_yn
+			,mst_desc
+			,reg_user_id
+			,reg_dt
+
+	) VALUES (
+			 #{cMstId}
+			,#{mstNm}
+			,'Y'
+			,#{mstDesc}
+			,#{*userId}			
+			,left(convert(varchar, getdate(), 112)+'000000',14) 
+
+	)
+</update>
+
+<update id="updateCodemaster" parameterType="Map" >
+    /* kr.apfs.local.code.dao.impl.CodeDao.updateCodegubun */
+    UPDATE
+ 		tc_codemaster
+	SET
+			mst_nm = #{mstNm}
+			,use_yn = #{useYn}
+			,mst_desc = #{mstDesc}
+			,upd_user_id = #{*userId}
+			,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+	WHERE  mst_id = #{cMstId}
+</update>
+
+<delete id="deleteCodemaster" parameterType="Map" >
+    /* kr.apfs.local.code.dao.impl.CodeDao.deleteCodegubun */
+ 	UPDATE tc_codemaster
+ 	SET
+ 	use_yn = 'N'
+	WHERE mst_id = #{c_mstId}
+</delete>
+
+<select id="selectCodeList" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.code.dao.impl.CodeDao.selectCodeList */
+	SELECT 	mst_id
+				,code_id
+				,code_nm
+				,use_yn
+				,code_desc
+				,sort
+				,reg_user_id
+				,reg_dt
+	FROM tc_code
+	WHERE  mst_id = #{mstId}
+			<if test='code_nm != null and !code_nm.equals("")' >
+			   AND code_nm LIKE '%'+#{codeNm}+'%'
+			</if>
+	ORDER BY sort
+</select>
+
+<select id="selectCodeMasterCodeList" parameterType="String" resultType="camelMap">
+	/* kr.apfs.local.code.dao.impl.CodeDao.selectCodeMasterCodeList */
+	SELECT
+			code_id
+			,code_nm
+	FROM tc_code
+	WHERE  use_yn = 'Y' and mst_id = #{mstId}
+	ORDER BY sort
+</select>
+
+<select id="selectCode" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.code.dao.impl.CodeDao.selectCode */
+	SELECT
+	   			 b.mst_id
+	   			,b.mst_nm
+				,a.code_id
+				,a.code_nm
+				,a.sort
+				,a.code_desc
+				,a.use_yn
+				,(select user_nm from tc_user where user_id = a.reg_user_id) as reg_user_nm
+				,a.reg_user_id
+				,a.reg_dt as reg_dt
+	FROM tc_code a
+	JOIN tc_codemaster b
+	ON a.mst_id = b.mst_id
+	WHERE  b.mst_id = #{mstId}  AND a.code_id = #{codeId}
+</select>
+
+<select id="selectCodeExist" parameterType="Map" resultType="integer">
+	SELECT /* kr.apfs.local.code.dao.impl.CodeDao.selectCodeExist */
+			  count(*)
+		FROM tc_code
+		WHERE code_id = #{codeId}
+		AND	mst_id = #{mstId}
+</select>
+
+<update id="insertCode" parameterType="Map" >
+    /* kr.apfs.local.code.dao.impl.CodeDao.insertCode */
+	INSERT INTO
+	tc_code (
+			mst_id
+			,code_id
+			,code_nm
+			,sort
+			,code_desc
+			,use_yn
+			,reg_user_id 
+			,reg_dt
+	) VALUES (
+			#{mstId}
+			,#{codeId}
+			,#{codeNm}
+			,(SELECT ISNULL(max(sort),0)+1 FROM tc_code WHERE mst_id = #{mstId})
+			,#{codeDesc}
+			,'Y'
+			,#{*userId}
+			,left(convert(varchar, getdate(), 112)+'000000',14)
+	)
+</update>
+
+<update id="updateCode" parameterType="Map" >
+    /* kr.apfs.local.code.dao.impl.CodeDao.updateCode */
+    UPDATE
+ 		tc_code
+	SET
+			code_nm = #{codeNm}
+			,code_desc = #{codeDesc}
+			,use_yn = #{useYn}
+			,upd_user_id = #{*userId}
+			,upd_dt = left(convert(varchar, getdate(), 112)+'000000',14)
+	WHERE code_id = #{codeId}
+		AND	mst_id = #{mstId}
+</update>
+
+<delete id="deleteCode" parameterType="Map" >
+    /* kr.apfs.local.code.dao.impl.CodeDao.deleteCode */
+ 	UPDATE	tc_code
+ 	SET
+ 		del_yn = 'Y'
+	WHERE  code_id = #{codeId}
+		AND	mst_id = #{mstId}
+</delete>
+
+<delete id="deleteCodeAll" parameterType="Map" >
+    /* kr.apfs.local.code.dao.impl.CodeDao.deleteCodeAll */
+ 	UPDATE tc_codemaster
+	SET
+		del_yn = 'Y'
+	WHERE mst_id = #{mstId}
+</delete>
+
+<update id="updateCodeSeq" parameterType="Map" >
+    /* kr.apfs.local.code.dao.impl.CodeDao.updateCodeSeq */
+    UPDATE tc_code
+    SET sort = #{sort}
+    WHERE mst_id = #{mstId} AND code_id = #{codeId}
+</update>
+
+<update id="deleteCodeReorder" parameterType="Map" >
+    /* kr.apfs.local.code.dao.impl.CodeDao.deleteCodeReorder */
+    UPDATE
+ 		tc_code
+	SET
+	        sort = sort - 1
+	WHERE	sort > (SELECT sort FROM tc_code WHERE mst_id = #{mstId} AND code_id = #{codeId})
+</update>
+
+</mapper>

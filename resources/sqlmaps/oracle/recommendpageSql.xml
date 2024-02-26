@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RecommpageDao">
+
+	<select id="selectRecommPageList" parameterType="Map" resultType="camelMap">
+
+	SELECT 	B.HOMEPAGE,
+				B.NAME,
+				A.NAME as CATE
+	FROM	TB_REFSITE_CATE A,
+			TB_REFSITE B
+	WHERE A.KIND1=B.KIND1
+		AND A.KIND2=B.KIND2
+		AND A.KIND3=B.KIND3
+		<if test='cate1 != null and !cate1.equals("")' >
+		AND B.KIND1 = #{cate1}
+		</if>
+		<if test='cate1 == null or cate1.equals("")' >
+		AND B.KIND1 = '08'
+		</if>
+    	AND B.KIND3 = '00'
+	ORDER BY B.KIND2, B.NAME
+	</select>
+
+</mapper>

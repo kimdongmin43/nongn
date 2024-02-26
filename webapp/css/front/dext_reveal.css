@@ -1,0 +1,153 @@
+/*	--------------------------------------------------
+	Reveal Modals
+	-------------------------------------------------- */
+
+	.reveal-modal-bg {
+		position: fixed;
+		height: 100%;
+		width: 100%;
+		background: none;
+		z-index: 100;
+		display: none;
+		top: 0;
+		left: 0;
+		}
+
+	.reveal-modal {
+		visibility: hidden;
+		top: 100px;
+		left: 0;
+		width: 1100px;
+		height: 100%;
+		position: fixed;
+		z-index: 101;
+		/*border:1px solid #7d7d7d;*/
+		box-sizing: border-box;
+		/*background: #fff;*/
+		overflow: hidden;
+		}
+.reveal-modal {
+	content: '';
+	display: block;
+	clear: both;
+}
+.reveal-modal ul.modal_box {
+	border:1px solid #7d7d7d;
+	position: relative;top:30px;
+}
+.reveal-modal ul.modal_box li h3 {
+	color: #333333;
+	font-size: 18px;
+	font-weight: 600;
+	text-align: center;
+	padding: 16px 0;
+	z-index: 3;
+}
+.reveal-modal ul.modal_box li {
+	float: left;
+	width:183px;
+	height: 100%;
+	background: #eeeeee;
+}
+.reveal-modal ul.modal_box li:nth-child(2n) {
+	float: left;
+	background: #fff;
+}
+.reveal-modal ul.modal_box li .modal_sub {
+/*	overflow: hidden;*/
+}
+.reveal-modal ul.modal_box li .modal_sub li{
+	color: #333333;
+	font-size: 14px;
+	background: none;
+	display: block;
+	border-top:1px dashed #a0a0a0;
+}
+.reveal-modal ul.modal_box li .modal_sub li > a{
+	color: #333333;
+	font-size: 14px;
+	background: none;
+	display: block;
+	overflow: hidden;
+	padding: 13px 15px;
+    position: relative;
+}
+.reveal-modal ul.modal_box li .modal_sub li a:hover{
+	color: #fff;
+	font-size: 14px;
+	display: block;
+	padding: 13px 15px;
+	background: url('/images/web/modal_menu_arrow.png') 168px center no-repeat #0067b4;
+}
+
+/* style for vertical nav */
+	#navigation_vert {width:820px; clear:both; padding:0 0 0 0; margin:0 auto}
+	#navigation_vert  ul {/*overflow: hidden;*/ display:block;}
+	#navigation_vert  ul li {clear: both; display:block; color: #333333;font-size: 14px;background: none; position:relative}
+	#navigation_vert .dropdown {position:absolute; padding:10px; left: 183px;top:0px;}
+
+
+	#navigation_vert2 {width:820px; clear:both; padding:0 0 0 0; margin:0 auto}
+	#navigation_vert2  ul {overflow: hidden; display:block}
+	#navigation_vert2  ul li {clear: both; display:block; color: #333333;
+	font-size: 14px;
+	background: none; position:relative}
+	#navigation_vert2 .dropdown {position:absolute; padding:10px; left: 183px;top:0px;}
+
+#dropdown_bg {
+    display: block;
+    border: 1px solid #0067b4;
+    background: #fff;
+    z-index: 220;
+}
+#dropdown_bg ul{
+    margin-bottom: 7px;
+}
+#dropdown_bg ul li{
+    width:300px;
+	border: none;
+    padding: 0px;
+    margin-bottom: 7px;
+}
+#dropdown_bg ul li:last-child{
+    margin-bottom: 0px;
+}
+#dropdown_bg ul li a{
+    color: #0067b4;
+    font-size: 13px;
+    padding: 0 0 0 10px;
+    background: url('/images/web/ssmenu_ico.gif') 0 6px no-repeat;
+}
+#dropdown_bg ul li a:hover{
+    width: auto;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+	.reveal-modal.small 		{ width: 200px; margin-left: -140px;}
+	.reveal-modal.medium 		{ width: 400px; margin-left: -240px;}
+	.reveal-modal.large 		{ width: 600px; margin-left: -340px;}
+	.reveal-modal.xlarge 		{ width: 800px; margin-left: -440px;}
+
+	.reveal-modal .close-reveal-modal {
+		position: absolute;
+		top: 3px;
+		right: 0px;
+		cursor: pointer;
+		}
+	/*
+
+	NOTES
+
+	Close button entity is &#215;
+
+	Example markup
+
+	<div id="myModal" class="reveal-modal">
+		<h2>Awesome. I have it.</h2>
+		<p class="lead">Your couch.  I it's mine.</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices aliquet placerat. Duis pulvinar orci et nisi euismod vitae tempus lorem consectetur. Duis at magna quis turpis mattis venenatis eget id diam. </p>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
+
+	*/

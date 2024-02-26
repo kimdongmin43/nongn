@@ -1,0 +1,2039 @@
+@charset "utf-8";
+
+/*
+	2020. 11. 09 - 기존 색상 #07a7e3을 #1F9AC8로 수정 (주석으로 표시한 영역은 처리하지 않음)
+*/
+.business_is {
+    width: 100%;
+    height: 248px;
+}
+/*주요업무별 소개*/
+.bg_business_fund {
+    background: url('../images/main_business/fundis_bg.png') no-repeat 0 0
+}
+
+.bg_business_crowd {
+    background: url('../images/main_business/crowd_fundingis_bg.png') no-repeat 0 0
+}
+
+.bg_business_disaster {
+    background: url('../images/main_business/disaster_is_bg.png') no-repeat 0 0
+}
+
+.bg_business_policyfunds {
+    background: url('../images/main_business/policyfunds_is_bg.png') no-repeat 0 0
+}
+
+.bg_business_loan {
+    background: url('../images/main_business/loan_is_bg.png') no-repeat 0 0
+}
+
+.busi_txt_area {
+    width: 70%;
+    padding: 20px
+}
+    /*수정2018.01.23*/
+    .busi_txt_area p {
+        font-size: 16px;
+        font-weight: 500
+    }
+
+        .busi_txt_area p.note {
+            font-size: 13px;
+            font-weight: 600
+        }
+
+        .busi_txt_area p.busi_intro_tit {
+            font-size: 22px;
+            color: #333;
+            font-weight: 600;
+            padding-bottom: 10px
+        }
+
+    .busi_txt_area span {
+        font-weight: 600
+    }
+
+.tx_explain {
+    font-size: 15px;
+    padding-top: 15px;
+    line-height: 1.4em
+}
+
+.p_tit {
+    font-size: 1.55em;
+    line-height: 25px;
+    color: #333;
+    font-weight: 600;
+    padding-top: 40px;
+    padding-bottom: 10px;
+}
+
+    .p_tit span {
+        color: #1F9AC8;
+    }
+/*	.p_tit span {color:#07a7e3;}	20.10.20	*/
+
+
+
+/*농림수산식품모태펀드*/
+.business_vision {
+    text-align: center;
+    margin-top: 50px
+}
+
+.fund_manag_area {
+    overflow: hidden;
+    position: relative;
+    padding-top: 30px;
+}
+
+.fund_manag_head {
+    background: url('../images/main_business/fund_manag_bg01.png') no-repeat top center;
+    height: 57px;
+}
+
+    .fund_manag_head p {
+        text-align: center;
+        color: #1F9AC8;
+        font-weight: 600;
+        font-size: 17px;
+        padding: 18px 0 0 0
+    }
+/*	.fund_manag_head p { text-align:center; color:#07a7e3; font-weight:600; font-size:17px; padding:18px 0 0 0}		20.10.20 */
+.fund_manag_is {
+    width: 74%;
+    margin: 0 auto;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    padding: 25px 0;
+    font-weight: 600;
+    line-height: 1.6em
+}
+
+.fund_manag_system {
+    padding-top: 50px
+}
+/*.fund_manag_box1 { float:left; margin-right:10px}
+	.fund_manag_box dl {float:left; width:33%; margin-right:3px }
+	.fund_manag_box dl:last-child { margin-right:0 }
+	.fund_manag_box dt { background:url('../images/main_business/fund_manag_bg_02.png') no-repeat center center;  height:66px}
+	.fund_manag_box dt.box_gary { background:url('../images/main_business/fund_manag_bg_03.png') no-repeat center center;  height:66px}
+	.fund_manag_box dt span { display:block; color:#fff; font-weight:600; text-align:center; padding-top:30px}
+	.fund_manag_box dd { border:1px solid #3cbc2c}
+	.fund_manag_box dd.box_gary { border:1px solid #747474}
+	.fund_manag_box dd p.fund_manag_box_tit { background:#3cbc2c; font-size:16px; color:#fff; font-weight:600; padding:12px 0 ; text-align:center}
+	.fund_manag_box dd p.fund_manag_box_tit_gary { background:#747474; font-size:16px; color:#fff; font-weight:600; padding:12px 0 ; text-align:center}
+	.fund_manag_box dd p.fund_manag_box_cont { padding:15px}*/
+
+.invest_arget_area {
+    overflow: hidden
+}
+
+    .invest_arget_area li {
+        overflow: hidden
+    }
+
+        .invest_arget_area li.distance {
+            border-bottom: 1px solid #ddd;
+            padding: 40px 0 40px 0
+        }
+
+        .invest_arget_area li.distance2 {
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0 40px 0
+        }
+
+        .invest_arget_area li dt {
+            float: left;
+        }
+
+            .invest_arget_area li dt.bg_circle_blue {
+                background: url('../images/sub/bg_circle_blue.png') no-repeat center center;
+                width: 166px;
+                height: 166px;
+                text-align: center
+            }
+
+            .invest_arget_area li dt.bg_circle_green {
+                background: url('../images/sub/bg_circle_green.png') no-repeat center center;
+                width: 166px;
+                height: 166px;
+                text-align: center
+            }
+
+            .invest_arget_area li dt p {
+                font-size: 20px;
+                color: #333;
+                font-weight: 600;
+                margin-top: 45px;
+                line-height: 1.2em
+            }
+
+        .invest_arget_area li dd.invest_arget {
+            margin-left: 200px
+        }
+
+.inver_process_area {
+    width: 100%;
+    overflow: hidden;
+    padding-top: 30px
+}
+
+.inver_process {
+    width: 80%;
+    margin: 0 auto
+}
+
+    .inver_process dl {
+        clear: both;
+        background: url('../images/sub/bg_arrow.png') no-repeat 25% center;
+        margin-bottom: 50px;
+        height: 150px
+    }
+
+    .inver_process dt {
+        float: left;
+        width: 30%;
+    }
+
+        .inver_process dt.bg_circle_blue {
+            background: url('../images/sub/bg_circle_blue.png') no-repeat center center;
+            width: 166px;
+            height: 166px;
+            text-align: center
+        }
+
+        .inver_process dt.bg_circle_skygreen {
+            background: url('../images/sub/bg_circle_skygreen.png') no-repeat center center;
+            width: 166px;
+            height: 166px;
+            text-align: center
+        }
+
+        .inver_process dt.bg_circle_green {
+            background: url('../images/sub/bg_circle_green.png') no-repeat center center;
+            width: 166px;
+            height: 166px;
+            text-align: center
+        }
+
+        .inver_process dt.bg_circle_gary {
+            background: url('../images/sub/bg_circle_gary.png') no-repeat center center;
+            width: 166px;
+            height: 166px;
+            text-align: center
+        }
+
+        .inver_process dt p.process_type {
+            font-size: 13px;
+            line-height: 1.8em;
+            padding-top: 10px;
+            color: #666
+        }
+
+            .inver_process dt p.process_type span {
+                display: inline-block;
+                border-bottom: 1px solid #747474;
+            }
+
+        .inver_process dt p {
+            font-size: 17px;
+            color: #333;
+            font-weight: 600;
+            margin-top: 20px;
+            line-height: 1.2em
+        }
+
+    .inver_process dd {
+        float: right;
+        width: 70%;
+        padding-bottom: 15px;
+    }
+        /* 	.inver_process dd.inver_process_box { border:1px solid #07a7e3; overflow:hidden } 수정 2018.01.23    20.10.20
+	.inver_process dd.inver_process_box p { display:block; background:#07a7e3; color:#fff; font-weight:600; text-align:center; padding:10px 0 }
+	.inver_process dd.inver_process_box2 { border:1px solid #25c4bd; height:150px; }
+	.inver_process dd.inver_process_box2 p { display:block; background:#25c4bd; color:#fff; font-weight:600; text-align:center; padding:10px 0 }
+	.inver_process dd.inver_process_box3 { border:1px solid #3cbc2c; height:150px; }
+	.inver_process dd.inver_process_box3 p { display:block; background:#3cbc2c; color:#fff; font-weight:600; text-align:center; padding:10px 0 }
+	.inver_process dd.inver_process_box4 { border:1px solid #747474; height:150px; }	*/
+        .inver_process dd.inver_process_box4 p {
+            display: block;
+            background: #747474;
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            padding: 10px 0
+        }
+
+        .inver_process dd.inver_process_box {
+            border: 1px solid #1F9AC8;
+            overflow: hidden
+        }
+
+            .inver_process dd.inver_process_box p {
+                display: block;
+                background: #1F9AC8;
+                color: #fff;
+                font-weight: 600;
+                text-align: center;
+                padding: 10px 0
+            }
+
+        .inver_process dd.inver_process_box2 {
+            border: 1px solid #25c4bd;
+            height: 150px;
+        }
+
+            .inver_process dd.inver_process_box2 p {
+                display: block;
+                background: #18a29c;
+                color: #fff;
+                font-weight: 600;
+                text-align: center;
+                padding: 10px 0
+            }
+
+        .inver_process dd.inver_process_box3 {
+            border: 1px solid #3cbc2c;
+            height: 150px;
+        }
+
+            .inver_process dd.inver_process_box3 p {
+                display: block;
+                background: #1f9e0f;
+                color: #fff;
+                font-weight: 600;
+                text-align: center;
+                padding: 10px 0
+            }
+
+        .inver_process dd ul {
+            padding: 0 30px
+        }
+
+            .inver_process dd ul li {
+                padding-bottom: 8px
+            }
+
+.inver_support_area {
+    overflow: hidden;
+    padding-top: 30px
+}
+
+    .inver_support_area .inver_support {
+        padding-top: 10px
+    }
+
+        .inver_support_area .inver_support:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .inver_support_area .inver_support li {
+            width: 99.9999%;
+        }
+
+            .inver_support_area .inver_support li:first-child {
+                border-top: 1px solid #1F9AC8;
+            }
+
+        .inver_support_area .inver_support dl {
+            clear: both
+        }
+
+            .inver_support_area .inver_support dl.inver_support_box {
+                border: 1px solid #ddd;
+                border-top: none;
+                padding: 10px 20px
+            }
+
+            .inver_support_area .inver_support dl dt {
+                padding: 5px 0 10px 0;
+                display: inline-block;
+                color: #1F9AC8;
+                font-size: 16px;
+                font-weight: 600
+            }
+
+            .inver_support_area .inver_support dl dd {
+                padding: 10px 0
+            }
+
+.inver_confirm_area {
+    overflow: hidden;
+    padding-top: 30px
+}
+
+    .inver_confirm_area .inver_confirm_spe {
+        background: url('../images/sub/bg_icon_note.png') no-repeat 20px 0;
+        padding: 10px 0 0 140px;
+        height: 100px
+    }
+
+        .inver_confirm_area .inver_confirm_spe p {
+            line-height: 1.5em
+        }
+
+            .inver_confirm_area .inver_confirm_spe p.tx_spe {
+                color: #ee5f4a;
+                font-size: 14px;
+                font-weight: 600
+            }
+
+    .inver_confirm_area .inver_confirm_box:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+
+    .inver_confirm_area .inver_confirm_box {
+        padding-left: 20px
+    }
+
+        .inver_confirm_area .inver_confirm_box li {
+            float: left;
+            margin-right: 10px;
+        }
+
+            .inver_confirm_area .inver_confirm_box li dl {
+                border: 1px solid #1F9AC8;
+                width: 160px;
+            }
+
+            .inver_confirm_area .inver_confirm_box li dt {
+                background: #1F9AC8;
+                text-align: center;
+                color: #fff;
+                padding: 10px 0;
+                font-weight: 600
+            }
+            /*	.inver_confirm_area .inver_confirm_box li dt { background:#07a7e3; text-align:center; color:#fff; padding:10px 0; font-weight:600}		20.10.20 */
+            .inver_confirm_area .inver_confirm_box li dd {
+                padding: 10px;
+                font-size: 13px;
+                height: 70px;
+                text-align: center
+            }
+
+
+
+/*농식품전문크라우드펀딩*/
+.crowd_intro {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 20px 0
+}
+
+    .crowd_intro p {
+        padding: 20px 0
+    }
+
+.crowd_is_area {
+    overflow: hidden;
+    padding-top: 40px
+}
+
+    .crowd_is_area h4 {
+        font-size: 23px;
+        color: #333;
+        font-weight: 600;
+        letter-spacing: -2px;
+        padding-bottom: 15px
+    }
+
+    .crowd_is_area .crowd_is {
+        border: 1px solid #ddd;
+        background: url('../images/main_business/crowd_fundingis_img02.png') no-repeat center 15px;
+        overflow: hidden;
+    }
+
+        .crowd_is_area .crowd_is ul {
+            height: 180px;
+            padding-top: 150px
+        }
+
+        .crowd_is_area .crowd_is li {
+            float: left;
+            width: 20%;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600
+        }
+
+.crowd_process_area {
+    overflow: hidden;
+}
+
+    .crowd_process_area .crowd_process {
+        padding-top: 40px;
+    }
+
+        .crowd_process_area .crowd_process li {
+            float: left;
+            margin-left: 10px;
+            width: 16.66%;
+            margin-bottom: 10px
+        }
+
+            .crowd_process_area .crowd_process li:first-child {
+                margin-left: 0
+            }
+
+            .crowd_process_area .crowd_process li.crowd_step01 {
+                background: url('../images/main_business/crowd_process_bg.png') no-repeat 0 0;
+                width: 143px;
+                height: 142px;
+            }
+
+            .crowd_process_area .crowd_process li.crowd_step02 {
+                background: url('../images/main_business/crowd_process_bg.png') no-repeat -151px 0;
+                width: 143px;
+                height: 142px;
+            }
+
+            .crowd_process_area .crowd_process li.crowd_step03 {
+                background: url('../images/main_business/crowd_process_bg.png') no-repeat -305px 0;
+                width: 143px;
+                height: 142px;
+            }
+
+            .crowd_process_area .crowd_process li.crowd_step04 {
+                background: url('../images/main_business/crowd_process_bg.png') no-repeat -456px 0;
+                width: 143px;
+                height: 142px;
+            }
+
+            .crowd_process_area .crowd_process li.crowd_step05 {
+                background: url('../images/main_business/crowd_process_bg.png') no-repeat -608px 0;
+                width: 143px;
+                height: 142px;
+            }
+
+            .crowd_process_area .crowd_process li.crowd_step06 {
+                background: url('../images/main_business/crowd_process_bg.png') no-repeat -760px 0;
+                width: 143px;
+                height: 142px;
+            }
+
+            .crowd_process_area .crowd_process li dt {
+                font-size: 12px;
+                text-align: center;
+                padding: 8px 0 3px 0
+            }
+
+            .crowd_process_area .crowd_process li dd {
+                font-size: 15px;
+                color: #333;
+                font-weight: 600;
+                text-align: center
+            }
+
+.crowd_type_area {
+    overflow: hidden;
+    padding-top: 40px
+}
+
+    .crowd_type_area h4 {
+        padding-bottom: 10px
+    }
+
+    .crowd_type_area .crowd_type {
+        overflow: hidden;
+        padding-top: 40px;
+    }
+
+        .crowd_type_area .crowd_type dl {
+            float: left;
+            width: 49%
+        }
+
+            .crowd_type_area .crowd_type dl:first-child {
+                margin-right: 5px
+            }
+
+            .crowd_type_area .crowd_type dl.crowd_bg_type01 {
+                background: url('../images/main_business/crowd_bg_type01.png') no-repeat center 0;
+            }
+
+                .crowd_type_area .crowd_type dl.crowd_bg_type01 dt {
+                    margin-top: 160px;
+                    background: #2D6EC8;
+                    text-align: center;
+                    color: #fff;
+                    font-weight: 600;
+                    font-size: 16px;
+                    padding: 12px 0
+                }
+                /*	.crowd_type_area .crowd_type dl.crowd_bg_type01 dt  { margin-top:160px; background:#07a7e3; text-align:center; color:#fff; font-weight:600; font-size:16px; padding:12px 0}	20.10.20	    */
+                /* .crowd_type_area .crowd_type dl.crowd_bg_type01 dt  { margin-top:160px; background:#1F9AC8; text-align:center; color:#fff; font-weight:600; font-size:16px; padding:12px 0}	*/
+                .crowd_type_area .crowd_type dl.crowd_bg_type01 dd {
+                    border: 1px solid #1F9AC8;
+                    overflow: hidden;
+                    padding: 10px;
+                    height: 510px
+                }
+
+                    .crowd_type_area .crowd_type dl.crowd_bg_type01 dd li {
+                        padding-bottom: 10px !important;
+                    }
+
+            .crowd_type_area .crowd_type dl.crowd_bg_type02 {
+                background: url('../images/main_business/crowd_bg_type02.png') no-repeat center 0;
+            }
+
+                .crowd_type_area .crowd_type dl.crowd_bg_type02 dt {
+                    margin-top: 160px;
+                    background: #048000;
+                    text-align: center;
+                    color: #fff;
+                    font-weight: 600;
+                    font-size: 16px;
+                    padding: 12px 0
+                }
+                /*	.crowd_type_area .crowd_type dl.crowd_bg_type02 dt  { margin-top:160px; background:#3cbc2c; text-align:center; color:#fff; font-weight:600; font-size:16px; padding:12px 0}		*/
+                /* .crowd_type_area .crowd_type dl.crowd_bg_type02 dt  { margin-top:160px; background:#1f9e0f; text-align:center; color:#fff; font-weight:600; font-size:16px; padding:12px 0} */
+                .crowd_type_area .crowd_type dl.crowd_bg_type02 dd {
+                    border: 1px solid #3cbc2c;
+                    overflow: hidden;
+                    padding: 10px;
+                    height: 510px
+                }
+
+                    .crowd_type_area .crowd_type dl.crowd_bg_type02 dd li {
+                        padding-bottom: 10px !important;
+                    }
+
+        .crowd_type_area .crowd_type .type_tit {
+            font-weight: 600;
+            color: #333
+        }
+
+        .crowd_type_area .crowd_type .list_pl {
+            padding-left: 65px
+        }
+
+
+/*농업정책보험(업무소개)*/
+.bg_business_insura {
+    background: url('../images/main_business/insura_bg.png') no-repeat 0 0
+}
+
+.busi_insura_area1 {
+    min-height: 225px;
+    border-bottom: 1px solid #ddd;
+    background: url('../images/main_business/busi_insura_img1.png') no-repeat left 20%;
+    background-size: 50% auto;
+}
+
+.insura_area_txt1 {
+    padding-left: 50%;
+    font-size: 16px;
+}
+
+.busi_insura_area2 {
+    min-height: 225px;
+    border-bottom: 1px solid #ddd;
+    background: url('../images/main_business/busi_insura_img2.png') no-repeat right 20%;
+    background-size: 50% auto;
+}
+
+.insura_area_txt2 {
+    padding-right: 50%;
+    font-size: 16px;
+}
+
+.insura_hi_area {
+    overflow: hidden;
+}
+
+.inshi_bg1 {
+    background: url('../images/main_business/history_bg1.png') no-repeat 0 120px;
+    overflow: hidden;
+}
+
+.inshi_bg2 {
+    background: url('../images/about_apfs/history_bg2.png') no-repeat 0 120px;
+    overflow: hidden;
+}
+
+.insura_hi_cont_l {
+    width: 27%;
+    float: left;
+    padding-top: 15px
+}
+
+    .insura_hi_cont_l span {
+        font-size: 3em;
+        line-height: 1em;
+        font-weight: 600;
+        color: #757575;
+    }
+/*	.insura_hi_cont_l span {font-size:3em; line-height:1em; font-weight:600; color:#bbbaba;}		20.10.20	*/
+.insura_hi_cont_r {
+    width: 70%;
+    float: left;
+    height: auto;
+    min-height: 400px;
+    padding: 2.5% 0 4% 0;
+    background: url('../images/main_business/busi_history_ybg.png') repeat-y 0 0
+}
+
+    .insura_hi_cont_r dl {
+    }
+
+    .insura_hi_cont_r dt {
+        width: 275px;
+        height: 40px;
+        margin-top: 5%;
+    }
+
+        .insura_hi_cont_r dt span {
+        }
+
+    .insura_hi_cont_r .hi_y_sp {
+        font-size: 1.8em;
+        font-weight: 600;
+        color: #505050;
+        display: inline-block;
+        padding: 2.5% 0 0 42%;
+    }
+
+    .insura_hi_cont_r dt.hi_y1 {
+        background: url('../images/main_business/busi_history_ybg1.png') no-repeat 0 0
+    }
+
+    .insura_hi_cont_r dt.hi_y2 {
+        background: url('../images/main_business/busi_history_ybg2.png') no-repeat 0 0
+    }
+
+    .insura_hi_cont_r dt.hi_y3 {
+        background: url('../images/main_business/busi_history_ybg3.png') no-repeat 0 0
+    }
+
+    .insura_hi_cont_r dt.hi_y4 {
+        background: url('../images/main_business/busi_history_ybg4.png') no-repeat 0 0
+    }
+
+    .insura_hi_cont_r dt.hi_y5 {
+        background: url('../images/main_business/busi_history_ybg5.png') no-repeat 0 0
+    }
+
+    .insura_hi_cont_r dd {
+        padding-left: 82px;
+        color: #707070;
+    }
+
+        .insura_hi_cont_r dd span {
+            float: left;
+            width: 60px;
+            padding-top: 5px;
+            font-size: 1.2em;
+            letter-spacing: 0.03em;
+            font-weight: bold;
+            color: #909090;
+            display: inline-block;
+        }
+
+        .insura_hi_cont_r dd ul {
+            display: inline-block;
+            width: 80%;
+        }
+
+            .insura_hi_cont_r dd ul li {
+                list-style: disc;
+                padding-top: 5px;
+                margin-left: 13px;
+            }
+
+.insura_sys_area {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+/*어업정책보험(업무소개)  2021.07.28*/
+.bg_business_insura2 {
+    background: url('../images/main_business/insura_bg2.jpg') no-repeat 0 0
+}
+
+.busi_insura_area3 {
+    min-height: 225px;
+    border-bottom: 1px solid #ddd;
+    background: url('../images/main_business/busi_insura_img3.jpg') no-repeat left 20%;
+    background-size: 50% auto;
+}
+
+.busi_insura_area4 {
+    min-height: 225px;
+    border-bottom: 1px solid #ddd;
+    background: url('../images/main_business/busi_insura_img4.jpg') no-repeat right 20%;
+    background-size: 50% auto;
+}
+
+.pfabg_7 {
+    background: url('../images/main_business/busi_pfarm_mbg4.jpg') no-repeat right bottom;
+}
+
+/*농업정책보험(상품소개)*/
+.busi_pfarm_area {
+    overflow: hidden;
+}
+
+    .busi_pfarm_area h5 {
+        font-size: 25px;
+        line-height: 26px;
+        font-weight: bold;
+        min-width: 200px;
+    }
+    /*수정 2018.01.25*/
+    .busi_pfarm_area h6 {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: bold;
+        padding-right: 2%;
+    }
+
+.pfarm_area_top {
+    min-height: 130px;
+    border: 4px solid #f7f7f7;
+    margin-top: 2%;
+}
+
+.pfabg_1 {
+    background: url('../images/main_business/busi_pfarm_mbg1.png') no-repeat right bottom;
+}
+
+.pfabg_2 {
+    background: url('../images/main_business/busi_pfarm_mbg2.png') no-repeat right bottom;
+}
+
+.pfabg_3 {
+    background: url('../images/main_business/busi_pfarm_mbg3.png') no-repeat right bottom;
+}
+
+.pfabg_4 {
+    background: url('../images/main_business/busi_pfarm_mbg4.png') no-repeat right bottom;
+}
+
+.pfabg_5 {
+    background: url('../images/main_business/busi_pfarm_mbg5.png') no-repeat right bottom;
+}
+
+.pfabg_6 {
+    background: url('../images/main_business/busi_pfarm_mbg6.png') no-repeat right bottom;
+}
+
+.pfarm_area_top > div {
+    border-bottom: 1px solid #d1d3d3;
+    margin: 20px 0 0 20px;
+    padding: 0 0 15px 0;
+    display: inline-block;
+}
+    /*수정 2018.01.25*/
+    .pfarm_area_top > div > div {
+        float: left;
+    }
+
+.pfarm_top_tit {
+    padding-right: 25%;
+}
+    /*수정 2018.01.25*/
+    .pfarm_top_tit span {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 0 0 5px 3px;
+    }
+
+.pfarm_top_inf {
+    font-size: 13px !important;
+    line-height: 14px;
+}
+
+.pfarm_area_bott {
+    margin-top: 2.5%;
+    overflow: hidden;
+}
+
+.pfarm_bott_cont {
+    float: left;
+    background-color: #f0f5f8;
+    width: 49.5%;
+    min-height: 170px;
+    padding: 1.8% 2% 0 3%;
+    margin: 4px 4px 0 0;
+}
+
+    .pfarm_bott_cont img {
+        display: block;
+    }
+
+    .pfarm_bott_cont span {
+        display: inline-block;
+        background-color: #707070;
+        color: #fff;
+        padding-right: 7px;
+        padding-left: 5px;
+        font-size: 10px;
+    }
+
+        .pfarm_bott_cont span a {
+            color: #fff;
+        }
+
+            .pfarm_bott_cont span a:hover {
+                text-decoration: none;
+            }
+
+    .pfarm_bott_cont ul {
+        margin-top: 4%;
+    }
+
+        .pfarm_bott_cont ul li {
+            font-size: 12px;
+        }
+
+.pfarm_area_midd {
+    margin-top: 2.5%;
+    overflow: hidden;
+}
+
+.pfarm_midd_cont {
+    float: left;
+    background-color: #f0f5f8;
+    width: 100%;
+    min-height: 170px;
+    padding: 1.8% 2% 2.2% 3%;
+    margin-bottom: 1.7%;
+}
+
+    .pfarm_midd_cont img {
+        display: block;
+    }
+
+    .pfarm_midd_cont span a {
+        color: #fff;
+    }
+
+        .pfarm_midd_cont span a:hover {
+            text-decoration: none;
+        }
+
+    .pfarm_midd_cont span {
+        display: inline-block;
+        background-color: #707070;
+        color: #fff;
+        padding-right: 7px;
+        padding-left: 5px;
+        font-size: 10px;
+    }
+
+    .pfarm_midd_cont ul {
+        margin-top: 1.5%;
+    }
+
+        .pfarm_midd_cont ul li {
+            font-size: 13px;
+        }
+
+    .pfarm_midd_cont dl {
+        margin-top: 1%;
+    }
+
+        .pfarm_midd_cont dl dt {
+            font-size: 13px;
+            font-weight: bold;
+            padding-right: 1%;
+            display: inline-block;
+        }
+
+        .pfarm_midd_cont dl dd {
+            font-size: 13px;
+            display: inline-block;
+        }
+
+.busi_pfarm_area_s {
+    overflow: hidden;
+}
+
+    .busi_pfarm_area_s h5 {
+        font-size: 25px;
+        font-weight: bold;
+        min-width: 200px;
+    }
+
+    .busi_pfarm_area_s h6 {
+        font-size: 25px;
+        font-weight: bold;
+        min-width: 200px;
+    }
+
+.pfarm_area_s_top {
+    border: 3px solid #e5e6e6;
+    margin: 2% 0;
+    padding-bottom: 2%;
+}
+
+.sbg_1 {
+    background: url('../images/main_business/busi_pfarm_sbg1.png') no-repeat right 0;
+    background-color: #f5f5f5;
+}
+
+.sbg_2 {
+    background: url('../images/main_business/busi_pfarm_sbg2.png') no-repeat right 0;
+    background-color: #f5f5f5;
+}
+
+.sbg_3 {
+    background: url('../images/main_business/busi_pfarm_sbg3.png') no-repeat right 0;
+    background-color: #f5f5f5;
+}
+
+.sbg_4 {
+    background: url('../images/main_business/busi_pfarm_sbg4.png') no-repeat right 0;
+    background-color: #f5f5f5;
+}
+
+.sbg_5 {
+    background: url('../images/main_business/busi_pfarm_sbg5.png') no-repeat right 0;
+    background-color: #f5f5f5;
+}
+
+.pfarm_area_s_top > div {
+    margin: 3.4% 0 0 3.5%;
+    display: inline-block;
+}
+
+.pfarm_area_s_top ul {
+    padding: 15px 25px 15px 0;
+}
+
+.bor_t1 {
+    border-top: 1px solid #d1d3d3;
+    margin-left: 10px
+}
+
+.pfarm_area_s_top ul li {
+    padding-bottom: 3px;
+}
+
+.pfarm_top_tit {
+    padding-bottom: 0px;
+}
+
+    .pfarm_top_tit span {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 0 0 5px 3px;
+    }
+
+.pfarm_top_inf {
+    margin-top: 0px;
+    font-size: 13px;
+    line-height: 14px;
+    letter-spacing: 0.01em;
+}
+
+.pfarm_head {
+    position: relative;
+    width: 100%
+}
+
+    .pfarm_head p {
+        position: absolute;
+        right: 5px;
+        bottom: 0px
+    }
+
+.pfarm_area_s_bott {
+    overflow: hidden;
+}
+
+.pfarm_cont_bg1 {
+    background: url('../images/main_business/busi_pfarm_bbg1.png') no-repeat right 7px;
+}
+
+.pfarm_cont_bg2 {
+    background: url('../images/main_business/busi_pfarm_bbg2.png') no-repeat right 7px;
+}
+
+.pfarm_cont_bg3 {
+    background: url('../images/main_business/busi_pfarm_bbg3.png') no-repeat right 7px;
+}
+
+.pfarm_cont_bg4 {
+    background: url('../images/main_business/busi_pfarm_bbg4.png') no-repeat right 7px;
+}
+
+.pfarm_cont_bg5 {
+    background: url('../images/main_business/busi_pfarm_bbg5.png') no-repeat right 7px;
+}
+
+.pfarm_area_s_bott dl {
+    padding: 1% 0 1% 0;
+    letter-spacing: 0.01em;
+}
+
+    .pfarm_area_s_bott dl.feature_list dt {
+        padding-bottom: 15px
+    }
+
+.pfarm_area_s_bott dt {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 0 0 0 18px;
+    background: url('../images/common/bul_depth2.gif') no-repeat 0 5px;
+}
+
+.pfarm_area_s_bott dd {
+    font-size: 13px;
+    margin-bottom: 4px;
+    background: url(../images/sub/bg_bul_line.png) no-repeat 0 0;
+    background: url('../images/sub/bg_bul_line.png') no-repeat 4px 9px;
+    padding-left: 15px
+}
+/*수정 2018.01.04*/
+.ulsys_1 > ul {
+    padding: 0 0 0 18px;
+    list-style: disc !important;
+}
+
+    .ulsys_1 > ul > li {
+    }
+
+        .ulsys_1 > ul > li > ol {
+            padding: 0 0 0 18px;
+            list-style: decimal !important;
+        }
+
+            .ulsys_1 > ul > li > ol > li {
+            }
+
+
+.pfarm_cont_dd_f1 {
+    background-color: #f7f7f7;
+    border: 1px solid #d1d3d3;
+    padding: 0 1.5% 1.8% 1.8%;
+    margin: 0 0 1%;
+}
+
+    .pfarm_cont_dd_f1 dl {
+        padding-bottom: 0;
+    }
+
+    .pfarm_cont_dd_f1 dt {
+        font-size: 13px;
+        font-weight: bold;
+        padding: 0 !important;
+        background: none;
+    }
+
+    .pfarm_cont_dd_f1 dd {
+        font-size: 12px;
+    }
+
+.pfarm_cont_dd_f2 {
+    clear: both;
+    margin-top: 1.7%;
+    overflow: hidden;
+}
+
+    .pfarm_cont_dd_f2 ol {
+        padding-bottom: 1%;
+        overflow: hidden;
+    }
+
+    .pfarm_cont_dd_f2 li {
+        display: inline-block;
+        min-height: 70px;
+        float: left;
+        padding: 3px 45px 3px 5px;
+        margin: 0.7% 5px 0 0;
+        border: 1px solid #d1d3d3;
+        background: url('../images/main_business/bl_pfarm03.png') no-repeat right 34px;
+        background-color: #f5f5f5;
+    }
+
+.busi_apprai_area {
+    overflow: hidden;
+    margin-top: 4%;
+}
+
+.ffund_area
+.ffund_area > h4 {
+}
+
+.ffund_area h5 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 3% 0 5px 0;
+    padding: 0 0 0 18px;
+    background: url('../images/common/bul_depth2.gif') no-repeat 0 5px;
+}
+
+.ffund_area p {
+    padding: 0 0 0 0;
+}
+
+.business_ffund_img {
+    margin: 10px 0 20px 0;
+}
+
+.fundcheck_area
+.fundcheck_area > h4 {
+    padding: 15px 0 4px 0;
+}
+
+.fundcheck_area h5 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 3% 0 5px 0;
+    padding: 0 0 0 18px;
+    background: url('../images/common/bul_depth2.gif') no-repeat 0 5px;
+}
+
+.fundcheck_area p {
+    padding: 15px;
+    margin: 15px 0 45px 0;
+    background-color: #f5f5f5;
+    border: 1px solid #d1d3d3;
+}
+
+.pufunds_area
+.pufunds_area li {
+    font-size: 13px;
+}
+
+.loan_textsty dt {
+    margin-bottom: 4px;
+    background: url(../images/sub/bg_bul_line.png) no-repeat 0 0;
+    background: url('../images/sub/bg_bul_line.png') no-repeat 4px 9px;
+    padding-left: 15px
+}
+/*추가 2018.01.04*/
+
+#pfarm_content_1 dl.pas_bcont1 {
+    padding-bottom: 230px;
+    background: url('../images/main_business/ffund_0202_g.png') no-repeat 0 bottom;
+}
+
+
+
+/*농어업재해재보험기금*/
+.disaster_is_area {
+    overflow: hidden;
+    padding-top: 40px
+}
+
+    .disaster_is_area .disaster_is {
+        height: 260px;
+        background: url('../images/main_business/disaster_is_bg02.png') no-repeat 0 0
+    }
+        /*수정 2018.01.25*/
+        .disaster_is_area .disaster_is ul {
+            margin-left: 244px;
+            padding-top: 30px
+        }
+        /*수정 2018.01.25*/
+        .disaster_is_area .disaster_is li {
+            font-size: 16px;
+            background: url('../images/common/bul_depth2.gif') no-repeat 0 5px;
+            padding: 0 0 25px 20px
+        }
+
+.history_list {
+    overflow: hidden;
+    padding-top: 20px
+}
+
+    .history_list dt {
+        float: left;
+        display: block;
+        padding-top: 10px;
+        width: 60px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #444;
+        text-align: center;
+        border-top: 1px solid #444;
+    }
+
+    .history_list dd {
+        display: block;
+        margin: 0 0 10px 70px;
+        padding: 20px 30px 20px;
+        border: 1px solid #e2e2e2;
+        border-top: 1px solid #444;
+    }
+
+        .history_list dd span.his_date {
+            color: #444;
+            font-weight: 600;
+            padding-right: 20px
+        }
+
+        .history_list dd li {
+            padding: 0 0 5px 0
+        }
+
+.downbutt {
+    background-color: #505050;
+    color: #fff !important;
+    padding: 0 5px 3px 3px;
+}
+
+.table_style_ff {
+    overflow: hidden;
+    width: 55% !important;
+    margin: 0 10px 10px 0;
+    margin-top: 10px;
+    border-top: 2px solid #45474d;
+    border-bottom: solid 1px #dfdfe0;
+    table-layout: fixed;
+    padding-top: 20px;
+}
+
+    .table_style_ff th {
+        padding: 10px 10px;
+        background: #fafafb; /*	border-left: solid 1px #e1e1e1;*/
+        border-left: 1px solid #e4e7ec;
+        border-bottom: 1px solid #dfdfe0;
+        color: #2f3743;
+    }
+
+    .table_style_ff tbody th {
+        border-bottom-color: #e4e7ec;
+    }
+
+    .table_style_ff td {
+        position: relative;
+        padding: 10px 10px;
+        border-left: 1px solid #e4e7ec;
+        border-bottom: 1px solid #e4e7ec;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 1.3em;
+    }
+
+        .table_style_ff th:first-child,
+        .table_style_ff td:first-child {
+            border-left: none;
+        }
+
+.table_area_ff {
+    overflow: hidden;
+}
+
+    .table_area_ff table {
+        float: left;
+    }
+
+    .table_area_ff div {
+        float: left;
+    }
+/* 20210316 */
+.table_tdsty01_ff {
+    height: 230px;
+    vertical-align: top !important;
+    background: url('../images/main_business/ffund_0401_g21.png') no-repeat 0 4px;
+}
+
+    .table_tdsty01_ff ul {
+        display: inline-block;
+        margin-left: 18px;
+    }
+
+.table_tdsty02_ff {
+    height: 230px;
+    vertical-align: top !important;
+    background: url('../images/main_business/ffund_0401_g22.png') no-repeat 0 4px;
+}
+
+    .table_tdsty02_ff ul {
+        display: inline-block;
+        margin-left: 18px;
+    }
+
+.table_tdsty03_ff {
+    height: 230px;
+    vertical-align: top !important;
+    background: url('../images/main_business/ffund_0401_g23.png') no-repeat 0 4px;
+}
+
+    .table_tdsty03_ff ul {
+        display: inline-block;
+        margin-left: 18px;
+    }
+/* //20210316 */
+
+
+/*농림수산정책자금 검사*/
+.policyfunds_is_area {
+    overflow: hidden;
+    padding-top: 40px;
+    background: url('../images/main_business/policyfunds_is_bg02.png') no-repeat 600px 50px
+}
+/*수정2018.01.23*/
+
+
+
+
+/*농특회계융자금관리*/
+.loan_is_area {
+    overflow: hidden;
+    padding-top: 40px
+}
+
+
+
+/* 화면 해상도 width 1025px 이상 Design --------------------------------------*/
+@media screen and (min-width: 1025px) {
+
+    /*농어업재해재보험기금*/
+
+
+}
+
+
+
+/* 화면 해상도 width 640px 이상 960px 이하 Design --------------------------------------*/
+@media screen and (max-width: 1024px) and (min-width: 641px) {
+
+    /*농림수산식품모태펀드*/
+    .bg_business_fund {
+        background: url('../images/main_business/fundis_bg.png') no-repeat 0 0;
+        background-size: 100% auto
+    }
+
+    .bg_business_crowd {
+        background: url('../images/main_business/crowd_fundingis_bg.png') no-repeat 0 0;
+        background-size: 100% auto
+    }
+
+    .bg_business_policyfunds {
+        background: url('../images/main_business/policyfunds_is_bg.png') no-repeat 0 0;
+        background-size: 100% auto
+    }
+
+    .bg_business_loan {
+        background: url('../images/main_business/loan_is_bg.png') no-repeat 0 0;
+        background-size: 100% auto
+    }
+
+
+    /*농식품전문크라우드펀딩*/
+    .crowd_is_area .crowd_is {
+        border: 1px solid #ddd;
+        background: url('../images/main_business/crowd_fundingis_img02.png') no-repeat center 15px;
+        background-size: 95% auto;
+        overflow: hidden;
+    }
+
+        .crowd_is_area .crowd_is ul {
+            height: 160px;
+            padding-top: 130px
+        }
+
+    .crowd_process_area .crowd_process li {
+        float: left;
+        margin-left: 0;
+        width: 33.33333%;
+        margin-bottom: 10px
+    }
+
+        .crowd_process_area .crowd_process li:first-child {
+            margin-left: 0
+        }
+
+    .crowd_type_area .crowd_type dl {
+        float: left;
+        width: 100%;
+        padding-bottom: 40px
+    }
+
+        .crowd_type_area .crowd_type dl.crowd_bg_type01 dd {
+            height: auto
+        }
+
+        .crowd_type_area .crowd_type dl.crowd_bg_type02 dd {
+            height: auto
+        }
+
+
+    /*농업정책보험*/
+    .bg_business_insura {
+        background: url('../images/main_business/insura_bg.png') no-repeat 0 0;
+        background-size: 100% auto
+    }
+
+    .insura_hi_area {
+        background: url('../images/main_business/busi_history_bg.png') no-repeat 0 120px;
+        background-size: 35% auto;
+        overflow: hidden;
+    }
+
+
+    .table_style_ff {
+        width: 100% !important;
+        margin: 0 10px 10px 0;
+        margin-top: 10px;
+        border-top: 2px solid #45474d;
+        border-bottom: solid 1px #dfdfe0;
+        table-layout: fixed;
+        padding-top: 20px;
+    }
+}
+
+
+
+/* 화면 해상도 width 640px 이하 Design --------------------------------------*/
+@media screen and (max-width: 640px) {
+
+    /*농림수산식품모태펀드*/
+    .business_is {
+        width: 100%;
+        height: auto;
+    }
+
+    .bg_business_fund,
+    .bg_business_crowd,
+    .bg_business_policyfunds,
+    .bg_business_loan {
+        background: #f3f3f3
+    }
+
+    .busi_txt_area {
+        width: 100%;
+        padding: 20px
+    }
+
+    .inver_process {
+        width: 100%;
+        margin: 0 auto
+    }
+
+    /*농식품전문크라우드펀딩*/
+    .crowd_is_area .crowd_is {
+        border: 1px solid #ddd;
+        background: url('../images/main_business/crowd_fundingis_img02.png') no-repeat center 15px;
+        background-size: 95% auto;
+        overflow: hidden;
+    }
+
+        .crowd_is_area .crowd_is ul {
+            height: 130px;
+            padding-top: 100px
+        }
+
+        .crowd_is_area .crowd_is li {
+            font-size: 14px;
+        }
+
+    .crowd_process_area .crowd_process li {
+        float: left;
+        margin-left: 0;
+        width: 33.33333%;
+        margin-bottom: 10px
+    }
+
+    .crowd_type_area .crowd_type dl {
+        float: left;
+        width: 100%;
+        padding-bottom: 40px
+    }
+
+        .crowd_type_area .crowd_type dl.crowd_bg_type01 dd {
+            height: auto
+        }
+
+        .crowd_type_area .crowd_type dl.crowd_bg_type02 dd {
+            height: auto
+        }
+
+
+    /*농어업재해재보험기금*/
+    .disaster_is_area .disaster_is {
+        height: auto;
+        background: none
+    }
+
+        .disaster_is_area .disaster_is ul {
+            margin-left: 0;
+            padding-top: 0
+        }
+
+        .disaster_is_area .disaster_is li {
+            font-size: 16px;
+            background: url('../images/common/bul_depth2.gif') no-repeat 0 5px;
+            padding: 0 0 25px 20px
+        }
+
+    .history_list dt {
+        float: none;
+        padding-top: 10px;
+        width: 60px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #444;
+        text-align: center;
+        border-top: 1px solid #444;
+    }
+
+    .history_list dd {
+        display: block;
+        margin: 15px 0 10px 0;
+        padding: 20px 30px 20px;
+        border: 1px solid #e2e2e2;
+        border-top: 1px solid #444;
+    }
+
+        .history_list dd span.his_date {
+            color: #444;
+            font-weight: 600;
+            padding-right: 20px
+        }
+
+        .history_list dd li {
+            padding: 0 0 5px 0
+        }
+
+    .table_style_ff {
+        width: 100% !important;
+        margin: 0 10px 10px 0;
+        margin-top: 10px;
+        border-top: 2px solid #45474d;
+        border-bottom: solid 1px #dfdfe0;
+        table-layout: fixed;
+        padding-top: 20px;
+    }
+
+    .table_tdsty01_ff {
+        min-height: 150px;
+        vertical-align: top !important;
+        background: none;
+    }
+
+        .table_tdsty01_ff ul {
+            display: inline-block;
+            margin-left: 0px;
+        }
+
+    .table_tdsty02_ff {
+        min-height: 150px;
+        vertical-align: top !important;
+        background: none;
+    }
+
+        .table_tdsty02_ff ul {
+            display: inline-block;
+            margin-left: 0px;
+        }
+
+    .table_tdsty03_ff {
+        min-height: 150px;
+        vertical-align: top !important;
+        background: none;
+    }
+
+        .table_tdsty03_ff ul {
+            display: inline-block;
+            margin-left: 0px;
+        }
+
+    .table_area_ff img {
+        width: 100%;
+        height: auto;
+    }
+
+
+    /*농림수산정책자금 검사*/
+    .policyfunds_is_area {
+        background: none
+    }
+
+
+    /*농업정책보험*/
+
+    .insura_hi_area {
+        background: url('../images/main_business/busi_history_bg.png') no-repeat 0 120px;
+        background-size: 33% auto;
+        overflow: hidden;
+    }
+
+    .insura_hi_cont_r dd ul {
+        display: inline-block;
+        width: 100%;
+    }
+
+    .pfarm_cont_bg1 {
+        background-image: none;
+    }
+
+    .pfarm_cont_bg2 {
+        background-image: none;
+    }
+
+    .pfarm_cont_bg3 {
+        background-image: none;
+    }
+
+    .pfarm_cont_bg4 {
+        background-image: none;
+    }
+
+    .pfarm_cont_bg5 {
+        background-image: none;
+    }
+
+
+    .pfarm_bott_cont {
+        width: 100%;
+    }
+
+    .aapfs_sty1 .aapfs_sty1_sdd {
+        padding-top: 23%;
+        background: url('../images/about_apfs/vision_img4.jpg') no-repeat center 0;
+        background-size: 100% auto
+    }
+}
+
+
+/* 화면 해상도 width 460px 이하 Design --------------------------------------*/
+@media screen and (max-width: 460px) {
+
+    /*농림수산식품모태펀드*/
+    .invest_arget_area li.distance {
+        border-bottom: 1px solid #ddd;
+        padding: 20px 0 20px 0
+    }
+
+    .invest_arget_area li dt {
+        float: none;
+        margin: 0 auto
+    }
+
+        .invest_arget_area li dt p {
+            margin-top: 0px;
+            padding-top: 60px
+        }
+
+    .invest_arget_area li dd.invest_arget {
+        margin-left: 0
+    }
+
+    .inver_process {
+        width: 100%;
+        margin: 0 auto
+    }
+
+        .inver_process dl {
+            clear: none;
+            background: none;
+            margin-bottom: 0;
+            height: auto
+        }
+
+        .inver_process dt {
+            float: none;
+            width: 100%;
+            margin: 0 auto
+        }
+
+        .inver_process dd {
+            float: none;
+            width: 100%;
+            padding-bottom: 0;
+        }
+
+    .inver_support_area .inver_support li {
+        float: none;
+        width: 98%;
+        margin-left: 0
+    }
+
+    /*농식품전문크라우드펀딩*/
+    .crowd_is_area .crowd_is {
+        border: 1px solid #ddd;
+        background: url('../images/main_business/crowd_fundingis_img02.png') no-repeat center 15px;
+        background-size: 95% auto;
+        overflow: hidden;
+    }
+
+        .crowd_is_area .crowd_is ul {
+            height: 100px;
+            padding-top: 70px
+        }
+
+        .crowd_is_area .crowd_is li {
+            font-size: 13px;
+        }
+
+    .crowd_type_area .crowd_type dl {
+        float: left;
+        width: 100%;
+        padding-bottom: 40px
+    }
+
+        .crowd_type_area .crowd_type dl.crowd_bg_type01 dd {
+            height: auto
+        }
+
+        .crowd_type_area .crowd_type dl.crowd_bg_type02 dd {
+            height: auto
+        }
+
+
+    /*농업정책보험*/
+    .busi_insura_area1 {
+        background-image: none;
+    }
+
+    .busi_insura_area2 {
+        background-image: none;
+    }
+
+    .insura_area_txt1 {
+        padding-left: 0%;
+    }
+
+    .insura_area_txt2 {
+        padding-right: 0%;
+    }
+
+    .insura_area_txt1 p.wi85 {
+        width: 100%;
+    }
+
+    .insura_area_txt2 p.wi70 {
+        width: 100%;
+    }
+
+    .insura_hi_area {
+        background: none;
+        overflow: hidden;
+    }
+
+    .insura_hi_cont_l {
+        width: 27%;
+        float: left;
+    }
+
+        .insura_hi_cont_l span {
+            font-size: 3.2em;
+            line-height: 1em;
+            font-weight: 600;
+            color: #bbbaba;
+        }
+
+    .insura_hi_cont_r {
+        width: 100%;
+        clear: both;
+        height: auto;
+        padding: 2.5% 0 4% 0;
+        background: url('../images/main_business/busi_history_ybg.png') repeat-y 0 0
+    }
+
+        .insura_hi_cont_r dd ul {
+            display: inline-block;
+            width: 100%;
+        }
+
+    .pfarm_bott_cont {
+        width: 100%;
+    }
+
+    .pfabg_1 {
+        background-image: none;
+    }
+
+    .pfabg_2 {
+        background-image: none;
+    }
+
+    .pfabg_3 {
+        background-image: none;
+    }
+
+    .pfabg_4 {
+        background-image: none;
+    }
+
+    .pfabg_5 {
+        background-image: none;
+    }
+
+    .sbg_1 {
+        background-image: none;
+        background-color: #f5f5f5;
+    }
+
+    .sbg_2 {
+        background-image: none;
+        background-color: #f5f5f5;
+    }
+
+    .sbg_3 {
+        background-image: none;
+        background-color: #f5f5f5;
+    }
+
+    .sbg_4 {
+        background-image: none;
+        background-color: #f5f5f5;
+    }
+
+    .sbg_5 {
+        background-image: none;
+        background-color: #f5f5f5;
+    }
+
+    .table_style_member span.bg_ss1 {
+        display: inline-block;
+        min-width: 40%;
+        padding: 17px 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #1F9AC8;
+        border: 1px solid #1F9AC8;
+    }
+
+    .table_style_member span.bg_ss11 {
+        display: inline-block;
+        min-width: 70%;
+        padding: 17px 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #1F9AC8;
+        border: 1px solid #1F9AC8;
+    }
+
+    .table_style_member span.bg_ss2 {
+        display: inline-block;
+        min-width: 40%;
+        padding: 17px 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #1F9AC8;
+    }
+
+    .table_style_member span.bg_ss3 {
+        display: inline-block;
+        min-width: 100%;
+        padding: 17px 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #3cbc2c;
+    }
+
+    .table_style_member span.bg_ss4 {
+        display: inline-block;
+        min-width: 100%;
+        padding: 17px 0;
+        font-size: 14px;
+        font-weight: bold;
+        color: #505050;
+        border: 3px solid #d4d5d3;
+    }
+
+    .aapfs_map_bott dl {
+        min-height: 70px;
+        border-bottom: 1px solid #d4d5d3;
+        padding: 4% 2% 4% 25%;
+        vertical-align: middle;
+    }
+
+    .map_bgsty1 {
+        background: url('../images/about_apfs/mapbg_img1.jpg') no-repeat 3% center;
+        background-size: 20% auto;
+    }
+
+    .map_bgsty2 {
+        background: url('../images/about_apfs/mapbg_img2.jpg') no-repeat 3% center;
+        background-size: 20% auto;
+    }
+
+    .map_bgsty3 {
+        background: url('../images/about_apfs/mapbg_img3.jpg') no-repeat 3% center;
+        background-size: 20% auto;
+    }
+
+    .pfarm_cont_bg1 {
+        background-image: none;
+    }
+
+    .pfarm_cont_bg2 {
+        background-image: none;
+    }
+
+    .pfarm_cont_bg3 {
+        background-image: none;
+    }
+
+    .pfarm_cont_bg4 {
+        background-image: none;
+    }
+
+    .pfarm_cont_bg5 {
+        background-image: none;
+    }
+
+    #pfarm_content_1 dl.pas_bcont1 {
+        padding-bottom: 40%;
+        background: url(../images/main_business/ffund_0202_g.png) no-repeat 0 80%;
+        background-size: 100% auto;
+    }
+
+
+    /*농어업재해재보험기금*/
+
+    .table_style_ff {
+        width: 100%;
+        margin: 0 10px 10px 0;
+        margin-top: 10px;
+        border-top: 2px solid #45474d;
+        border-bottom: solid 1px #dfdfe0;
+        table-layout: fixed;
+        padding-top: 20px;
+    }
+
+    .table_tdsty01_ff {
+        min-height: 150px;
+        vertical-align: top !important;
+        background: none;
+    }
+
+        .table_tdsty01_ff ul {
+            display: inline-block;
+            margin-left: 0px;
+        }
+
+    .table_tdsty02_ff {
+        min-height: 150px;
+        vertical-align: top !important;
+        background: none;
+    }
+
+        .table_tdsty02_ff ul {
+            display: inline-block;
+            margin-left: 0px;
+        }
+
+    .table_tdsty03_ff {
+        min-height: 150px;
+        vertical-align: top !important;
+        background: none;
+    }
+
+        .table_tdsty03_ff ul {
+            display: inline-block;
+            margin-left: 0px;
+        }
+}

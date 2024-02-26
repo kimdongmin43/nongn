@@ -1,0 +1,1324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardlinkDao">
+
+	<select id="selectBoardlinkPageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.boardlink.dao.impl.BoardlinkDao.selectBoardlinkPageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+		    		board_id
+					,title
+					,board_cd
+					,contents
+					,upd_dt
+					,file_nm
+		  FROM (
+		   SELECT
+						A.SEQ_NO_D010 	AS board_id,
+						A.TITLE 					AS TITLE,
+						A.HOST 					AS HOST,
+						A.CONTACT 				AS CONTACT,
+						A.EVENT_DATE 		AS UPD_DT,
+						A.PLACE 					AS PLACE,
+						A.SUMMARY 			AS CONTENTS,
+						A.EVENT_IMG 			AS FILE_NM,
+						"O" AS BOARD_CD
+				FROM T_CH_D010 A, T_CH_D011 B
+		          WHERE A.SEQ_NO_D010 = B.SEQ_NO_D010
+		          AND A.DEL_YN = 'N'
+				AND A.OPEN_YN = 'Y'
+                    AND A.OPEN_YN = 'Y'
+                    AND A.EVENT_DATE IS NOT NULL
+		          GROUP BY A.SEQ_NO_D010,
+						A.TITLE,
+						A.HOST,
+						A.CONTACT,
+						A.EVENT_DATE,
+						A.PLACE,
+						A.SUMMARY,
+						A.OPEN_YN,
+						A.EVENT_IMG,
+						A.DEL_YN,
+						A.REGIST_DATE,
+						A.HIT,
+						B.S_PATH
+				ORDER BY A.SEQ_NO_D010 DESC
+		  ) tb
+		 WHERE 1 = 1
+		 		AND del_yn != 'Y'
+				<if test='searchTxt != null and searchKey.equals("NM")' >
+				   AND (UPPER(title) LIKE '%'+UPPER(#{searchTxt})+'%' OR INSTR(summary, UPPER(#{searchTxt})) > 0 OR INSTR(summary, LOWER(#{searchTxt})) > 0 )
+				</if>
+				<if test='searchTxt != null and searchKey.equals("CD")' >
+				   AND SEQ_NO_D010 = #{searchTxt}
+				</if>
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+	<select id="selectBoardlinkList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.boardlink.dao.impl.BoardlinkDao.selectBoardlinkList */
+		SELECT ROWNUM AS RNUM,
+		     		board_id
+					,title
+					,board_cd
+					,(select code_nm from tc_code where mst_id = 'BOARD_TYPE' and code_id = a.board_cd) as type_nm
+					,detail_yn
+					,write_mem_cd
+					,read_mem_cd
+					,item_use
+					,item_required
+					,item_out
+					,view_print
+					,view_size
+					,view_sort
+					,noti_cnt
+					,file_cnt
+					,reg_mem_id
+					,(SELECT user_nm FROM tc_user tu WHERE tu.user_id = a.reg_mem_id) AS reg_usernm
+					,reg_dt
+					,GET_DATEFORMAT(reg_dt) as reg_dt2
+					,upd_mem_id
+					,upd_dt
+		FROM ts_board a
+		WHERE 1 = 1
+			AND del_yn != 'Y'
+		<if test='defaulttype != null and !defaulttype.equals("")' >
+			AND board_cd = #{defaulttype}
+		</if>
+			ORDER BY board_id DESC
+	</select>
+
+	<select id="selectBoardlink" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.boardlink.dao.impl.BoardDao.selectBoard */
+		<![CDATA[
+			SELECT
+			  EDU.[손해평가사교육구분코드], 
+			  CMM2.Cd_Nm AS [손해평가사교육구분],
+			  EDU.[손해평가사교육명], 
+			  EDU.[손해평가사교육시작일자], 
+			  EDU.[손해평가사교육연도], 
+			  EDU.[손해평가사교육종료일자], 
+			  EDU.[손해평가사교육회차],
+			  DET.[손해평가사교육참석여부코드],
+        	  CMM1.Cd_Nm AS [손해평가사교육참석여부],
+        	  DET.[손해평가사교육목록관리번호], 
+		      DET.[손해평가사교육이수일련번호], 
+		      DET.[손해평가사자격증번호]
+			FROM 
+			  LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSEDULISTMAS EDU
+			  LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSEDUDTL DET
+			    ON EDU.[손해평가사교육목록관리번호] = DET.[손해평가사교육목록관리번호]
+			  LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.FITComCd AS CMM1 
+			    ON DET.[손해평가사교육참석여부코드] = CMM1.cd 
+			    AND CMM1.cd_tp = 80450 
+			  LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.FITComCd AS CMM2 
+			    ON EDU.[손해평가사교육구분코드] = CMM2.cd 
+			    AND CMM2.cd_tp = 80150
+		WHERE DET.[손해평가사자격증번호] = #licenseNo#
+		AND CONVERT(DATE, EDU.[손해평가사교육시작일자]) > GETDATE() 
+		]]>
+	</select>
+
+
+	<!-- 게시판 상세정보 -->
+	<select id="selectBoardlinkDetail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardLinkDetail */
+		SELECT
+		   			a.board_id
+					,a.title
+					,a.board_cd
+					,a.contents
+					,a.detail_yn
+					,a.write_mem_cd
+					,a.read_mem_cd
+					,a.item_use
+					,a.item_required
+					,a.item_out
+					,a.view_print
+					,a.view_size
+					,a.view_sort
+					,a.noti_cnt
+					,a.file_cnt
+					,a.reg_mem_id
+					,a.upd_mem_id
+					,a.upd_dt
+					,a.use_yn
+					,(SELECT user_nm FROM tc_user tu WHERE tu.user_id = a.reg_mem_id) as reg_usernm
+					<!-- ,GET_DATEFORMAT(a.reg_dt) as reg_dt -->
+					,TO_CHAR(TO_DATE(a.reg_dt,'YYYYMMDDHH24MISS'),'YYYY-MM-DD') as reg_dt
+					,CASE WHEN nvl(instr(a.item_use, 'cate', 1, 1),0) > 0 THEN 'Y' ELSE 'N' END as cate_yn
+					,(SELECT count(1) FROM ts_boardcontents tb WHERE tb.board_id = a.board_id AND tb.NOTI_YN = 'Y') as noti_sum
+		FROM ts_board a
+		WHERE 1 = 1
+			 AND a.board_id = #{boardId}
+	</select>
+	<!-- 게시판 설정 리스트(view_print) -->
+	<select id="selectBoardViewSortList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardViewSortList */
+		SELECT *
+		FROM (
+										SELECT
+											t_use.lv
+										    , i_use
+										    , i_out
+										FROM ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) i_use
+										   FROM (SELECT item_use txt FROM ts_board WHERE board_id = #{boardId}) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_use
+										LEFT OUTER JOIN ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^|]+', 1, level) i_out
+											FROM (SELECT item_out txt FROM ts_board WHERE board_id = #{boardId}) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^|]+',''))+1 ) t_out
+										ON ( t_use.lv = t_out.lv )
+										ORDER BY t_use.lv
+										) X
+		LEFT OUTER JOIN (
+										SELECT
+										    v_print
+										    , v_sort
+										    , v_size
+										    , COUNT(v_sort) OVER() AS total_cnt
+										FROM ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) v_print
+										   FROM (SELECT view_print txt FROM ts_board WHERE board_id = #{boardId}) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_print
+										LEFT OUTER JOIN ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) v_sort
+										   FROM (SELECT view_sort txt FROM ts_board WHERE board_id = #{boardId}) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_sort
+										ON ( t_print.lv = t_sort.lv )
+										LEFT OUTER JOIN ( SELECT level lv, REGEXP_SUBSTR(a.txt, '[^,]+', 1, level) v_size
+										   FROM (SELECT view_size txt FROM ts_board WHERE board_id = #{boardId}) a
+										CONNECT BY level <![CDATA[ <= ]]> length(REGEXP_REPLACE(a.txt, '[^,]+',''))+1 ) t_size
+										ON ( t_print.lv = t_size.lv )
+										ORDER by v_sort
+										) Y
+		ON X.I_USE = Y.V_PRINT
+		ORDER BY Y.v_sort,X.lv
+	</select>
+
+	<!-- 게시판 리스트 페이지 -->
+	<select id="selectBoardlinkContentsPageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBoardlinkContentsPageList */
+		<include refid="CommonSql.pageingTop"/>
+		SELECT
+			tbc.cont_id
+			,tbc.title
+			,tbc.contents
+			,tbc.file_nm
+			,tbc.reg_dt
+			,tbc.hit
+			,tbc.author
+		FROM
+			<if test='boardId != null and boardId.equals("7")' >
+			/* 대한상의 인포 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no_c040			as cont_id,
+													title,
+						''							as contents,
+						insert_date				as reg_dt,
+													hit,
+						''							as author,
+						''							as file_nm
+
+			FROM T_CH_C040
+
+			WHERE	1=1
+				AND WEB_YN='Y'
+				AND DEL_YN='N'
+
+			ORDER BY reg_dt DESC, cont_id DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("8")' >
+			/*일일중국경제, 유효 항목 : 제목, 등록일, 조회수*/
+			( SELECT
+						SEQ_NO_B010				AS cont_id,
+														TITLE,
+						INSERT_DATE				as reg_dt,
+														CONTENTS,
+														hit,
+						''								as author,
+						''								as file_nm
+				FROM T_CN_B010
+				WHERE 1=1
+					AND DEL_YN = 'N' AND DISPLAY_YN = 'Y'
+                ORDER BY INSERT_DATE DESC, SEQ_NO_B010 DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("9")' >
+			/* 베트남주요뉴스 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no					as cont_id,
+													title,
+						''							as contents,
+						write_date				as reg_dt,
+													hit,
+						''							as author,
+						''							as file_nm
+
+			FROM TB_ECONOMIC_TOPIC
+
+			WHERE	1=1
+				AND CLASS_CD='004'
+				AND SUBCLASS_CD='02'
+				AND DEL_YN='N'
+
+			ORDER BY WRITE_DATE DESC, SEQ_NO DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("10")' >
+			/* 일본경기동향 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no					as cont_id,
+													title,
+						''							as contents,
+						write_date				as reg_dt,
+													hit,
+						''							as author,
+						''							as file_nm
+
+			FROM TB_ECONOMIC_TOPIC
+
+			WHERE	1=1
+				AND CLASS_CD='004'
+				AND SUBCLASS_CD='06'
+				AND DEL_YN='N'
+
+			ORDER BY WRITE_DATE DESC, SEQ_NO DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("11")' >
+			/* 대한상의 브리프 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no_c050			as cont_id,
+													title,
+						''							as contents,
+						insert_date				as reg_dt,
+													hit,
+						''							as author,
+						''							as file_nm
+
+			FROM T_CH_C050
+
+			WHERE	1=1
+				AND WEB_YN='Y'
+				AND DEL_YN='N'
+
+			ORDER BY reg_dt DESC, cont_id DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("12")' >
+			/* 기업뉴스 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			( SELECT
+						 STRYNO					as cont_id,
+													title,
+						''							as contents,
+						SENDDATE				as reg_dt,
+						''							as hit,
+						''							as author,
+						IMAGENAME				as file_nm
+				FROM T_PD_N01
+
+				WHERE 1=1
+					AND	SERVICE1 = '종합' AND SERVICE2 = '경제일반'
+
+				ORDER BY SENDDATE DESC, STRYNO DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("13")' >
+			/* 보도자료 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no_c010			as cont_id,
+													title,
+						''							as contents,
+						insert_date				as reg_dt,
+													hit,
+						''							as author,
+						''							as file_nm
+
+			FROM T_CH_C010
+
+			WHERE	1=1
+				AND WEB_YN='Y'
+				AND DEL_YN='N'
+
+			ORDER BY INSERT_DATE DESC, SEQ_NO_C010 DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("14")' >
+			/* 해외경제동향 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no					as cont_id,
+													title,
+						''							as contents,
+						upddt						as reg_dt,
+													hit,
+						''							as author,
+						''							as file_nm
+
+			FROM TB_KITA_REPORT
+
+			WHERE	1=1
+
+
+			ORDER BY UPDDT DESC, SEQ_NO DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("15")' >
+			/* 경제칼럼 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no_c030			as cont_id,
+													title,
+						''							as contents,
+						insert_date				as reg_dt,
+													hit,
+						''							as author,
+						''							as file_nm
+
+			FROM T_CH_C030
+
+			WHERE	1=1
+					AND DEL_YN = 'N'
+					AND CEO_YN = 'Y'
+
+			ORDER BY INSERT_DATE DESC, SEQ_NO_C030 DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("16")' >
+			/* 유관기관소식 리스트, 유효 항목 : 제목, 등록기관, 등록일*/
+			(SELECT
+						h030_seq_no			as cont_id,
+													title,
+						''							as contents,
+						insert_date				as reg_dt,
+													hit,
+						org_nm					as author,
+						''							as file_nm
+
+			FROM T_KCCI_H030
+
+			WHERE	1=1
+					AND DEL_YN = 'N'
+					AND NOTICE_YN = 'Y'
+
+			ORDER BY INSERT_DATE DESC, H030_SEQ_NO DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("17")' >
+			/* 경제정챙정보 리스트, 유효 항목 : 제목, 출처, 써머리, 등록일*/
+			(SELECT
+						seqno						as cont_id,
+													title,
+						abstract					as contents,
+						publish_date			as reg_dt,
+													hit,
+													author,
+						''							as file_nm
+
+			FROM TB_ECONOMYINFO2
+			WHERE	1=1
+					AND DEL_YN = 'N'
+
+			ORDER BY PUBLISH_DATE DESC, SEQNO) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("18")' >
+			/* 발간자료 리스트, 유효 항목 : 제목, 이미지, 발간상의, 써머리, 발간일*/
+			(SELECT
+						A.seq_no				as cont_id,
+						A.title					as title,
+						A.summary				as contents,
+						A.publish_date			as reg_dt,
+						A.hit						as hit,
+						B.cham_name			as author,
+						A.img_file				as file_nm
+
+			FROM TB_KCCI_PUBLISH A, TB_COMM_CHAM B
+			WHERE	A.CHAM_CODE = B.CHAM_CODE
+					AND A.OPEN_TYPE = 'Y'
+					AND A.CHAM_CODE = #{chamCd}
+
+			ORDER BY A.PUBLISH_DATE DESC, A.SEQ_NO DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("19")' >
+			/* 포토뉴스 리스트, 유효 항목 : 제목, 이미지, 써머리, 등록일*/
+			(SELECT
+						A.seq_no_c020 				as cont_id,
+						A.title 							as title,
+						A.contents 						as contents,
+						B.attach_file_nm				as file_nm,
+						A.insert_date					as reg_dt,
+						0									as hit,
+						''									as author
+			FROM T_CH_C020 A, T_CH_C021 B
+			WHERE A.DEL_YN = 'N'
+					AND INSERT_DATE IS NOT NULL
+					AND B.SEQ_NO_C021 = (SELECt MAX(SEQ_NO_C021) FROM T_CH_C021 WHERE SEQ_NO_C020 = A.SEQ_NO_C020 AND DEL_YN='N' GROUP BY SEQ_NO_C020 )
+			ORDER BY A.INSERT_DATE DESC, A.SEQ_NO_C020 DESC) tbc
+			</if>
+
+			<if test='boardId != null and boardId.equals("3")' >
+			/* 온라인세미나 리스트,  유효 항목 : 제목, 이미지, 써머리, 등록일 */
+			(SELECT
+						a.seq_no_d010 		as cont_id,
+						a.title 					as title,
+						a.host 					as host,
+						a.contact 				as contact,
+						a.event_date			as reg_dt,
+						a.place 					as place,
+						a.summary 				as contents,
+						a.event_img 			as file_nm,
+						0							as hit,
+						''							as author
+			FROM T_CH_D010 A, T_CH_D011 B
+			WHERE A.SEQ_NO_D010 = B.SEQ_NO_D010
+			        AND A.DEL_YN = 'N'
+					AND A.OPEN_YN = 'Y'
+					AND A.EVENT_DATE IS NOT NULL
+			GROUP BY A.SEQ_NO_D010,
+					A.TITLE,
+					A.HOST,
+					A.CONTACT,
+					A.EVENT_DATE,
+					A.PLACE,
+					A.SUMMARY,
+					A.OPEN_YN,
+					A.EVENT_IMG,
+					A.DEL_YN,
+					A.REGIST_DATE,
+					A.HIT,
+					B.S_PATH
+			ORDER BY A.SEQ_NO_D010 DESC) tbc
+			</if>
+		WHERE 1 = 1
+			<if test='delYn != null and !delYn.equals("")' >
+			<!-- AND (tbc.del_yn is null or tbc.del_yn = 'N') -->
+			AND tbc.del_yn = #{delYn}
+			</if>
+			<if test='backyn != null and !backyn.equals("B")' >
+			<!-- AND TO_CHAR(SYSDATE,'YYYYMMDD') <![CDATA[ >= ]]> REPLACE(tbc.book_dt,'-','') -->
+			</if>
+			<if test='searchTxt != null and searchKey.equals("T")' >
+				AND (UPPER(tbc.title) LIKE '%'+UPPER(#{searchTxt})+'%')
+			</if>
+			<if test='searchTxt != null and searchKey.equals("C")' >
+				AND (INSTR(tbc.contents, UPPER(#{searchTxt})) > 0 OR INSTR(tbc.contents, LOWER(#{searchTxt})) > 0 ))
+			</if>
+			<if test='searchTxt != null and searchKey.equals("A")' >
+				AND (UPPER(tbc.title) LIKE '%'+UPPER(#{searchTxt})+'%' OR INSTR(tbc.contents, UPPER(#{searchTxt})) > 0 OR INSTR(tbc.contents, LOWER(#{searchTxt})) > 0 )
+			</if>
+		<include refid="CommonSql.pageingBottom"/>
+	</select>
+
+
+	<!-- 게시물 상세정보 -->
+	<select id="selectNewsDetail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectNewsDetail */
+
+			SELECT
+						STRYNO					as cont_id,
+                         							TITLE,
+						SENDDATE				as reg_dt,
+
+			FROM PD.T_PD_N01
+			WHERE 1=1
+					AND STRYNO = #{contId}
+	</select>
+
+	<!-- 게시물 상세정보 -->
+	<select id="selectBookDetail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectBookDetail */
+
+			SELECT
+						A.seq_no				as cont_id,
+						A.title					as title,
+													contents,
+						A.publish_date			as reg_dt,
+						A.hit						as hit,
+						B.cham_name			as author,
+						A.img_file				as file_nm,
+						A.ebook_file01,
+						A.ebook_file02
+			FROM TB_KCCI_PUBLISH A, TB_COMM_CHAM B
+			WHERE
+					A.CHAM_CODE = B.CHAM_CODE
+					AND A.OPEN_TYPE = 'Y'
+					AND A.seq_no = #{contId}
+	</select>
+
+	<!-- 게시물 상세정보 -->
+	<select id="selectSemina2Detail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectContents2Detail */
+			SELECT
+						seq_no_d010 			as cont_id,
+													title,
+													host,
+						contact 					as contact,
+						event_date				as reg_dt,
+						place 					as place,
+						summary 				as contents,
+						event_img 				as file_nm,
+						0							as hit
+			FROM T_CH_D010 A
+			WHERE 1=1
+			        AND DEL_YN = 'N'
+					AND OPEN_YN = 'Y'
+					AND EVENT_DATE IS NOT NULL
+					AND seq_no_d010 = #{contId}
+	</select>
+
+
+	<!-- 게시물 상세정보 -->
+	<select id="selectSeminaDetail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectSeminaDetail */
+
+
+			 SELECT TITLE as SESSION_NAME,
+			        SPEAKER as SESSION_TCHNAME,
+			        SPEAKER_POS as SESSION_TCHINFO,
+			        TIME as SESSION_TIME,
+			        S_ORDER as SESSION_CONT_URL,
+			        REPORT as SESSION_FILE,
+			        SEQ_NO_D011 as SESSION_ID
+			   FROM T_CH_D011
+			  WHERE SEQ_NO_D010 = #{contId}
+			  AND DEL_YN = 'N'
+
+			  ORDER BY S_ORDER ASC
+
+
+	</select>
+
+	<sql id="nofile">
+		'' as file_nm,
+		'' as file_nm2,
+		'' as file_nm3
+	</sql>
+
+	<sql id="onefile">
+		'' as file_nm2,
+		'' as file_nm3
+	</sql>
+
+
+	<!-- 게시물 상세정보 -->
+	<select id="selectContentsDetail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectContentsDetail */
+
+			 SELECT
+		 				cont_id,
+						title,
+						contents,
+						reg_dt,
+						hit,
+						author,
+						file_yn,
+						file_nm,
+						file_nm2,
+						file_nm3
+
+			  FROM
+			  <if test='boardId != null and boardId.equals("8")' >
+			/*일일중국경제, 유효 항목 : 제목, 등록일, 조회수*/
+			( SELECT
+						SEQ_NO_B010				AS cont_id,
+														TITLE,
+						INSERT_DATE				as reg_dt,
+														CONTENTS,
+														hit,
+						source						as author,
+						attach_file_yn				as file_yn,
+						<include refid="nofile" />
+				FROM T_CN_B010
+				WHERE 1=1
+						AND DEL_YN = 'N'
+						AND DISPLAY_YN = 'Y'
+						AND SEQ_NO_B010 = #{contId}
+                ) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("9")' >
+			/* 베트남주요뉴스 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no					as cont_id,
+													title,
+						content					as	contents,
+						write_date				as reg_dt,
+													hit,
+						source					as author,
+						attach_file01			as file_nm,
+						attach_file02			as file_nm2,
+						attach_file03			as file_nm3,
+						''							as file_yn
+
+			FROM TB_ECONOMIC_TOPIC
+
+			WHERE	1=1
+				AND CLASS_CD='004'
+				AND SUBCLASS_CD='02'
+				AND DEL_YN='N'
+
+			ORDER BY WRITE_DATE DESC, SEQ_NO DESC) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("10")' >
+			/* 일본경기동향 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no					as cont_id,
+													title,
+						content					as	contents,
+						write_date				as reg_dt,
+													hit,
+						source					as author,
+						attach_file01			as file_nm,
+						attach_file02			as file_nm2,
+						attach_file03			as file_nm3,
+						''							as file_yn
+
+			FROM TB_ECONOMIC_TOPIC
+
+			WHERE	1=1
+				AND CLASS_CD='004'
+				AND SUBCLASS_CD='06'
+				AND DEL_YN='N'
+				AND SEQ_NO = #{contId}
+			) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("7")' >
+			/* 대한상의 인포 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no_c040			as cont_id,
+													title,
+													contents,
+						insert_date				as reg_dt,
+													hit,
+						dept_nm					as author,
+						NVL2((SELECT MAX(SEQ_NO_C041) FROM T_CH_C041 WHERE SEQ_NO_C040 = #{contId}),'Y','N') as file_yn,
+						<include refid="nofile" />
+			FROM T_CH_C040
+
+			WHERE	1=1
+				AND WEB_YN='Y'
+				AND DEL_YN='N'
+				AND seq_no_c040 = #{contId}
+
+			) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("11")' >
+			/* 대한상의 브리프 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(
+			SELECT
+						seq_no_c050			as cont_id,
+													title,
+													contents,
+						insert_date				as reg_dt,
+													hit,
+						dept_nm					as author,
+						NVL2((SELECT MAX(SEQ_NO_C051) FROM T_CH_C051 WHERE SEQ_NO_C050 = #{contId}),'Y','N') as file_yn,
+						<include refid="nofile" />
+			FROM T_CH_C050
+
+			WHERE	1=1
+				AND WEB_YN='Y'
+				AND DEL_YN='N'
+				AND seq_no_c050 = #{contId}
+
+
+			) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("12")' >
+			/* 기업뉴스 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no_c010			as cont_id,
+													title,
+													contents,
+						insert_date				as reg_dt,
+													hit,
+						dept_nm					as author,
+						''							as file_yn,
+						<include refid="nofile" />
+			FROM T_CH_C010
+
+			WHERE	1=1
+				AND WEB_YN='Y'
+				AND DEL_YN='N'
+				AND SEQ_NO_C010 = #{contId}
+			) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("13")' >
+			/* 보도자료 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no_c010			as cont_id,
+													title,
+													contents,
+						insert_date				as reg_dt,
+													hit,
+						dept_nm					as author,
+						NVL2((SELECT MAX(SEQ_NO_C011) FROM T_CH_C011 WHERE SEQ_NO_C010 = #{contId}),'Y','N') as file_yn,
+						<include refid="nofile" />
+
+			FROM T_CH_C010
+
+			WHERE	1=1
+				AND WEB_YN='Y'
+				AND DEL_YN='N'
+				AND SEQ_NO_C010 = #{contId}
+			) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("14")' >
+			/* 해외경제동향 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no					as cont_id,
+													title,
+						summ						as contents,
+						upddt						as reg_dt,
+													hit,
+													author,
+						file_url					as file_nm,
+						''							as file_yn,
+						<include refid="onefile" />
+
+			FROM TB_KITA_REPORT
+
+			WHERE	1=1
+						AND SEQ_NO = #{contId}
+			) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("15")' >
+			/* 경제칼럼 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+			(SELECT
+						seq_no_c030			as cont_id,
+													title,
+													contents,
+						insert_date				as reg_dt,
+													hit,
+						''							as author,
+						''							as file_yn,
+						<include refid="nofile" />
+
+			FROM T_CH_C030
+
+			WHERE	1=1
+					AND DEL_YN = 'N'
+					AND CEO_YN = 'Y'
+					AND SEQ_NO_C030 = #{contId}
+			) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("16")' >
+			/* 유관기관소식 리스트, 유효 항목 : 제목, 등록기관, 등록일*/
+			(SELECT
+						h030_seq_no			as cont_id,
+													title,
+													contents,
+						insert_date				as reg_dt,
+													hit,
+						org_nm					as author,
+						file_yn					as file_yn,
+						<include refid="nofile" />
+
+			FROM T_KCCI_H030
+
+			WHERE 1=1
+					AND DEL_YN = 'N'
+					AND H030_SEQ_NO = #{contId}
+			) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("17")' >
+			/* 경제정챙정보 리스트, 유효 항목 : 제목, 출처, 써머리, 등록일*/
+			(SELECT
+						seqno						as cont_id,
+													title,
+						abstract					as contents,
+						publish_date			as reg_dt,
+													hit,
+													author,
+						NVL2(file_name,file_path+'/'+file_name,'')			as file_nm,
+						NVL2(file_name2,file_path+'/'+file_name2,'')			as file_nm2,
+						NVL2(file_name3,file_path+'/'+file_name3,'')			as file_nm3,
+						'N'							as file_yn
+
+
+			FROM TB_ECONOMYINFO2
+			WHERE	1=1
+					AND DEL_YN = 'N'
+					AND seqno = #{contId}
+			) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("19")' >
+			/* 포토뉴스 리스트, 유효 항목 : 제목, 이미지, 써머리, 등록일*/
+			(SELECT
+						A.seq_no_c020 		as cont_id,
+						A.title 					as title,
+						A.contents 				as contents,
+						B.attach_file_nm		as file_nm,
+						A.insert_date			as reg_dt,
+						0							as hit,
+						''							as author,
+						'Y'							as file_yn,
+						<include refid="onefile" />
+			FROM T_CH_C020 A, T_CH_C021 B
+			WHERE A.DEL_YN = 'N'
+					AND INSERT_DATE IS NOT NULL
+					AND B.SEQ_NO_C021 = (SELECt MAX(SEQ_NO_C021) FROM T_CH_C021 WHERE SEQ_NO_C020 = A.SEQ_NO_C020 AND DEL_YN='N' GROUP BY SEQ_NO_C020 )
+					AND A.SEQ_NO_C020 = #{contId}) tbc
+			</if>
+			<if test='boardId != null and boardId.equals("3")' >
+			/* 온라인세미나 리스트,  유효 항목 : 제목, 이미지, 써머리, 등록일 */
+			(SELECT
+						seq_no_d010 			as cont_id,
+													title,
+													host,
+						contact 					as contact,
+						event_date				as reg_dt,
+						place 					as place,
+						summary 				as contents,
+						event_img 				as file_nm,
+						0							as hit,
+						''							as author,
+						''							as file_yn,
+						<include refid="onefile" />
+			FROM T_CH_D010 A
+			WHERE 1=1
+			        AND A.DEL_YN = 'N'
+					AND A.OPEN_YN = 'Y'
+					AND A.EVENT_DATE IS NOT NULL
+			GROUP BY A.SEQ_NO_D010,
+					A.TITLE,
+					A.HOST,
+					A.CONTACT,
+					A.EVENT_DATE,
+					A.PLACE,
+					A.SUMMARY,
+					A.OPEN_YN,
+					A.EVENT_IMG,
+					A.DEL_YN,
+					A.REGIST_DATE,
+					A.HIT,
+					B.S_PATH
+			) tbc
+			</if>
+
+			  WHERE tbc.cont_id = #{contId}
+
+	</select>
+
+
+	<!-- 게시물 첨부파일 정보 유관기관소식-->
+	<select id="selectFileDetail" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.board.dao.impl.BoardDao.selectFileDetail */
+
+			 SELECT
+						*
+			  FROM
+			  (
+			  <if test='boardId != null and boardId.equals("8")' >
+				/* 포토뉴스 리스트, 유효 항목 : 제목, 이미지, 써머리, 등록일*/
+				SELECT
+						ATTACH_FILE_NM 	AS FILE_NAME
+				FROM T_CN_B011
+				WHERE SEQ_NO_B010 = #{contId}	AND DEL_YN='N'
+				ORDER BY SEQ_NO_B010 DESC
+			  </if>
+			  <if test='boardId != null and boardId.equals("7")' >
+				/* 대한상의 인포 리스트, 유효 항목 : 제목, 이미지, 써머리, 등록일*/
+				SELECT
+						ATTACH_FILE_NM 	AS FILE_NAME
+				FROM T_CH_C041
+				WHERE SEQ_NO_C040 = #{contId}	AND DEL_YN='N'
+				ORDER BY SEQ_NO_C040 DESC
+			  </if>
+			  <if test='boardId != null and boardId.equals("11")' >
+				/* 대한상의 브리프 리스트, 유효 항목 : 제목, 이미지, 써머리, 등록일*/
+				SELECT
+						ATTACH_FILE_NM 	AS FILE_NAME
+				FROM T_CH_C051
+				WHERE SEQ_NO_C050 = #{contId}	AND DEL_YN='N'
+				ORDER BY SEQ_NO_C050 DESC
+			  </if>
+			  <if test='boardId != null and boardId.equals("12")' >
+				/* 포토뉴스 리스트, 유효 항목 : 제목, 이미지, 써머리, 등록일*/
+				SELECT
+													FILE_NAME
+				FROM T_KCCI_H031
+				WHERE H030_SEQ_NO = #{contId}	AND DEL_YN='N'
+				ORDER BY H030_SEQ_NO DESC
+			  </if>
+			  <if test='boardId != null and boardId.equals("13")' >
+				/* 포토뉴스 리스트, 유효 항목 : 제목, 이미지, 써머리, 등록일*/
+				SELECT
+						ATTACH_FILE_NM 	AS FILE_NAME
+				FROM T_CH_C011
+				WHERE SEQ_NO_C010 = #{contId}	AND DEL_YN='N'
+				ORDER BY SEQ_NO_C010 DESC
+			  </if>
+			  <if test='boardId != null and boardId.equals("16")' >
+				/* 유관기관 리스트, 유효 항목 : 제목, 이미지, 써머리, 등록일*/
+				SELECT
+													FILE_NAME,
+													DIR_NAME
+				FROM T_KCCI_H031
+				WHERE H030_SEQ_NO = #{contId}	AND DEL_YN='N'
+				ORDER BY H031_SEQ_NO DESC
+			  </if>
+			  <if test='boardId != null and boardId.equals("19")' >
+				/* 포토뉴스 리스트, 유효 항목 : 제목, 이미지, 써머리, 등록일*/
+				SELECT
+						ATTACH_FILE_NM 	AS FILE_NAME
+				FROM T_CH_C021
+				WHERE SEQ_NO_C020 = #{contId}	AND DEL_YN='N'
+				ORDER BY SEQ_NO_C021 DESC
+			  </if>
+			  ) tbc
+	</select>
+
+	<!-- 게시물 이전글 다음글 -->
+	<select id="selectPreNextContents" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.board.dao.impl.BoardDao.selectPreNextContents */
+
+			 SELECT *
+			   FROM (
+
+			   		 <if test='boardId != null and boardId.equals("8")' >
+					/*일일중국경제, 유효 항목 : 제목, 등록일, 조회수*/
+					SELECT SEQ_NO_B010 as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO_B010,1,0) OVER(ORDER BY INSERT_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY INSERT_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO_B010,1,0) OVER(ORDER BY INSERT_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY INSERT_DATE) PRE_TITLE
+
+					FROM  T_CN_B010
+					WHERE 1=1
+							AND DEL_YN = 'N'
+							AND DISPLAY_YN = 'Y'
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("9")' >
+					/* 베트남주요뉴스 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+					SELECT SEQ_NO as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO,1,0) OVER(ORDER BY WRITE_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY WRITE_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO,1,0) OVER(ORDER BY WRITE_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY WRITE_DATE) PRE_TITLE
+
+					FROM TB_ECONOMIC_TOPIC
+
+					WHERE	1=1
+							AND CLASS_CD='004'
+							AND SUBCLASS_CD='02'
+							AND DEL_YN='N'
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("10")' >
+					/* 일본경기동향 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+					SELECT SEQ_NO as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO,1,0) OVER(ORDER BY WRITE_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY WRITE_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO,1,0) OVER(ORDER BY WRITE_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY WRITE_DATE) PRE_TITLE
+
+					FROM TB_ECONOMIC_TOPIC
+
+					WHERE	1=1
+							AND CLASS_CD='004'
+							AND SUBCLASS_CD='06'
+							AND DEL_YN='N'
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENT) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENT) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("7")' >
+					/* 대한상의 인포 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+					SELECT SEQ_NO_C040 as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO_C040,1,0) OVER(ORDER BY INSERT_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY INSERT_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO_C040,1,0) OVER(ORDER BY INSERT_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY INSERT_DATE) PRE_TITLE
+
+					FROM T_CH_C040
+
+					WHERE	1=1
+							AND WEB_YN='Y'
+							AND DEL_YN='N'
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(SUMMARY) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("11")' >
+					/* 대한상의 브리프 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+					SELECT SEQ_NO_C050 as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO_C050,1,0) OVER(ORDER BY INSERT_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY INSERT_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO_C050,1,0) OVER(ORDER BY INSERT_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY INSERT_DATE) PRE_TITLE
+
+					FROM T_CH_C050
+
+					WHERE	1=1
+							AND WEB_YN='Y'
+							AND DEL_YN='N'
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(SUMMARY) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("12")' >
+					/* 기업뉴스 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+					SELECT SEQ_NO_C010 as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO_C010,1,0) OVER(ORDER BY INSERT_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY INSERT_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO_C010,1,0) OVER(ORDER BY INSERT_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY INSERT_DATE) PRE_TITLE
+
+					FROM T_CH_C010
+
+					WHERE	1=1
+							AND WEB_YN='Y'
+							AND DEL_YN='N'
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("13")' >
+					/* 보도자료 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+					SELECT SEQ_NO_C010 as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO_C010,1,0) OVER(ORDER BY INSERT_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY INSERT_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO_C010,1,0) OVER(ORDER BY INSERT_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY INSERT_DATE) PRE_TITLE
+
+					FROM T_CH_C010
+
+					WHERE	1=1
+							AND WEB_YN='Y'
+							AND DEL_YN='N'
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("14")' >
+					/* 해외경제동향 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+					SELECT SEQ_NO as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO,1,0) OVER(ORDER BY UPDDT) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY UPDDT) NEXT_TITLE,
+
+			               LAG(SEQ_NO,1,0) OVER(ORDER BY UPDDT) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY UPDDT) PRE_TITLE
+
+					FROM TB_KITA_REPORT
+
+					WHERE	1=1
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(SUMM) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(SUMM) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("15")' >
+					/* 경제칼럼 리스트, 유효 항목 : 제목, 등록일, 조회수*/
+					SELECT SEQ_NO_C030 as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO_C030,1,0) OVER(ORDER BY INSERT_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY INSERT_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO_C030,1,0) OVER(ORDER BY INSERT_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY INSERT_DATE) PRE_TITLE
+
+					FROM  T_CH_C030
+
+					WHERE	1=1
+							AND DEL_YN = 'N'
+							AND CEO_YN = 'Y'
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("16")' >
+					/* 유관기관소식 리스트, 유효 항목 : 제목, 등록기관, 등록일*/
+					SELECT H030_SEQ_NO as cont_id,
+			               TITLE,
+			               LEAD(H030_SEQ_NO,1,0) OVER(ORDER BY INSERT_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY INSERT_DATE) NEXT_TITLE,
+
+			               LAG(H030_SEQ_NO,1,0) OVER(ORDER BY INSERT_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY INSERT_DATE) PRE_TITLE
+
+					FROM  T_KCCI_H030
+
+					WHERE	1=1
+							AND DEL_YN = 'N'
+							<if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+			   		<if test='boardId != null and boardId.equals("17")' >
+					/* 경제정챙정보 리스트, 유효 항목 : 제목, 출처, 써머리, 등록일*/
+					SELECT SEQNO as cont_id,
+			               TITLE,
+			               LEAD(SEQNO,1,0) OVER(ORDER BY REGISTRATION_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY REGISTRATION_DATE) NEXT_TITLE,
+
+			               LAG(SEQNO,1,0) OVER(ORDER BY REGISTRATION_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY REGISTRATION_DATE) PRE_TITLE
+
+					FROM TB_ECONOMYINFO2
+					WHERE	1=1
+							AND DEL_YN = 'N'
+							 <if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(ABSTRACT) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(ABSTRACT) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+					<if test='boardId != null and boardId.equals("18")' >
+					/* 발간자료 리스트, 유효 항목 : 제목, 출처, 써머리, 등록일*/
+					SELECT SEQ_NO as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO,1,0) OVER(ORDER BY PUBLISH_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY PUBLISH_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO,1,0) OVER(ORDER BY PUBLISH_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY PUBLISH_DATE) PRE_TITLE
+
+					FROM TB_KCCI_PUBLISH
+
+					WHERE	1=1
+							AND DEL_YN = 'N'
+							 <if test='searchTxt != null and searchKey.equals("A")' >
+				            	         AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+							</if>
+							<if test='searchTxt != null and searchKey.equals("T")' >
+					                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+							<if test='searchTxt != null and searchKey.equals("C")' >
+					                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+							</if>
+					</if>
+
+			   		<if test='boardId != null and boardId.equals("19")' >
+			   		/* 포토뉴스 리스트, 유효 항목 : 제목, 출처, 써머리, 등록일*/
+			        SELECT SEQ_NO_C020 as cont_id,
+			               TITLE,
+			               LEAD(SEQ_NO_C020,1,0) OVER(ORDER BY INSERT_DATE) NEXT_ID,
+			               LEAD(TITLE,1,0) OVER(ORDER BY INSERT_DATE) NEXT_TITLE,
+
+			               LAG(SEQ_NO_C020,1,0) OVER(ORDER BY INSERT_DATE) PRE_ID,
+			               LAG(TITLE,1,0) OVER(ORDER BY INSERT_DATE) PRE_TITLE
+
+			          FROM T_CH_C020
+			         WHERE SEQ_NO_C020 > '0'
+
+			           AND INSERT_DATE IS NOT NULL
+			           AND DEL_YN='N'
+			           <if test='searchTxt != null and searchKey.equals("A")' >
+				                     AND (UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(SUMMARY) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+						</if>
+						<if test='searchTxt != null and searchKey.equals("T")' >
+				                     AND UPPER(TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+						</if>
+						<if test='searchTxt != null and searchKey.equals("C")' >
+				                  	AND  UPPER(CONTENTS) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+						</if>
+			        </if>
+			   		<if test='boardId != null and boardId.equals("3")' >
+			   		/* 온라인세미나 리스트, 유효 항목 : 제목, 출처, 써머리, 등록일*/
+			        SELECT A.SEQ_NO_D010 as cont_id,
+			               A.TITLE,
+			               A.EVENT_DATE,
+
+			               LEAD(A.SEQ_NO_D010,1,0) OVER(ORDER BY A.SEQ_NO_D010  ) NEXT_ID,
+			               LEAD(A.TITLE,1,0) OVER(ORDER BY A.SEQ_NO_D010 ) NEXT_TITLE,
+
+			               LAG(A.SEQ_NO_D010,1,0) OVER(ORDER BY A.SEQ_NO_D010 ) PRE_ID,
+			               LAG(A.TITLE,1,0) OVER(ORDER BY A.SEQ_NO_D010 ) PRE_TITLE
+
+			          FROM T_CH_D010 A,
+			               (  SELECT /*+INDEX_DESC(A IDX_ONSEMI_SEARCH)*/
+			                        A.SEQ_NO_D010
+			                    FROM T_CH_D010 A, T_CH_D011 B
+			                   WHERE A.SEQ_NO_D010 > '0'
+			                     AND A.SEQ_NO_D010 = B.SEQ_NO_D010
+								<if test='searchTxt != null and searchKey.equals("A")' >
+						                     AND (UPPER(A.TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(ONSEMI_DESC) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(SESSION_TCHNAME) LIKE UPPER('%'+UPPER(#{searchTxt})+'%') OR UPPER(SESSION_TCHINFO) LIKE UPPER('%'+UPPER(#{searchTxt})+'%'))
+								</if>
+								<if test='searchTxt != null and searchKey.equals("T")' >
+						                     AND UPPER(A.TITLE) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+								</if>
+								<if test='searchTxt != null and searchKey.equals("C")' >
+						                  	AND  UPPER(ONSEMI_DESC) LIKE UPPER('%'+UPPER(#{searchTxt})+'%')
+								</if>
+			                   GROUP BY A.SEQ_NO_D010) B
+			         WHERE A.SEQ_NO_D010 > '0'
+			           AND A.SEQ_NO_D010 = B.SEQ_NO_D010
+			           AND A.EVENT_DATE IS NOT NULL
+			           AND A.DEL_YN='N'
+			           AND A.OPEN_YN='Y'
+			         </if>
+			 )  WHERE cont_id = #{contId}
+
+	</select>
+
+</mapper>

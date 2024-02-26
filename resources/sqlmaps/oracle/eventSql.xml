@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventDao">
+	<!--  스케쥴 리스트 -->
+	   <select id="ScheduleList" parameterType="Map" resultType="camelMap">
+			/* kr.apfs.local.event.dao.impl.EventDao.ScheduleList */
+			select
+			SCHD_IDX
+			,SCHD_TITLE
+			,SCHD_CONTENTS
+			,SCHD_ST_DT
+			,SCHD_ST_DT +'~'+SCHD_ED_DT as sedt
+			,case SCHD_CLASS
+			 WHEN '01' THEN '실무교육'
+			 WHEN '02' THEN '보수가격'
+			 WHEN '03' THEN '수시교육'
+			 ELSE 'NONE'
+			 END AS CLASS
+			,SCHD_ED_DT
+			,SCHD_VIEW
+			,SCHD_VISIBLE
+			,SCHD_CLASS
+
+			from
+			TS_SCHEDULE
+			where 1=1
+		    AND DEL_YN = 'N'
+			
+		<if test='searchTxt != null and !searchTxt.equals("")'>
+		AND SCHD_CLASS = #{searchTxt}
+		</if>
+	
+			
+
+		</select>
+	
+	
+		<select id="ScheduleListBack" parameterType="Map" resultType="camelMap">
+			/* kr.apfs.local.event.dao.impl.EventDao.ScheduleListBack */
+			select
+			SCHD_IDX
+			,SCHD_TITLE
+			,SCHD_CONTENTS
+			,SCHD_ST_DT
+			,SCHD_ED_DT
+			,SCHD_VIEW
+			,SCHD_VISIBLE
+			,SCHD_CLASS
+
+			from
+			TS_SCHEDULE
+			where 1=1
+			AND DEL_YN = 'N'
+			
+			<if test='schdIdx != null and !schdIdx.equals("")'>
+			AND SCHD_IDX = #{schdIdx}
+			</if>
+
+		</select>
+	
+	
+		<insert id="insertEvent" parameterType="Map">
+			/* kr.apfs.local.event.dao.impl.EventDao.insertEvent */
+			INSERT INTO TS_SCHEDULE
+			(
+			SCHD_IDX
+			,SCHD_TITLE
+			,SCHD_CONTENTS
+			,SCHD_ST_DT
+			,SCHD_ED_DT
+			,SCHD_VIEW
+			,SCHD_VISIBLE
+			,SCHD_CLASS
+			,DEL_YN
+			)
+			VALUES
+			(
+			(SELECT ISNULL(MAX(SCHD_IDX),0)+1 FROM TS_SCHEDULE)
+			,#{schdTitle}
+			,#{schdContents}
+			,#{schdStDt}
+			,#{schdEdDt}
+			,'0'
+			,'Y'
+			,#{schdClass}
+			,'N'
+			)
+			</insert>
+
+			<update id="updateEvent" parameterType="Map">
+
+			UPDATE TS_SCHEDULE
+			SET
+			SCHD_TITLE = #{schdTitle}
+			,SCHD_CONTENTS = #{schdContents}
+			,SCHD_ST_DT = #{schdStDt}
+			,SCHD_ED_DT = #{schdEdDt}
+			,SCHD_VISIBLE = #{schdVisible}
+			,SCHD_CLASS = #{schdClass}
+
+
+			WHERE
+			1=1
+			AND SCHD_IDX = #{schdIdx}
+
+			</update>
+			
+			
+				
+			<update id="deleteEvent" parameterType="Map">
+
+					UPDATE TS_SCHEDULE
+					SET
+					DEL_YN = 'Y'
+					
+					WHERE
+					1=1
+					AND SCHD_IDX = #{schdIdx}
+			
+
+		    </update>
+			
+	
+
+
+	<!--  스케쥴 정보 조회 -->
+	<select id="getScheduleInfo" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.event.dao.impl.EventDao.getScheduleInfo */
+		SELECT  CSI.SCHD_IDX,
+		        CSI.SCHD_TITLE,
+		        CSI.SCHD_CONTENTS,
+		        CSI.SCHD_ST_DT,
+        		SUBSTRING(CSI.SCHD_ST_DT, 0, 5) + '.' + SUBSTRING(CSI.SCHD_ST_DT, 5, 2) + '.' + SUBSTRING(CSI.SCHD_ST_DT, 7, 2) AS SCHD_ST_DT_TXT,
+		        CSI.SCHD_ED_DT,
+		        SUBSTRING(CSI.SCHD_ED_DT, 0, 5) + '.' + SUBSTRING(CSI.SCHD_ED_DT, 5, 2) + '.' + SUBSTRING(CSI.SCHD_ED_DT, 7, 2) AS SCHD_ED_DT_TXT,
+		        SUBSTRING(CSI.REG_DATE, 0, 5) + '.' + SUBSTRING(CSI.REG_DATE, 5, 2) + '.' + SUBSTRING(CSI.REG_DATE, 7, 2) AS REG_DATE,
+		        CSI.SCHD_CLASS,
+		        SUBSTRING(CSI.SCHD_ST_DT, 5, 2) as M,
+		        REG_NAME,
+		        SCHD_VIEW
+		FROM    TS_SCHEDULE CSI
+		WHERE   CSI.SCHD_VISIBLE = 'Y'
+		<if test='SCHD_CLASS != null and !SCHD_CLASS.equals("")' >
+			AND SCHD_CLASS = #{SCHD_CLASS}
+		</if>
+		<if test='SCHD_IDX != null and !SCHD_IDX.equals("")' >
+			AND SCHD_IDX = #{SCHD_IDX}
+		</if>
+		<if test='SCHD_IDX == null or SCHD_IDX.equals("")' >
+		AND     #{SEARCHDATE} BETWEEN left(CSI.SCHD_ST_DT,LEN(#{SEARCHDATE})) AND left(CSI.SCHD_ED_DT,LEN(#{SEARCHDATE}))
+		</if>
+		ORDER BY CSI.SCHD_ST_DT ASC, CSI.SCHD_ED_DT ASC
+
+	</select>
+
+	<!--  스케쥴 년도별 월 조회 -->
+	<select id="getScheduleYearInMonth" parameterType="Map" resultType="camelMap">
+		SELECT DISTINCT(SUBSTRING(SCHD_ST_DT,5,2)) AS M
+		FROM TS_SCHEDULE
+		WHERE SCHD_VISIBLE = 'Y'
+		AND (SUBSTRING(SCHD_ST_DT,1,4) = #{SEARCH_YEAR} OR SUBSTRING(SCHD_ED_DT,1,4) = #{SEARCH_YEAR} )
+		<if test='SCHD_CLASS != null and !SCHD_CLASS.equals("")' >
+			AND SCHD_CLASS = #{SCHD_CLASS}
+		</if>
+	</select>
+
+	<!--  스케쥴 년도별 월별 데이터조회 -->
+	<select id="getScheduleYearInMonthList" parameterType="Map" resultType="camelMap">
+		SELECT
+			SCHD_IDX, SCHD_TITLE, SCHD_CONTENTS,
+			CONVERT(VARCHAR(10),CONVERT(DATE,SCHD_ST_DT,21)) AS SCHD_ST_DT,
+			CONVERT(VARCHAR(10),CONVERT(DATE,SCHD_ED_DT,21)) AS SCHD_ED_DT,
+			SCHD_CLASS
+		FROM TS_SCHEDULE
+		WHERE SCHD_VISIBLE = 'Y'
+		AND (SUBSTRING(SCHD_ST_DT,1,4) = #{SEARCH_YEAR} OR SUBSTRING(SCHD_ED_DT,1,4) = #{SEARCH_YEAR} )
+		AND SUBSTRING(SCHD_ST_DT,5,2) = #{SEARCH_MONTH}
+		<if test='SCHD_CLASS != null and !SCHD_CLASS.equals("")' >
+			AND SCHD_CLASS = #{SCHD_CLASS}
+		</if>
+		ORDER BY SCHD_ST_DT ASC, SCHD_ED_DT ASC
+	</select>
+
+
+		<!-- 조회수 증가 -->
+	<update id="updateEventContentsHits" parameterType="Map" >
+	    /* com.intocps.board.dao.impl.BoardDao.updateBoardContentsHits */
+	    UPDATE
+	 		TS_SCHEDULE
+		SET
+				SCHD_VIEW = SCHD_VIEW + 1
+		WHERE   SCHD_IDX = #{SCHD_IDX}
+
+	</update>
+</mapper>

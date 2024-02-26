@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Company">
+
+	<select id="selectCompanyList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.main.dao.MainDao.selectCompanyList */
+		<if test='miv_start_index != null and !miv_start_index.equals("")' >
+		<include refid="CommonSql.pageingTop"/>
+		</if>
+		SELECT
+				ROW_NUMBER() OVER (ORDER BY CO_NO DESC)  AS R_NUM
+	     		,CO_NO
+				,CO_DIV
+				,COMP_REG_NO
+				,CORP_NO
+				,COMP_DIV
+				,CONAME_HANG
+				,CONAME_ENGL
+				,REP_NM_HANG
+				,REP_NM_ENGL
+				,TEL
+				,FAX
+				,MAJOR_PRD
+				,BIZKIND
+				,BIZKIND_ORG
+				,ZIPCODE
+				,ADDR
+				,ADDR2
+				,ENGL_ADDR
+				,REGN_CODE
+				,HOMEPAGE
+				,SUPLY_CO
+				,ANN_SALES
+				,BIZ_TYPE
+				,ITEM
+				,FND_DATE
+				,EMP_CNT
+				,USE_DIV
+				,VOLU_DIV
+				,REG_TM
+				,REG_ID
+				,CHG_TM
+				,CHG_ID
+				,ASSOCIATE
+				,KORCHAM_NAME
+				,ADDR3
+				,ROADCODE
+		FROM TC_COMPANY
+
+		WHERE 1=1
+		<!-- 단일건 요청 -->
+		<if test='compRegNo != null and !compRegNo.equals("")' >
+		AND COMP_REG_NO = #{compRegNo}
+		</if>
+		<!-- 목록 요청 -->
+		<if test='compRegNo == null or compRegNo.equals("")' >
+		ORDER BY CO_NO DESC
+		</if>
+		<if test='miv_start_index != null and !miv_start_index.equals("")' >
+		<include refid="CommonSql.pageingBottom"/>
+		</if>
+	</select>
+
+	<insert id="insertCompany" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.insertCompany */
+		INSERT INTO
+		TC_COMPANY (
+				CO_NO
+				,CO_DIV
+				,COMP_REG_NO
+				,CORP_NO
+				,COMP_DIV
+				,CONAME_HANG
+				,CONAME_ENGL
+				,REP_NM_HANG
+				,REP_NM_ENGL
+				,TEL
+				,FAX
+				,MAJOR_PRD
+				,BIZKIND
+				,BIZKIND_ORG
+				,ZIPCODE
+				,ADDR
+				,ADDR2
+				,ENGL_ADDR
+				,REGN_CODE
+				,HOMEPAGE
+				,SUPLY_CO
+				,ANN_SALES
+				,BIZ_TYPE
+				,ITEM
+				,FND_DATE
+				,EMP_CNT
+				,USE_DIV
+				,VOLU_DIV
+				,CHG_TM
+				,CHG_ID
+				,REG_TM
+				,REG_ID
+				,ASSOCIATE
+				,KORCHAM_NAME
+				,ADDR3
+				,ROADCODE
+		)
+		SELECT
+	     		NVL(MAX(CO_NO),0)+1
+	     		,#{coDiv}
+				,#{compRegNo}
+				,#{corpNo}
+				,#{compDiv}
+				,#{conameHang}
+				,#{conameEngl}
+				,#{repNmHang}
+				,#{repNmEngl}
+				,#{tel}
+				,#{fax}
+				,#{majorPrd}
+				,#{bizkind}
+				,#{bizkindOrg}
+				,#{zipcode}
+				,#{addr}
+				,#{addr2}
+				,#{englAddr}
+				,#{regnCode}
+				,#{homepage}
+				,#{suplyCo}
+				,#{annSales}
+				,#{bizType}
+				,#{item}
+				,#{fndDate}
+				,#{empCnt}
+				,#{useDiv}
+				,#{voluDiv}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,#{*userId}
+				,#{associate}
+				,#{korchamName}
+				,#{addr3}
+				,#{roadcode}
+		FROM 	TC_COMPANY
+		<selectKey keyProperty="coNo" resultType="Integer" order="AFTER">
+			SELECT MAX(CO_NO) FROM TC_COMPANY
+		</selectKey>
+	</insert>
+
+	<update id="updateCompany" parameterType="Map" >
+	     UPDATE TC_COMPANY
+	     SET
+	 			 CO_DIV                 	=#{coDiv}
+				,COMP_REG_NO   	=#{compRegNo}
+				,CORP_NO            	=#{corpNo}
+				,COMP_DIV            	=#{compDiv}
+				,CONAME_HANG   	=#{conameHang}
+				,CONAME_ENGL    	=#{conameEngl}
+				,REP_NM_HANG     	=#{repNmHang}
+				,REP_NM_ENGL     	=#{repNmEngl}
+				,TEL                    	 	=#{tel}
+				,FAX                    		=#{fax}
+				,MAJOR_PRD            =#{majorPrd}
+				,BIZKIND                	=#{bizkind}
+				,BIZKIND_ORG          =#{bizkindOrg}
+				,ZIPCODE                	=#{zipcode}
+				,ADDR                   	=#{addr}
+				,ADDR2                  	=#{addr2}
+				,ENGL_ADDR             =#{englAddr}
+				,REGN_CODE          	=#{regnCode}
+				,HOMEPAGE              =#{homepage}
+				,SUPLY_CO                =#{suplyCo}
+				,ANN_SALES             =#{annSales}
+				,BIZ_TYPE               	=#{bizType}
+				,ITEM                   		=#{item}
+				,FND_DATE               =#{fndDate}
+				,EMP_CNT                	=#{empCnt}
+				,USE_DIV                	=#{useDiv}
+				,VOLU_DIV               	=#{voluDiv}
+				,CHG_TM                 	=TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+				,CHG_ID                 	=#{*userId}
+				,ASSOCIATE             =#{associate}
+				,KORCHAM_NAME  =#{korchamName}
+				,ADDR3                     =#{addr3}
+				,ROADCODE             =#{roadcode}
+
+		WHERE	CO_NO	=#{coNo}
+	</update>
+
+	<delete id="deleteCompany" parameterType="Map" >
+	    /* kr.apfs.local.main.dao.MainDao.deleteCompany */
+	 	DELETE 	FROM
+				TC_COMPANY
+		WHERE 	CO_NO = #{coNo}
+	</delete>
+</mapper>

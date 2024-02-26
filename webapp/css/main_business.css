@@ -1,0 +1,516 @@
+@charset "utf-8";
+
+/* 공통 */
+	.title_h4 .icon { display:inline-block; margin-top:-2px; padding:4px 8px 2px; font-size:14px; border-radius:5px; vertical-align:middle; }
+	.title_h4 .icon.popular { color:#fff; background-color:#267EA6; }	/*2024 웹 접근성*/
+	.title_h5_2 .point { color:#4e9101; }
+	
+/* top_infobox */
+	.top_infobox.busi { margin-bottom:30px; padding:35px 50px; }
+	.top_infobox.busi .infobox.icon { padding-left:145px; min-height:100px; }
+	.top_infobox.busi .infobox.icon.crowd,
+	.top_infobox.busi .infobox.icon.insura,
+	.top_infobox.busi .infobox.icon.pfarm,
+	.top_infobox.busi .infobox.icon.disaster,
+	.top_infobox.busi .infobox.icon.policyfunds,
+	.top_infobox.busi .infobox.icon.loan { padding-left:165px; min-height:80px; }
+	.top_infobox.busi .infobox.busi_fund::before { width:103px; height:103px; background-image:url('/images/main_business/icon_fund_1.png'); } /* 농림수산식품모태펀드-농림수산식품모태펀드란 */
+	.top_infobox.busi .infobox.busi_fund_sys::before { width:115px; height:115px; background-image:url('/images/main_business/icon_fund_2.png'); } /* 농림수산식품모태펀드-운용체계 */
+	.top_infobox.busi .infobox.crowd::before { width:120px; height:120px; background-image:url('/images/main_business/icon_crowd_1.png'); } /* 농식품전문크라우드펀딩-업무소개-펀딩의개념 */
+	.top_infobox.busi .infobox.insura::before { width:120px; height:120px; background-image:url('/images/main_business/icon_insura_1.png'); } /* 농업정책보험-업무소개-개요 */
+	.top_infobox.busi .infobox.pfarm1_1::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_1_1.png'); } /* 농업정책보험-상품소개-농작물재해보험(과수작물) */
+	.top_infobox.busi .infobox.pfarm1_2::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_1_2.png'); } /* 농업정책보험-상품소개-농작물재해보험(벼·맥류) */
+	.top_infobox.busi .infobox.pfarm1_3::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_1_3.png'); } /* 농업정책보험-상품소개-농작물재해보험(원예시설) */
+	.top_infobox.busi .infobox.pfarm1_4::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_1_4.png'); } /* 농업정책보험-상품소개-농작물재해보험(밭작물) */
+	.top_infobox.busi .infobox.pfarm1_5::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_1_5.png'); } /* 농업정책보험-상품소개-농작물재해보험(버섯) */
+	.top_infobox.busi .infobox.pfarm2_1::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_2_1.png'); } /* 농업정책보험-상품소개-농업수입보장보험 */
+	.top_infobox.busi .infobox.pfarm3_1::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_3_1.png'); } /* 농업정책보험-상품소개-가축재해보험 */
+	.top_infobox.busi .infobox.pfarm4_1::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_4_1.png'); } /* 농업정책보험-상품소개-농업인안전보험 */
+	.top_infobox.busi .infobox.pfarm5_1::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_5_1.png'); } /* 농업정책보험-상품소개-농작업근로자안전보험 */
+	.top_infobox.busi .infobox.pfarm6_1::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_6_1.png'); } /* 농업정책보험-상품소개-농기계종합보험 */
+	.top_infobox.busi .infobox.insura2::before { width:120px; height:120px; background-image:url('/images/main_business/icon_insura_2_1.png'); } /* 양식수산물재해보험-업무소개-개요 */
+	.top_infobox.busi .infobox.pfarm7_1::before { width:120px; height:120px; background-image:url('/images/main_business/icon_pfarm_7_1.png'); } /* 양식수산물재해보험-상품소개 */
+	.top_infobox.busi .infobox.disaster::before { width:120px; height:120px; background-image:url('/images/main_business/icon_disaster_1.png'); } /* 농어업재해재보험기금-개요 */
+	.top_infobox.busi .infobox.policyfunds::before { width:120px; height:120px; background-image:url('/images/main_business/icon_policyfunds_1.png'); } /* 농림수산정책자금검사-업무소개 */
+	.top_infobox.busi .infobox.loan::before { width:120px; height:120px; background-image:url('/images/main_business/icon_loan_1.png'); } /* 농특회계융자금관리-업무소개 */
+	.top_infobox.busi .tit { margin-bottom:20px; font-size:20px; line-height:1.4; }
+	.top_infobox.busi .tit span { color:#0b63ae; font-size:15px; font-weight:700; }
+	.top_infobox.busi .txt { font-size:17px; }
+
+/* 농림수산식품모태펀드-업무소개 */
+	.business_vision { text-align:center; margin:50px 0; }
+	.business_vision .pc { display:block; }
+	.business_vision .m { display:none; }
+	.fund_manag_system { text-align:center; margin:50px 0; }
+/* 농림수산식품모태펀드-농림수산식품투자조합-투자대상 */
+	.invest_arget_area { overflow:hidden; }
+	.invest_arget_area ul.invest_list { }
+	.invest_arget_area ul.invest_list > li { min-height:265px; padding:0; border-bottom:1px solid #ddd; }
+	.invest_arget_area ul.invest_list > li:last-child { border:0 none; }
+	.invest_arget_area dl { width:100%; padding:45px 0; }
+	.invest_arget_area dl dt { display:flex; flex-direction:column; justify-content:center; float:left; margin-left:15px; width:175px; height:175px; font-size:18px; font-weight:700; text-align:center; background-color:#fff; border:6px solid #f1f1f1; border-radius:100%; }
+	.invest_arget_area dl dt span { display:flex; justify-content:center; margin-top:10px; }
+	.invest_arget_area dl dt::before { content:''; display:block; background-repeat:no-repeat; background-position:center center; }
+	.invest_arget_area dl dt.type1::before { height:66px; background-image:url('/images/main_business/bg_industry_1.png'); }
+	.invest_arget_area dl dt.type2::before { height:55px; background-image:url('/images/main_business/bg_industry_2.png'); }
+	.invest_arget_area dl dt.type3::before { height:49px; background-image:url('/images/main_business/bg_industry_3.png'); }
+	.invest_arget_area dl dt.type4::before { height:62px; background-image:url('/images/main_business/bg_industry_4.png'); }
+	.invest_arget_area dl dd { margin-left:230px; }
+	.invest_arget_area dl dd .list_style1 { width:100%; margin:15px 0 40px; }
+	.invest_arget_area dl dd .list_style1:last-child { margin-bottom:0; }
+/* 농림수산식품모태펀드-농림수산식품투자조합-투자절차 */
+	.inver_process_area { display:flex; flex-direction:column; width:100%; padding-top:30px; overflow:hidden; }
+	.inver_process_area dl { position:relative; width:100%; margin-bottom:40px; padding:28px 100px; border:6px solid #f1f1f1; border-radius:100px; }
+	.inver_process_area dl::after { content: ''; display:block; position:absolute; bottom:-35px; left:50%; width:28px; height:17px; margin-left:-14px; background: url("/images/sub/bg_step_arrow_2.png"); }
+	.inver_process_area dl:last-child::after { display:none; }
+	.inver_process_area dl dt { float:left; width:130px; padding-right:50px; }
+	.inver_process_area dl dt span { font-size:18px; font-weight:700; }
+	.inver_process_area dl dt em { display:block; margin-top:10px; color:#333; font-size:20px; font-weight:700; }
+	.inver_process_area dl dd { float:left; padding-left:35px; border-left:2px solid #f1f1f1; }
+	.inver_process_area dl dd em { float:left; width:230px; margin-right:45px; font-size:18px; font-weight:700; }
+/* 	.inver_process_area dl.step1 dt span { color:#7ba6cc; } */	/*2024 웹 접근성*/
+	.inver_process_area dl.step1 dt span { color:#4b91ce; }
+	.inver_process_area dl.step1 dd em { color:#0b63ae; }
+/* 	.inver_process_area dl.step2 dt span { color:#7cbfb1; } */	/*2024 웹 접근성*/
+	.inver_process_area dl.step2 dt span { color:#1a8e75; }
+	.inver_process_area dl.step2 dd em { color:#03a080; }
+/* 	.inver_process_area dl.step3 dt span { color:#a7c56b; } */	/*2024 웹 접근성*/
+	.inver_process_area dl.step3 dt span { color:#669014; }
+	.inver_process_area dl.step3 dd em { color:#688f00; }
+/* 	.inver_process_area dl.step4 dt span { color:#d3b160; } */	/*2024 웹 접근성*/
+	.inver_process_area dl.step4 dt span { color:#9e761a; }
+	.inver_process_area dl.step4 dd em { color:#b88200; }
+	.inver_process_area dl dd ul { float:left; width:230px; }
+	.inver_process_area dl dd ul > li { word-break:break-word; }
+/* 농림수산식품모태펀드-농림수산식품투자조합-투자와융자의차이 */
+	.investment_financing { display:flex; align-items:center; width:100%; margin:50px 0; }
+	.investment_financing > div { display:flex; flex-direction:column; align-items:center; width:50%; text-align:center; border-right:2px solid #f1f1f1; }
+	.investment_financing > div .tit { display:flex; flex-direction:column; justify-content:center; width:175px; height:175px; font-size:18px; font-weight:700; text-align:center; background-color:#fff; border:6px solid #f1f1f1; border-radius:100%; }
+	.investment_financing > div .tit span { display:flex; justify-content:center; margin-top:10px; }
+	.investment_financing > div .tit::before { content:''; display:block; background-repeat:no-repeat; background-position:center center; }
+	.investment_financing > div .txt { margin-top:40px; line-height:1.8; }
+	.investment_financing .investment { }
+	.investment_financing .financing { border:0 none; }
+	.investment_financing .investment .tit::before { height:71px; background-image:url('/images/main_business/bg_investment_1.png'); }
+	.investment_financing .financing .tit::before { height:77px; background-image:url('/images/main_business/bg_financing_1.png'); }
+/* 농림수산식품모태펀드-농림수산식품투자조합-투자전·후지원 */
+	.inver_support_area { margin-top:30px; overflow:hidden; }
+	.inver_support_area ul { }
+	.inver_support_area ul li { width:100%; margin-bottom:50px; }
+	.inver_support_area ul li .tit { margin:25px 0 0; color:#0b63ae; font-size:18px; font-weight:700; }
+	.inver_support_area ul li .img { margin:20px 0 8px; }
+	.inver_support_area dl { width:100%; padding:12px 0; border-bottom:2px dotted #ccc; overflow:hidden; }
+	.inver_support_area dl dt { float:left; width:17%; font-weight:700; text-align:center; }
+	.inver_support_area dl dd { float:left; width:83%; }
+/* 농림수산식품모태펀드-농림수산식품투자조합-투자경영체확인서발급 */
+	.inver_confirm_area { margin-top:30px; overflow:hidden; }
+	.inver_confirm_area .title_h4 { margin:50px 0 15px; }
+	.inver_confirm_area .inver_confirm_spe { min-height:145px; margin-top:25px; padding-left:190px; background:url('/images/main_business/bg_inver_confirm.png')left top no-repeat; }
+	.inver_confirm_area .inver_confirm_spe p { line-height:1.8; }
+	.inver_confirm_area .inver_confirm_spe p.tx_spe { display:inline-block; min-width:123px; margin:20px 0 15px; padding:4px 30px; color:#fff; font-weight:700; background:#4c8c03; text-align:center; border-radius:30px; }
+	/* .inver_confirm_area .step_style01 > ul > li { margin:0 40px; } */
+	
+/* 농식품전문크라우드펀딩 */
+	.crowd_is_area { padding-top:30px; overflow:hidden; }
+	.crowd_is_area .title_h4 { margin-top:0; }
+	.crowd_is_area .text { }
+/* 농식품전문크라우드펀딩-업무소개-펀딩의개념 */
+	.crowd_is { display:inline-block; width:100%; margin:40px 0; vertical-align:middle; }
+	.crowd_is ul { display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; padding:0; }
+	.crowd_is ul li { position:relative; width:calc(20% - 50px); text-align:center; }
+	.crowd_is ul li::before { content:""; display:block; width:150px; height:150px; margin:0 auto; background-color:#fff; border:6px solid #f1f1f1; background-repeat:no-repeat; background-position:center center; border-radius:100%; box-sizing:border-box; }
+	.crowd_is ul li::after { content: ''; position: absolute; top: 50%; right: -32px; transform: translate(50%, -100%); width:32px; height:32px; background: url('/images/main_business/bg_plus.png'); }
+	.crowd_is ul li:last-child:after { display: none; }
+	.crowd_is ul li:nth-child(1)::before { background-image:url('/images/main_business/bg_crowd_is_1.png'); }
+	.crowd_is ul li:nth-child(2)::before { background-image:url('/images/main_business/bg_crowd_is_2.png'); }
+	.crowd_is ul li:nth-child(3)::before { background-image:url('/images/main_business/bg_crowd_is_3.png'); }
+	.crowd_is ul li:nth-child(4)::before { background-image:url('/images/main_business/bg_crowd_is_4.png'); }
+	.crowd_is ul li:nth-child(5)::before { background-image:url('/images/main_business/bg_crowd_is_5.png'); }
+	.crowd_is ul li span { display:inline-block; text-align:center; margin-top:15px; font-weight:700; }
+/* 농식품전문크라우드펀딩-업무소개-신청절차 */
+	.crowd_process_area { }
+	.crowd_process_area .step_style03 { margin:30px 60px; overflow:hidden; }
+	.crowd_process_area .step_style03::after { content: ''; display: block; clear: both; }
+	.crowd_process_area .step_style03 ul { width: calc(100% + 60px); margin-left: -30px; }
+	.crowd_process_area .step_style03 li { display: block; float: left; padding:20px; margin: 0 30px; position: relative; }
+	.crowd_process_area .step_style03 li::after { content: ''; position: absolute; top: 50%; right: -30px; transform: translate(50%, -100%); width:39px; height:36px; background: url("/images/main_business/bg_step_arrow_crowd.png"); }
+	.crowd_process_area .step_style03 li:last-child:after { display: none; }
+	.crowd_process_area .step_style03 li .title { position: relative; display:block; width:150px; height:150px; margin:0 auto; padding-top:24px; background-color:#fff; border:6px solid #f1f1f1; border-radius:100%; box-sizing:border-box; font-weight: 700; color: #519800; text-align: center; }
+	.crowd_process_area .step_style03 li .title::after { content: ''; position: absolute; width: 100%; height: 100px; bottom: 0; left: 0; background-repeat: no-repeat; background-position: center; }
+	.crowd_process_area .step_style03 li:nth-child(1) .title::after { background-image:url('/images/main_business/bg_step_style_03_01.png'); }
+	.crowd_process_area .step_style03 li:nth-child(2) .title::after { background-image:url('/images/main_business/bg_step_style_03_02.png'); }
+	.crowd_process_area .step_style03 li:nth-child(3) .title::after { background-image:url('/images/main_business/bg_step_style_03_03.png'); }
+	.crowd_process_area .step_style03 li:nth-child(4) .title::after { background-image:url('/images/main_business/bg_step_style_03_04.png'); }
+	.crowd_process_area .step_style03 li:nth-child(5) .title::after { background-image:url('/images/main_business/bg_step_style_03_05.png'); }
+	.crowd_process_area .step_style03 li:nth-child(6) .title::after { background-image:url('/images/main_business/bg_step_style_03_06.png'); }
+	.crowd_process_area .step_style03 li .title + p {  text-align: center; font-weight: 700; padding-top: 15px; position: relative; display: flex; justify-content: center; align-items: center; }
+	.crowd_process_area .step_style03.step_count02 li { width: calc(50% - 60px); }
+	.crowd_process_area .step_style03.step_count03 li { width: calc(33.33% - 60px); }
+	.crowd_process_area .step_style03.step_count04 li { width: calc(25% - 60px); }
+	.crowd_process_area .step_style03.step_count05 li { width: calc(20% - 60px); }
+	.crowd_process_area .step_style03.step_count06 li { width: calc(16.66% - 60px); }
+/* 농식품전문크라우드펀딩-업무소개-유형보기 */
+	.crowd_type_area { }
+	.crowd_type_area .crowd_type { display:flex; justify-content:space-between; margin:30px 0; }
+	.crowd_type_area .crowd_type .box_type { width:calc(50% - 7px); padding:25px 30px; border:1px solid #c8c8c8; border-radius:10px; }
+	.crowd_type_area .crowd_type .box_type .title { display:flex; justify-content:center; position:relative; padding-bottom:180px; font-size:17px; font-weight:700; text-align:center; border-bottom:1px solid #c8c8c8; }
+	.crowd_type_area .crowd_type .box_type .title::after { content: ''; position: absolute; bottom:40px; right:auto; left:auto; background-position:center; background-repeat:no-repeat; }
+	.crowd_type_area .crowd_type .box_type.n1 .title::after { width:109px; height:94px; background-image:url('/images/main_business/bg_crowd_type_01_01.png'); }
+	.crowd_type_area .crowd_type .box_type.n2 .title::after { width:95px; height:113px; background-image:url('/images/main_business/bg_crowd_type_01_02.png'); }
+	.crowd_type_area .crowd_type .box_type .con { padding:25px 15px; }
+	.crowd_type_area .crowd_type .box_type .con ul li { margin-bottom:20px; }
+	.crowd_type_area .crowd_type .box_type .con ul li .stit { font-weight:700; }
+	.crowd_type_area .crowd_type .box_type .con ul li .stxt { }
+
+/* 농업정책보험 */
+/* 농업정책보험-업무소개-개요 */
+	.busi_insura_area1 { display:flex; position:relative; width:100%; padding:30px 0 50px; border-bottom:1px solid #dedede; }
+	.busi_insura_area1 .insura_con_l { width:430px; }
+	.busi_insura_area1 .insura_con_l ul { width: calc(100% + 60px); margin-left: -30px; }
+	.busi_insura_area1 .insura_con_l ul li { display:flex; flex-direction:column; justify-content:center; position:relative; float:left; margin:0 30px; width:175px; height:175px; font-size:18px; font-weight:700; text-align:center; background-color:#fff; border:6px solid #f1f1f1; border-radius:100%; }
+	.busi_insura_area1 .insura_con_l ul li em { margin-top:5px; }
+	.busi_insura_area1 .insura_con_l ul li:nth-child(1) em { margin-top:10px; }
+	.busi_insura_area1 .insura_con_l ul li em span { display:block; line-height:1.2; }
+	.busi_insura_area1 .insura_con_l ul li::before { content:''; display:block; background-repeat:no-repeat; background-position:center center; }
+	.busi_insura_area1 .insura_con_l ul li::after { content: ''; position: absolute; top: 50%; right: -35px; transform: translate(50%, -50%); width:32px; height:32px; background: url('/images/main_business/bg_plus.png') center center no-repeat; }
+	.busi_insura_area1 .insura_con_l ul li:last-child::after { display:none; }
+	.busi_insura_area1 .insura_con_l ul li:nth-child(1)::before { height:49px; background-image:url('/images/main_business/bg_insura_area1_1.png'); }
+	.busi_insura_area1 .insura_con_l ul li:nth-child(2)::before { height:71px; background-image:url('/images/main_business/bg_insura_area1_2.png'); }
+	.busi_insura_area1 .insura_con_r { width:calc(100% - 480px); margin-left:50px; }
+	.busi_insura_area1 .insura_con_r .title { margin:30px 0 15px; line-height:1.6; color:#333; font-size:20px; font-weight:700; }
+	.busi_insura_area1 .insura_con_r .text { line-height:1.6; }
+	.busi_insura_area2 { position:relative; width:100%; padding:60px 0; }
+	.busi_insura_area2 .insura_area_txt2 { position:relative; padding-right:212px; min-height:125px; }
+	.busi_insura_area2 .insura_area_txt2::before { content:''; display:block; background-repeat:no-repeat; background-position:center; position:absolute; top:50%; right:0; transform:translateY(-50%); }
+	.busi_insura_area2 .insura_area_txt2::before { width:213px; height:125px; background-image:url('/images/main_business/bg_insura_area_txt2.png'); }
+	.busi_insura_area2 .insura_area_txt2 .title { margin:0 0 15px; line-height:1.6; color:#333; font-size:20px; font-weight:700; }
+	.busi_insura_area2 .insura_area_txt2 .text { line-height:1.6; }
+/* 농업정책보험-업무소개-연혁 */
+	.bg_business_insura { }
+	.bg_business_insura .insura_hi_area {margin-top:50px;overflow:hidden;}
+	.bg_business_insura .insura_hi_cont_l {width:25%; float:left; }
+	.bg_business_insura .insura_hi_cont_l span {font-size:40px; line-height:1; font-weight:800; /*color:rgba(51,51,51,0.5);*/}	/*2024 웹 접근성*/
+	.bg_business_insura .insura_hi_cont_r {position:relative;width:75%; float:left; height:auto; min-height:400px; margin-top:10px; padding:0; background:url('../images/about_apfs/bg_history.gif') 92.4px 0 repeat-y;}
+	.bg_business_insura .insura_hi_cont_r::before { content:''; position:absolute; top:0; left:88px; display:block; background:#adadad; width:14px; height:14px; border-radius:100%; }
+	.bg_business_insura .insura_hi_cont_r::after { content:''; position:absolute; bottom:0; left:88px; display:block; background:#adadad; width:14px; height:14px; border-radius:100%; }
+	.bg_business_insura .insura_hi_cont_r dl {width:100%; margin:60px 0 30px; overflow:hidden;}
+	.bg_business_insura .insura_hi_cont_r dt {position:relative;float:left; width:104px; }
+	.bg_business_insura .insura_hi_cont_r dt:after { content:''; position:absolute; top:0; right:0; display:block; width:10px; height:10px; border-radius:100%; background:#fff; border:4px solid #3c78ae; }	 
+	.bg_business_insura .insura_hi_cont_r dt.b:after { border:4px solid #3c78ae; }
+	.bg_business_insura .insura_hi_cont_r dt.g:after { border:4px solid #5cad00; }
+	.bg_business_insura .insura_hi_cont_r dt span {}
+	.bg_business_insura .insura_hi_cont_r .hi_y_sp { display:inline-block; padding:0 33px 0 0; font-size:24px; font-weight:800; color:#333; line-height:20px; }
+	.bg_business_insura .insura_hi_cont_r dd {float:right; width:86%; margin-bottom:5px; padding-left:35px; color:#707070;}
+	.bg_business_insura .insura_hi_cont_r dd:last-child { margin-bottom:0; }
+	.bg_business_insura .insura_hi_cont_r dd span {float:left; min-width:50px; font-size:20px; letter-spacing:-1px; font-weight:700; color:#333; display:inline-block;}
+	.bg_business_insura .insura_hi_cont_r dd ul.list_style1 {display:inline-block; width:86%; margin:0 0 10px 30px; }
+	.bg_business_insura .insura_hi_cont_r dd ul li { word-break:keep-all;}
+/* 농업정책보험-업무소개-추진체계 */
+	.insura_sys_area { text-align:center; margin-top:50px; margin-bottom:20px; overflow:hidden; }
+	.insura_sys_area .pc { display:block; }
+	.insura_sys_area .m { display:none; }
+/* 농업정책보험-상품소개 */
+	.busi_pfarm_area { }
+	.busi_pfarm_area h4 { margin-bottom:15px; }
+	.busi_pfarm_area h5 { }
+	.busi_pfarm_area .tab_style3 { margin-top:35px; }
+	.busi_pfarm_area .tab_style3.mid { margin-top:0; }
+	.busi_pfarm_area .list_style1 { margin-left:10px; }
+	.busi_pfarm_area .list_style2 > li { font-size:16px; }
+	.busi_pfarm_area .pfarm_area_s_bott .table_area { margin-bottom:0px; }
+	.busi_pfarm_area .pfarm_area_s_bott .table_style tbody th { font-size:15px; font-weight:700; }
+	.busi_pfarm_area .pfarm_area_s_bott .table_comm_txt { margin:5px 0 35px; }
+	.busi_pfarm_area .pfarm_area_s_bott .con_img { margin:30px 0; }
+/* 농업정책보험-상품소개-농작물재해보험 */
+/* 농업정책보험-상품소개-농업수입보장보험 */
+	.busi_pfarm_area .pfarm_area_s_bott .con_img.pc { display:block; }
+	.busi_pfarm_area .pfarm_area_s_bott .con_img.m { display:none; }
+/* 농업정책보험-상품소개-가축재해보험 */
+	/* .busi_pfarm_area.pfarm3_1 .comment_txt { margin-bottom:0; } */
+	.busi_pfarm_area.pfarm3_1 .tab_style3 { margin-top:0; }
+/* 농업정책보험-상품소개-농업인안전보험 */
+/* 농업정책보험-상품소개-농작업근로자안전보험 */
+/* 농업정책보험-상품소개-농기계종합보험 */
+
+/* 양식수산물재해보험 */
+/* 양식수산물재해보험-업무소개-개요 */
+	.busi_insura_area2.fishery .insura_area_txt2 { padding-right:220px; min-height:124px; }
+	.busi_insura_area2.fishery .insura_area_txt2::before { width:140px; height:124px; background-image:url('/images/main_business/bg_insura_area_txt3.png'); }
+/* 양식수산물재해보험-상품소개 */
+
+/* 손해평가사 */
+/* 손해평가사-손해평가사안내 */
+
+/* 농어업재해재보험기금 */
+/* 농어업재해재보험기금-기금공시 */
+	.ffund_area .title_h4 { margin-bottom:5px; }
+	.ffund_area .title_h5 { margin:15px 0 10px; }
+	.ffund_area .con_img { text-align:center; }
+	.ffund_area .con_img.pc { display:block; margin-bottom:50px; }
+	.ffund_area .con_img.m { display:none; }
+	.ffund_area .con_left_right_wrap { display:flex; position:relative; width:100%; margin-bottom:50px; padding:0; }
+	.ffund_area .con_left_right_wrap .con_left { width:calc(100% - 165px); margin-right:60px; }
+	.ffund_area .con_left_right_wrap .con_right { width:560px; }
+	.ffund_area .table_style_ff {overflow:hidden; width:100% !important; margin:10px 0 0 0;  border-top:1px solid #7f7f7f; border-bottom:1px solid #7f7f7f; table-layout: fixed; padding-top:20px; }
+	.ffund_area .table_style_ff th { padding: 15px; background: #fafafb; border-left: 1px solid #e4e7ec; border-bottom: 1px solid #dfdfe0; color: #2f3743; }
+	.ffund_area .table_style_ff tbody th { border-bottom-color: #e4e7ec; }
+	.ffund_area .table_style_ff td { position: relative; padding: 10px 10px; border-left: 1px solid #e4e7ec; border-bottom: 1px solid #e4e7ec; text-align: center; vertical-align: middle; line-height: 1.3em; }
+	.ffund_area .table_style_ff th:first-child,
+	.ffund_area .table_style_ff td:first-child {border-left: none;}	
+	.ffund_area .f_prod_list { padding:10px 0 10px 15px; }
+	.ffund_area .f_prod_list li { position:relative; margin-bottom:10px; padding-left:25px; }
+	.ffund_area .f_prod_list li::before { content:''; display:block; width:17px; height:6px; position:absolute; top:50%; left:0; transform:translateY(-50%); border-radius:5px; }
+	.ffund_area .f_prod_list li.f_prod01_bg::before { background-color:#39afe4; }
+	.ffund_area .f_prod_list li.f_prod02_bg::before { background-color:#73bf09; }
+	.ffund_area .f_prod_list li.f_prod03_bg::before { background-color:#ceb41b; }
+	.ffund_area .f_prod_list li.f_prod04_bg::before { background-color:#e29b7f; }
+	.ffund_area .img_ffund { margin:20px 0; text-align:center; }
+/* 농어업재해재보험기금-개요 busi_insura_area2, insura_area_txt2 고정 값 */
+	.busi_insura_area2.disaster { padding:25px 0; }
+	.busi_insura_area2.disaster .insura_area_txt2 { padding-right:300px; min-height:169px; }
+	.busi_insura_area2.disaster .insura_area_txt2::before { right:68px; top:0; transform:none; }
+	.busi_insura_area2.disaster .insura_area_txt2::before { width:157px; height:169px; background-image:url('/images/main_business/bg_disaster_area_txt1.jpg'); }
+	.busi_insura_area2.disaster .list_style1 > li { margin-bottom:40px; }
+/* 농어업재해재보험기금-설치목적및용도 */
+	.ffund_area .bg_business_insura { margin-top:15px; padding:30px 30px; border-top:1px solid #dedede; }
+	.ffund_area .bg_business_insura .insura_hi_area { margin:0; }
+	.ffund_area .bg_business_insura .insura_hi_cont_r { width:100%; }
+	.ffund_area .bg_business_insura .insura_hi_cont_r dl:first-child { margin-top:0; }
+	.ffund_area .bg_business_insura .insura_hi_cont_r dl:last-child { padding-bottom:40px; }
+	.ffund_area .bg_business_insura .insura_hi_cont_r dt { /* width:11%; */ }
+	.ffund_area .bg_business_insura .insura_hi_cont_r dd { width:calc(100% - 130px); }
+/* 농림수산정책자금검사-업무소개 */
+	.fundcheck_area { margin:20px 0; }
+	.fundcheck_area h5 { font-size:16px; }
+	.fundcheck_area .stit { }
+	.fundcheck_area .stxt { margin:3px 0 20px; }
+	.fundcheck_area .table_area { margin-bottom:0px; }
+/* 농특회계융자금관리-업무소개 */
+	.loan_is_area { }
+	.loan_is_area .accounting_type { display:flex; width:calc(100% + 12px); margin-left:-6px; padding:0; justify-content:space-between; align-items:center; }
+	.loan_is_area .accounting_type li { width:calc(33.333% - 6px); margin:0 6px; padding:33px 37px; border-radius:50px; }
+	.loan_is_area .accounting_type li:nth-child(1) { color:#125289; background:#e2f1f8; }
+	.loan_is_area .accounting_type li:nth-child(2) { color:#006868; background:#ddf2f2; }
+	.loan_is_area .accounting_type li:nth-child(3) { color:#478501; background:#e9f4d9; }
+	.loan_is_area .accounting_type li span { position:relative; padding-left:55px; font-size:18px; font-weight:700; }
+	.loan_is_area .accounting_type li span::before { content:''; display:block; position:absolute; top:50%; left:0; transform:translateY(-50%); }
+	.loan_is_area .accounting_type li:nth-child(1) span::before { width:37px; height:44px; background-image:url('/images/main_business/bg_accounting_1_1.png'); }
+	.loan_is_area .accounting_type li:nth-child(2) span::before { width:37px; height:45px; background-image:url('/images/main_business/bg_accounting_1_2.png'); }
+	.loan_is_area .accounting_type li:nth-child(3) span::before { width:38px; height:46px; background-image:url('/images/main_business/bg_accounting_1_3.png'); }
+
+@media screen and (max-width: 1290px){
+	/* 농식품전문크라우드펀딩-업무소개-신청절차 */
+		.crowd_process_area .step_style03 { margin:30px 0; }
+	/* 농어업재해재보험기금-설치목적및용도 */
+}
+	
+@media screen and (max-width: 1280px){
+	
+}
+
+@media screen and (max-width: 1040px){
+	/* 농식품전문크라우드펀딩-업무소개-펀딩의개념 */
+		.crowd_is ul li { width:calc(20% - 25px); }
+		.crowd_is ul li::before { width:115px; height:115px; }
+		.crowd_is ul li::after { right: -16px; width:25px; height:25px; background-size:100% auto; }
+		.crowd_is ul li::before { background-size:45% auto; }
+	/* 농식품전문크라우드펀딩-업무소개-신청절차 */
+		.crowd_process_area .step_style03.step_count03 li { width:calc(33.33% - 30px); margin:0 15px; }
+		.crowd_process_area .step_style03 li::after { right: -16px; width:30px; height:27px; background-size:100% auto; }
+	/* 농업정책보험-업무소개-연혁 */
+		.bg_business_insura .insura_hi_cont_l { width:100%; text-align:center; }
+		.bg_business_insura .insura_hi_cont_r { width:100%; margin-top:20px; }
+		.bg_business_insura .insura_hi_cont_r dl { display:flex; margin:40px 0 20px; }
+		.bg_business_insura .insura_hi_cont_r dd { float:left; width:calc(100% - 104px); }
+		.bg_business_insura .insura_hi_cont_r dd ul.list_style1 { width:100%; margin:5px 0 10px; }
+}
+
+@media screen and (max-width: 1024px){
+	/* 농특회계융자금관리-업무소개 */
+		.loan_is_area .accounting_type li { padding:25px 20px; text-align:center; }
+		.loan_is_area .accounting_type li span { padding:0; }
+		.loan_is_area .accounting_type li span::before { position:static; margin:15px auto 0; }
+}
+@media screen and (max-width: 930px){
+	/* 농림수산식품모태펀드-농림수산식품투자조합-투자절차 */
+		.inver_process_area dl { padding:28px 50px; }
+}
+
+@media screen and (max-width: 900px){
+	/* 농업정책보험 */
+	/* 농업정책보험-업무소개-개요 */
+		.busi_insura_area1 { padding:10px 0 30px; }
+		.busi_insura_area1 .insura_con_r { margin-left:10px; }
+	/* 농어업재해재보험기금-기금공시 */
+		.ffund_area .con_left_right_wrap { display:block; }
+		.ffund_area .con_left_right_wrap .con_left { width:100%; margin:0; }
+		.ffund_area .con_left_right_wrap .con_right { width:100%; }
+}
+
+@media screen and (max-width: 830px){
+	/* 농림수산식품모태펀드-농림수산식품투자조합-투자절차 */
+		.inver_process_area dl dt { float:none; width:100%; padding:0 0 20px; text-align:center; }
+		.inver_process_area dl dt span { }
+		.inver_process_area dl dt em { display:inline; margin-top:10px; color:#333; font-size:20px; font-weight:700; }
+		.inver_process_area dl dd { float:none; width:100%; padding:20px 0 0; border-left:0 none; border-top:2px solid #f1f1f1; text-align:center; }
+		.inver_process_area dl dd em { float:none; display:block; width:100%; margin:0 0 13px; line-height:1.4; }
+		.inver_process_area dl dd ul { float:none; display:table; width:auto; margin-left:auto; margin-right:auto; }
+		.inver_process_area dl dd ul li { text-align:left; }
+	/* 농업정책보험 */
+	/* 농업정책보험-업무소개-개요 */
+		.busi_insura_area1 { display:block; }
+		.busi_insura_area1 .insura_con_l { width:100%; overflow:hidden; }
+		.busi_insura_area1 .insura_con_l ul { display:flex; justify-content:center; width:100%; margin:0; }
+		.busi_insura_area1 .insura_con_r { width:100%; margin:0; text-align:center; }
+		.busi_insura_area1 .insura_con_r .title { padding:0 100px; font-size:19px; line-height:1.4; word-break:keep-all; }
+		.busi_insura_area1 .insura_con_r .text { padding:0 100px; line-height:1.4; word-break:keep-all; }
+		.busi_insura_area1 .insura_con_r .title br,
+		.busi_insura_area1 .insura_con_r .text br {display:none; }
+		.busi_insura_area2 { padding:30px 0; }
+		.busi_insura_area2 .insura_area_txt2 { width:100%; padding:0; text-align:center; }
+		.busi_insura_area2 .insura_area_txt2::before { position:static; margin:0 auto 15px auto; transform:none; }
+		.busi_insura_area2 .insura_area_txt2 .title { padding:0 90px; line-height:1.4; font-size:19px; word-break:keep-all; }
+		.busi_insura_area2 .insura_area_txt2 .text { padding:0 90px; line-height:1.4; word-break:keep-all; }
+		.busi_insura_area2 .insura_area_txt2 .text br { display:none; }
+	/* 양식수산물재해보험-업무소개-개요 */
+		.busi_insura_area2.fishery .insura_area_txt2 { width:100%; padding:0; text-align:center; }
+		.busi_insura_area2.fishery .insura_area_txt2::before {  }
+		.busi_insura_area2.fishery .insura_area_txt2::before {  }
+	/* 농어업재해재보험기금-개요 */		
+		.busi_insura_area2.disaster .insura_area_txt2 { padding:0; }
+		.busi_insura_area2.disaster .insura_area_txt2::before { margin:0 auto 30px auto; }
+		.busi_insura_area2.disaster .insura_area_txt2 ul { text-align:left; }
+		.busi_insura_area2.disaster .list_style1 > li { margin-bottom:20px; }
+		
+}
+
+@media screen and (max-width: 768px){
+	/* top_infobox */
+		.top_infobox.busi { margin:20px 0; padding:20px 30px; }
+		.top_infobox.busi .infobox.icon { padding:0; }
+		.top_infobox.busi .infobox.icon.crowd,
+		.top_infobox.busi .infobox.icon.insura,
+		.top_infobox.busi .infobox.icon.pfarm,
+		.top_infobox.busi .infobox.icon.disaster,
+		.top_infobox.busi .infobox.icon.policyfunds,
+		.top_infobox.busi .infobox.icon.loan { padding:0; }
+	/* 농림수산식품모태펀드-농림수산식품투자조합-투자대상 */
+		.invest_arget_area dl { padding:30px 0; }
+	/* 농식품전문크라우드펀딩 */
+		.crowd_is_area { padding-top:0; }
+	/* 농식품전문크라우드펀딩-업무소개-펀딩의개념 */
+		.crowd_is ul li { width:100%; margin-bottom:50px; }
+		.crowd_is ul li::before { width:150px; height:150px; }
+		.crowd_is ul li::after { right:50%; top:auto; bottom:-62px; }
+		.crowd_is ul li::before { background-size:auto; }
+	/* 농식품전문크라우드펀딩-업무소개-유형보기 */
+		.crowd_type_area .crowd_type { display:block; }
+		.crowd_type_area .crowd_type .box_type { width:100%; margin-bottom:20px; padding:25px 25px 5px; }
+		.crowd_type_area .crowd_type .box_type .title { padding-bottom:120px; }
+		.crowd_type_area .crowd_type .box_type .title::after { bottom:10px; background-size:80% auto; }
+		.crowd_type_area .crowd_type .box_type.n2 .title::after { bottom:0px; }
+		.crowd_type_area .crowd_type .box_type .con { padding:25px 15px 0; }
+	/* 농업정책보험-업무소개-연혁 */
+		.bg_business_insura .insura_hi_area { margin-top:30px; }
+	/* 농특회계융자금관리-업무소개 */
+		.loan_is_area .accounting_type { display:block; width:100%; margin:0; }
+		.loan_is_area .accounting_type li { width:100%; margin:0 0 15px 0; padding:25px 50px; text-align:left; }
+		.loan_is_area .accounting_type li span { padding-left:75px; font-size:16px; }
+		.loan_is_area .accounting_type li span::before { position:absolute; margin:0; }
+}
+
+@media screen and (max-width: 640px){
+	/* top_infobox */
+		.top_infobox.busi .tit { margin-bottom:15px; font-size:17px; }
+		.top_infobox.busi .tit span { font-size:14px; }
+		.top_infobox.busi .txt { font-size:14px; }
+	/* 농림수산식품모태펀드-업무소개 */
+		.business_vision,
+		.fund_manag_system { margin:30px 0; }
+		.business_vision .pc { display:none; }
+		.business_vision .m { display:block; }
+	/* 농림수산식품모태펀드-농림수산식품투자조합-투자대상 */
+		.invest_arget_area dl { padding:25px 0; }
+		.invest_arget_area dl dt { float:none; margin:0 auto; }
+		.invest_arget_area dl dd { margin:0; }
+		.invest_arget_area dl dd .list_style1 { margin:0px 0 30px; }
+	/* 농식품전문크라우드펀딩-업무소개-신청절차 */
+		.crowd_process_area .step_style03 ul { width:100%; margin:0; }
+		.crowd_process_area .step_style03 li { padding:0; }
+		.crowd_process_area .step_style03.step_count03 li { width:100%; margin:0 0 60px; text-align:center; }
+		.crowd_process_area .step_style03 li::after { right:auto; left:auto; top:auto; bottom:-40px; margin-left:-15px; transform:rotate(90deg); }
+	/* 농식품전문크라우드펀딩-업무소개-유형보기 */
+		.crowd_type_area .crowd_type { margin:15px 0; }
+	/* 농업정책보험 */
+	/* 농업정책보험-업무소개-개요 */
+		.busi_insura_area1 .insura_con_r .title { padding:0 40px; font-size:17px; }
+		.busi_insura_area1 .insura_con_r .text { padding:0 40px; }
+		.busi_insura_area2 .insura_area_txt2 .title { padding:0 40px; font-size:17px; }
+		.busi_insura_area2 .insura_area_txt2 .text { padding:0 40px; }
+	/* 농업정책보험-업무소개-연혁 */
+		.bg_business_insura .insura_hi_cont_l span { font-size:35px; }
+	/* 농업정책보험-업무소개-추진체계 */
+		.insura_sys_area .pc { display:none; }
+		.insura_sys_area .m { display:block; }
+	/* 농업정책보험-상품소개 */
+		.busi_pfarm_area .tab_style3 { margin-top:20px; }
+		.busi_pfarm_area .list_style2 > li { font-size:14px; }
+		.pfarm_area_s_bott .title_h5_2 { margin:15px 0 5px; font-size:14px; }
+		.busi_pfarm_area .pfarm_area_s_bott .table_style tbody th,
+		.busi_pfarm_area .pfarm_area_s_bott .table_style th,
+		.busi_pfarm_area .pfarm_area_s_bott .table_style td { padding:10px 14px 6px; font-size:14px; }
+	/* 농업정책보험-상품소개-농업수입보장보험 */
+		.busi_pfarm_area .pfarm_area_s_bott .con_img.pc { display:none; }
+		.busi_pfarm_area .pfarm_area_s_bott .con_img.m { display:block; text-align:center; }
+	
+	/* 농어업재해재보험기금 */
+	/* 농어업재해재보험기금-기금공시 */
+		.ffund_area .con_img.pc { display:none; }
+		.ffund_area .con_img.m { display:block; margin-bottom:20px; }
+	
+	/* 농특회계융자금관리-업무소개 */
+		.loan_is_area .accounting_type li { margin:0 0 10px 0; }
+		.loan_is_area .accounting_type li span { padding-left:60px; font-size:14px; }
+	
+}
+
+@media screen and (max-width: 500px){
+	
+}
+
+@media screen and (max-width: 468px){
+	/* 농림수산식품모태펀드-농림수산식품투자조합-투자와융자의차이 */
+		.investment_financing { display:block; margin:0; }
+		.investment_financing > div { width:100%; padding:25px 0; border-right:0 none; border-bottom:2px solid #f1f1f1; }
+		.investment_financing > div .txt { margin-top:20px; }
+	/* 농림수산식품모태펀드-농림수산식품투자조합-투자전·후지원 */
+		.inver_support_area { margin-top:15px; }
+		.inver_support_area ul li { margin-bottom:20px; }
+		.inver_support_area ul li .tit { margin:15px 0 0; font-size:16px; }
+		.inver_support_area ul li .img { margin:15px 0 8px; }
+		.inver_support_area dl { border-bottom:1px dotted #ccc; }
+		.inver_support_area dl dt { float:none; width:100%; margin-bottom:5px; text-align:left; }
+		.inver_support_area dl dd { float:none; width:100%; }
+	/* 농림수산식품모태펀드-농림수산식품투자조합-투자경영체확인서발급 */
+		.inver_confirm_area .title_h4 { margin:20px 0 10px; }
+		.inver_confirm_area .inver_confirm_spe { min-height:auto; margin:0; padding:0; background:0 none; }
+		.inver_confirm_area .inver_confirm_spe p.tx_spe { display:inline-block; min-width:123px; margin:20px 0 15px; padding:4px 30px; color:#fff; font-weight:700; background:#4c8c03; text-align:center; border-radius:30px; }
+		/* .inver_confirm_area .step_style01 > ul > li { margin:0 40px; } */
+	/* 농식품전문크라우드펀딩-업무소개-유형보기 */
+		.crowd_type_area .crowd_type .box_type { margin-bottom:15px; padding:25px 15px 0px; }
+		.crowd_type_area .crowd_type .box_type .con { padding:20px 10px 0; }
+		.crowd_type_area .crowd_type .box_type .con ul li { margin-bottom:15px; }
+	/* 농업정책보험 */
+	/* 농업정책보험-업무소개-개요 */
+		.busi_insura_area1 .insura_con_l ul { display:block; margin:0; }
+		.busi_insura_area1 .insura_con_l ul li { width:100%; height:auto; margin:0 0 40px; padding:15px 0; border-radius:15px; font-size:16px; }
+		.busi_insura_area1 .insura_con_l ul li:last-child { margin-bottom:0; }
+		.busi_insura_area1 .insura_con_l ul li em { margin-top:10px; }
+		.busi_insura_area1 .insura_con_l ul li em br { display:none; }
+		.busi_insura_area1 .insura_con_l ul li::after { right:50%; top:auto; bottom:-52px; width:25px; height:25px; background-size:100% auto; }
+	/* 농업정책보험-업무소개-연혁 */
+		.bg_business_insura .insura_hi_cont_l span { font-size:30px; }
+	/* 농특회계융자금관리-업무소개 */
+		.loan_is_area .accounting_type li { padding:20px; }
+		.loan_is_area .accounting_type li span { padding-left:50px; }
+}

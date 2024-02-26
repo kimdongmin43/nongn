@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SiteDao">
+
+	<select id="selectSiteList" parameterType="Map" resultType="siteVO">
+	/* kr.apfs.local.site.dao.SiteDao.selectSiteList */
+       select
+			S.SITE_ID siteId,
+			S.CLIENT_ID clientId,
+			S.CHAM_CD chamCd,
+			S.SITE_NM siteNm,
+			S.SITE_DESC siteDesc,
+			S.REG_USER_ID regUserId,
+			S.REG_DT regDt,
+			S.UPD_USER_ID updUserId,
+			S.UPD_DT updDt,
+			S.USE_YN useYn,
+			S.DEL_YN delYn,
+			S.SORT sort,
+			<![CDATA[  M.REF_URL + '?menuId=' + M.MENU_ID ]]>  menuLocation,
+			ADDR, 
+			TEL,
+			TEL_MOBILE,
+			EMAIL
+
+      from TC_SITE S
+      LEFT OUTER JOIN TS_FOOTERINFO TF
+      ON S.SITE_ID = TF.SITE_ID
+      LEFT OUTER JOIN TS_MENU M
+      ON S.SITE_ID = M.SITE_ID
+      AND M.REF_URL like '%locationpageList.do%'
+      where  S.DEL_YN= 'N'
+      <if test='clientId != null and !clientId.equals("")' >
+      AND CLIENT_ID = #{clientId}
+      </if>
+      <if test='siteId != null and !siteId.equals("")' >
+      AND S.SITE_ID = #{siteId}
+      </if>
+	</select>
+
+</mapper>

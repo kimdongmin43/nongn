@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberpageDao">
+
+<select id="selectMemberList" parameterType="Map" resultType="camelMap">
+/* net.korcham.sccigu.Memberpage.dao.impl.MemberpageDao.selectMemberList */
+	SELECT * FROM (
+	     SELECT A.*,
+	                 ROW_NUMBER() OVER(ORDER BY  reg_dt desc) AS RNUM,
+	                 COUNT(*) OVER() AS total_cnt FROM (	                 
+	SELECT
+		MEMBER_ID
+		,LOGIN_ID
+		,PASSWORD
+		,MEMBER_NM
+		,USE_YN
+		,REG_DT	    	   
+	  FROM TS_MEMBER 	 
+	  WHERE 1 = 1	 		
+	 		<if test='searchKey == "E" '>			
+			   AND USE_YN = 'Y'			    
+			</if>			
+			<if test='searchKey == "A" '>			
+			   AND USE_YN = 'N'
+			</if>						
+	  <!-- 승인여부 체크값으로 인한 use_yn 주석 -->
+	  <!-- AND use_yn = 'Y' -->
+	  ) A
+	)B WHERE RNUM > #{miv_start_index} AND   #{miv_end_index} >= RNUM
+	
+</select>
+
+<select id="selectMember" parameterType = "Map" resultType = "camelMap">
+	SELECT
+	member_id
+		,login_id
+		,password
+		,member_nm
+		,use_yn
+		,reg_dt
+	FROM ts_member 
+	WHERE
+	1=1
+	AND member_id = #{memberId}	
+	</select>
+
+
+
+<insert id="insertMemberpage" parameterType="Map">
+	INSERT INTO ts_member
+	(
+		login_id
+		,password
+		,member_nm
+		,use_yn
+		,reg_dt
+	)
+	VALUES
+	(
+		#{loginId}
+		,#{password}
+		,#{memberNm}
+		,#{useYn}		
+		,left(convert(varchar, getdate(), 112)+'000000',14)
+		
+	)
+
+</insert>
+<update id="updateMemberpage" parameterType="Map">
+	UPDATE ts_member
+	SET
+	login_id     =   #{loginId}  
+	,password   =    #{password}
+	,member_nm   =  #{memberNm}
+	,use_yn    =    #{useYn}	
+	WHERE
+		member_id = #{memberId}
+
+</update>
+
+<delete id="deleteMemberpage" parameterType="Map">
+	DELETE ts_member	
+	WHERE
+	member_id = #{memberId}
+</delete>
+
+
+<select id="login" parameterType = "Map" resultType = "camelMap">
+	SELECT
+	COUNT(1) AS cnt	
+	,member_nm
+	FROM 
+	ts_member	
+	WHERE
+	1=1
+	AND login_id = #{id}
+	AND password = #{password}
+	GROUP BY member_nm	
+	</select>
+
+</mapper>

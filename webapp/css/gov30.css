@@ -1,0 +1,290 @@
+@charset "utf-8";
+
+/* 담당자 정보 */
+	.person_info { width:100%; margin:20px 0 40px; padding:24px 10px; background-color:#f5f8f9; border-radius:15px; }
+	.person_info ul { display:flex; width:100%; }
+	.person_info ul li { width:50%; margin:0 15px; padding:15px 20px; line-height:1.4; border-radius:30px; border:1px solid #ccc; background-color:#fff; }
+	.person_info ul li em { position:relative; color:#333; font-weight:700; margin-right:13px; padding-right:18px; }
+	.person_info ul li em::after { content:""; display:block; position:absolute; right:0; top:calc(50% - 11px); width:1px; height:22px; background-color:#ccc; }
+
+/* 정보공개 안내 : 기본 리스트 */
+	.list_wrap { }
+	.list_wrap > li { width:100%; padding:25px 15px; border-bottom:1px solid #dedede; }
+	.list_wrap > li > em { display:inline-block; width:100%; margin-bottom:20px; font-weight:700; }
+/* 정보공개 안내 : 기본 리스트 - 정보공개제도 */
+	.list_wrap.type2 { width:100%; }
+	.list_wrap.type2 > li { display:flex; width:100%; padding:40px 15px; border-bottom:1px solid #dedede; }
+	.list_wrap.type2 .tit { position:relative; width:165px; color:#333; font-size:20px; font-weight:700; line-height:1.4; }
+	.list_wrap.type2 .tit::after { content:''; display:block; margin:30px auto 0; }
+	.list_wrap.type2 .tit.n1::after { width:77px; height:79px; background: url('/images/gov30/bg_public_info_1.gif') center center no-repeat; }
+	.list_wrap.type2 .tit.n2::after { width:82px; height:64px; background: url('/images/gov30/bg_public_info_2.gif') center center no-repeat; }
+	.list_wrap.type2 .tit.n3::after { width:65px; height:71px; background: url('/images/gov30/bg_public_info_3.gif') center center no-repeat; }
+	.list_wrap.type2 .tit.n4::after { width:83px; height:75px; background: url('/images/gov30/bg_public_info_4.gif') center center no-repeat; }
+	.list_wrap.type2 .tit.n5::after { width:63px; height:68px; background: url('/images/gov30/bg_public_info_5.gif') center center no-repeat; }
+	.list_wrap.type2 .tit.n6::after { width:52px; height:70px; background: url('/images/gov30/bg_public_info_6.gif') center center no-repeat; }
+	.list_wrap.type2 .tit.n7::after { width:65px; height:65px; background: url('/images/gov30/bg_public_info_7.gif') center center no-repeat; }
+	.list_wrap.type2 .con_box_wrap { width:calc(100% - 165px); margin-left:40px; }
+/* 정보공개안내 : 공통 */
+	.da_open_wrap .title { margin:0 0 20px 15px; padding-top:40px; color:#333; font-size:20px; font-weight:700; }
+	.da_open_wrap .text { margin-bottom:10px; font-size:16px; line-height:1.5; }
+	.da_open_wrap .table_style_do2 { margin-bottom:0; }
+	.daopen_area_s_bott .list_style1 > li { margin-bottom:15px; }
+	#daopen_content_3 .text { padding-bottom:35px; border-bottom:1px solid #dedede; }
+	#daopen_content_3 .list_wrap .list_style1 { margin-bottom:40px; }
+	#daopen_content_3 .list_wrap .list_style1:last-child { margin-bottom:0; }
+/* 정보공개 안내 - 관계법령 및 지침 */
+	.daopen_con_sty2 { display:flex; flex-wrap:wrap; justify-content:space-between; width:100%; }
+	.daopen_con_sty2 li { display:flex; width:calc(50% - 10px); min-height:145px; margin-bottom:20px; padding:20px 25px; border:1px solid #ccc; border-radius:10px; }
+	.daopen_con_sty2 li em { width:calc(100% - 80px); margin:10px 10px 0 0; font-size:18px; line-height:1.4; word-break:keep-all; }
+	.daopen_con_sty2 li .btn_con { width:80px; text-align:center; }
+	.daopen_con_sty2 li .btn_go2 a,
+	.daopen_con_sty2 li .btn_down2 a { display:block; width:80px; height:80px; padding-top:78px; font-size:14px; border:1px solid #f9f9f9; border-radius:100%; transition: 0.2s ease; }
+	.daopen_con_sty2 li .btn_go2 span,
+	.daopen_con_sty2 li .btn_down2 span { display:inline-block; padding-top:10px; }
+	.daopen_con_sty2 li .btn_go2 a { background:#f9f9f9 url('/images/sub/ico_go.png') center center no-repeat; }
+	.daopen_con_sty2 li .btn_down2 a { background:#f9f9f9 url('/images/sub/ico_down.png') center center no-repeat; }
+	.daopen_con_sty2 li .btn_go2 a:hover,
+	.daopen_con_sty2 li .btn_down2 a:hover { color:#0b63ae; font-weight:700; border:1px solid #ccc; }
+
+/* 230823 이의신청 */
+	.daopen_con_sty3 { display:flex; flex-wrap:wrap; justify-content:space-between; width:100%; }
+	.daopen_con_sty3 li { display:flex; width:calc(50% - 10px); min-height:145px; margin-top:40px; margin-bottom:20px; padding:20px 25px; border:1px solid #ccc; border-radius:10px; }
+	.daopen_con_sty3 li em { width:calc(100% - 80px); margin:10px 10px 0 0; font-size:25px; line-height:1.4; word-break:keep-all; }
+	.daopen_con_sty3 li .btn_con { width:80px; text-align:center; }
+	.daopen_con_sty3 li .btn_go2 a,
+	.daopen_con_sty3 li .btn_down2 a { display:block; width:80px; height:80px; padding-top:78px; font-size:14px; border:1px solid #f9f9f9; border-radius:100%; transition: 0.2s ease; }
+	.daopen_con_sty3 li .btn_go2 span,
+	.daopen_con_sty3 li .btn_down2 span { display:inline-block; padding-top:10px; }
+	.daopen_con_sty3 li .btn_go2 a { background:#f9f9f9 url('/images/sub/ico_go.png') center center no-repeat; }
+	.daopen_con_sty3 li .btn_down2 a { background:#f9f9f9 url('/images/sub/ico_down.png') center center no-repeat; }
+	.daopen_con_sty3 li .btn_go2 a:hover,
+	.daopen_con_sty3 li .btn_down2 a:hover { color:#0b63ae; font-weight:700; border:1px solid #ccc; }
+	
+/*231106 개인정보처리방침용 링크바로기기 버튼 위치 조정*/	
+	.daopen_con_sty4 { display:flex; flex-wrap:wrap; justify-content:space-between; width:100%; }
+	.daopen_con_sty4 li { display:flex; width:calc(50% - 10px); min-height:145px; margin-top:40px; margin-bottom:20px; margin-left:220px; padding:20px 25px; border:1px solid #ccc; border-radius:10px; }
+	.daopen_con_sty4 li em { width:calc(100% - 80px); margin:10px 10px 0 0; font-size:20px; line-height:1.4; word-break:keep-all; }
+	.daopen_con_sty4 li .btn_con { width:80px; text-align:center; }
+	.daopen_con_sty4 li .btn_go2 a,
+	.daopen_con_sty4 li .btn_down2 a { display:block; width:80px; height:80px; padding-top:78px; font-size:14px; border:1px solid #f9f9f9; border-radius:100%; transition: 0.2s ease; }
+	.daopen_con_sty4 li .btn_go2 span,
+	.daopen_con_sty4 li .btn_down2 span { display:inline-block; padding-top:10px; }
+	.daopen_con_sty4 li .btn_go2 a { background:#f9f9f9 url('/images/sub/ico_go.png') center center no-repeat; }
+	.daopen_con_sty4 li .btn_down2 a { background:#f9f9f9 url('/images/sub/ico_down.png') center center no-repeat; }
+	.daopen_con_sty4 li .btn_go2 a:hover,
+	.daopen_con_sty4 li .btn_down2 a:hover { color:#0b63ae; font-weight:700; border:1px solid #ccc; }
+	
+/*231106 개인정보처리방침 13. 개인정보 열람청구 글씨 크기 및 행간*/
+
+
+	.privacyPolicyFont {font-size:18px; line-height:1.8;}
+	.font800 {font-weight:800;}
+	.daopen_con_sty5 { display:flex; flex-wrap:wrap; justify-content:space-between; width:100%; }
+	.daopen_con_sty5 li { display:flex; width:calc(50% - 10px); min-height:145px; margin-top:40px; margin-bottom:20px; padding:20px 25px; border:1px solid #ccc; border-radius:10px; }
+	.daopen_con_sty5 li em { width:calc(100% - 80px); margin:10px 10px 0 0; padding:23px; font-size:20px; line-height:1.4; word-break:keep-all; }
+	.daopen_con_sty5 li .btn_con { width:80px; text-align:center; }
+	.daopen_con_sty5 li .btn_go2 a,
+	.daopen_con_sty5 li .btn_down2 a { display:block; width:80px; height:80px; padding-top:78px; font-size:14px; border:1px solid #f9f9f9; border-radius:100%; transition: 0.2s ease; }
+	.daopen_con_sty5 li .btn_go2 span,
+	.daopen_con_sty5 li .btn_down2 span { display:inline-block; padding-top:10px; }
+	.daopen_con_sty5 li .btn_go2 a { background:#f9f9f9 url('/images/sub/ico_go.png') center center no-repeat; }
+	.daopen_con_sty5 li .btn_down2 a { background:#f9f9f9 url('/images/sub/ico_down.png') center center no-repeat; }
+	.daopen_con_sty5 li .btn_go2 a:hover,
+	.daopen_con_sty5 li .btn_down2 a:hover { color:#0b63ae; font-weight:700; border:1px solid #ccc; }
+
+
+@media screen and (max-width: 640px){
+	.privacyPolicyFont {font-size:18px; line-height:1.8;}
+	.font800 {font-weight:800;}
+	.daopen_con_sty5 { display:flex; flex-wrap:wrap; justify-content:space-between; width:100%; }
+	.daopen_con_sty5 { flex-wrap:wrap; justify-content:space-between; width:100%; }
+	.daopen_con_sty5 li { display:flex; min-height:145px; margin-top:40px; margin-bottom:20px; padding:20px 25px; border:1px solid #ccc; border-radius:10px; }
+	.daopen_con_sty5 li em { width:calc(100% - 80px); margin:10px 10px 0 0; font-size:17px; line-height:1.4; }
+	.daopen_con_sty5 li .btn_con { width:80px; text-align:center; }
+	.daopen_con_sty5 li .btn_go2 a,
+	.daopen_con_sty5 li .btn_down2 a { display:block; width:80px; height:80px; padding-top:78px; font-size:14px; border:1px solid #f9f9f9; border-radius:100%; transition: 0.2s ease; }
+	.daopen_con_sty5 li .btn_go2 span,
+	.daopen_con_sty5 li .btn_down2 span { display:inline-block; padding-top:10px; }
+	.daopen_con_sty5 li .btn_go2 a { background:#f9f9f9 url('/images/sub/ico_go.png') center center no-repeat; }
+	.daopen_con_sty5 li .btn_down2 a { background:#f9f9f9 url('/images/sub/ico_down.png') center center no-repeat; }
+	.daopen_con_sty5 li .btn_go2 a:hover,
+	.daopen_con_sty5 li .btn_down2 a:hover { color:#0b63ae; font-weight:700; border:1px solid #ccc; }
+}
+
+/*231110 13. 개인정보 열람창구 버튼위치 조정*/
+	.daopen_con_sty6 { display:flex; flex-wrap:wrap; justify-content:space-between; width:100%; }
+	.daopen_con_sty6 li { display:flex; width:calc(50% - 10px); min-height:145px; margin-top:40px; margin-bottom:20px; padding:20px 25px; border:1px solid #ccc; border-radius:10px; }
+	.daopen_con_sty6 li em { width:calc(100% - 80px); padding:23px; font-size:20px; line-height:1.4; word-break:keep-all; }
+	.daopen_con_sty6 li .btn_con { width:80px; text-align:center; }
+	.daopen_con_sty6 li .btn_go2 a,
+	.daopen_con_sty6 li .btn_down2 a { display:block; width:80px; height:80px; padding-top:78px; font-size:14px; border:1px solid #f9f9f9; border-radius:100%; transition: 0.2s ease; }
+	.daopen_con_sty6 li .btn_go2 span,
+	.daopen_con_sty6 li .btn_down2 span { display:inline-block; padding-top:10px; }
+	.daopen_con_sty6 li .btn_go2 a { background:#f9f9f9 url('/images/sub/ico_go.png') center center no-repeat; }
+	.daopen_con_sty6 li .btn_down2 a { background:#f9f9f9 url('/images/sub/ico_down.png') center center no-repeat; }
+	.daopen_con_sty6 li .btn_go2 a:hover,
+	.daopen_con_sty6 li .btn_down2 a:hover { color:#0b63ae; font-weight:700; border:1px solid #ccc; }	
+	
+@media screen and (max-width: 640px){
+	.daopen_con_sty6 { display:flex; flex-wrap:wrap; justify-content:space-evenly; width:100%; }
+	.daopen_con_sty6 li {width:300px; height:230px;border:1px solid #ccc; border-radius:10px; }
+	.daopen_con_sty6 li em { font-size:17px; line-height:1.4; padding:10px;}
+	.daopen_con_sty6 li .no1 { font-size:17px; line-height:1.4; padding:10px; position:relative; left:50px;}
+	.daopen_con_sty6 li .btn_con { width:80px; text-align:center; position:relative; top:87px; right:80px;}
+	.daopen_con_sty6 li .btn_con2 { width:80px; text-align:center; position:relative; top:87px; right:80px;}
+	.daopen_con_sty6 li .btn_go2 a,
+	.daopen_con_sty6 li .btn_down2 a { display:block; width:80px; height:80px; padding-top:78px; font-size:14px; border:1px solid #f9f9f9; border-radius:100%; transition: 0.2s ease; }
+	.daopen_con_sty6 li .btn_go2 span,
+	.daopen_con_sty6 li .btn_down2 span { display:inline-block; padding-top:10px; }
+	.daopen_con_sty6 li .btn_go2 a { background:#f9f9f9 url('/images/sub/ico_go.png') center center no-repeat; }
+	.daopen_con_sty6 li .btn_down2 a { background:#f9f9f9 url('/images/sub/ico_down.png') center center no-repeat; }
+	.daopen_con_sty6 li .btn_go2 a:hover,
+	.daopen_con_sty6 li .btn_down2 a:hover { color:#0b63ae; font-weight:700; border:1px solid #ccc; }
+	
+	.img231110 { width:485px; height:auto; position:relative; right:55px; bottom:20px;}
+}
+
+/* 정보공개 청구 */
+	.daopen_title_box { display:flex; width:100%; height:100%; margin:35px 0; padding:30px; border:1px solid #ccc; border-radius:15px; }
+	.daopen_title_box .tit { position:relative; width:280px; color:#333; font-size:20px; font-weight:700; line-height:1.4; text-align:center; }
+	.daopen_title_box .tit::after { content:''; display:block; margin:30px auto 0; }
+	.daopen_title_box .tit.n1::after { width:142px; height:150px; background: url('/images/gov30/bg_daopen_title_box.png') center center no-repeat; }
+	.daopen_title_box .tit.n2::after { width:119px; height:122px; background: url('/images/gov30/bg_daopen_title_box_2.png') center center no-repeat; }
+	.daopen_title_box .con_box_wrap { width:calc(100% - 280px); margin-left:25px; }
+	.daopen_title_box .con_box_wrap .txt { margin-bottom:20px; }
+	.daopen_title_box .con_box_wrap .txt2 { margin-bottom:20px; font-size:15px; }
+	.daopen_title_box .con_box_wrap .btn { }
+
+/* 공공데이터개방 */
+	.daopen_title_box2 { width:100%; margin:35px 0; }
+	.daopen_txt_area { margin-bottom:50px; }
+	.daopen_txt_area .title_h4 { position:relative; margin-bottom:25px; }
+	.daopen_txt_area .txt {font-size:14px }
+	.daopen_txt_area .list_style2 > li { font-size:16px; }
+
+@media screen and (max-width: 1024px){
+	/* 담당자 정보 */
+		.person_info { margin-bottom:30px; }
+		.person_info ul { flex-wrap:wrap; padding:0 100px; }
+		.person_info ul li { width:100%; margin-bottom:15px; }
+		.person_info ul li:last-child { margin-bottom:0; }
+}
+
+@media screen and (max-width: 768px){
+	/* 담당자 정보 */
+		.person_info ul { padding:0 50px; }
+	
+	/* 정보공개안내 : 공통 */
+		.da_open_wrap .title { padding-top:25px; }	
+		.daopen_area_s_bott .list_style1 > li { margin-bottom:10px; }
+		.daopen_area_s_bott .list_style1 > li:last-child { margin-bottom:0; }
+		.list_wrap > li:first-child { padding-top:15px; }
+	/* 정보공개 안내 : 기본 리스트 - 정보공개제도 */
+		.list_wrap.type2 > li { padding:25px 15px; }
+	/* 정보공개 안내 - 관계법령 및 지침 */
+		.daopen_con_sty2 li em { font-size:16px; }
+		#daopen_content_3 .text { margin-bottom:0; padding-bottom:25px; }
+		#daopen_content_3 .list_wrap .list_style1 { margin-bottom:30px; }	
+	
+	/*230823 이의신청*/
+	.daopen_con_sty3 li em { font-size:16px; }
+	
+	/* 정보공개 청구 */
+		.daopen_title_box { margin:20px 0; }
+		.daopen_title_box .tit { width:200px; font-size:18px; }
+		.daopen_title_box .tit::after { }
+		.daopen_title_box .con_box_wrap { width:calc(100% - 200px); }
+		.daopen_title_box .con_box_wrap .txt { margin-bottom:15px; font-size:15px; }
+		.daopen_title_box .con_box_wrap .txt2 { margin-bottom:15px; font-size:14px; }
+		.daopen_title_box .con_box_wrap .btn a { padding:16px 75px 14px 25px; font-size:16px; }
+}
+
+@media screen and (max-width: 640px){
+	/* 개인정보처리방침 4. 개인정보파일 등록현황*/
+	.daopen_con_sty4 li { display:flex; width:100%; min-height:150px; margin-top:40px; margin-bottom:20px; margin-left:9px; padding:20px 25px; border:1px solid #ccc; border-radius:10px; }
+	
+	
+	/* 담당자 정보 */
+		.person_info ul { padding:0; }
+		.person_info ul li em { display:inline-block; width:100%; margin-bottom:5px; }
+		.person_info ul li em::after { display:none; }
+	
+	/* 정보공개안내 : 공통 */
+		.da_open_wrap .title { font-size:16px; margin:0 0 8px 15px; }
+		#daopen_content_2 .down a { padding:13px 45px 12px 0px; min-width:150px; min-height:50px; }
+		#daopen_content_2 .down a.btn_down.big::after { padding-left:32px; }
+		#daopen_content_2 .down span { margin:15px 0 0 15px; }
+		#daopen_content_3 .text { padding-bottom:20px; }
+		#daopen_content_3 .list_wrap .list_style1 { margin-bottom:20px; }
+		#daopen_content_3 .list_wrap .list_style1:last-child { margin-bottom:0; }
+		#daopen_content_3 .list_wrap .list_style1:last-child li { margin-bottom:0; }
+	/* 정보공개 안내 : 기본 리스트 - 정보공개제도 */
+		.list_wrap.type2 > li { display:block; padding:20px 15px; }
+		.list_wrap.type2 .tit { width:100%; margin-bottom:15px; font-size:17px; }
+		.list_wrap.type2 .tit::after { display:none; }
+		.list_wrap.type2 .tit br { display:none; }
+		.list_wrap.type2 .con_box_wrap { width:100%; margin-left:0; }
+		.list_wrap.type2 .con_box_wrap .list_style1 > li { line-height:1.4; }
+	/* 정보공개안내 - 비공개 기준 */
+		#daopen_content_1 .list_wrap > li:first-child { padding:20px 15px; }
+		.list_wrap > li { padding:20px 15px; }
+		.list_wrap > li > em { margin-bottom:8px; }
+	/* 정보공개 안내 - 관계법령 및 지침 */
+		.daopen_con_sty2 li { width:100%; min-height:45px; margin-bottom:10px; }
+		.daopen_con_sty2 li em { margin:5px 10px 0 0; }
+		.daopen_con_sty2 li .btn_con { }
+		.daopen_con_sty2 li .btn_go2 a,
+		.daopen_con_sty2 li .btn_down2 a { width:80px; height:30px; line-height:30px; padding:0; color:#fff; background:#0b63ae; border:1px solid #0b63ae; border-radius:5px; }
+		.daopen_con_sty2 li .btn_go2 span,
+		.daopen_con_sty2 li .btn_down2 span { padding-top:0; }
+		.daopen_con_sty2 li .btn_go2 a:hover,
+		.daopen_con_sty2 li .btn_down2 a:hover { color:#fff; border:1px solid #0b63ae; }
+	
+	/* 230823 이의신청*/
+		.daopen_con_sty3 li { width:100%; min-height:45px; margin-bottom:10px; }
+		.daopen_con_sty3 li em { margin:5px 10px 0 0; }
+		.daopen_con_sty3 li .btn_con { }
+		.daopen_con_sty3 li .btn_go2 a,
+		.daopen_con_sty3 li .btn_down2 a { width:80px; height:30px; line-height:30px; padding:0; color:#fff; background:#0b63ae; border:1px solid #0b63ae; border-radius:5px; }
+		.daopen_con_sty3 li .btn_go2 span,
+		.daopen_con_sty3 li .btn_down2 span { padding-top:0; }
+		.daopen_con_sty3 li .btn_go2 a:hover,
+		.daopen_con_sty3 li .btn_down2 a:hover { color:#fff; border:1px solid #0b63ae; }
+	
+	/* 정보공개 청구 */
+		.daopen_title_box { margin:15px 0; }
+		.daopen_title_box .tit { width:150px; font-size:16px; word-break:keep-all; }
+		.daopen_title_box .tit::after { margin:0 auto; }
+		.daopen_title_box .tit.n1::after { background-size:70% auto; }
+		.daopen_title_box .tit.n2::after { background-size:70% auto; }
+		.daopen_title_box .con_box_wrap { width:calc(100% - 150px); }
+		.daopen_title_box .con_box_wrap .btn a { font-size:15px; }
+	
+	/* 공공데이터개방 */
+		.daopen_txt_area { margin-bottom:30px; }
+		.daopen_txt_area .title_h4 { margin-bottom:10px; }
+		.daopen_txt_area .step_style01 > ul > li { margin:0 30px 15px 30px; }
+}
+
+@media screen and (max-width: 510px){
+	/* 정보공개 청구 */
+		.daopen_title_box { display:block; padding:20px; }
+		.daopen_title_box .tit { width:100%; margin:0 0 15px 0; text-align:left; }
+		.daopen_title_box .tit::after { display:none; }
+		.daopen_title_box .con_box_wrap { width:100%; margin:0; }
+		.daopen_title_box .con_box_wrap .btn a { }
+	
+	/* 공공데이터개방 */
+}
+
+@media screen and (max-width: 468px){
+	/* 정보공개안내 : 공통 */
+		#daopen_content_2 .down span { display:block; margin:15px 0 0 0; }
+	/* 정보공개 안내 - 관계법령 및 지침 */
+		.daopen_con_sty2 li { padding:10px; }
+		.daopen_con_sty2 li em { margin:8px 10px 0 0; font-size:14px; }
+	/*230823 이의신청*/
+		.daopen_con_sty3 li { padding:10px; }
+		.daopen_con_sty3 li em { margin:8px 10px 0 0; font-size:14px; }	
+		
+}

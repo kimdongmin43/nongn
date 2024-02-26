@@ -1,0 +1,928 @@
+@charset "utf-8";
+@import url("contents.css");
+/*@font-face{font-weight:normal; font-family: 'Nanum Gothic'; src:local(※), url('font/NanumGothic.woff') format('woff'), url('font/NanumGothic.ttf') format('truetype')}*/
+
+/* style reset */
+* {text-size-adjust:none; -webkit-text-size-adjust:none; -webkit-overflow-scrolling:touch; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box}
+* {margin:0; padding:0}
+
+body {width:100%; overflow-x:hidden; font-size:12px; color:#676767}
+ul, ol, li {list-style:none}
+a {cursor:pointer; color:#676767; text-decoration:none; font-size:12px}
+em, address, i {font-style:normal}
+caption {visibility:hidden; width:0; height:0; overflow:hidden; font-size:0}
+hr {display:none}
+select {border-radius:0}
+button {cursor:pointer; background:transparent; border:0; vertical-align:middle}
+pre {white-space:pre-line; word-break:break-all}
+img {border:0}
+input.txt {padding:0; background:#fff; border:0; border-radius:0}
+input.file {padding:0; background:#fff; border:0; border-radius:0}
+input.radio {vertical-align:middle}
+input.checkbox {vertical-align:middle}
+input::-ms-clear {display:none}
+input.txt::-webkit-input-placeholder {color:#a8a9ad}
+input.txt:-moz-placeholder {color:#a8a9ad}
+input.txt::-moz-placeholder {color:#a8a9ad}
+input.txt:-ms-input-placeholder {color:#a8a9ad}
+textarea {overflow-x:hidden; overflow-y:auto; resize:none; background:#fff}
+img, input, button, select, textarea {vertical-align:middle}
+fieldset {margin:0; padding:0; border:0; background:0}
+fieldset legend {visibility:hidden; font-size:0; line-height:0}
+table {border-collapse:collapse}
+.hide {overflow:hidden; position:absolute; left:-1000%; top:0; width:1px; height:1px; font-size:0.1%; line-height:0.1%}
+.transparents-layer {position:fixed; left:0; top:0; z-index:100; width:100%; height:100%; background:#000; opacity:0.4; filter:alpha(opacity="40")}
+.mt50 {margin-top:50px !important}
+
+dl.skipnavi {position:relative}
+dl.skipnavi dt {display:none}
+dl.skipnavi dd a {position:absolute; left:0; top:-50px; font-size:0}
+dl.skipnavi dd a:active, dl.skipnavi dd a:focus {display:block; left:0; top:0; z-index:51; width:400px; height:30px; padding-top:9px; text-align:center; background:#333; line-height:14px; text-decoration:none; color:#fff; font-size:12px; font-weight:bold}
+
+/* Slick Slider */
+.slick-slider {position:relative; display:block; -moz-box-sizing:border-box; box-sizing:border-box; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;-webkit-touch-callout:none;-khtml-user-select:none;-ms-touch-action:pan-y;touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+.slick-list {position:relative; display:block; overflow:hidden; margin:0; padding:0}
+.slick-list.dragging {cursor:pointer; cursor:hand}
+.slick-slider .slick-track,.slick-slider .slick-list {-webkit-transform:translate3d(0, 0, 0);-moz-transform:translate3d(0, 0, 0);-ms-transform:translate3d(0, 0, 0);-o-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}
+.slick-track {position:relative; top:0; left:0; display:block}
+.slick-track:before,.slick-track:after {display:table; content:''}
+.slick-track:after {clear:both}
+.slick-loading .slick-track {visibility:hidden}
+.slick-slide {display:none;float:left;height:100%;min-height:1px}
+[dir='rtl'] .slick-slide {float:right}
+.slick-slide img {display:block}
+.slick-slide.slick-loading img {display:none}
+.slick-slide.dragging img {pointer-events:none}
+.slick-initialized .slick-slide {display:block}
+.slick-loading .slick-slide {visibility:hidden}
+.slick-vertical .slick-slide {display:block; height:auto; border:1px solid transparent}
+.slick-arrow.slick-hidden {display:none}
+.slick-dots {position:absolute;bottom:138px; display:block;width:100%;padding:0;list-style:none;text-align:center}
+.slick-dots li {position:relative;display:inline-block; height:14px;margin:0 10px 0 0;padding:0;cursor:pointer}
+.slick-dots li button {font-size:0;line-height:0;display:block; width:14px;height:14px; border-radius:7px; padding:0;cursor:pointer;color:transparent;border:0;background:#707070}
+.slick-dots li button:hover:before,.slick-dots li button:focus:before {opacity:1}
+.slick-dots li.slick-active button {width:33px; background:#f68121}
+
+/* Font Default Settting */
+body.pc, body.pc ul, body.pc li, body.pc ol, body.pc span, body.pc p, body.pc div, body.pc td, body.pc tr, body.pc button, body.pc input, body.pc em, body.pc dl, body.pc dt, body.pc dd, body.pc textarea, body.pc select, body.pc i, body.pc a, body.pc pre {font-family: 'Nanum Gothic'}
+body.mac, body.mac ul, body.mac li, body.mac ol, body.mac span, body.mac p, body.mac div, body.mac td, body.mac tr, body.mac button, body.mac input, body.mac em, body.mac dl, body.mac dt, body.mac dd, body.mac textarea, body.mac select, body.mac i, body.mac a, body.mac pre {font-family: 'Nanum Gothic' ; font-size:12px}
+body.device, body.device ul, body.device li, body.device ol, body.device span, body.device p, body.device div, body.device td, body.device tr, body.device button, body.device input, body.device em, body.device dl, body.device dt, body.device dd, body.device textarea, body.device select, body.device i, body.device a, body.device pre , body.device strong, body.device h1, body.device h2, body.device h3, body.device h4, body.device h5, body.device h6 {font-family: 'Nanum Gothic' !important; font-size:14px}
+
+
+/* Default Layout */
+#wrap {width:100%; min-width:1200px; position: relative}
+.toparea {position:relative; width:100%; height:299px; padding:74px 0 0 0;/* background:url('/images/gamehubnew/img_subvisual.jpg') no-repeat 50% 0*/}
+
+
+body#main .toparea {height:479px; position: absolute; top: -1px; left: 0; z-index: 999; /*padding:140px 0 0 0; background:url('/images/gamehubnew/img_mainvisual.jpg') no-repeat 50% 0*/}
+body#main .toparea fieldset, body#global .toparea fieldset {clear:both; position:relative; right:0; top:0; overflow:hidden; width:1200px; height:77px; padding:15px 135px 15px 15px; margin:0 auto; background:rgba(255, 255, 255, 0.25)}
+body#main .toparea fieldset .optionbox, body#global .toparea fieldset .optionbox {display:block; float:left; padding:0 60px 0 0; background:url('/images/gamehubnew/bg_bar_03.png') no-repeat 100% 50%}
+body#main .toparea fieldset .optionbox select, body#global .toparea fieldset .optionbox select {width:132px; height:47px; padding:0 20px; border:0; background:#b8286c url('/images/gamehubnew/icon_arr_03.png') no-repeat 90% 50%; -webkit-appearance:none; -moz-appearance:none; appearance:none; font-size:18px; color:#fff}
+body#main .toparea fieldset .optionbox select::-ms-expand, body#global .toparea fieldset .optionbox select::-ms-expand {display:none}
+body#main .toparea fieldset .inpbox, body#global .toparea fieldset .inpbox {float:none; overflow:hidden; height:100%; background:url('/images/gamehubnew/bg_bar_03.png') no-repeat 100% 50%}
+body#main .toparea fieldset .inpbox input.txt, body#global .toparea fieldset .inpbox input.txt {width:100%; height:100%; padding:0 40px; background:0; color:#fff; font-size:16px}
+body#main .toparea fieldset .inpbox input.txt::-webkit-input-placeholder, body#global .toparea fieldset .inpbox input.txt::-webkit-input-placeholder {color:#fff}
+body#main .toparea fieldset .inpbox input.txt:-moz-placeholder, body#global .toparea fieldset .inpbox input.txt:-moz-placeholder {color:#fff}
+body#main .toparea fieldset .inpbox input.txt::-moz-placeholder, body#global .toparea fieldset .inpbox input.txt::-moz-placeholder {color:#fff}
+body#main .toparea fieldset .inpbox input.txt:-ms-input-placeholder, body#global .toparea fieldset .inpbox input.txt:-ms-input-placeholder {color:#fff}
+body#main .toparea fieldset button.btn-search, body#global .toparea fieldset button.btn-search {position:absolute; right:0; top:0; width:135px; height:77px; background:url('/images/gamehubnew/icon_search_gnb.png') no-repeat 50%; font-size:0; text-indent:-99999px}
+body#main .toparea .topmenu, body#global .toparea .topmenu {height:165px}
+body#main .toparea .topmenu > ul, body#global .toparea .topmenu > ul {height:165px}
+body#main .toparea .topmenu > ul > li, body#global .toparea .topmenu > ul > li {height:165px}
+body#main .toparea .topmenu > ul > li > a, body#global .toparea .topmenu > ul > li > a {height:165px}
+body#main .toparea .topmenu > ul > li > ul, body#global .toparea .topmenu > ul > li > ul {top:165px; }
+body#main .toparea .bg-topmenu-on, body#global .toparea .bg-topmenu-on {top:478px}
+body#main .toparea h2, body#global .toparea h2 {margin:66px auto 30px}
+.m_tit  {margin:-120px auto 30px}
+body#global .toparea {height:478px; padding:140px 0 0 0; /*background:url('/images/gamehubnew/img_subvisual_02.jpg') no-repeat 50% 0*/ position: absolute; top: 0; left: 0; z-index: 999}
+body#global .toparea h1 {width:310px}
+body#global .toparea h1 > a {float:left}
+body#global .toparea h1 > span {float:left}
+body#global .toparea .topmenu > ul > li.topmenu_1 a {background:url('/images/gamehubnew/icon_majormenu_06.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_1 a:hover {background:url('/images/gamehubnew/icon_majormenu_06_on.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_1.on a {background:url('/images/gamehubnew/icon_majormenu_06_on.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_2 a {background:url('/images/gamehubnew/icon_majormenu_07.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_2 a:hover {background:url('/images/gamehubnew/icon_majormenu_07_on.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_2.on a {background:url('/images/gamehubnew/icon_majormenu_07_on.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_3 a {background:url('/images/gamehubnew/icon_majormenu_08.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_3 a:hover {background:url('/images/gamehubnew/icon_majormenu_08_on.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_3.on a {background:url('/images/gamehubnew/icon_majormenu_08_on.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_4 a {background:url('/images/gamehubnew/icon_majormenu_09.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_4 a:hover {background:url('/images/gamehubnew/icon_majormenu_09_on.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_4.on a {background:url('/images/gamehubnew/icon_majormenu_09_on.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_5 a {background:url('/images/gamehubnew/icon_majormenu_10.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_5 a:hover {background:url('/images/gamehubnew/icon_majormenu_10_on.png') no-repeat 50% 30px}
+body#global .toparea .topmenu > ul > li.topmenu_5.on a {background:url('/images/gamehubnew/icon_majormenu_10_on.png') no-repeat 50% 30px}
+
+.toparea h1 {position:absolute; left:85px; top:42px;}
+.toparea h1 > a {display:block; width:110px; height:55px; background:url('/images/gamehubnew/logo.png') no-repeat 0 0; font-size:0; text-indent:-99999px}
+.toparea h1 span {display:block; padding:0 0 0 25px; margin-left:26px; background:url('/images/gamehubnew/icon_arr_07.png') no-repeat 0 50%; font-size:16px; font-weight:normal; color:#fff; line-height:55px}
+.toparea .btn-mobile-category {display:none}
+.toparea .gnb-mobile {display:none}
+.toparea .gnb {position:absolute; right:85px; top:25px;}
+.toparea .gnb > ul {clear:both; height:25px;}
+.toparea .gnb > ul.gc-menu {width:auto;position: relative;top:12px; right:20px;}
+.toparea .gnb > ul.gc-menu li {background:0}
+.toparea .gnb > ul.gc-menu li a {font-size:15px}
+.toparea .gnb > ul.gc-menu li a:hover, .toparea .gnb > ul.gc-menu li a:focus {text-decoration:underline}
+.toparea .gnb > ul > li {float:left; position:relative; height:25px; padding:0 10px; background:url('/images/gamehubnew/bg_bar_02.png') no-repeat 0 2px; font-size:12px}
+.toparea .gnb > ul > li:first-child {padding-left:0; background:0}
+.toparea .gnb > ul > li > div {display:none; position:absolute; right:-7px; top:20px; /*height:170px; overflow-x:hidden; overflow-y:auto;*/ padding:10px; background:rgba(0, 0, 0, 0.50); border:1px solid #000; z-index: 999}
+.toparea .gnb > ul > li > div > ul {height:auto}
+.toparea .gnb > ul > li > div > ul li ul {height:auto; margin:5px 0 10px 0}
+.toparea .gnb > ul > li > div > ul li {/*padding-left:5px;*/ line-height:16px}
+.toparea .gnb > ul > li > div > ul li a {font-size:11px; color:#fff}
+.toparea .gnb > ul > li > div > ul li a:hover {text-decoration:underline}
+.toparea .gnb > ul > li > a {font-size:12px; color:#fff}
+.toparea .gnb > ul li.moreview > a {display:inline-block; padding:0 14px 0 0; background:url('/images/gamehubnew/icon_arr_01.png') no-repeat 100% 50%;}
+.toparea .gnb > ul li.moreview:hover div {display:block;z-index: 999;}
+.moreview > div { width: 303px; height:282px; }
+.moreview > div > ul { position: relative; }
+.moreview > div > ul > li { position: absolute;}
+.moreview > div > ul > li:nth-child(2) {top:0px; left: 154px;}
+.moreview > div > ul > li:nth-child(3) {top:65px; left: 154px;}
+.moreview > div > ul > li:nth-child(4) {top:129px; left: 154px;}
+.moreview > div > ul > li:nth-child(5) {top:176px; left: 154px;}
+.moreview > div > ul > li{ color: yellow !important; text-decoration: none !important}
+.toparea .gnb > ul li.gamecenter-go {background:0; height: 20px;margin: 0px; padding: 0px;}
+.toparea .gnb > ul li.gamecenter-go:hover div {display:block; right:10px; width:125px; height:155px; overflow-y:hidden}
+.toparea .gnb > ul li.gamecenter-go:hover div ul li {padding:0}
+.toparea .gnb > ul li.gamecenter-go:hover .callcenter {visibility:hidden;}
+.toparea .gnb > ul li.gamecenter-go > a {display:inline-block; padding:0 14px 0 ; background:url('/images/gamehubnew/icon_arr_01.png') no-repeat 100% 50%;}
+.toparea .gnb .callcenter {display:block; width:120px; height:22px; margin-right:10px; margin-top:0px; background:url('/images/gamehubnew/txt_callcenter.png') no-repeat 0 0; font-size:0; text-indent:-99999px}
+.toparea .gnb .callcenter_sub {position: absolute; right: 0px;top:30px;}
+.toparea h2 {width:1200px; margin:0 auto 23px; text-align:center; color:#fff}
+.toparea h2 strong {display:inline-block; padding:0 40px; background:url('/images/gamehubnew/bg_bar_01.png') no-repeat 0 8px; font-size:37px}
+.toparea h2 strong:first-child {background:0}
+.toparea h2 strong i {display:block; margin-top:5px; font-size:15px}
+
+.toparea h2.sub_title {width:1200px; margin:0 auto 23px; text-align:center; color:#fff;position: relative;top:22px;}
+.toparea h2.sub_title strong {display:inline-block; padding:0 40px; background:url('/images/gamehubnew/bg_bar_01.png') no-repeat 0 8px; font-size:34px;letter-spacing: -2px;}
+.toparea h2.sub_title strong:first-child {background:0}
+.toparea h2.sub_title strong i {display:block; margin-top:5px; font-size:15px;letter-spacing: 0px;}
+
+.toparea fieldset {position:absolute; right:248px; top:53px; width:290px; height:30px; padding:0 50px 0 0; margin:0; background:rgba(255, 255, 255, 0.25)}
+.toparea fieldset .optionbox {display:none}
+.toparea fieldset .inpbox { background:0}
+.toparea fieldset button.btn-search {position:absolute; right:0; top:0; width:36px; height:30px; background:url('/images/gamehubnew/icon_search_gnb.png') no-repeat 50%; background-size:17px; font-size:0; text-indent:-99999px}
+.toparea .mobile-category {display:none}
+.toparea .topmenu {position:relative; width:1200px; height:140px; margin:0 auto}
+.toparea .topmenu button.btn-focusout {position:absolute; right:0; bottom:0; font-size:11px; font-family:Dotum; opacity:0;cursor:pointer;}
+.toparea .topmenu > ul {height:140px}
+.toparea .topmenu > ul > li {float:left; position:relative; width:20%; height:140px}
+.toparea .topmenu > ul > li > a {display:block; width:100%; height:140px; padding:96px 0 0 0; text-align:center; font-size:16px; color:#fff;font-weight: 600;}
+.toparea .topmenu > ul > li.on > a, .toparea .topmenu > ul > li.on > a i {color:#fff701}
+.toparea .topmenu > ul > li > a:hover, .toparea .topmenu > ul > li.on > a:hover i {color:#fff701}
+.toparea .topmenu > ul > li > a i {display:block; font-size:11px; letter-spacing:1px}
+.toparea .topmenu > ul > li.topmenu_1 a {background:url('/images/gamehubnew/icon_majormenu_01.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_1 a:hover {background:url('/images/gamehubnew/icon_majormenu_01_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_1.on a {background:url('/images/gamehubnew/icon_majormenu_01_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_1 ul {border-left:0}
+.toparea .topmenu > ul > li.topmenu_2 {width:21%}
+.toparea .topmenu > ul > li.topmenu_2 a {background:url('/images/gamehubnew/icon_majormenu_02.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_2 a:hover {background:url('/images/gamehubnew/icon_majormenu_02_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_2.on a {background:url('/images/gamehubnew/icon_majormenu_02_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_3 {width:20%}
+.toparea .topmenu > ul > li.topmenu_3 a {background:url('/images/gamehubnew/icon_majormenu_03.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_3 a:hover {background:url('/images/gamehubnew/icon_majormenu_03_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_3.on a {background:url('/images/gamehubnew/icon_majormenu_03_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_4 {width:20%}
+.toparea .topmenu > ul > li.topmenu_4 a {background:url('/images/gamehubnew/icon_majormenu_04.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_4 a:hover {background:url('/images/gamehubnew/icon_majormenu_04_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_4.on a {background:url('/images/gamehubnew/icon_majormenu_04_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_5 {width:19%}
+.toparea .topmenu > ul > li.topmenu_5 a {background:url('/images/gamehubnew/icon_majormenu_05.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_5 a:hover {background:url('/images/gamehubnew/icon_majormenu_05_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li.topmenu_5.on a {background:url('/images/gamehubnew/icon_majormenu_05_on.png') no-repeat 50% 30px}
+.toparea .topmenu > ul > li > ul {display:none; position:absolute; left:0; top:140px; z-index:20; width:100%; height:245px; padding-top:26px; border-left:1px solid #efefef; background: white;}
+.toparea .topmenu > ul > li.on > ul {background:url('/images/gamehubnew/bg_submenu_on.png') repeat-x 0 0 white}
+.toparea .topmenu > ul > li > ul li {margin:0 0 5px 10px; text-align:left; line-height:20px}
+.toparea .topmenu > ul > li > ul li a {color:#676767; font-size:13px}
+.toparea .topmenu > ul > li > ul li a:hover {color:#000; font-weight:bold}
+.toparea .bg-topmenu-on {position:absolute; left:0; top:299px; z-index:15; width:100%; height:245px; background:#fff url('/images/gamehubnew/bg_crossline_01.png') no-repeat 50% 100%}
+.toparea .bg-topmenu-on .logo {position:absolute; top:78px; left:78px; display:block; width:147px; height:72px; background:url('/images/gamehubnew/logo_color.png') no-repeat 0 0; font-size:0; text-indent:-99999px}
+.toparea .auragame {position:absolute; left:45px; bottom:25px; z-index:30; display:block; width:88px; height:30px; background:url('/images/gamehubnew/txt_dicegirl.png') no-repeat 0 0; font-size:0; text-indent:-99999px}
+
+.midarea {clear:both; width:1200px; margin:0 auto}
+.midarea .contentsarea {padding-bottom:80px}
+.midarea .contentsarea > h3 {margin:0 0 35px 0; padding:0 0 25px 0; background:url('/images/gamehubnew/bg_crossline_01.png') no-repeat 0 100%; font-size:31px; color:#4b4b4b}
+.midarea .contentsarea > h4 {margin:0 0 35px 0; padding:14px 30px; background:#fafafa; border-top:2px solid #444; border-bottom:1px solid #e5e5e5; font-size:#4f4f4f; font-size:17px}
+.midarea .contentsarea > h4 em {margin-left:10px; color:#c73180}
+.midarea .contentsarea > h4.all_search_tit {margin:0 0 35px 0; padding:14px 30px; background:#fafafa; border-top:2px solid #c73180; border-bottom:1px solid #e5e5e5; font-size:#4f4f4f; font-size:17px;font-weight: 300}
+.midarea .contentsarea > h4.all_search_tit span{font-weight: 600;}
+/*서브상단탭메뉴*/
+.tab.line {margin-bottom:40px}
+.tab.line > ul {position:relative;overflow:hidden; height:105px;}
+.tab.line > ul:after {content:"";display:block;clear:both}
+.tab.line > ul > li {float:left; width:13%; background:#c73180; height:120px; text-align:center; font-weight:bold}
+.tab.line > ul > li:nth-child(1) {width:22%}
+.tab.line > ul > li.center {width:15%}
+.tab.line > ul > li.center:nth-child(1) {width:25%}
+.tab.line > ul > li.info {width:20%}
+.tab.line > ul > li.global {width:25%}
+.tab.line > ul > li.game {width:33.33333333333333%}
+.tab.line > ul > li.introduction {width:16%}
+.tab.line > ul > li.introduction:first-child {width:20%}
+.tab.line > ul > li.services {width:13%}
+.tab.line > ul > li.services:nth-child(1) {width:23%}
+.tab.line > ul > li.services:nth-child(2) {width:18%}
+.tab.line > ul > li.services:nth-child(3) {width:12%}
+.tab.line > ul > li.services:nth-child(4) {width:13%}
+.tab.line > ul > li.services:nth-child(5) {width:8%}
+.tab.line > ul > li.area_center_info:nth-child(1) {width:30%}
+.tab.line > ul > li.area_center_info {width:70%}
+.tab.line > ul > li > a {position:relative; display:block; text-align:center; height:60px; background:#c73180; color:#fff; line-height:60px}
+.tab.line > ul > li > a span {display:inline-block; width:100%; height:100%; letter-spacing:-1px;cursor:pointer;line-height:60px}
+.tab.line > ul > li > a {display:block; width:100%; background:#c73180; color:#fff; font-size:15px;letter-spacing: -1px;}
+.tab.line > ul > li.active > a {background:#f7f7f7; color:#515151}
+.tab.line > ul > li.active > a span {line-height:37px; font-weight:bold}
+.tab.line > ul > li ul {position:absolute; top:60px; left:0; width:100%; height:45px; padding:0 0 0 30px; background:#f7f7f7; line-height:45px}
+.tab.line > ul > li ul:after {content:"";display:block;clear:both}
+.tab.line > ul > li ul li {float:left; width:auto; height:auto; padding:0 10px 0 18px; margin:0; background:url('/images/gamehubnew/icon_arr_04.png') no-repeat 0 50%; border:0; color:#666; font-weight:normal; letter-spacing:normal}
+.tab.line > ul > li ul li:last-child a { font-weight: 900; color: black }
+.tab.line > ul > li ul li:first-child {padding-left:25px; background:url('/images/gamehubnew/icon_home.png') 0 50% no-repeat}
+.tab.line > ul > li ul li a:hover, .tab.line > ul > li ul li a:active, .tab.line > ul > li ul li a:focus, .tab.line > ul > li ul li.active a {color:#333 !important; text-align:center; font-weight:900}
+
+.bottomarea {clear:both; width:100%; height:235px; padding:70px 0 0 0; background:#fbfbfb; border-top:1px solid #e7e7e7}
+.bottomarea .innerbox {position:relative; width:1200px; margin:0 auto; padding:0 180px 0 155px}
+.bottomarea h1 {position:absolute; left:0; top:0; width:93px; height:47px; background:url('/images/gamehubnew/logo_bottom.png') no-repeat 0 0; font-size:0; text-indent:-99999px}
+.bottomarea em {height: 25px; display: inline-block;position: absolute; left: 0px; top: 60px;color: #4f4f4f; font-size: 11px;font-weight: 600;letter-spacing: -0.15px;}
+.bottomarea .logo-gov {position:absolute; right:0; top:0}
+.bottomarea .logo-gov a {display:block; width:123px; height:42px; background:url('/images/gamehubnew/logo_gov3.0.png') no-repeat 0 0; font-size:0; text-indent:-99999px}
+.bottomarea .flbox {float:left; width:500px}
+.bottomarea .flbox ul { margin:0 0 13px 0; overflow: hidden; }
+.bottomarea .flbox ul li { float: left; margin:0 0 0 20px}
+.bottomarea .flbox ul li:nth-child(1) { margin: 0 }
+.bottomarea .flbox ul li a { font-size:14px; color:#4f4f4f; font-weight:bold }
+.bottomarea .flbox strong {display:block; margin:0 0 20px 0; color:#4f4f4f; font-size:13px}
+.bottomarea .flbox p {color:#676767; font-size:13px; line-height:19px}
+.bottomarea .frbox {float:none; width:auto; overflow:hidden}
+.bottomarea .frbox ul {clear:both; overflow:hidden; margin:0 0 13px 0}
+.bottomarea .frbox ul li {float:left; margin:0 0 0 20px}
+.bottomarea .frbox ul li:first-child {margin-left:0}
+.bottomarea .frbox ul li a {font-size:14px; color:#4f4f4f; font-weight:bold}
+.bottomarea .frbox ul li a:hover, .bottomarea .frbox ul li a:focus {text-decoration:underline}
+.bottomarea .frbox p {clear:both; font-size:13px; color:#757575; line-height:19px}
+
+.btnright {clear:both; width:100%; text-align:right; margin-top: 30px;}
+.btnright button {margin:0 0 0 10px}
+.btnright button:first-child {margin:0}
+.btncenter {clear:both; width:100%; text-align:center}
+.btncenter button {margin:0 0 0 10px}
+.btncenter button:first-child {margin:0}
+.btnjustify {clear:both;  position:relative; width:100%; padding:10px 0 0 0; text-align:left}
+.btnjustify span {position:absolute; right:0; top:10px}
+.btnjustify button {margin:0 0 0 10px}
+.btnjustify button:first-child {margin:0}
+.btn-pink {min-width:110px; height:36px; padding:0 20px; background:#c73180; color:#fff; font-size:15px}
+.btn-purple {min-width:110px; height:36px; padding:0 20px; background:#8e6ad8; color:#fff; font-size:15px}
+.btn-green {min-width:110px; height:36px; padding:0 20px; background:#80bb60; color:#fff; font-size:15px}
+.btn-gray {min-width:110px; height:36px; padding:0 20px; background:#626262; color:#fff; font-size:15px}
+.btn-beige {min-width:110px; height:36px; padding:0 20px; background:#d8a957; color:#fff; font-size:15px}
+
+/* main */
+body#main .midarea {width:100%}
+.maincontents {width:100%}
+.maincontents .local-gamecenters {clear:both; width:1200px; overflow:hidden; margin:0 auto; padding:50px 0 0 0}
+.maincontents .local-gamecenters h3 {height:80px; padding:0 0 25px 0; background:url('/images/gamehubnew/txt_gccenter.png') no-repeat 50% 0; border-bottom:1px solid #f1f1f1; font-size:0; text-indent:-99999px}
+.maincontents .local-gamecenters ul {overflow:hidden; padding:24px 0 0 0}
+.maincontents .local-gamecenters ul li {float:left; width:281px; height:123px; margin:0 25px 25px 0; text-align:center; background:#f8f8f8; border-top:2px solid #1a4463; border-bottom:1px solid #fafafa; font-size:0}
+.maincontents .local-gamecenters ul li a {display:block; width:100%; height:120px; padding:16px 0 0 0; background:#f8f8f8; border-bottom:1px solid #fff}
+.maincontents .local-gamecenters ul li.m0 {margin-right:0}
+.maincontents .dashboardbox {clear:both; width:1200px; overflow:hidden; margin:15px auto 50px}
+.maincontents .dashboardbox dl {float:left; width:382px; margin:0 27px 0 0}
+.maincontents .dashboardbox dl dt {height:53px; padding:0 0 0 30px; color:#fff; line-height:53px; font-size:16px; font-weight:bold}
+.maincontents .dashboardbox dl dt a {color:#fff; font-size:16px; font-weight:bold}
+.maincontents .dashboardbox dl dd {height:202px; padding:14px 20px 0 20px; border-width:0 1px 1px 1px; border-style:solid; border-color:#e7e7e7}
+.maincontents .dashboardbox dl dd ul {overflow:hidden; padding:10px 0 0 0}
+.maincontents .dashboardbox dl dd ul li {padding:10px 10px 10px 0; background:url('/images/gamehubnew/dotline_01.png') repeat-x 0 0}
+.maincontents .dashboardbox dl dd ul li:first-child {background:0}
+.maincontents .dashboardbox dl dd ul li .date {display:block; margin:0 0 5px 0; padding:0 0 0 14px; color:#a6a6a6; font-size:12px}
+.maincontents .dashboardbox dl dd ul li a {display:block; padding:0 0 0 14px; background:url('/images/gamehubnew/icon_dot_01.png') no-repeat 0 6px; font-size:14px; color:#858585; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis}
+.maincontents .dashboardbox dl dd ul li a:hover, .maincontents .dashboardbox dl dd ul li a:focus {text-decoration:underline}
+.maincontents .dashboardbox dl.gamecenter-intro dt {margin:0 0 12px 0; background:#c73180}
+.maincontents .dashboardbox dl.gamecenter-intro dd {height:190px; padding:10px 35px 0 35px; background:#fdfdfd; border:2px solid #c73180}
+.maincontents .dashboardbox dl.gamecenter-intro dd p {padding:20px 10px 20px 0; border-top:1px solid #c73180}
+.maincontents .dashboardbox dl.gamecenter-intro dd p:first-child {border-top:0}
+.maincontents .dashboardbox dl.gamecenter-intro dd p .pic {float:left; width:95px; height:40px; margin:0 18px 0 0; background:url('/images/gamehubnew/bg_bar_04.png') no-repeat 100% 50%; font-size:0; }
+.maincontents .dashboardbox dl.gamecenter-intro dd p strong {display:block; float:none; overflow:hidden; width:auto; font-size:18px; white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; line-height:40px}
+.maincontents .dashboardbox dl.gamecenter-intro dd p a {display:block; width:100%; overflow:hidden; font-size:18px; color:#c73180}
+.maincontents .dashboardbox dl.latestinfo dt {background:#22ae67}
+.maincontents .dashboardbox dl.latestinfo dt a {display:block; width:95%; height:53px; background:url('/images/gamehubnew/icon_moreview_01.png') no-repeat 100% 50%}
+.maincontents .dashboardbox dl.latestinfo dd ul {background:url('/images/gamehubnew/bg_line_01.png') no-repeat 0 0}
+.maincontents .dashboardbox dl.newsclipping {margin:0}
+.maincontents .dashboardbox dl.newsclipping dt {background:#145ca6}
+.maincontents .dashboardbox dl.newsclipping dt a {display:block; width:95%; height:53px; background:url('/images/gamehubnew/icon_moreview_01.png') no-repeat 100% 50%}
+.maincontents .dashboardbox dl.newsclipping dd ul {background:url('/images/gamehubnew/bg_line_02.png') no-repeat 0 0}
+.maincontents .relativesite {position:relative; width:100%; height:85px; margin:0 0 15px 0; padding:0; background:url('/images/gamehubnew/bg_bannerbox.png') repeat-x 0 0}
+.maincontents .relativesite .slidebanner {position:relative; width:1200px; height:85px; overflow:hidden; margin:0 auto; background:#fbfbfb; border-top:2px solid #7f878f; border-bottom:1px solid #e7e7e7}
+.maincontents .relativesite .slidebanner .slick-prev {position:absolute; left:-65px; top:33px; z-index:40; width:8px; height:13px; background:url('/images/gamehubnew/icon_prev_01.png') no-repeat 0 0; font-size:0; text-indent:-99999px}
+.maincontents .relativesite .slidebanner .slick-next {position:absolute; left:-20px; top:33px; z-index:40; width:8px; height:13px; background:url('/images/gamehubnew/icon_next_01.png') no-repeat 0 0; font-size:0; text-indent:-99999px}
+.maincontents .relativesite .slidebanner .slick-pause {position:absolute; left:132px; top:35px; z-index:40; width:8px; height:11px; background:url('/images/gamehubnew/icon_pause.png') no-repeat 0 0; font-size:0; text-indent:-99999px}
+.maincontents .relativesite .slidebanner h4 {float:left; width:175px; height:83px; padding:0 0 0 20px; background:url('/images/gamehubnew/bg_crossline_02.png') no-repeat 0 0; color:#3f3f3f; font-size:15px; line-height:83px}
+.maincontents .relativesite .slidebanner ul {float:left; position:relative; width:1025px; height:83px; padding-top:22px; margin-left: 175px;}
+.maincontents .relativesite .slidebanner ul li {float:left; height:38px; padding:0 11px 0 12px; background:url('/images/gamehubnew/bg_bar_05.png') no-repeat 100% 50%; font-size:0}
+.maincontents .relativesite .slidebanner span { position: absolute; top:32px; left: 27px; font-size: 15px; }
+
+/* smallbrowser */
+.smallbrowser #wrap {width:100%; min-width:1024px}
+.smallbrowser .toparea h1 > a {float:none !important}
+.smallbrowser .toparea h1 span {float:none !important; margin:0 !important}
+.smallbrowser .toparea .bg-topmenu-on .logo {display:none}
+.smallbrowser .toparea fieldset {width:95%; margin:0 auto}
+.smallbrowser .toparea h1 {left:45px}
+.smallbrowser .toparea h2 {width:95%; margin:0 auto 30px}
+.smallbrowser .toparea .gnb {right:45px}
+.smallbrowser .toparea .gnb ul.gc-menu {right:88px}
+.smallbrowser .toparea .gnb ul.gc-menu li a {font-size:14px}
+.smallbrowser .toparea .topmenu {width:100%}
+.smallbrowser .toparea .auragame {display:none}
+.smallbrowser .toparea .topmenu > ul > li.topmenu_1 {width:22%}
+.smallbrowser .toparea .topmenu > ul > li.topmenu_2 {width:23%}
+.smallbrowser .toparea .topmenu > ul > li.topmenu_3 {width:19%}
+.smallbrowser .toparea .topmenu > ul > li.topmenu_4 {width:18%}
+.smallbrowser .toparea .topmenu > ul > li.topmenu_5 {width:18%}
+.smallbrowser .midarea {width:100%; margin:0}
+.smallbrowser .midarea .contentsarea {padding-bottom:50px}
+.smallbrowser .maincontents .local-gamecenters {width:95%}
+.smallbrowser .maincontents .local-gamecenters ul li {width:23.5%; margin:0 2% 25px 0}
+.smallbrowser .maincontents .local-gamecenters ul li.m0 {margin-right:0}
+.smallbrowser .maincontents .dashboardbox {width:95%}
+.smallbrowser .maincontents .dashboardbox dl {width:32%; margin:0 2.5% 0 0}
+.smallbrowser .maincontents .dashboardbox dl.newsclipping {float:none; width:auto; overflow:hidden; margin:0}
+body#main.smallbrowser .toparea fieldset, body#global.smallbrowser .toparea fieldset {position:relative; right:0; top:0; overflow:hidden; width:95%; height:77px; padding:15px 135px 15px 15px; margin:0 auto}
+
+
+/* tablet*/
+body#main.tablet .toparea {height:480px; padding:160px 0 0 0;/* background:url('/images/gamehubnew/img_mainvisual_m.jpg') no-repeat 50% 0*/}
+body#main.tablet .toparea fieldset, body#global.tablet .toparea fieldset {width:90%; height:60px; padding:10px 90px 10px 10px; margin:0 auto 15px}
+body#main.tablet .toparea fieldset .optionbox, body#global.tablet .toparea fieldset .optionbox {padding:0 40px 0 0}
+body#main.tablet .toparea fieldset .optionbox select, body#global.tablet .toparea fieldset .optionbox select {width:120px; height:40px; padding:0 20px; font-size:16px}
+body#main.tablet .toparea fieldset .optionbox select::-ms-expand, body#global.tablet .toparea fieldset .optionbox select::-ms-expand {display:none}
+body#main.tablet .toparea fieldset .inpbox, body#global.tablet .toparea fieldset .inpbox {float:none; overflow:hidden; height:100%; background:url('/images/gamehubnew/bg_bar_03.png') no-repeat 100% 50%}
+body#main.tablet .toparea fieldset .inpbox input.txt, body#global.tablet .toparea fieldset .inpbox input.txt {width:100%; height:100%; padding:0 40px; background:0; color:#fff; font-size:16px}
+body#main.tablet .toparea fieldset .inpbox input.txt::-webkit-input-placeholder, body#global.tablet .toparea fieldset .inpbox input.txt::-webkit-input-placeholder {color:#fff}
+body#main.tablet .toparea fieldset .inpbox input.txt:-moz-placeholder, body#global.tablet .toparea fieldset .inpbox input.txt:-moz-placeholder {color:#fff}
+body#main.tablet .toparea fieldset .inpbox input.txt::-moz-placeholder, body#global.tablet .toparea fieldset .inpbox input.txt::-moz-placeholder {color:#fff}
+body#main.tablet .toparea fieldset .inpbox input.txt:-ms-input-placeholder, body#global.tablet .toparea fieldset .inpbox input.txt:-ms-input-placeholder {color:#fff}
+body#main.tablet .toparea fieldset button.btn-search, body#global.tablet .toparea fieldset button.btn-search {position:absolute; right:0; top:0; width:90px; height:60px; background:url('/images/gamehubnew/icon_search_gnb.png') no-repeat 50%; font-size:0; text-indent:-99999px}
+body#main.tablet .toparea .topmenu, body#global.tablet .toparea .topmenu {height:120px}
+body#main.tablet .toparea .topmenu > ul, body#global.tablet .toparea .topmenu > ul {height:120px}
+body#main.tablet .toparea .topmenu > ul > li, body#global.tablet .toparea .topmenu > ul > li {height:120px}
+body#main.tablet .toparea .topmenu > ul > li > a, body#global.tablet .toparea .topmenu > ul > li > a {height:120px}
+body#main.tablet .toparea .bg-topmenu-on, body#global.tablet .toparea .bg-topmenu-on {display:none}
+body#main.tablet .toparea h2, body#global.tablet .toparea h2 {margin:0 auto 30px}
+body#global.tablet .toparea {height:480px; padding:160px 0 0 0; /*background:url('/images/gamehubnew/img_subvisual_02_m.jpg') no-repeat 50% 100px*/}
+body#global.tablet .toparea h1 {width:310px}
+body#global.tablet .toparea h1 > a {float:left}
+body#global.tablet .toparea h1 > span {float:left}
+body#global.tablet .toparea .topmenu > ul > li a {background-position:50% 20px !important}
+.tablet #wrap {width:100%; min-width:720px; overflow-x:hidden}
+.tablet .toparea {/*height:520px;*/ /*padding-top:100px;*/ /* background:url('/images/gamehubnew/img_mainvisual_m.jpg') no-repeat 50% 100px; background-size:100% 100% !important*/}
+.tablet .toparea h1 {left:90px; top:20px; width:105px; height:55px}
+.tablet .toparea h1 a {width:105px; height:55px; background:url('/images/gamehubnew/logo_color.png') no-repeat 0 0; background-size:105px 55px}
+.tablet .toparea h2 {width:95%; margin:22px auto 50px}
+.tablet .toparea h2 strong {padding:0 30px; font-size:30px}
+.tablet .toparea fieldset { right: 277px; top: 30px;}
+.tablet .toparea .bg-topmenu-on .logo {display:none}
+.tablet .toparea .gnb {display:none}
+.tablet .toparea .auragame {display:none}
+.tablet .toparea .topmenu {width:100%}
+.tablet .toparea .topmenu > ul li ul {display:none}
+.tablet .toparea .gnb-mobile {display:block; position:absolute; right:20px; top:24px; height:36px}
+.tablet .toparea .gnb-mobile select {float:left; width:180px; height:50px; margin:0 1px 0 0; padding-left:20px; background:#c73180 url('/images/gamehubnew/icon_arr_06.png') no-repeat 98% 50%; background-size:20px auto; -webkit-appearance:none; -moz-appearance:none; appearance:none; color:#fff; border:0; font-size:16px}
+.tablet .toparea .gnb-mobile select::-ms-expand {display:none}
+.tablet .toparea .gnb-mobile button {float:left; width:50px; height:50px; background:#c73180 url('/images/gamehubnew/icon_search_gnb.png') no-repeat 50% 50%; background-size:24px; font-size:0; text-indent:-99999px}
+.tablet .toparea .topmenu {width:100%}
+.tablet .toparea .topmenu > ul {height:120px}
+.tablet .toparea .topmenu > ul li ul {display:none}
+.tablet .toparea .topmenu > ul > li {height:120px}
+.tablet .toparea .topmenu > ul > li.topmenu_1 {width:17.5%}
+.tablet .toparea .topmenu > ul > li.topmenu_2 {width:17.5%}
+.tablet .toparea .topmenu > ul > li.topmenu_3 {width:21%}
+.tablet .toparea .topmenu > ul > li.topmenu_4 {width:24%}
+.tablet .toparea .topmenu > ul > li.topmenu_5 {width:20%}
+.tablet .toparea .topmenu > ul > li a {height:100px; padding-top:76px; background-size:50px !important; font-size:14px; font-weight:bold}
+.tablet .toparea .topmenu > ul > li.topmenu_1 a {background:url('/images/gamehubnew/icon_majormenu_01.png') no-repeat 50% 25px}
+.tablet .toparea .topmenu > ul > li.topmenu_2 a {background:url('/images/gamehubnew/icon_majormenu_02.png') no-repeat 50% 25px}
+.tablet .toparea .topmenu > ul > li.topmenu_3 a {background:url('/images/gamehubnew/icon_majormenu_03.png') no-repeat 50% 25px}
+.tablet .toparea .topmenu > ul > li.topmenu_4 a {background:url('/images/gamehubnew/icon_majormenu_04.png') no-repeat 50% 25px}
+.tablet .toparea .topmenu > ul > li.topmenu_5 a {background:url('/images/gamehubnew/icon_majormenu_05.png') no-repeat 50% 25px}
+.tablet .toparea .mobile-category {display:block; position:absolute; top:0; left:0; z-index:101; width:100%; height:100%}
+.tablet .toparea .mobile-category .btn-category-holder {position:absolute; left:20px; top:22px; z-index:101; width:50px; height:50px; background:#c73180 url('/images/gamehubnew/icon_category_m.png') no-repeat 50%; background-size:30px; font-size:0; text-indent:-99999px}
+.tablet .toparea .mobile-category > div {position:absolute; top:0; z-index:101; width:100%; height:100%; background:#fff}
+.tablet .toparea .mobile-category > div h2 {width:100%; height:40px; margin:0; text-align:center; background:#8e6ad8; font-size:17px; color:#fff; line-height:50px}
+.tablet .toparea .mobile-category > div dl {overflow:hidden; margin:15px}
+.tablet .toparea .mobile-category > div dl dt {float:left; width:50%; text-align:center; line-height:30px}
+.tablet .toparea .mobile-category > div dl dt strong {font-size:18px; color:#4f4f4f}
+.tablet .toparea .mobile-category > div dl dd {float:right; overflow:hidden}
+.tablet .toparea .mobile-category > div dl dd button {margin:0 0 0 10px}
+.tablet .toparea .mobile-category > div > ul {border-top:1px solid #e5e5e5}
+.tablet .toparea .mobile-category > div > ul > li {border-bottom:1px solid #e5e5e5}
+.tablet .toparea .mobile-category > div > ul > li > a {display:block; height:50px; padding:0 30px; background:#f0f0f0 url('/images/gamehubnew/icon_menu_expand_m.png') no-repeat 98% 50%; background-size:20px auto; color:#333; font-size:15px; line-height:50px; font-weight:bold}
+.tablet .toparea .mobile-category > div > ul > li.on > a {background:#f0f0f0 url('/images/gamehubnew/icon_menu_collapse_m.png') no-repeat 98% 50%; background-size:20px auto}
+.tablet .toparea .mobile-category > div > ul > li ul {display:none; overflow:hidden; background:#fff}
+.tablet .toparea .mobile-category > div > ul > li ul li a {display:block; padding:10px 30px; font-size:14px; color:#8a8a8a}
+.tablet .toparea .mobile-category > div .email-reject {width:100%; padding:15px; text-align:center; background:#fbfbfb; color:#8e6ad8; line-height:18px; font-size:13px}
+.tablet .bottomarea {height:auto; padding:30px 0}
+.tablet .bottomarea .innerbox {position:relative; width:95%; margin:0 auto; padding:0 0 0 125px}
+.tablet .bottomarea .innerbox .logo-gov {display:none}
+.tablet .bottomarea .innerbox .flbox {width:auto; float:none; margin:0 0 30px 0}
+.tablet .bottomarea .innerbox .frbox ul {margin:0 0 15px 0}
+.tablet .midarea {width:100%; margin:0}
+.tablet .midarea .contentsarea {padding-bottom:50px}
+.tablet .midarea .contentsarea > h3 {width:95%; margin:0 auto 25px; font-size:24px}
+.tablet .midarea .contentsarea > h4 {width:95%; margin:0 auto 25px}
+.tablet .midarea .contentsarea > div {width:95%; margin:0 auto}
+.tablet .btn-pink {min-width:70px; height:32px; padding:0 12px; font-size:14px}
+.tablet .btn-purple {min-width:70px; height:32px; padding:0 12px; font-size:14px}
+.tablet .btn-green {min-width:70px; height:32px; padding:0 12px; font-size:14px}
+.tablet .btn-gray {min-width:70px; height:32px; padding:0 12px; font-size:14px}
+.tablet .btn-beige {min-width:70px; height:32px; padding:0 12px; font-size:14px}
+.tablet .maincontents .local-gamecenters {width:95%}
+.tablet .maincontents .local-gamecenters h3 {background-size:300px auto}
+.tablet .maincontents .local-gamecenters ul li {width:49%; height:103px; margin:0 0 15px 0}
+.tablet .maincontents .local-gamecenters ul li a {height:100px; padding-top:12px}
+.tablet .maincontents .local-gamecenters ul li img {height:70px}
+.tablet .maincontents .local-gamecenters ul li.m2 {margin-right:2%}
+.tablet .maincontents .dashboardbox {width:95%}
+.tablet .maincontents .dashboardbox dl {width:49%; margin:0 2% 0 0}
+.tablet .maincontents .dashboardbox dl.newsclipping {float:none; width:auto; overflow:hidden; margin:0}
+.tablet .maincontents .dashboardbox dl.gamecenter-intro {float:none; width:auto; margin:0 0 20px 0}
+.tablet .maincontents .dashboardbox dl.gamecenter-intro dd {height:auto; padding-bottom:10px}
+.tablet .maincontents .dashboardbox dl.gamecenter-intro dd p {padding:10px}
+.tablet .maincontents .dashboardbox dl.gamecenter-intro dd p a {font-size:16px}
+.tablet .maincontents .dashboardbox dl.gamecenter-intro dd p strong {font-size:16px}
+.tablet .maincontents .relativesite .slidebanner {width:100%; padding:0}
+.tablet .maincontents .relativesite .slidebanner .slick-prev {display:none}
+.tablet .maincontents .relativesite .slidebanner .slick-next {display:none}
+.tablet .maincontents .relativesite .slidebanner .slick-pause {display:none}
+.tablet .maincontents .relativesite .slidebanner h4 {float:none; position:absolute; left:0; top:0}
+.tablet .maincontents .relativesite .slidebanner ul {float:none; position:relative; width:auto; overflow:hidden; z-index:20}
+.tablet .maincontents .relativesite .slidebanner ul li {padding:0 8px 0 9px; text-align:center}
+.tablet .maincontents .relativesite .slidebanner ul li img {display:inline}
+.tablet .tab.line {width:100% !important; margin-bottom:30px !important}
+.tablet .tab.line > ul {position:relative;overflow:hidden; height:45px}
+.tablet .tab.line > ul > li {float:none !important; width:auto; overflow:hidden; background:#f7f7f7; height:45px; text-align:center; font-weight:bold}
+.tablet .tab.line > ul > li > a {display:none}
+.tablet .tab.line > ul > li ul {position:absolute; left:0; top:0; width:100%; background:#f7f7f7; line-height:45px}
+.tablet .tab.line > ul > li ul li {position:relative; float:left; padding:0 10px 0 12px}
+.tablet .tab.line > ul > li ul li:nth-child(1) {width:auto}
+.tablet .tab.line > ul > li ul li {padding:0 10px 0 18px; background:url('/images/gamehubnew/icon_arr_04_m.png') no-repeat 0 50%; background-size:8px auto}
+.tablet .tab.line > ul > li ul li:first-child {padding-left:25px; background:url('/images/gamehubnew/icon_home.png') 0 50% no-repeat}
+.tablet .m_tit { margin: -39px auto 30px; }
+.tablet .m_tit img { width: 70%; }
+.tablet .toparea.sub .topmenu { margin-top:-40px; }
+/* mobile */
+body#main.mobile .toparea {height:320px; position: absolute; top: 0; left: 0; /*padding:120px 0 0 0; background:url('/images/gamehubnew/img_mainvisual_m.jpg') no-repeat 50% 0*/}
+body#main.mobile .toparea fieldset, body#global.mobile .toparea fieldset {width:90%; height:60px; padding:10px 90px 10px 10px; margin:0 auto 15px}
+body#main.mobile .toparea fieldset .optionbox, body#global.mobile .toparea fieldset .optionbox {padding:0 40px 0 0}
+body#main.mobile .toparea fieldset .optionbox select, body#global.mobile .toparea fieldset .optionbox select {width:120px; height:40px; padding:0 20px; font-size:16px}
+body#main.mobile .toparea fieldset .optionbox select::-ms-expand, body#global.mobile .toparea fieldset .optionbox select::-ms-expand {display:none}
+body#main.mobile .toparea fieldset .inpbox, body#global.mobile .toparea fieldset .inpbox {float:none; overflow:hidden; height:100%; background:url('/images/gamehubnew/bg_bar_03.png') no-repeat 100% 50%}
+body#main.mobile .toparea fieldset .inpbox input.txt, body#global.mobile .toparea fieldset .inpbox input.txt {width:100%; height:100%; padding:0 40px; background:0; color:#fff; font-size:16px}
+body#main.mobile .toparea fieldset .inpbox input.txt::-webkit-input-placeholder, body#global.mobile .toparea fieldset .inpbox input.txt::-webkit-input-placeholder {color:#fff}
+body#main.mobile .toparea fieldset .inpbox input.txt:-moz-placeholder, body#global.mobile .toparea fieldset .inpbox input.txt:-moz-placeholder {color:#fff}
+body#main.mobile .toparea fieldset .inpbox input.txt::-moz-placeholder, body#global.mobile .toparea fieldset .inpbox input.txt::-moz-placeholder {color:#fff}
+body#main.mobile .toparea fieldset .inpbox input.txt:-ms-input-placeholder, body#global.mobile .toparea fieldset .inpbox input.txt:-ms-input-placeholder {color:#fff}
+body#main.mobile .toparea fieldset button.btn-search, body#global.mobile .toparea fieldset button.btn-search {position:absolute; right:0; top:0; width:90px; height:60px; background:url('/images/gamehubnew/icon_search_gnb.png') no-repeat 50%; font-size:0; text-indent:-99999px}
+body#main.mobile .toparea .topmenu, body#global.mobile .toparea .topmenu {height:100px}
+body#main.mobile .toparea .topmenu > ul, body#global.mobile .toparea .topmenu > ul {height:100px}
+body#main.mobile .toparea .topmenu > ul > li, body#global.mobile .toparea .topmenu > ul > li {height:100px}
+body#main.mobile .toparea .topmenu > ul > li > a, body#global.mobile .toparea .topmenu > ul > li > a {height:100px}
+body#main.mobile .toparea .bg-topmenu-on, body#global.mobile .toparea .bg-topmenu-on {display:none}
+body#main.mobile .toparea h2, body#global.mobile .toparea h2 {margin:0 auto 30px}
+body#global.mobile .toparea h2 strong {font-size:18px}
+body#global.mobile .toparea {height:320px; /*padding:120px 0 0 0; background:url('/images/gamehubnew/img_subvisual_02_m.jpg') no-repeat 50% 60px*/}
+body#global.mobile .toparea h1 {width:310px}
+body#global.mobile .toparea h1 > a {float:left}
+body#global.mobile .toparea h1 > span {/*float:left*/ position: relative; left: -153px; top: 25px;}
+body#global.mobile .toparea .topmenu > ul > li a {background-position:50% 20px !important}
+
+.mobile #wrap {width:100%; min-width:320px; overflow-x:hidden; position: relative}
+.mobile .toparea {/*height:350px;*//* padding-top:120px; background:url('/images/gamehubnew/img_mainvisual_m.jpg') no-repeat 50% 60px; background-size:100% 100% !important*/}
+.mobile .toparea h1 {left:62px; top:12px; width:78px; height:36px}
+.mobile .toparea h1 a {width:78px; height:36px; background:url('/images/gamehubnew/logo_color.png') no-repeat 0 0; background-size:78px 36px}
+.mobile .toparea h2 {width:95%}
+.mobile .toparea h2 strong {padding:0 15px; font-size:15px; background-size:auto 18px}
+.mobile .toparea h2 strong i {font-size:10px}
+.mobile .toparea fieldset {display:none}
+.mobile .toparea .bg-topmenu-on .logo {display:none}
+.mobile .toparea .gnb {display:none}
+.mobile .toparea .auragame {display:none}
+.mobile .toparea .gnb-mobile {display:block; position:absolute; right:10px; top:12px; z-index:50; height:36px}
+.mobile .toparea .gnb-mobile select {float:left; width:120px; height:36px; margin:0 1px 0 0; padding-left:10px; background:#c73180 url('/images/gamehubnew/icon_arr_06.png') no-repeat 98% 50%; background-size:18px auto; -webkit-appearance:none; -moz-appearance:none; appearance:none; color:#fff; border:0}
+.mobile .toparea .gnb-mobile select::-ms-expand {display:none}
+.mobile .toparea .gnb-mobile button {float:left; width:36px; height:36px; background:#c73180 url('/images/gamehubnew/icon_search_gnb.png') no-repeat 50% 50%; background-size:18px; font-size:0; text-indent:-99999px}
+.mobile .toparea .mobile-category {display:block; position:absolute; top:0; left:0; width:38px; height:38px}
+.mobile .toparea .mobile-category .btn-category-holder {position:absolute; right:-10px; top:11px; z-index:101; width:38px; height:38px; background:#c73180 url('/images/gamehubnew/icon_category_m.png') no-repeat 50%; background-size:18px; font-size:0; text-indent:-99999px}
+.mobile .toparea .mobile-category > div {position:absolute; top:0; z-index:101; width:100%; height:100%; background:#fff}
+.mobile .toparea .mobile-category > div h2 {width:100%; height:40px; margin:0; text-align:center; background:#8e6ad8; font-size:17px; color:#fff; line-height:40px}
+.mobile .toparea .mobile-category > div dl {overflow:hidden; margin:10px}
+.mobile .toparea .mobile-category > div dl dt {float:left; width:40%; text-align:center; line-height:30px}
+.mobile .toparea .mobile-category > div dl dt strong {font-size:18px; color:#4f4f4f}
+.mobile .toparea .mobile-category > div dl dd {float:right; overflow:hidden}
+.mobile .toparea .mobile-category > div dl dd button {margin:0 0 0 10px}
+.mobile .toparea .mobile-category > div > ul {border-top:1px solid #e5e5e5}
+.mobile .toparea .mobile-category > div > ul > li {border-bottom:1px solid #e5e5e5}
+.mobile .toparea .mobile-category > div > ul > li > a {display:block; height:40px; padding:0 20px; background:#f0f0f0 url('/images/gamehubnew/icon_menu_expand_m.png') no-repeat 95% 50%; background-size:15px auto; color:#333; font-size:15px; line-height:40px; font-weight:bold}
+.mobile .toparea .mobile-category > div > ul > li.on > a {background:#f0f0f0 url('/images/gamehubnew/icon_menu_collapse_m.png') no-repeat 95% 50%; background-size:15px auto}
+.mobile .toparea .mobile-category > div > ul > li ul {display:none; overflow:hidden; background:#fff}
+.mobile .toparea .mobile-category > div > ul > li ul li a {display:block; padding:10px 20px; font-size:14px; color:#8a8a8a}
+.mobile .toparea .mobile-category > div .email-reject {width:100%; padding:10px; text-align:center; background:#fbfbfb; color:#8e6ad8; line-height:16px; font-size:11px}
+.mobile .toparea .topmenu {width:98%; margin:0 auto}
+.mobile .toparea .topmenu > ul {height:100px}
+.mobile .toparea .topmenu > ul li ul {display:none}
+.mobile .toparea .topmenu > ul > li {height:100px}
+.mobile .toparea .topmenu > ul > li.topmenu_1 {width:17.5%}
+.mobile .toparea .topmenu > ul > li.topmenu_2 {width:17.5%}
+.mobile .toparea .topmenu > ul > li.topmenu_3 {width:21%}
+.mobile .toparea .topmenu > ul > li.topmenu_4 {width:24%}
+.mobile .toparea .topmenu > ul > li.topmenu_5 {width:20%}
+.mobile .toparea .topmenu > ul > li a {height:100px; padding-top:60px; background-size:35px !important; font-size:13px; font-weight:bold}
+.mobile .toparea .topmenu > ul > li.topmenu_1 a {background:url('/images/gamehubnew/icon_majormenu_01.png') no-repeat 50% 15px}
+.mobile .toparea .topmenu > ul > li.topmenu_2 a {background:url('/images/gamehubnew/icon_majormenu_02.png') no-repeat 50% 15px}
+.mobile .toparea .topmenu > ul > li.topmenu_3 a {background:url('/images/gamehubnew/icon_majormenu_03.png') no-repeat 50% 15px}
+.mobile .toparea .topmenu > ul > li.topmenu_4 a {background:url('/images/gamehubnew/icon_majormenu_04.png') no-repeat 50% 15px}
+.mobile .toparea .topmenu > ul > li.topmenu_5 a {background:url('/images/gamehubnew/icon_majormenu_05.png') no-repeat 50% 15px}
+.mobile .midarea {width:100%; margin:0}
+.mobile .midarea .contentsarea {width:100%; padding-bottom:40px}
+.mobile .midarea .contentsarea > h3 {width:95%; margin:0 auto 25px; font-size:24px}
+.mobile .midarea .contentsarea > h4 {width:95%; margin:0 auto 17px}
+.mobile .midarea .contentsarea > div {width:95%; margin:0 auto}
+.mobile .midarea .contentsarea > h4 {padding:10px; font-size:15px}
+
+.mobile .bottomarea {height:auto; padding:20px 0}
+.mobile .bottomarea  h1 {position:static; width:65px; height:35px; margin:0 0 10px 0; background-size:65px auto}
+.mobile .bottomarea .innerbox {position:relative; width:auto; margin:0; padding:0 10px}
+.mobile .bottomarea .logo-gov {display:none}
+.mobile .bottomarea .flbox {width:auto; float:none; margin:0 0 20px 0}
+.mobile .bottomarea .flbox strong {margin:0 0 7px 0}
+.mobile .bottomarea .flbox p {font-size:12px; letter-spacing:-1px}
+.mobile .bottomarea .frbox ul {margin:0 0 8px 0}
+.mobile .bottomarea .frbox ul li a {font-size:13px; letter-spacing: -0.2em}
+.mobile .btn-pink {min-width:60px; height:30px; padding:0 12px; font-size:14px}
+.mobile .btn-purple {min-width:60px; height:30px; padding:0 12px; font-size:14px}
+.mobile .btn-green {min-width:60px; height:30px; padding:0 12px; font-size:14px}
+.mobile .btn-gray {min-width:60px; height:30px; padding:0 12px; font-size:14px}
+.mobile .btn-beige {min-width:60px; height:30px; padding:0 12px; font-size:14px}
+.mobile .tab.line {width:100% !important; margin-bottom:30px !important}
+.mobile .tab.line > ul {position:relative;overflow:hidden; height:45px}
+.mobile .tab.line > ul > li {float:none !important; width:auto; background:#f7f7f7; height:45px; text-align:center; font-weight:bold}
+.mobile .tab.line > ul > li > a {display:none}
+.mobile .tab.line > ul > li ul {position:absolute; left:0; top:0; width:100%; padding-left:20px}
+.mobile .tab.line > ul > li ul li {height:auto; padding:0 10px 0 18px; background:url('/images/gamehubnew/icon_arr_04_m.png') no-repeat 0 50%; background-size:6px auto}
+.mobile .tab.line > ul > li ul li:first-child {padding-left:23px; background:url('/images/gamehubnew/icon_home_m.png') 0 50% no-repeat; background-size:16px auto}
+.mobile .maincontents .local-gamecenters {width:95%; padding-top:0}
+.mobile .maincontents .local-gamecenters h3 {background-size:200px auto; background-position:50%}
+.mobile .maincontents .local-gamecenters ul li {width:49%; height:93px; margin:0 0 15px 0}
+.mobile .maincontents .local-gamecenters ul li a {height:90px; padding-top:16px}
+.mobile .maincontents .local-gamecenters ul li img {height:60px}
+.mobile .maincontents .local-gamecenters ul li.m2 {margin-right:2%}
+.mobile .maincontents .dashboardbox {width:95%; margin-bottom:10px}
+.mobile .maincontents .dashboardbox dl {float:none; width:auto; margin:0 0 15px 0}
+.mobile .maincontents .dashboardbox dl dt {height:35px; padding:0 0 0 15px; font-size:15px !important}
+.mobile .maincontents .dashboardbox dl dt a {height:35px; line-height:35px; background:url('/images/gamehubnew/icon_moreview_01_m.png') no-repeat 100% 50% !important; background-size:15px 15px !important; font-size:15px !important}
+.mobile .maincontents .dashboardbox dl dd ul {background-size:auto 2px !important}
+.mobile .maincontents .dashboardbox dl dd ul li a {padding-left:10px; background-size:3px !important}
+.mobile .maincontents .dashboardbox dl.gamecenter-intro {float:none; width:auto; margin:0 0 15px 0}
+.mobile .maincontents .dashboardbox dl.gamecenter-intro dt {line-height:35px}
+.mobile .maincontents .dashboardbox dl.gamecenter-intro dd {height:auto; padding-bottom:10px}
+.mobile .maincontents .dashboardbox dl.gamecenter-intro dd p {padding:10px}
+.mobile .maincontents .dashboardbox dl.gamecenter-intro dd p a {font-size:16px}
+.mobile .maincontents .dashboardbox dl.gamecenter-intro dd p strong {font-size:16px}
+.mobile .maincontents .relativesite {height:55px; background-size:55px auto}
+.mobile .maincontents .relativesite .slidebanner {width:100%; height:55px; padding:0}
+.mobile .maincontents .relativesite .slidebanner ul {height:53px; padding-top:10px}
+.mobile .maincontents .relativesite .slidebanner .slick-prev {display:none}
+.mobile .maincontents .relativesite .slidebanner .slick-next {display:none}
+.mobile .maincontents .relativesite .slidebanner .slick-pause {display:none}
+.mobile .maincontents .relativesite .slidebanner h4 {float:none; position:absolute; left:0; top:0}
+.mobile .maincontents .relativesite .slidebanner ul {float:none; position:relative; width:auto; overflow:hidden; z-index:20}
+.mobile .maincontents .relativesite .slidebanner ul li {padding:0 8px 0 9px; text-align:center}
+.mobile .maincontents .relativesite .slidebanner ul li img {display:inline; height:32px}
+
+/*추가 한미란*/
+.p_t15 { padding-top: 15px !important }
+.p_t20 { padding-top: 20px !important }
+.p_t35 { padding-top: 35px !important }
+.p_t90 { padding-top: 90px !important }
+.p_b20 { padding-bottom: 20px !important }
+.p_b10 { padding-bottom: 10px !important }
+.font_n { font-weight: normal !important }
+.font_b { font-weight: bold!important }
+.midarea .contentsarea > h5 { font-size: 17px; color: #c73180 }
+.midarea .contentsarea .gameindustry_list h5 { font-size: 17px; color: #c73180; margin: 30px 0 10px 0; }
+h5.black { font-size: 17px; color: #4f4f4f; margin-top: 40px; }
+.datalist.left table tbody td:last-child { text-align: left; padding-left:20px }
+.datalist.left table tbody th { text-align: center; font-weight: bold; border-right: 1px solid #e5e5e5}
+.datalist.left1 table tbody th { text-align: center; font-weight: bold; color: #292929}
+.datalist.history table th { text-align: center; font-weight: bold;292929;}
+.datalist.history table td { text-align: left; border-left: 0}
+.step { margin-top: 30px; margin-bottom: 10px; overflow: hidden}
+.step li { width: 16.6666%; float: left; position: relative; display: table}
+.step li em { color: white; font-size: 17px; text-align: center; width: 125px; height: 125px; border-radius: 100px; display: table-cell; vertical-align: middle}
+.step li:nth-child(1) em { background: #6a92d8}
+.step li:nth-child(2) em { background: #8e6ad8}
+.step li:nth-child(3) em { background: #d86aa8}
+.step li:nth-child(4) em { background: #80bb60}
+.step li:nth-child(5) em { background: #6a92d8}
+.step li:nth-child(6) em { background: #8e6ad8}
+.step li span { display: block; background: url(/images/gamehubnew/icon_arr_06.png) no-repeat; width: 30px; height: 55px; position: absolute; top:36px; right: 23px;}
+.step li:last-child span { background: none; }
+.txtbox.email { padding-left: 155px; background: url(/images/gamehubnew/icon_e.png) left center no-repeat; margin-top: 60px; }
+.txt_con { font-size: 17px; color: #444; line-height: 24px; font-weight: bold; margin-bottom: 40px;}
+.txt_con1 { font-size: 17px; color: #646464; margin-bottom: 15px; margin-top: 25px;}
+.txt_indent15 { text-indent: 15px; }
+.boardlist.line_no table tbody tr td:first-child { border-left: 0 }
+.center_step { width: 75%; margin: 0 auto; margin-bottom: 40px; overflow: hidden}
+.center_step li { width: 50%; float: left; position: relative; margin-top: 40px;}
+.center_step li span {text-indent: -9999999px; display: inline-block; width:190px; height: 188px; }
+.center_step li:nth-child(1) span { background:url(/images/gamehubnew/img_his_1.gif) no-repeat;}
+.center_step li:nth-child(2) span { background:url(/images/gamehubnew/img_his_2.gif) no-repeat; float: right}
+.center_step li:nth-child(3) span { background:url(/images/gamehubnew/img_his_3.gif) no-repeat;}
+.center_step li:nth-child(4) span { background:url(/images/gamehubnew/img_his_4.gif) no-repeat; float: right}
+.center_step li em { display: inline-block; color: #646464; font-size: 17px; width: 210px; position: absolute; top:53px; left: 210px;}
+.center_step li:nth-child(2) em, .center_step li:nth-child(4) em  { left: 35px; }
+.center_step_result { padding-top: 35px; background: url(/images/gamehubnew/icon_arr_07.png) center top no-repeat; font-size: 26px; font-weight: bold; color: #636363; text-align: center}
+.center_step_result span { color: #a35bad;}
+
+.tabWrap { width: 100%; background: url('/images/gamehubnew/bg_crossline_01.png') left 81px repeat-x; overflow: hidden}
+.tab_Menu { display: table; width: 100%}
+.tabMenu { width: 25%;  text-align: center; display: table-cell}
+.tabMenu:nth-child(1) { background: #8e6ad8;}
+.tabMenu:nth-child(2) { background: #6a92d8;}
+.tabMenu:nth-child(3) { background: #80bb60;}
+.tabMenu:nth-child(4) { background: #d8a957;}
+.tabMenu:nth-child(5) { background: #e876c7;}
+.tabMenu.current:nth-child(1) { background: url(/images/gamehubnew/icon_check.png) 55px 17px no-repeat #8e6ad8;}
+.tabMenu.current:nth-child(2) { background: url(/images/gamehubnew/icon_check.png) 55px 17px no-repeat #6a92d8;}
+.tabMenu.current:nth-child(3) { background: url(/images/gamehubnew/icon_check.png) 55px 17px no-repeat #80bb60;}
+.tabMenu.current:nth-child(4) { background: url(/images/gamehubnew/icon_check.png) 55px 17px no-repeat #d8a957;}
+.tabMenu.current:nth-child(5) { background: url(/images/gamehubnew/icon_check.png) 55px 17px no-repeat #e876c7;}
+.tabMenu a { color: white; font-weight: bold; display: block;height: 55px; width: 100%; font-weight: bold; line-height: 55px; font-size: 17px; }
+
+.tabMenu2 { width: 20%;  text-align: center; display: table-cell}
+.tabMenu2:nth-child(1) { background: #8e6ad8;}
+.tabMenu2:nth-child(2) { background: #6a92d8;}
+.tabMenu2:nth-child(3) { background: #80bb60;}
+.tabMenu2:nth-child(4) { background: #d8a957;}
+.tabMenu2:nth-child(5) { background: #e876c7;}
+.tabMenu2.current:nth-child(1) { background: url(/images/gamehubnew/icon_check.png) 30px 17px no-repeat #8e6ad8;}
+.tabMenu2.current:nth-child(2) { background: url(/images/gamehubnew/icon_check.png) 30px 17px no-repeat #6a92d8;}
+.tabMenu2.current:nth-child(3) { background: url(/images/gamehubnew/icon_check.png) 30px 17px no-repeat #80bb60;}
+.tabMenu2.current:nth-child(4) { background: url(/images/gamehubnew/icon_check.png) 30px 17px no-repeat #d8a957;}
+.tabMenu2.current:nth-child(5) { background: url(/images/gamehubnew/icon_check.png) 30px 17px no-repeat #e876c7;}
+.tabMenu2 a { color: white; font-weight: bold; display: block;height: 55px; width: 100%; font-weight: bold; line-height: 55px; font-size: 17px; }
+
+
+.tabPage { width:100%; float: left; margin-top: 50px;}
+
+.support1 { background: url(/images/gamehubnew/icon_img_1.png) 90% center no-repeat;  }
+.support1.support2 { background: url(/images/gamehubnew/icon_img_2.png) 90% center no-repeat;  }
+.support1.support3 { background: url(/images/gamehubnew/icon_img_3.png) 90% center no-repeat;  }
+.support1 .txtbox dt{ margin-top: 25px; color: #4f4f4f  }
+.support1 .txtbox dt:nth-child(1) {margin-top: 0}
+
+.evaluation_table { border-top: 2px solid #4b4b4b; border-bottom: 1px solid #4b4b4b; margin-bottom: 70px }
+.evaluation_table table { width: 100%; }
+.evaluation_table th { padding: 10px 20px; text-align: left; background: #fafafa; border-bottom: 1px solid #e4e4e4;font-size: 17px; color: #4f4f4f; }
+.evaluation_table td { padding: 10px 20px; background: #fff; border-bottom: 1px solid #e4e4e4; font-size: 15px; color: #4f4f4f;}
+.evaluation_table td li { float: left; margin: 0 0 10px 30px; }
+.evaluation_table td li input[type="checkbox"] { margin-right: 10px; vertical-align: middle }
+
+.boardwrite td.detail { padding: 30px 38px }
+.boardwrite td.detail h5 { font-size: 17px; border-bottom:1px solid #444444; padding-bottom: 10px; font-weight: normal; margin-bottom: 15px;}
+
+.game_list { clear: both}
+.game_list li { margin-right: 20px; float: left; margin-bottom: 30px; }
+.game_list li:nth-child(4n) { margin-right: 0 }
+.game_list li dt { font-size: 16px; font-weight: bold; color: #000; margin-top: 10px;}
+.game_list li dd { color: #5e5e5e; font-size: 14px; margin-top: 5px;}
+.g_write { position: relative; clear: both}
+.g_write .btn-pink { position: absolute; right: 0; top: 0}
+.game_info { background: #f9f9f9; }
+.game_info .game_con li { float: left; padding-top: 40px; padding-bottom: 40px;  }
+.game_info .game_con li:nth-child(1) { background: url(/images/gamehubnew/bg_div_1.gif) right center no-repeat; width: 40% }
+.game_info .game_con li:nth-child(2) { width: 55%; padding-left: 70px; box-sizing: border-box  }
+.game_info .game_con li dl {color: #000; font-size: 16px; line-height: 27px;}
+.game_info .game_con li dt { float: left; font-weight: bold; margin-left: 60px;  width: 170px; }
+.game_info .game_con li dd { float: none;  }
+.game_info .game_con li h5 { font-size: 19px; font-weight: bold; color: #000; margin-bottom: 30px}
+.game_info .game_con li p { color: #666; font-size: 14px; line-height: 24px;}
+.game_charact { background: #f9f9f9; clear: both}
+.game_charact h5 {font-size: 19px; font-weight: bold; color: #000; margin: 28px; margin-bottom: 0; padding-top: 28px; border-top: 1px solid #a8a8a8;}
+.game_charact p { color: #767676; font-size: 14px; line-height: 24px; padding: 28px;  }
+.game_charact h6 { color: #252525; text-align: center; font-size: 47px; margin:70px 0; font-weight: normal}
+a#MOVE_TOP_BTN {position: fixed;left: 50%;transform: translateX(-50%); bottom: 50%;display: none;z-index: 999; border: 1px solid #000; padding:30px 0 10px 0; color: #000; font-size: 15px; text-align: center ;background: url(/images/gamehubnew/icon_arr_08.png) center 12px no-repeat white; box-shadow:3px 3px 10px grey; width:55px; display: block;margin-left: 660px;}
+
+.boardwrite.top_line {   border-top: 2px solid #444; }
+.befor_next { border-top: 1px solid #999999; border-bottom: 1px solid #999999;margin-top: 30px; clear: both}
+.befor_next table { width: 100% }
+.befor_next th { padding: 15px 0 ;  background: #fafafa; border-bottom: 1px solid #e4e4e4; font-size: 17px; color: #000; font-size: 14px; font-weight: normal;}
+.befor_next td { padding: 15px 0 15px 40px; font-size: 14px; color: #666666;  border-bottom: 1px solid #e4e4e4;}
+.btn-gray {  min-width: 110px; height: 36px;padding: 0 20px; background: #999999;color: #fff;font-size: 15px; }
+
+.map { margin-top: 40px;  }
+.map dt { float: left; width: 49px; height: 41px; color: #333333; font-size: 14px; line-height: 40px; border: 1px solid #cccccc; text-align: center; margin-bottom: 7px;}
+.map dd { float: none; color: #333333; height: 41px; padding-left: 75px; margin-bottom: 7px; padding-top: 12px; box-sizing: border-box}
+
+.but_r {clear: both; text-align: right;}
+.txt_r {display: inline-block;}
+
+.ml_5 {margin-left: 5px !important;}
+/*이미지 슬라이드 한미란 추가*/
+.slide{width: 100%; height: 478px;background: #000;}
+.slide_ul{display: block;}
+.slide_ul>li{position:absolute; top:0; left:0; z-index:10; display: block; background-size: cover !important; width: 1920px; height: 478px; display: block; background: black}
+.slide_ul>li:nth-child(1){background: url(/images/gamehubnew/img_mainvisual.jpg);}
+.slide_ul>li:nth-child(2){background: url(/images/gamehubnew/img_mainvisual_1.jpg);}
+.slide_ul>li:nth-child(3){background: url(/images/gamehubnew/img_mainvisual_2.jpg);}
+.slide_ul.sub>li:nth-child(1){background: url(/images/gamehubnew/img_subvisual_01.jpg);}
+.slide_ul.sub>li:nth-child(2){background: url(/images/gamehubnew/img_subvisual_02.jpg);}
+.slide_ul.sub>li:nth-child(3){background: url(/images/gamehubnew/img_subvisual_03.jpg);}
+
+.toparea.sub {background:url('/images/gamehubnew/img_subvisual.jpg') no-repeat 50% 0;}
+.toparea.sub .topmenu { margin-top: 0px; }
+.toparea.sub .topmenu > ul > li > ul { margin-top: 0px; }
+.inpbox input { width: 100%; height: 30px; background: transparent; color: white; text-indent: 15px;}
+
+@media screen and (min-width:320px) and (max-width:785px){
+
+body.device, body.device ul, body.device li, body.device ol, body.device span, body.device p, body.device div, body.device td, body.device tr, body.device button, body.device input, body.device em, body.device dl, body.device dt, body.device dd, body.device textarea, body.device select, body.device i, body.device a, body.device pre, body.device strong, body.device h1, body.device h2, body.device h3, body.device h4, body.device h5, body.device h6 { font-size: 12px; letter-spacing: -0.08em; }
+/*img {width: 100%}*/
+	.innerbox em {position: absolute;left: 80px;top: 20px;}
+.paging { margin: 30px 0; }
+.p_t90 { padding-top: 20px !important; }
+    .mobile .btn-gray {  }
+.satisfiedbox { background: #f9f9f9 url(/images/gamehubnew/icon_mark.png) no-repeat 8px 50%; }
+.satisfiedbox dl{ margin-left: -50px; }
+.satisfiedbox dl dd ul { display: table; width: 100%}
+.satisfiedbox dl dd ul li { display: table-cell; text-align: left; margin: 0; width: 100%; margin-bottom: 5px}
+.satisfiedbox dl dd ul li:first-child { margin-bottom: 5px; }
+.satisfiedbox dl dd button { top:96px; }
+.iradio.on { padding: 0 0 0 18px; }
+a#MOVE_TOP_BTN {right: 0px;bottom: 50%;padding:15px 0 5px 0; color: #000; font-size: 12px; text-align: center ;background: url(/images/gamehubnew/icon_arr_08.png) center 6px no-repeat white; width:30px; }
+.evaluation_table th { font-size: 13px; }
+.evaluation_table { margin-bottom: 20px; }
+.evaluation_table td { padding: 5px; }
+.evaluation_table td li {margin: 0 0 5px 10px; }
+.game_list li { margin-right: 0; float: none}
+.paging span a { width: 30px; height: 30px; }
+.paging button.btn-paging-next { width: 30px; height: 30px; margin-left: -4px; margin-top: 1px; }
+.game_info .game_con li:nth-child(1) { width: 100% }
+.game_info .game_con li:nth-child(2) { width: 100%; padding-left: 10px; }
+.game_info .game_con li { width: 100%; padding-top: 20px; padding-bottom: 10px; }
+.game_info .game_con li dt { margin-left: 10px; width: 100px; }
+.game_info .game_con li h5 { font-size: 17px; margin-bottom: 10px; }
+.game_info .game_con li p { font-size: 12px; }
+.game_charact h5 { margin: 10px; padding-top: 20px; font-size: 17px !important; }
+.game_charact p { padding: 10px; }
+.game_charact h6 { margin: 20px 0; }
+    .tabWrap {background: url(/images/gamehubnew/bg_crossline_01.png) left 134px repeat-x; }
+    .tab_Menu { display: inherit }
+    .tabMenu {display: inherit; float: left; width: 50%}
+    .tabMenu.current:nth-child(1) { background: url(/images/gamehubnew/icon_check.png) 8px 17px no-repeat #8e6ad8;}
+    .tabMenu.current:nth-child(2) { background: url(/images/gamehubnew/icon_check.png) 8px 17px no-repeat #6a92d8;}
+    .tabMenu.current:nth-child(3) { background: url(/images/gamehubnew/icon_check.png) 8px 17px no-repeat #80bb60;}
+    .tabMenu.current:nth-child(4) { background: url(/images/gamehubnew/icon_check.png) 8px 17px no-repeat #d8a957;}
+	.tabMenu.current:nth-child(5) { background: url(/images/gamehubnew/icon_check.png) 8px 17px no-repeat #e876c7;}
+    .midarea .contentsarea > h5 { padding-left: 10px; }
+    .step { margin-top: 20px !important; margin-bottom: 20px !important; }
+    .step li {  width: 50%;}
+    .step li em { width: 100px; height: 100px; font-size: 15px; font-weight: bold}
+    .step li span { right: 6px }
+    .txtbox.email { padding-left: 10px; background: none; }
+    .mobile dl.txtbox { margin: 0 0 15px 10px }
+    .txt_con { padding: 0 10px; }
+    .center_step_result { padding: 30px 0 30px 0; }
+    .center_step { margin-bottom: 10px; }
+    .center_step li { width: 100%; float: none; position: inherit; text-align: center}
+    .center_step li:nth-child(2) span { float: none}
+    .center_step li:nth-child(4) span { float: none}
+    .center_step li em { position: inherit; padding-top: 10px; display: block; margin: 0 auto; font-size: 15px;}
+    .center_step li span { display: block; width: 200px; margin: 0 auto}
+    .btncenter { margin-bottom: 20px;  }
+    .menu-organization dl { width: 100%; padding: 0}
+    .menu-organization dl dt { float: none; width: 100%; }
+    .menu-organization dl dt .pic { width: 100%; height: auto}
+    .menu-organization dl.odd { width: 100%; padding: 0 }
+    .menu-organization dl dd table th { padding: 0 0 0 16px; }
+    .map { margin-bottom: 40px; }
+    .map dd { padding-left: 60px; padding-top: 6px; }
+    .support1 {background: none;}
+    .support1.support2 { background: none; }
+    .support1.support3 { background: none; }
+    .mobile dl.txtbox dt { margin: 20px 0 7px 0 }
+    .slide { height: 292px;}
+    .slide_ul>li { width: 100%; height: 292px;}
+    .m_tit { margin: -39px auto 30px; }
+    .m_tit img { width: 260px; }
+    .menu-gcgamecenter-biz > h4 > span > img { width: 260px;}
+    .maincontents .relativesite .slidebanner ul { margin-left: 0 }
+    .maincontents .relativesite .slidebanner span { display: none}
+
+}
+
+
+/*20170330 추가*/
+
+.mt_50 {margin-top: 50px !important;}
+
+/*네비바*/
+ul.global_center_info {position:relative; top:0px; left:0; width:100%; height:45px; padding:0 0 0 30px; background:#f7f7f7; line-height:45px}
+ul.global_center_info:after {content:"";display:block;clear:both}
+ul.global_center_info li {float:left; width:auto; height:auto; padding:0 10px 0 18px; margin:0; background:url('/images/gamehubnew/icon_arr_04.png') no-repeat 0 50%; border:0; color:#666; font-weight:normal; letter-spacing:normal}
+ul.global_center_info li:last-child a { font-weight: 900; color: black }
+ul.global_center_info li:first-child {font-weight: normal;padding-left:25px; background:url('/images/gamehubnew/icon_home.png') 0 50% no-repeat}
+ul.global_center_info li a:hover, .ul.global_center_info li a:active, ul.global_center_info li a:focus, ul.global_center_info li.active a {color:#333 !important; text-align:center; font-weight:900}
+
+/*지역글로벌게임센터소개*/
+ul.center_box:after {content:''; clear: both; display: block;}
+ul.center_box > li {float: right;}
+ul.center_box > li:nth-child(2) {width: calc(100% - 400px);}
+ul.center_box > li:nth-child(1) {width: 400px;}
+ul.center_box li .center_info {padding-right: 80px;}
+
+dl.txtbox2 {background: none;border-bottom: 30px solid #c73180;}
+dl.txtbox2 dt {color: #4f4f4f;clear: both;font-size: 16px; font-weight: 600; margin-bottom: 25px;line-height: 26px; }
+dl.txtbox2 dd {color: #646464;clear: both; font-size: 15px;margin-bottom: 35px;line-height: 25px;}
+dl.txtbox2 dd > ul.center_info_list {overflow: hidden;margin-bottom: 35px;padding-left: 8px; }
+dl.txtbox2 dd > ul.center_info_list li {clear: both;color: #696969;font-weight: 600;margin-top: -1px;}
+dl.txtbox2 dd > ul.center_info_list li:first-child {margin-top: 0px;}
+dl.txtbox2 dd > ul.center_info_list li span {text-align: center;line-height: 27px; display: inline-block; width: 27px; height: 27px;margin-right: 18px; background: url('/images/gamehubnew/center_info_icon.png') 0 0 no-repeat;}
+.map_title {color: #4f4f4f; font-size: 21px; font-weight: 800;height:42px; padding-left: 95px; border-bottom: 1px solid #efefef; background: url('/images/gamehubnew/center_icon.png') 36px 0 no-repeat;}
+.center_map {position: relative;height: 600px;margin-top: 20px; background: url('/images/gamehubnew/center_map.png') 0 0 no-repeat;}
+.center_map div {position: absolute;}
+.center_map div a {color: #272727;font-size: 13px;background: #f5f5f5;border-radius: 20px;padding: 5px 12px;}
+.center_map div a:hover {color: #fff; background: #4a4a4a;}
+.center_map div:nth-child(1) {left: 104px; top:170px;}
+.center_map div:nth-child(2) {left: 124px; top:200px;}
+.center_map div:nth-child(3) {left: 20px; top:292px;}
+.center_map div:nth-child(4) {left: -10px; bottom:200px;}
+.center_map div:nth-child(5) {left: 98px; bottom:158px;}
+.center_map div:nth-child(6) {left: 85px; bottom:111px;}
+.center_map div:nth-child(7) {right: 58px; bottom:252px;}
+.center_map div:nth-child(8) {right: 10px; bottom:212px;}
+.center_map div:nth-child(9) {right: 24px; bottom:145px;}
+
+
+/*사이트맵*/
+.sitemap_box {overflow: hidden;margin-bottom: 30px;}
+.sitemap_box > li { position: relative;height: 550px; float: left;width: 20%;padding-bottom: 10px;  }
+.sitemap_box li h5 {text-align: center;height: 51px; line-height: 51px; color: #fff;font-size: 17px; font-weight: 600;margin-bottom: 22px;}
+.sitemap_box > li:nth-child(1) {background: url('/images/gamehubnew/sitemap_icon1.png') center bottom no-repeat;}
+.sitemap_box > li:nth-child(2) {background: url('/images/gamehubnew/sitemap_icon2.png') center bottom no-repeat;;}
+.sitemap_box > li:nth-child(3) {background: url('/images/gamehubnew/sitemap_icon3.png') center bottom no-repeat;;}
+.sitemap_box > li:nth-child(4) {background: url('/images/gamehubnew/sitemap_icon4.png') center bottom no-repeat;;}
+.sitemap_box > li:nth-child(5) {background: url('/images/gamehubnew/sitemap_icon5.png') center bottom no-repeat;;}
+.sitemap_box > li:nth-child(1) h5 {background: #8e6ad8;}
+.sitemap_box > li:nth-child(2) h5 {background: #d86aa8;}
+.sitemap_box > li:nth-child(3) h5 {background: #80bb60;}
+.sitemap_box > li:nth-child(4) h5 {background: #cd6fd6;}
+.sitemap_box > li:nth-child(5) h5 {background: #d49e6a;}
+.sitemap_box li ul {padding: 0 10px;}
+.sitemap_box li ul li {color: #777777; font-size: 14px; clear: both;background: url('/images/gamehubnew/sitemap_arrow.png') right center no-repeat;padding: 10px 0 12px;border-bottom: 1px solid #e7e7e7;}
+.sitemap_box li ul li a {display: block;}
+.sitemap_box > li .sitemap_bottom {display: block; width: 100%; height: 26px; position: absolute;right:0px; bottom: 10px; background: url('/images/gamehubnew/sitemap_line.png') right 0 no-repeat;}
+
+@media screen and (min-width:400px) and (max-width:1017px){
+	ul.center_box > li {float: none;}
+	ul.center_box > li:nth-child(2) {width: 100%;padding: 20px; }
+	ul.center_box > li:nth-child(1) {width: 400px;margin: 0 auto;}
+	ul.center_box li .center_info {padding-right: 0px;}
+}
+@media screen and  (max-width:400px){
+	ul.center_box > li {float: none;position: relative;}
+	ul.center_box > li:nth-child(2) {width: 100%;padding: 20px; }
+	ul.center_box > li:nth-child(1) {width: 400px;margin: 0 auto;padding: 0 10px;}
+	ul.center_box li .center_info {padding-right: 0px;}
+	.center_map {position: absolute; left: 50%; transform: translateX(-50%); width: 320px; position: relative;height: 500px;margin-top: 20px; background: url('/images/gamehubnew/center_map.png') 0 0 no-repeat;background-size: 100%;}
+	.center_map div a:hover {color: #fff; background: #4a4a4a;}
+	.center_map div:nth-child(1) {left: 74px; top:120px;}
+	.center_map div:nth-child(2) {left: 100px; top:160px;}
+	.center_map div:nth-child(3) {left: 0px; top:232px;}
+	.center_map div:nth-child(4) {left: -20px; bottom:176px;}
+	.center_map div:nth-child(5) {left: -20px; bottom:126px;}
+	.center_map div:nth-child(6) {left: 0px; bottom:88px;}
+	.center_map div:nth-child(7) {right: 38px; bottom:222px;}
+	.center_map div:nth-child(8) {right: 60px; bottom:170px;}
+	.center_map div:nth-child(9) {right: 44px; bottom:132px;}
+}
+@media screen and  (max-width:320px){
+	ul.center_box > li {float: none;position: relative;}
+	ul.center_box > li:nth-child(2) {width: 100%;padding: 20px; }
+	ul.center_box > li:nth-child(1) {width: 320px;margin: 0 auto;padding: 0 10px;}
+	ul.center_box li .center_info {padding-right: 0px;}
+	.center_map {position: absolute; left: 50%; transform: translateX(-50%); width: 320px; position: relative;height: 480px;margin-top: 20px; background: url('/images/gamehubnew/center_map.png') 0 0 no-repeat;background-size: 100%;}
+	.center_map div a:hover {color: #fff; background: #4a4a4a;}
+	.center_map div:nth-child(1) {left: 74px; top:120px;}
+	.center_map div:nth-child(2) {left: 100px; top:150px;}
+	.center_map div:nth-child(3) {left: 10px; top:232px;}
+	.center_map div:nth-child(4) {left: 5px; bottom:196px;}
+	.center_map div:nth-child(5) {left: 5px; bottom:144px;}
+	.center_map div:nth-child(6) {left: 30px; bottom:68px;}
+	.center_map div:nth-child(7) {right: 38px; bottom:202px;}
+	.center_map div:nth-child(8) {right: 40px; bottom:150px;}
+	.center_map div:nth-child(9) {right: 35px; bottom:110px;}
+}

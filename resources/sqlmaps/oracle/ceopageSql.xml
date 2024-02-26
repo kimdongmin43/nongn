@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CeopageDao">
+	<select id="selectCeopagePageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.ceopage.dao.impl.CeopageDao.selectCeopagePageList */
+		<!-- <include refid="CommonSql.pageingTop"/> -->
+		SELECT
+		    	 a.site_id
+		    	 ,a.ceo_id
+		    	 ,a.ceo_nm
+		    	 ,a.stage_desc
+		    	 ,(
+						CASE 
+							WHEN LENGTH(a.start_dy) = '4' 
+								THEN  TO_CHAR(TO_DATE(a.start_dy+'0101'),'YYYY-MM-DD')
+							WHEN LENGTH(a.start_dy) = '6' 
+								THEN  TO_CHAR(TO_DATE(a.start_dy+'01'),'YYYY-MM-DD')
+							WHEN LENGTH(a.start_dy) = '5' 
+								THEN  TO_CHAR(TO_DATE(SUBSTR(a.start_dy,0,4)+'0'+SUBSTR(a.start_dy,5,1)+'01'),'YYYY-MM-DD')
+							WHEN LENGTH(a.start_dy) = '7' 
+								THEN  TO_CHAR(TO_DATE(SUBSTR(a.start_dy,0,4)+'0'+SUBSTR(a.start_dy,5,3)),'YYYY-MM-DD')
+							ELSE 
+								TO_CHAR(TO_DATE(a.start_dy),'YYYY-MM-DD')
+							END								
+					)+'~'+
+					(
+						CASE 
+							WHEN LENGTH(a.end_dy) = '4' 
+								THEN  TO_CHAR(TO_DATE(a.end_dy+'0101'),'YYYY-MM-DD')
+							WHEN LENGTH(a.end_dy) = '6' 
+								THEN  TO_CHAR(TO_DATE(a.end_dy+'01'),'YYYY-MM-DD')
+							WHEN LENGTH(a.end_dy) = '5' 
+								THEN  TO_CHAR(TO_DATE(SUBSTR(a.end_dy,0,4)+'0'+SUBSTR(a.end_dy,5,1)+'01'),'YYYY-MM-DD')
+							WHEN LENGTH(a.end_dy) = '7' 
+								THEN  TO_CHAR(TO_DATE(SUBSTR(a.end_dy,0,4)+'0'+SUBSTR(a.end_dy,5,3)),'YYYY-MM-DD')
+							ELSE 
+								TO_CHAR(TO_DATE(a.end_dy),'YYYY-MM-DD')
+							END								
+					) AS sedate											    	 
+		    	 --,TO_CHAR(TO_DATE(a.start_dy),'YYYY-MM-DD')+'~'+TO_CHAR(TO_DATE(a.end_dy),'YYYY-MM-DD') as sedate
+		    	 ,a.sort
+		    	 ,b.attach_id
+		    	 ,b.file_path
+		  FROM ts_ceo a
+		  LEFT OUTER JOIN tc_attachfile b
+		  ON a.attach_id = b.attach_id
+		 WHERE 1 = 1
+
+		  AND a.site_id = #{*siteId}
+		  AND a.del_yn = 'N'
+		  ORDER BY sort
+		<!-- <include refid="CommonSql.pageingBottom"/> -->
+	</select>
+
+	<select id="selectCeopageList" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.ceopage.dao.impl.CeopageDao.selectCeopageList */
+		SELECT ROWNUM AS RNUM,
+		     		ceo_id
+					,title
+					,satis_yn
+					,meta_keyword
+					,reg_user_id
+					,(select user_nm from t_user where user_id = a.reg_user_id) as reg_usernm
+					,GET_DATEFORMAT(reg_dt) as regDt
+		FROM ts_ceo a
+		WHERE 1 = 1
+				<if test='title != null and !title.equals("")' >
+				   AND title = #{title}
+				</if>
+				<if test='contents != null and !contents.equals("")' >
+				   AND contents = #{contents}
+				</if>
+	</select>
+
+	<select id="selectCeopage" parameterType="Map" resultType="camelMap">
+		/* kr.apfs.local.ceopage.dao.impl.CeopageDao.selectCeopage */
+		SELECT
+					a.ceo_id
+					,a.ceo_nm
+					,a.company_nm
+					,a.stage_desc
+					,a.attach_id
+					,
+					(
+						CASE 
+							WHEN LENGTH(a.start_dy) = '4' 
+								THEN  TO_CHAR(TO_DATE(a.start_dy+'0101'),'YYYY-MM-DD')
+							WHEN LENGTH(a.start_dy) = '6' 
+								THEN  TO_CHAR(TO_DATE(a.start_dy+'01'),'YYYY-MM-DD')
+							WHEN LENGTH(a.start_dy) = '5' 
+								THEN  TO_CHAR(TO_DATE(SUBSTR(a.start_dy,0,4)+'0'+SUBSTR(a.start_dy,5,1)+'01'),'YYYY-MM-DD')
+							WHEN LENGTH(a.start_dy) = '7' 
+								THEN  TO_CHAR(TO_DATE(SUBSTR(a.start_dy,0,4)+'0'+SUBSTR(a.start_dy,5,3)),'YYYY-MM-DD')
+							ELSE 
+								TO_CHAR(TO_DATE(a.start_dy),'YYYY-MM-DD')
+							END								
+					) AS start_dy
+					,(
+						CASE 
+							WHEN LENGTH(a.end_dy) = '4' 
+								THEN  TO_CHAR(TO_DATE(a.end_dy+'0101'),'YYYY-MM-DD')
+							WHEN LENGTH(a.end_dy) = '6' 
+								THEN  TO_CHAR(TO_DATE(a.end_dy+'01'),'YYYY-MM-DD')
+							WHEN LENGTH(a.end_dy) = '5' 
+								THEN  TO_CHAR(TO_DATE(SUBSTR(a.end_dy,0,4)+'0'+SUBSTR(a.end_dy,5,1)+'01'),'YYYY-MM-DD')
+							WHEN LENGTH(a.end_dy) = '7' 
+								THEN  TO_CHAR(TO_DATE(SUBSTR(a.end_dy,0,4)+'0'+SUBSTR(a.end_dy,5,3)),'YYYY-MM-DD')
+							ELSE 
+								TO_CHAR(TO_DATE(a.end_dy),'YYYY-MM-DD')
+							END								
+					) AS end_dy					
+					,a.ceo_yn
+					,b.file_id
+					,b.origin_file_nm
+					,b.file_path
+					,b.file_size
+		FROM ts_ceo a
+		LEFT OUTER JOIN tc_attachfile b
+		ON a.attach_id = b.attach_id
+		WHERE
+		1=1
+		AND ceo_id = #{ceoId}
+		AND site_id = #{*siteId}
+
+	</select>
+
+	<select id="selectCeopage2" parameterType="Map" resultType="camelMap">
+	   /* kr.apfs.local.ceopage.dao.impl.CeopageDao.selectCeopage */
+	   SELECT
+
+	            a.ceo_id
+	            ,a.ceo_nm
+	            ,a.company_nm
+	            ,a.stage_desc
+	            ,a.attach_id
+	     	    ,
+				(
+					CASE 
+						WHEN LENGTH(a.start_dy) = '4' 
+							THEN  TO_CHAR(TO_DATE(a.start_dy+'0101'),'YYYY-MM-DD')
+						WHEN LENGTH(a.start_dy) = '6' 
+							THEN  TO_CHAR(TO_DATE(a.start_dy+'01'),'YYYY-MM-DD')
+						WHEN LENGTH(a.start_dy) = '5' 
+							THEN  TO_CHAR(TO_DATE(SUBSTR(a.start_dy,0,4)+'0'+SUBSTR(a.start_dy,5,1)+'01'),'YYYY-MM-DD')
+						WHEN LENGTH(a.start_dy) = '7' 
+							THEN  TO_CHAR(TO_DATE(SUBSTR(a.start_dy,0,4)+'0'+SUBSTR(a.start_dy,5,3)),'YYYY-MM-DD')
+						ELSE 
+							TO_CHAR(TO_DATE(a.start_dy),'YYYY-MM-DD')
+						END								
+				) AS start_dy
+				,(
+					CASE 
+						WHEN LENGTH(a.end_dy) = '4'  
+							THEN  TO_CHAR(TO_DATE(a.end_dy+'0101'),'YYYY-MM-DD')
+						WHEN LENGTH(a.end_dy) = '6' 
+							THEN  TO_CHAR(TO_DATE(a.end_dy+'01'),'YYYY-MM-DD')
+						WHEN LENGTH(a.end_dy) = '5' 
+							THEN  TO_CHAR(TO_DATE(SUBSTR(a.end_dy,0,4)+'0'+SUBSTR(a.end_dy,5,1)+'01'),'YYYY-MM-DD')
+						WHEN LENGTH(a.end_dy) = '7' 
+							THEN  TO_CHAR(TO_DATE(SUBSTR(a.end_dy,0,4)+'0'+SUBSTR(a.end_dy,5,3)),'YYYY-MM-DD')
+						ELSE 
+							TO_CHAR(TO_DATE(a.end_dy),'YYYY-MM-DD')
+						END								
+				) AS end_dy		
+	            ,a.ceo_yn
+	            ,b.file_id
+	            ,b.origin_file_nm
+	            ,b.file_path
+	            ,b.file_size
+	   FROM ts_ceo a
+	   LEFT OUTER JOIN tc_attachfile b
+	   ON a.attach_id = b.attach_id
+	   WHERE
+	   1=1
+	   and a.site_id = #{*siteId}
+	   and a.del_yn = 'N'
+	   order by a.sort ASC
+	<!--    AND ceo_id = #{ceoId} -->
+
+	</select>
+
+
+	<select id="selectCeopageExist" parameterType="Map" resultType="integer">
+		SELECT  /* kr.apfs.local.contents.dao.impl.CeopageDao.selectCeopageExist */
+				  count(*)
+			FROM ts_ceo
+			WHERE 	site_id = #{*siteId}
+
+	</select>
+
+	<insert id="insertCeopage" parameterType="Map" >
+	    /* kr.apfs.local.ceopage.dao.impl.CeopageDao.insertCeopage */
+		INSERT INTO
+		ts_ceo (
+				ceo_id
+				,site_id
+				,ceo_nm
+				,stage_desc
+				,company_nm
+				,note
+				,start_dy
+				,end_dy
+				,attach_id
+				,sort
+				,ceo_yn
+				,use_yn
+				,del_yn
+				,reg_user_id
+				,reg_dt
+		) VALUES (
+				(SELECT NVL(MAX(ceo_id),0)+1 FROM ts_ceo WHERE site_id = #{*siteId})
+				,#{*siteId}
+				,#{ceoNm}
+				,#{stageDesc}
+				,#{companyNm}
+				,#{note}
+				,TO_CHAR(TO_DATE(#{startDy}),'YYYYMMDD')
+				,TO_CHAR(TO_DATE(#{endDy}),'YYYYMMDD')
+				,#{attachId}
+				,(SELECT NVL(MAX(sort),0)+1 FROM ts_ceo WHERE site_id = #{*siteId} AND del_yn='N' AND use_yn='Y')
+				,#{ceoYn}
+				,'Y'
+				,'N'
+				,#{*userId}
+				,TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		)
+	</insert>
+
+	<update id="updateCeopage" parameterType="Map" >
+	    /* kr.apfs.local.ceopage.dao.impl.CeopageDao.updateCeopage */
+	    UPDATE
+	 		ts_ceo
+		SET
+				ceo_nm = #{ceoNm}
+				,stage_desc = #{stageDesc}
+				,start_dy  = TO_CHAR(TO_DATE(#{startDy}),'YYYYMMDD')
+				,end_dy = TO_CHAR(TO_DATE(#{endDy}),'YYYYMMDD')
+				,ceo_yn = #{ceoYn}
+				,company_nm = #{companyNm}
+				,attach_id = #{attachId}
+
+				,upd_user_id = #{*userId}
+				,upd_dt = TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS')
+		WHERE  ceo_id = #{ceoId}
+		AND site_id = #{*siteId}
+	</update>
+
+	<delete id="deleteCeopage" parameterType="Map" >
+	    /* kr.apfs.local.ceopage.dao.impl.CeopageDao.deleteCeopage */
+	 	UPDATE
+			ts_ceo
+			SET
+			del_yn = 'Y'
+		WHERE ceo_id = #{ceoId}
+		AND site_id = #{*siteId}
+	</delete>
+
+	<update id="updateCeopageSort" parameterType="Map">
+		UPDATE
+			ts_ceo
+		SET
+			sort = #{sort}
+		WHERE
+			1=1
+		 AND ceo_id = #{ceoId}
+		 AND site_id = #{*siteId}
+
+
+	</update>
+
+</mapper>

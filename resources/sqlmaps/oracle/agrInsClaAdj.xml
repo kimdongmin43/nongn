@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AgrInsClaAdjDao">
+
+	<select id="selectAgrInsClaAdj" parameterType="Map" resultType="camelMap">
+	/* kr.apfs.local.agrInsClaAdj.dao.AgrInsClaAdjDao.selectAgrInsClaAdj */
+	<![CDATA[
+SELECT ZZ.손해평가사자격증번호 AS LICENSE_KEY
+        , ZZ.손해평가사성명 AS NAME
+        , MAX(ISNULL(ZZ.실무교육이수여부, '미이수')) AS EDC_COMPL_AT
+        , MAX(ZZ.실무교육이수일자) AS EDC_COMPL_DT
+        , MAX(ISNULL(ZZ.보수교육이수여부, '미이수')) AS EDC_COMPL_AT2
+        , MAX(ZZ.보수교육이수일자) AS EDC_COMPL_DT2
+  FROM (SELECT A.손해평가사자격증번호
+			 , A.손해평가사성명
+			 , E.CD_NM AS 실무교육이수여부
+			 , E.손해평가사교육이수일자 AS 실무교육이수일자
+			 , '' AS 보수교육이수여부
+			 , '' AS 보수교육이수일자
+		  FROM LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSMAS A LEFT OUTER JOIN (
+			   SELECT C.손해평가사자격증번호	     
+					, C.손해평가사교육이수일자
+					, D.Cd_Nm			
+					FROM LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSEDULISTMAS B
+					LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSEDUDTL C
+					ON B.손해평가사교육목록관리번호 = C.손해평가사교육목록관리번호
+					LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.FITComCd AS D 
+					ON C.손해평가사교육이수상태코드 = D.cd 
+					AND D.cd_tp = 80100 		 
+				WHERE B.손해평가사교육구분코드 = 1
+					AND C.손해평가사자격증번호 IS NOT NULL
+					AND GETDATE() > CONVERT(DATE, B.손해평가사교육종료일자)
+				GROUP BY C.손해평가사자격증번호, C.손해평가사교육이수일자, D.Cd_Nm
+				HAVING D.Cd_Nm = '이수'
+					) E
+			ON A.손해평가사자격증번호 = E.손해평가사자격증번호
+			WHERE 1 = 1
+	]]>
+	<if test='name != null and !name.equals("")'>
+	<![CDATA[	 
+           AND A.손해평가사성명 = #{name}
+    ]]>
+    </if>
+    <if test='licenseKey != null and !licenseKey.equals("")'>
+    <![CDATA[    
+		   AND A.손해평가사자격증번호 = #{licenseKey}
+	]]>
+	</if>
+	<![CDATA[	
+		UNION ALL
+		SELECT A.손해평가사자격증번호
+			 , A.손해평가사성명
+			 , '' AS 실무교육이수여부
+			 , '' AS 실무교육이수일자
+			 , E.CD_NM AS 보수교육이수여부
+			 , E.손해평가사교육이수일자 AS 보수교육이수일자
+		  FROM LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSMAS A LEFT OUTER JOIN (
+			   SELECT C.손해평가사자격증번호	     
+					, C.손해평가사교육이수일자
+					, D.Cd_Nm			
+					FROM LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSEDULISTMAS B
+					LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.INTASMENTLOSSEDUDTL C
+					ON B.손해평가사교육목록관리번호 = C.손해평가사교육목록관리번호
+					LEFT OUTER JOIN LINKD_INSU99.INSU_LINK.dbo.FITComCd AS D 
+					ON C.손해평가사교육이수상태코드 = D.cd 
+					AND D.cd_tp = 80100 		 
+				WHERE B.손해평가사교육구분코드 = 2
+					AND C.손해평가사자격증번호 IS NOT NULL
+					AND GETDATE() > CONVERT(DATE, B.손해평가사교육종료일자)
+				GROUP BY C.손해평가사자격증번호, C.손해평가사교육이수일자, D.Cd_Nm
+				HAVING D.Cd_Nm = '이수'
+					) E
+			ON A.손해평가사자격증번호 = E.손해평가사자격증번호
+			WHERE 1 = 1
+	]]>
+	<if test='name != null and !name.equals("")'>
+	<![CDATA[	 
+           AND A.손해평가사성명 = #{name}
+    ]]>
+    </if>
+    <if test='licenseKey != null and !licenseKey.equals("")'>
+    <![CDATA[    
+		   AND A.손해평가사자격증번호 = #{licenseKey}
+	]]>
+	</if>
+	<![CDATA[	
+      ) ZZ
+  GROUP BY ZZ.손해평가사자격증번호, ZZ.손해평가사성명      
+	]]>
+	</select>
+
+</mapper>

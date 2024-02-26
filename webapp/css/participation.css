@@ -1,0 +1,78 @@
+@charset "utf-8";
+
+/* 공통 */
+	.con_participation_wrap { margin-top:30px; }
+	.contents_title { margin:50px 0 25px; color:#333; font-size:22px; text-align:center; }
+	.contents_title strong { font-weight:700; }
+	.con_participation_wrap .text { }
+
+/* 전문 */
+	.ones { }
+	.ones .date_info { margin-bottom:30px; text-align:right; line-height:1.4; }
+	.ones .date_info p { }
+	.ones .text { letter-spacing:-0.3px; }
+	.ones .con_box { margin:25px 0; }
+	.ones .con_box .li_style02_one li { margin-bottom:15px; }
+	.ones .con_box .li_style02_one li:last-child { margin-bottom:0; }
+	.ones .con_box .li_style02_one span.dot { display:inline-block; width:35px; vertical-align:top; font-weight:700; }
+	.ones .con_box .li_style02_one span.txt { display:inline-block; width:calc(100% - 70px); }
+
+/* 핵심서비스이행표준 */
+	.core_service { }
+	.core_service h5 { }
+
+/* 고객응대서비스이행표준 */
+	.customer_reception_service { }
+	.customer_reception_service h5 { }
+
+/* 국민신문고 */
+
+/* 국민제안 */
+	.national_offer { }
+	.national_offer .list_style3 > li { margin-bottom:10px; font-weight:700; }
+	.national_offer .list_style3 li li { margin-bottom:4px; font-weight:normal; }
+	.national_offer .list_style3 li li:last-child { margin-bottom:0; }
+	.national_offer .btn_down.big { font-weight:normal; }
+
+/* 부정부패 · 공익 신고안내 */
+	.corruption { }
+	.corruption h5 { }
+	.corruption .list_style1 { margin-top:20px; }
+	.corruption .list_style1 > li { margin-bottom:10px; }
+
+@media screen and (max-width: 1290px){
+	
+}
+	
+@media screen and (max-width: 1280px){
+	
+}
+
+@media screen and (max-width: 1050px){
+	
+}
+
+@media screen and (max-width: 1024px){
+	
+}
+
+@media screen and (max-width: 916px){
+	
+}
+
+@media screen and (max-width: 768px){
+	
+}
+
+@media screen and (max-width: 640px){
+	/* 공통 */
+		.contents_title { font-size:20px; }
+}
+
+@media screen and (max-width: 500px){
+	
+}
+
+@media screen and (max-width: 468px){
+	
+}

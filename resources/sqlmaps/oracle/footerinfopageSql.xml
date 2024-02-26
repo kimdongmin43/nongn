@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FooterinfopageDao">
+
+	<select id = "selectFooterinfopage" parameterType = "Map" resultType = "camelMap">
+		SELECT
+		addr
+		,tel
+		,tel_mobile
+		,email
+		FROM
+		ts_footerinfo
+		WHERE 	site_id = #{*siteId}
+
+
+	</select>
+
+	<select id="selectFooterpageinfoExist" parameterType="Map" resultType="integer">
+	 /* kr.apfs.local.contents.dao.impl.FooterpageDao.selectFooterpageExist */
+		SELECT
+				  count(*)
+			FROM ts_footerinfo
+			WHERE
+			1=1
+			AND site_id = #{*siteId}
+	</select>
+
+
+	<insert id = "insertFooterinfopage" parameterType = "Map">
+	/* kr.apfs.local.contents.dao.impl.FooterpageDao.insertFooterpage */
+		INSERT INTO ts_footerinfo
+		(
+		site_id
+		,addr
+		,tel
+		,tel_mobile
+		,email
+		,reg_user_id
+		,reg_dt
+		)
+		VALUES
+		(
+		#{*siteId}
+		,#{addr}
+		,#{tel}
+		,#{telMobile}
+		,#{email}
+		,#{*userId}
+		,(SELECT CONVERT(CHAR(8),GETDATE(),112))
+		)
+	</insert>
+
+	<update id="updateFooterinfopage" parameterType = "Map">
+
+		UPDATE ts_footerinfo
+		SET
+		addr = #{addr}
+		,tel = #{tel}
+		,tel_mobile = #{telMobile}
+		,email = #{email}
+		,upd_user_id = #{*userId}
+		,upd_dt = (SELECT CONVERT(CHAR(8),GETDATE(),112))
+		WHERE
+		1=1
+		AND	site_id =#{*siteId}
+
+	</update>
+
+</mapper>
